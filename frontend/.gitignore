@@ -1,0 +1,8 @@
+.next
+coverage
+static/dist
+static/workbox
+tests/screenshots/**/*.png
+node_modules
+npm-debug.*
+.env
