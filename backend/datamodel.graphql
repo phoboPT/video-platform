@@ -1,0 +1,41 @@
+type User {
+  id: ID! @unique
+  name: String!
+  email: String!
+  password: String!
+  type: Type!
+}
+
+type Video {
+  id: ID! @unique
+  # state: State!
+  # user: User!
+  # comVideo: ComVideo
+  # category: Category
+  title: String!
+  description: String!
+}
+
+type Type {
+  id: ID! @unique
+  name: String!
+}
+
+type State {
+  id: ID! @unique
+  name: String!
+}
+
+type ComVideo {
+  id: ID! @unique
+  comment: String!
+}
+
+type Rate {
+  id: ID! @unique
+  name: String!
+}
+type Category {
+  id: ID! @unique
+  name: String!
+}

@@ -1,0 +1,9 @@
+#import * from './generated/prisma.graphql'
+
+type Mutation {
+  createVideo(title: String!, description: String!): Video!
+}
+
+type Query {
+  videos: [Video]!
+}
