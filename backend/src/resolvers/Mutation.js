@@ -10,6 +10,7 @@ const Mutations = {
       },
       info
     );
+    //para dar debug console.log(video);
     return video;
   }
 };
