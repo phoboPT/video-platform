@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import Link from 'next/link';
 
 const Home = props => (
   <div>
-    <p>hey</p>
+    <p>Hey!</p>
   </div>
 );
+
 export default Home;

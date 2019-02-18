@@ -1,6 +1,5 @@
-import App, { Container } from "next/app";
-import { Component } from "react";
-import Page from "../components/Page";
+import App, { Container } from 'next/app';
+import Page from '../components/Page';
 
 class MyApp extends App {
   render() {
