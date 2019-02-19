@@ -4,6 +4,11 @@ enum Type {
   INSTRUTOR
 }
 
+enum State {
+  PUBLISHED
+  UNPUBLISHED
+}
+
 type User {
   id: ID! @unique
   name: String!
@@ -16,20 +21,21 @@ type Video {
   id: ID! @unique
   title: String!
   description: String!
-  state: State!
+  state: State! @default(value: "UNPUBLISHED")
   user: User!
-  comVideo: ComVideo
   category: Category!
 }
 
-type State {
-  id: ID! @unique
-  name: String!
-}
+# type State {
+#   id: ID! @unique
+#   name: String!
+# }
 
 type ComVideo {
   id: ID! @unique
   comment: String!
+  video: Video!
+  user: User!
 }
 
 # type Rate {
