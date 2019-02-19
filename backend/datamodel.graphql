@@ -35,6 +35,7 @@ type ComVideo {
   id: ID! @unique
   comment: String!
   video: Video!
+  user: User!
 }
 
 # type Rate {

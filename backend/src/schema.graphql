@@ -2,18 +2,28 @@
 
 type Mutation {
   createVideo(title: String, description: String): Video!
-  updateVideo(id: ID!, title: String, description: String): Video!
+  updateVideo(
+    id: ID!
+    title: String
+    description: String
+    category: String
+  ): Video!
   deleteVideo(id: ID!): Video
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Video!
   deleteCategory(id: ID!): Category
+  createComVideo(comment: String!): ComVideo!
+  updateComVideo(id: ID!, comment: String!): ComVideo!
+  deleteComVideo(id: ID!): ComVideo
 }
 
 type Query {
   # querys sellect all
   videos: [Video]!
   categorys: [Category]!
+  comvideos: [ComVideo]!
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
+  comvideo(where: VideoWhereUniqueInput!): ComVideo
 }

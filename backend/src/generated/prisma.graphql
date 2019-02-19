@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Tue Feb 19 2019 14:07:23 GMT+0000 (WET)
+# timestamp: Tue Feb 19 2019 17:18:20 GMT+0000 (WET)
 
 type AggregateCategory {
   count: Int!
@@ -232,6 +232,8 @@ input CategoryWhereUniqueInput {
 type ComVideo implements Node {
   id: ID!
   comment: String!
+  video: Video!
+  user: User!
 }
 
 """A connection to a list of items."""
@@ -246,11 +248,8 @@ type ComVideoConnection {
 
 input ComVideoCreateInput {
   comment: String!
-}
-
-input ComVideoCreateOneInput {
-  create: ComVideoCreateInput
-  connect: ComVideoWhereUniqueInput
+  video: VideoCreateOneInput!
+  user: UserCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -317,30 +316,14 @@ input ComVideoSubscriptionWhereInput {
   node: ComVideoWhereInput
 }
 
-input ComVideoUpdateDataInput {
-  comment: String
-}
-
 input ComVideoUpdateInput {
   comment: String
+  video: VideoUpdateOneRequiredInput
+  user: UserUpdateOneRequiredInput
 }
 
 input ComVideoUpdateManyMutationInput {
   comment: String
-}
-
-input ComVideoUpdateOneInput {
-  create: ComVideoCreateInput
-  connect: ComVideoWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: ComVideoUpdateDataInput
-  upsert: ComVideoUpsertNestedInput
-}
-
-input ComVideoUpsertNestedInput {
-  update: ComVideoUpdateDataInput!
-  create: ComVideoCreateInput!
 }
 
 input ComVideoWhereInput {
@@ -432,6 +415,8 @@ input ComVideoWhereInput {
 
   """All values not ending with the given string."""
   comment_not_ends_with: String
+  video: VideoWhereInput
+  user: UserWhereInput
 }
 
 input ComVideoWhereUniqueInput {
@@ -445,29 +430,29 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+  createComVideo(data: ComVideoCreateInput!): ComVideo!
   createVideo(data: VideoCreateInput!): Video!
   createCategory(data: CategoryCreateInput!): Category!
-  createComVideo(data: ComVideoCreateInput!): ComVideo!
   createUser(data: UserCreateInput!): User!
+  updateComVideo(data: ComVideoUpdateInput!, where: ComVideoWhereUniqueInput!): ComVideo
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
-  updateComVideo(data: ComVideoUpdateInput!, where: ComVideoWhereUniqueInput!): ComVideo
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  deleteComVideo(where: ComVideoWhereUniqueInput!): ComVideo
   deleteVideo(where: VideoWhereUniqueInput!): Video
   deleteCategory(where: CategoryWhereUniqueInput!): Category
-  deleteComVideo(where: ComVideoWhereUniqueInput!): ComVideo
   deleteUser(where: UserWhereUniqueInput!): User
+  upsertComVideo(where: ComVideoWhereUniqueInput!, create: ComVideoCreateInput!, update: ComVideoUpdateInput!): ComVideo!
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
-  upsertComVideo(where: ComVideoWhereUniqueInput!, create: ComVideoCreateInput!, update: ComVideoUpdateInput!): ComVideo!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  updateManyComVideos(data: ComVideoUpdateManyMutationInput!, where: ComVideoWhereInput): BatchPayload!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
-  updateManyComVideos(data: ComVideoUpdateManyMutationInput!, where: ComVideoWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  deleteManyComVideos(where: ComVideoWhereInput): BatchPayload!
   deleteManyVideos(where: VideoWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
-  deleteManyComVideos(where: ComVideoWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
@@ -499,17 +484,17 @@ type PageInfo {
 }
 
 type Query {
+  comVideos(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComVideo]!
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
-  comVideos(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComVideo]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  comVideo(where: ComVideoWhereUniqueInput!): ComVideo
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
-  comVideo(where: ComVideoWhereUniqueInput!): ComVideo
   user(where: UserWhereUniqueInput!): User
+  comVideosConnection(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComVideoConnection!
   videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
-  comVideosConnection(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComVideoConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
@@ -525,9 +510,9 @@ enum State {
 }
 
 type Subscription {
+  comVideo(where: ComVideoSubscriptionWhereInput): ComVideoSubscriptionPayload
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
-  comVideo(where: ComVideoSubscriptionWhereInput): ComVideoSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -864,7 +849,6 @@ type Video implements Node {
   description: String!
   state: State!
   user: User!
-  comVideo: ComVideo
   category: Category!
 }
 
@@ -883,8 +867,12 @@ input VideoCreateInput {
   description: String!
   state: State
   user: UserCreateOneInput!
-  comVideo: ComVideoCreateOneInput
   category: CategoryCreateOneInput!
+}
+
+input VideoCreateOneInput {
+  create: VideoCreateInput
+  connect: VideoWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -957,12 +945,19 @@ input VideoSubscriptionWhereInput {
   node: VideoWhereInput
 }
 
+input VideoUpdateDataInput {
+  title: String
+  description: String
+  state: State
+  user: UserUpdateOneRequiredInput
+  category: CategoryUpdateOneRequiredInput
+}
+
 input VideoUpdateInput {
   title: String
   description: String
   state: State
   user: UserUpdateOneRequiredInput
-  comVideo: ComVideoUpdateOneInput
   category: CategoryUpdateOneRequiredInput
 }
 
@@ -970,6 +965,18 @@ input VideoUpdateManyMutationInput {
   title: String
   description: String
   state: State
+}
+
+input VideoUpdateOneRequiredInput {
+  create: VideoCreateInput
+  connect: VideoWhereUniqueInput
+  update: VideoUpdateDataInput
+  upsert: VideoUpsertNestedInput
+}
+
+input VideoUpsertNestedInput {
+  update: VideoUpdateDataInput!
+  create: VideoCreateInput!
 }
 
 input VideoWhereInput {
@@ -1112,7 +1119,6 @@ input VideoWhereInput {
   """All values that are not contained in given list."""
   state_not_in: [State!]
   user: UserWhereInput
-  comVideo: ComVideoWhereInput
   category: CategoryWhereInput
 }
 
