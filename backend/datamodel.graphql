@@ -14,12 +14,12 @@ type User {
 
 type Video {
   id: ID! @unique
+  title: String!
+  description: String!
   state: State!
   user: User!
   comVideo: ComVideo
   category: Category!
-  title: String!
-  description: String!
 }
 
 # type Type {
