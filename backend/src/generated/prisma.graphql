@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Fri Feb 15 2019 16:19:18 GMT+0000 (Hora padrão da Europa Ocidental)
+# timestamp: Tue Feb 19 2019 11:54:07 GMT+0000 (Hora padrão da Europa Ocidental)
 
 type AggregateCategory {
   count: Int!
@@ -9,15 +9,7 @@ type AggregateComVideo {
   count: Int!
 }
 
-type AggregateRate {
-  count: Int!
-}
-
 type AggregateState {
-  count: Int!
-}
-
-type AggregateType {
   count: Int!
 }
 
@@ -51,6 +43,11 @@ type CategoryConnection {
 
 input CategoryCreateInput {
   name: String!
+}
+
+input CategoryCreateOneInput {
+  create: CategoryCreateInput
+  connect: CategoryWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -117,12 +114,28 @@ input CategorySubscriptionWhereInput {
   node: CategoryWhereInput
 }
 
+input CategoryUpdateDataInput {
+  name: String
+}
+
 input CategoryUpdateInput {
   name: String
 }
 
 input CategoryUpdateManyMutationInput {
   name: String
+}
+
+input CategoryUpdateOneRequiredInput {
+  create: CategoryCreateInput
+  connect: CategoryWhereUniqueInput
+  update: CategoryUpdateDataInput
+  upsert: CategoryUpsertNestedInput
+}
+
+input CategoryUpsertNestedInput {
+  update: CategoryUpdateDataInput!
+  create: CategoryCreateInput!
 }
 
 input CategoryWhereInput {
@@ -239,6 +252,11 @@ input ComVideoCreateInput {
   comment: String!
 }
 
+input ComVideoCreateOneInput {
+  create: ComVideoCreateInput
+  connect: ComVideoWhereUniqueInput
+}
+
 """An edge in a connection."""
 type ComVideoEdge {
   """The item at the end of the edge."""
@@ -303,12 +321,30 @@ input ComVideoSubscriptionWhereInput {
   node: ComVideoWhereInput
 }
 
+input ComVideoUpdateDataInput {
+  comment: String
+}
+
 input ComVideoUpdateInput {
   comment: String
 }
 
 input ComVideoUpdateManyMutationInput {
   comment: String
+}
+
+input ComVideoUpdateOneInput {
+  create: ComVideoCreateInput
+  connect: ComVideoWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ComVideoUpdateDataInput
+  upsert: ComVideoUpsertNestedInput
+}
+
+input ComVideoUpsertNestedInput {
+  update: ComVideoUpdateDataInput!
+  create: ComVideoCreateInput!
 }
 
 input ComVideoWhereInput {
@@ -413,48 +449,36 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
   createVideo(data: VideoCreateInput!): Video!
-  createState(data: StateCreateInput!): State!
-  createComVideo(data: ComVideoCreateInput!): ComVideo!
-  createRate(data: RateCreateInput!): Rate!
   createCategory(data: CategoryCreateInput!): Category!
-  createType(data: TypeCreateInput!): Type!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  createComVideo(data: ComVideoCreateInput!): ComVideo!
+  createState(data: StateCreateInput!): State!
+  createUser(data: UserCreateInput!): User!
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
-  updateState(data: StateUpdateInput!, where: StateWhereUniqueInput!): State
-  updateComVideo(data: ComVideoUpdateInput!, where: ComVideoWhereUniqueInput!): ComVideo
-  updateRate(data: RateUpdateInput!, where: RateWhereUniqueInput!): Rate
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
-  updateType(data: TypeUpdateInput!, where: TypeWhereUniqueInput!): Type
-  deleteUser(where: UserWhereUniqueInput!): User
+  updateComVideo(data: ComVideoUpdateInput!, where: ComVideoWhereUniqueInput!): ComVideo
+  updateState(data: StateUpdateInput!, where: StateWhereUniqueInput!): State
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteVideo(where: VideoWhereUniqueInput!): Video
-  deleteState(where: StateWhereUniqueInput!): State
-  deleteComVideo(where: ComVideoWhereUniqueInput!): ComVideo
-  deleteRate(where: RateWhereUniqueInput!): Rate
   deleteCategory(where: CategoryWhereUniqueInput!): Category
-  deleteType(where: TypeWhereUniqueInput!): Type
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteComVideo(where: ComVideoWhereUniqueInput!): ComVideo
+  deleteState(where: StateWhereUniqueInput!): State
+  deleteUser(where: UserWhereUniqueInput!): User
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
-  upsertState(where: StateWhereUniqueInput!, create: StateCreateInput!, update: StateUpdateInput!): State!
-  upsertComVideo(where: ComVideoWhereUniqueInput!, create: ComVideoCreateInput!, update: ComVideoUpdateInput!): ComVideo!
-  upsertRate(where: RateWhereUniqueInput!, create: RateCreateInput!, update: RateUpdateInput!): Rate!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
-  upsertType(where: TypeWhereUniqueInput!, create: TypeCreateInput!, update: TypeUpdateInput!): Type!
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertComVideo(where: ComVideoWhereUniqueInput!, create: ComVideoCreateInput!, update: ComVideoUpdateInput!): ComVideo!
+  upsertState(where: StateWhereUniqueInput!, create: StateCreateInput!, update: StateUpdateInput!): State!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
-  updateManyStates(data: StateUpdateManyMutationInput!, where: StateWhereInput): BatchPayload!
-  updateManyComVideos(data: ComVideoUpdateManyMutationInput!, where: ComVideoWhereInput): BatchPayload!
-  updateManyRates(data: RateUpdateManyMutationInput!, where: RateWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
-  updateManyTypes(data: TypeUpdateManyMutationInput!, where: TypeWhereInput): BatchPayload!
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  updateManyComVideos(data: ComVideoUpdateManyMutationInput!, where: ComVideoWhereInput): BatchPayload!
+  updateManyStates(data: StateUpdateManyMutationInput!, where: StateWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   deleteManyVideos(where: VideoWhereInput): BatchPayload!
-  deleteManyStates(where: StateWhereInput): BatchPayload!
-  deleteManyComVideos(where: ComVideoWhereInput): BatchPayload!
-  deleteManyRates(where: RateWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
-  deleteManyTypes(where: TypeWhereInput): BatchPayload!
+  deleteManyComVideos(where: ComVideoWhereInput): BatchPayload!
+  deleteManyStates(where: StateWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -485,219 +509,27 @@ type PageInfo {
 }
 
 type Query {
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
-  states(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [State]!
-  comVideos(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComVideo]!
-  rates(where: RateWhereInput, orderBy: RateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Rate]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
-  types(where: TypeWhereInput, orderBy: TypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Type]!
-  user(where: UserWhereUniqueInput!): User
+  comVideos(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComVideo]!
+  states(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [State]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   video(where: VideoWhereUniqueInput!): Video
-  state(where: StateWhereUniqueInput!): State
-  comVideo(where: ComVideoWhereUniqueInput!): ComVideo
-  rate(where: RateWhereUniqueInput!): Rate
   category(where: CategoryWhereUniqueInput!): Category
-  type(where: TypeWhereUniqueInput!): Type
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  comVideo(where: ComVideoWhereUniqueInput!): ComVideo
+  state(where: StateWhereUniqueInput!): State
+  user(where: UserWhereUniqueInput!): User
   videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
-  statesConnection(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StateConnection!
-  comVideosConnection(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComVideoConnection!
-  ratesConnection(where: RateWhereInput, orderBy: RateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RateConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
-  typesConnection(where: TypeWhereInput, orderBy: TypeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TypeConnection!
+  comVideosConnection(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComVideoConnection!
+  statesConnection(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StateConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
   node(
     """The ID of an object"""
     id: ID!
   ): Node
-}
-
-type Rate implements Node {
-  id: ID!
-  name: String!
-}
-
-"""A connection to a list of items."""
-type RateConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [RateEdge]!
-  aggregate: AggregateRate!
-}
-
-input RateCreateInput {
-  name: String!
-}
-
-"""An edge in a connection."""
-type RateEdge {
-  """The item at the end of the edge."""
-  node: Rate!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum RateOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type RatePreviousValues {
-  id: ID!
-  name: String!
-}
-
-type RateSubscriptionPayload {
-  mutation: MutationType!
-  node: Rate
-  updatedFields: [String!]
-  previousValues: RatePreviousValues
-}
-
-input RateSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [RateSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [RateSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [RateSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: RateWhereInput
-}
-
-input RateUpdateInput {
-  name: String
-}
-
-input RateUpdateManyMutationInput {
-  name: String
-}
-
-input RateWhereInput {
-  """Logical AND on all given filters."""
-  AND: [RateWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [RateWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [RateWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
-}
-
-input RateWhereUniqueInput {
-  id: ID
 }
 
 type State implements Node {
@@ -717,6 +549,11 @@ type StateConnection {
 
 input StateCreateInput {
   name: String!
+}
+
+input StateCreateOneInput {
+  create: StateCreateInput
+  connect: StateWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -783,12 +620,28 @@ input StateSubscriptionWhereInput {
   node: StateWhereInput
 }
 
+input StateUpdateDataInput {
+  name: String
+}
+
 input StateUpdateInput {
   name: String
 }
 
 input StateUpdateManyMutationInput {
   name: String
+}
+
+input StateUpdateOneRequiredInput {
+  create: StateCreateInput
+  connect: StateWhereUniqueInput
+  update: StateUpdateDataInput
+  upsert: StateUpsertNestedInput
+}
+
+input StateUpsertNestedInput {
+  update: StateUpdateDataInput!
+  create: StateCreateInput!
 }
 
 input StateWhereInput {
@@ -887,220 +740,17 @@ input StateWhereUniqueInput {
 }
 
 type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
-  state(where: StateSubscriptionWhereInput): StateSubscriptionPayload
-  comVideo(where: ComVideoSubscriptionWhereInput): ComVideoSubscriptionPayload
-  rate(where: RateSubscriptionWhereInput): RateSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
-  type(where: TypeSubscriptionWhereInput): TypeSubscriptionPayload
+  comVideo(where: ComVideoSubscriptionWhereInput): ComVideoSubscriptionPayload
+  state(where: StateSubscriptionWhereInput): StateSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
-type Type implements Node {
-  id: ID!
-  name: String!
-}
-
-"""A connection to a list of items."""
-type TypeConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [TypeEdge]!
-  aggregate: AggregateType!
-}
-
-input TypeCreateInput {
-  name: String!
-}
-
-input TypeCreateOneInput {
-  create: TypeCreateInput
-  connect: TypeWhereUniqueInput
-}
-
-"""An edge in a connection."""
-type TypeEdge {
-  """The item at the end of the edge."""
-  node: Type!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum TypeOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type TypePreviousValues {
-  id: ID!
-  name: String!
-}
-
-type TypeSubscriptionPayload {
-  mutation: MutationType!
-  node: Type
-  updatedFields: [String!]
-  previousValues: TypePreviousValues
-}
-
-input TypeSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [TypeSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [TypeSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [TypeSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: TypeWhereInput
-}
-
-input TypeUpdateDataInput {
-  name: String
-}
-
-input TypeUpdateInput {
-  name: String
-}
-
-input TypeUpdateManyMutationInput {
-  name: String
-}
-
-input TypeUpdateOneRequiredInput {
-  create: TypeCreateInput
-  connect: TypeWhereUniqueInput
-  update: TypeUpdateDataInput
-  upsert: TypeUpsertNestedInput
-}
-
-input TypeUpsertNestedInput {
-  update: TypeUpdateDataInput!
-  create: TypeCreateInput!
-}
-
-input TypeWhereInput {
-  """Logical AND on all given filters."""
-  AND: [TypeWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [TypeWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [TypeWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
-}
-
-input TypeWhereUniqueInput {
-  id: ID
+enum Type {
+  ADMIN
+  USER
+  INSTRUTOR
 }
 
 type User implements Node {
@@ -1125,7 +775,12 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
-  type: TypeCreateOneInput!
+  type: Type
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -1146,6 +801,8 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
+  type_ASC
+  type_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -1157,6 +814,7 @@ type UserPreviousValues {
   name: String!
   email: String!
   password: String!
+  type: Type!
 }
 
 type UserSubscriptionPayload {
@@ -1198,17 +856,37 @@ input UserSubscriptionWhereInput {
   node: UserWhereInput
 }
 
+input UserUpdateDataInput {
+  name: String
+  email: String
+  password: String
+  type: Type
+}
+
 input UserUpdateInput {
   name: String
   email: String
   password: String
-  type: TypeUpdateOneRequiredInput
+  type: Type
 }
 
 input UserUpdateManyMutationInput {
   name: String
   email: String
   password: String
+  type: Type
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
@@ -1380,7 +1058,16 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
-  type: TypeWhereInput
+  type: Type
+
+  """All values that are not equal to given value."""
+  type_not: Type
+
+  """All values that are contained in given list."""
+  type_in: [Type!]
+
+  """All values that are not contained in given list."""
+  type_not_in: [Type!]
 }
 
 input UserWhereUniqueInput {
@@ -1389,6 +1076,10 @@ input UserWhereUniqueInput {
 
 type Video implements Node {
   id: ID!
+  state: State!
+  user: User!
+  comVideo: ComVideo
+  category: Category!
   title: String!
   description: String!
 }
@@ -1406,6 +1097,10 @@ type VideoConnection {
 input VideoCreateInput {
   title: String!
   description: String!
+  state: StateCreateOneInput!
+  user: UserCreateOneInput!
+  comVideo: ComVideoCreateOneInput
+  category: CategoryCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -1478,6 +1173,10 @@ input VideoSubscriptionWhereInput {
 input VideoUpdateInput {
   title: String
   description: String
+  state: StateUpdateOneRequiredInput
+  user: UserUpdateOneRequiredInput
+  comVideo: ComVideoUpdateOneInput
+  category: CategoryUpdateOneRequiredInput
 }
 
 input VideoUpdateManyMutationInput {
@@ -1614,6 +1313,10 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  state: StateWhereInput
+  user: UserWhereInput
+  comVideo: ComVideoWhereInput
+  category: CategoryWhereInput
 }
 
 input VideoWhereUniqueInput {

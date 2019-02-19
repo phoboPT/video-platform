@@ -1,25 +1,31 @@
+enum Type {
+  ADMIN
+  USER
+  INSTRUTOR
+}
+
 type User {
   id: ID! @unique
   name: String!
   email: String!
   password: String!
-  type: Type!
+  type: Type! @default(value: "USER")
 }
 
 type Video {
   id: ID! @unique
-  # state: State!
-  # user: User!
-  # comVideo: ComVideo
-  # category: Category
+  state: State!
+  user: User!
+  comVideo: ComVideo
+  category: Category!
   title: String!
   description: String!
 }
 
-type Type {
-  id: ID! @unique
-  name: String!
-}
+# type Type {
+#   id: ID! @unique
+#   name: String!
+# }
 
 type State {
   id: ID! @unique
@@ -31,10 +37,11 @@ type ComVideo {
   comment: String!
 }
 
-type Rate {
-  id: ID! @unique
-  name: String!
-}
+# type Rate {
+#   id: ID! @unique
+#   name: String!
+# }
+
 type Category {
   id: ID! @unique
   name: String!
