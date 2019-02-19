@@ -1,9 +1,10 @@
 import Link from "next/link";
 import NavStyle from "./styles/NavStyle";
+import styled from "styled-components";
 
 const Nav = () => (
   <NavStyle>
-    <Link href="/">
+    <Link href="/courses">
       <a>Courses</a>
     </Link>
     <Link href="/sell">

@@ -43,7 +43,7 @@ const NavStyle = styled.ul`
       transition: width 0.4s;
       transition-timing-function: cubic-bezier(1, -0.65, 0, 2.31);
       left: 50%;
-      margin-top: 2rem;
+      margin-top: 4rem;
     }
     &:hover,
     &:focus {
@@ -61,11 +61,6 @@ const NavStyle = styled.ul`
     width: 100%;
     justify-content: center;
     font-size: 1.5rem;
-  }
-  img {
-    width: 5rem;
-    &after {
-    }
   }
 `;
 
