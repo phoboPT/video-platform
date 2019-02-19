@@ -1,7 +1,8 @@
 const { forwardTo } = require("prisma-binding");
 
 const Query = {
-  videos: forwardTo("db")
+  videos: forwardTo("db"),
+  video: forwardTo("db")
 
   // async videos(parent, args, ctx, info) {
   //   //ctx.db.query-> vai ao contexto->db -> query no schema do prisma e retira de la os videos

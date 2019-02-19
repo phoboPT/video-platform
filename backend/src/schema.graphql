@@ -2,8 +2,11 @@
 
 type Mutation {
   createVideo(title: String, description: String): Video!
+  updateVideo(id: ID!, title: String, description: String): Video!
+  deleteVideo(id: ID!): Video
 }
 
 type Query {
   videos: [Video]!
+  video(where: VideoWhereUniqueInput!): Video
 }
