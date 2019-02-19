@@ -2,6 +2,7 @@ const { forwardTo } = require("prisma-binding");
 
 const Query = {
   videos: forwardTo("db"),
+  categorys: forwardTo("db"),
   video: forwardTo("db")
 
   // async videos(parent, args, ctx, info) {

@@ -1,19 +1,19 @@
 #import * from './generated/prisma.graphql'
 
 type Mutation {
-  createVideo(
-    title: String
-    description: String
-    state: String!
-    user: String!
-    comVideo: String
-    category: String!
-  ): Video!
+  createVideo(title: String, description: String): Video!
   updateVideo(id: ID!, title: String, description: String): Video!
   deleteVideo(id: ID!): Video
+  createCategory(name: String!): Category!
+  updateCategory(id: ID!, name: String!): Video!
+  deleteCategory(id: ID!): Category
 }
 
 type Query {
+  # querys sellect all
   videos: [Video]!
+  categorys: [Category]!
+  # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
+  category(where: CategoryWhereUniqueInput!): Category
 }

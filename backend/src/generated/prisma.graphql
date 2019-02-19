@@ -1,15 +1,11 @@
 # source: http://localhost:4466
-# timestamp: Tue Feb 19 2019 13:39:12 GMT+0000 (Hora padrão da Europa Ocidental)
+# timestamp: Tue Feb 19 2019 14:07:23 GMT+0000 (WET)
 
 type AggregateCategory {
   count: Int!
 }
 
 type AggregateComVideo {
-  count: Int!
-}
-
-type AggregateState {
   count: Int!
 }
 
@@ -452,32 +448,26 @@ type Mutation {
   createVideo(data: VideoCreateInput!): Video!
   createCategory(data: CategoryCreateInput!): Category!
   createComVideo(data: ComVideoCreateInput!): ComVideo!
-  createState(data: StateCreateInput!): State!
   createUser(data: UserCreateInput!): User!
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateComVideo(data: ComVideoUpdateInput!, where: ComVideoWhereUniqueInput!): ComVideo
-  updateState(data: StateUpdateInput!, where: StateWhereUniqueInput!): State
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteVideo(where: VideoWhereUniqueInput!): Video
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteComVideo(where: ComVideoWhereUniqueInput!): ComVideo
-  deleteState(where: StateWhereUniqueInput!): State
   deleteUser(where: UserWhereUniqueInput!): User
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertComVideo(where: ComVideoWhereUniqueInput!, create: ComVideoCreateInput!, update: ComVideoUpdateInput!): ComVideo!
-  upsertState(where: StateWhereUniqueInput!, create: StateCreateInput!, update: StateUpdateInput!): State!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyComVideos(data: ComVideoUpdateManyMutationInput!, where: ComVideoWhereInput): BatchPayload!
-  updateManyStates(data: StateUpdateManyMutationInput!, where: StateWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   deleteManyVideos(where: VideoWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyComVideos(where: ComVideoWhereInput): BatchPayload!
-  deleteManyStates(where: StateWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
@@ -512,17 +502,14 @@ type Query {
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   comVideos(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComVideo]!
-  states(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [State]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
   comVideo(where: ComVideoWhereUniqueInput!): ComVideo
-  state(where: StateWhereUniqueInput!): State
   user(where: UserWhereUniqueInput!): User
   videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   comVideosConnection(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComVideoConnection!
-  statesConnection(where: StateWhereInput, orderBy: StateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StateConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
@@ -532,218 +519,15 @@ type Query {
   ): Node
 }
 
-type State implements Node {
-  id: ID!
-  name: String!
-}
-
-"""A connection to a list of items."""
-type StateConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [StateEdge]!
-  aggregate: AggregateState!
-}
-
-input StateCreateInput {
-  name: String!
-}
-
-input StateCreateOneInput {
-  create: StateCreateInput
-  connect: StateWhereUniqueInput
-}
-
-"""An edge in a connection."""
-type StateEdge {
-  """The item at the end of the edge."""
-  node: State!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum StateOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type StatePreviousValues {
-  id: ID!
-  name: String!
-}
-
-type StateSubscriptionPayload {
-  mutation: MutationType!
-  node: State
-  updatedFields: [String!]
-  previousValues: StatePreviousValues
-}
-
-input StateSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [StateSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [StateSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [StateSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: StateWhereInput
-}
-
-input StateUpdateDataInput {
-  name: String
-}
-
-input StateUpdateInput {
-  name: String
-}
-
-input StateUpdateManyMutationInput {
-  name: String
-}
-
-input StateUpdateOneRequiredInput {
-  create: StateCreateInput
-  connect: StateWhereUniqueInput
-  update: StateUpdateDataInput
-  upsert: StateUpsertNestedInput
-}
-
-input StateUpsertNestedInput {
-  update: StateUpdateDataInput!
-  create: StateCreateInput!
-}
-
-input StateWhereInput {
-  """Logical AND on all given filters."""
-  AND: [StateWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [StateWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [StateWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
-}
-
-input StateWhereUniqueInput {
-  id: ID
+enum State {
+  PUBLISHED
+  UNPUBLISHED
 }
 
 type Subscription {
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   comVideo(where: ComVideoSubscriptionWhereInput): ComVideoSubscriptionPayload
-  state(where: StateSubscriptionWhereInput): StateSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -1097,7 +881,7 @@ type VideoConnection {
 input VideoCreateInput {
   title: String!
   description: String!
-  state: StateCreateOneInput!
+  state: State
   user: UserCreateOneInput!
   comVideo: ComVideoCreateOneInput
   category: CategoryCreateOneInput!
@@ -1119,6 +903,8 @@ enum VideoOrderByInput {
   title_DESC
   description_ASC
   description_DESC
+  state_ASC
+  state_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -1129,6 +915,7 @@ type VideoPreviousValues {
   id: ID!
   title: String!
   description: String!
+  state: State!
 }
 
 type VideoSubscriptionPayload {
@@ -1173,7 +960,7 @@ input VideoSubscriptionWhereInput {
 input VideoUpdateInput {
   title: String
   description: String
-  state: StateUpdateOneRequiredInput
+  state: State
   user: UserUpdateOneRequiredInput
   comVideo: ComVideoUpdateOneInput
   category: CategoryUpdateOneRequiredInput
@@ -1182,6 +969,7 @@ input VideoUpdateInput {
 input VideoUpdateManyMutationInput {
   title: String
   description: String
+  state: State
 }
 
 input VideoWhereInput {
@@ -1313,7 +1101,16 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  state: StateWhereInput
+  state: State
+
+  """All values that are not equal to given value."""
+  state_not: State
+
+  """All values that are contained in given list."""
+  state_in: [State!]
+
+  """All values that are not contained in given list."""
+  state_not_in: [State!]
   user: UserWhereInput
   comVideo: ComVideoWhereInput
   category: CategoryWhereInput
