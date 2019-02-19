@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Tue Feb 19 2019 11:54:07 GMT+0000 (Hora padrão da Europa Ocidental)
+# timestamp: Tue Feb 19 2019 13:39:12 GMT+0000 (Hora padrão da Europa Ocidental)
 
 type AggregateCategory {
   count: Int!
@@ -1076,12 +1076,12 @@ input UserWhereUniqueInput {
 
 type Video implements Node {
   id: ID!
+  title: String!
+  description: String!
   state: State!
   user: User!
   comVideo: ComVideo
   category: Category!
-  title: String!
-  description: String!
 }
 
 """A connection to a list of items."""

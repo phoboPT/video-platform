@@ -22,11 +22,6 @@ type Video {
   category: Category!
 }
 
-# type Type {
-#   id: ID! @unique
-#   name: String!
-# }
-
 type State {
   id: ID! @unique
   name: String!

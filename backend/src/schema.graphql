@@ -4,10 +4,10 @@ type Mutation {
   createVideo(
     title: String
     description: String
-    state: State!
-    user: User!
-    comVideo: ComVideo
-    category: Category!
+    state: String!
+    user: String!
+    comVideo: String
+    category: String!
   ): Video!
   updateVideo(id: ID!, title: String, description: String): Video!
   deleteVideo(id: ID!): Video
