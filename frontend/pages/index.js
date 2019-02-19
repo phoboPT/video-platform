@@ -1,8 +1,8 @@
-import Link from 'next/link';
-
+import Link from "next/link";
+import Courses from "../components/Courses";
 const Home = props => (
   <div>
-    <p>Hey!</p>
+    <Courses />
   </div>
 );
 
