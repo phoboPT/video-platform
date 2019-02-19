@@ -8,14 +8,9 @@ const ALL_VIDEOS_QUERY = gql`
   query ALL_VIDEOS_QUERY {
     videos {
       id
-      state {
-        name
-      }
+      state
       user {
         name
-      }
-      comVideo {
-        comment
       }
       category {
         name

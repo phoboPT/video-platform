@@ -53,10 +53,10 @@ class Video extends Component {
           <span>
             State:
             <State
-              background={video.state.name === "Published" ? "green" : "red"}
+              background={video.state === "Published" ? "green" : "red"}
               color="white"
             >
-              {video.state.name}
+              {video.state}
             </State>
           </span>
           <span>
