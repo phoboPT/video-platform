@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Courses from "../components/Courses";
+import Videos from "../components/Videos";
 const Home = props => (
   <div>
-    <Courses />
+    <p>Home</p>
   </div>
 );
 

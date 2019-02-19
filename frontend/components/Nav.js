@@ -4,8 +4,8 @@ import styled from "styled-components";
 
 const Nav = () => (
   <NavStyle>
-    <Link href="/courses">
-      <a>Courses</a>
+    <Link href="/">
+      <a>Videos</a>
     </Link>
     <Link href="/sell">
       <a>

@@ -43,7 +43,7 @@ const NavStyle = styled.ul`
       transition: width 0.4s;
       transition-timing-function: cubic-bezier(1, -0.65, 0, 2.31);
       left: 50%;
-      margin-top: 4rem;
+      margin-top: 3rem;
     }
     &:hover,
     &:focus {
@@ -55,6 +55,9 @@ const NavStyle = styled.ul`
         width: calc(100% - 10px);
       }
     }
+  }
+  img {
+    width: 5rem;
   }
   @media (max-width: 1300px) {
     border-top: 1px solid ${props => props.theme.lightGrey};
