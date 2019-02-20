@@ -1,3 +1,6 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
     //TODO: Check if they are logged in
@@ -148,6 +151,28 @@ const Mutations = {
     }
     //3.dar delete
     return ctx.db.mutation.deleteCom({ where }, info);
+  },
+  async signup(parent, args, ctx, info) {
+    //lowercase the email
+    args.email = args.email.toLowerCase();
+    //hash password
+    const password = await bcrypt.hash(args.password, 10);
+    //create user
+    const user = await ctx.db.mutation.createUser(
+      {
+        data: { ...args, password, permission: { set: ["USER"] } }
+      },
+      info
+    );
+    //create jwt token for them
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    //we set the jwt as a cookie on the ctx
+    ctx.response.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 265 //1 year cookie
+    });
+    //finally we return the user to the browser
+    return user;
   }
 };
 

@@ -15,6 +15,7 @@ type Mutation {
   createComVideo(comment: String!): ComVideo!
   updateComVideo(id: ID!, comment: String!): ComVideo!
   deleteComVideo(id: ID!): ComVideo
+  signup(email: String!, password: String!, name: String!): User!
 }
 
 type Query {

@@ -1,7 +1,10 @@
-enum Type {
+enum Permission {
   ADMIN
   USER
   INSTRUTOR
+  VIDEOCREATE
+  COURSECREATE
+  PERMISSIONUPDATE
 }
 
 enum State {
@@ -12,9 +15,11 @@ enum State {
 type User {
   id: ID! @unique
   name: String!
-  email: String!
+  email: String! @unique
   password: String!
-  type: Type! @default(value: "USER")
+  resetToken: String
+  resetTokenExpiry: String
+  permission: [Permission]
 }
 
 type Video {

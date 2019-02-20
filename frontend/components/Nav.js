@@ -5,16 +5,15 @@ import styled from "styled-components";
 const Nav = () => (
   <NavStyle>
     <Link href="/">
-      <a>Videos</a>
+      <a>Home</a>
     </Link>
-    <Link href="/sell">
-      <a>
-        <img src="/static/shopping-cart.png" />
-        <p />
-      </a>
+
+    <Link href="/videos">
+      <a>My Videos</a>
     </Link>
-    <Link href="/sell">
-      <a />
+
+    <Link href="/signup">
+      <a>Sign In</a>
     </Link>
   </NavStyle>
 );

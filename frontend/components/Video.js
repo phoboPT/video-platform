@@ -23,8 +23,6 @@ const Div = styled.div`
   }
 `;
 
-const Img = styled.img``;
-
 class Video extends Component {
   static propTypes = {
     video: PropTypes.object.isRequired
