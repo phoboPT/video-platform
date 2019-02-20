@@ -21,11 +21,10 @@ type Query {
   # querys sellect all
   videos: [Video]!
   categorys: [Category]!
-  comvideos: [ComVideo]!
+  comVideos: [ComVideo]!
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
-  videosuser(orderBy: VideoOrderByInput): [Video]
-
+  videosUser(id: ID!): [Video]
   category(where: CategoryWhereUniqueInput!): Category
-  comvideo(where: VideoWhereUniqueInput!): ComVideo
+  comVideo(where: VideoWhereUniqueInput!): ComVideo
 }

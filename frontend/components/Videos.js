@@ -4,22 +4,23 @@ import gql from "graphql-tag";
 import Video from "./Video";
 import styled from "styled-components";
 
-const ALL_VIDEOS_QUERY = gql`
-  query ALL_VIDEOS_QUERY {
-    videos {
+const ALL_VIDEOS_USER = gql`
+  query ALL_VIDEOS_USER($id: ID!) {
+    videosUser(id: $id) {
       id
+      title
+      description
       state
-      user {
-        name
-      }
       category {
         name
       }
-      title
-      description
+      user {
+        name
+      }
     }
   }
 `;
+
 const Center = styled.div`
   text-align: center;
 `;
@@ -37,13 +38,17 @@ const ItemList = styled.div`
 `;
 
 class Videos extends Component {
+  state = {
+    id: "cjsc3y7ti003v07428d5g8fjk"
+  };
   render() {
     return (
       <Center>
         <h2>Videos</h2>
         <br />
-        <Query query={ALL_VIDEOS_QUERY}>
+        <Query query={ALL_VIDEOS_USER} variables={this.state}>
           {({ data, error, loading }) => {
+            console.log("data", data);
             if (loading) {
               return <p>Loading...</p>;
             }
@@ -52,7 +57,7 @@ class Videos extends Component {
             }
             return (
               <ItemList>
-                {data.videos.map(video => (
+                {data.videosUser.map(video => (
                   <Video video={video} key={video.id} />
                 ))}
               </ItemList>

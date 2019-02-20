@@ -3,22 +3,23 @@ const { forwardTo } = require("prisma-binding");
 const Query = {
   videos: forwardTo("db"),
   categorys: forwardTo("db"),
-  comvideos: forwardTo("db"),
+  comVideos: forwardTo("db"),
   video: forwardTo("db"),
   category: forwardTo("db"),
-  comvideo: forwardTo("db"),
+  comVideo: forwardTo("db"),
 
-  async videosuser(parent, args, ctx, info) {
+  async videosUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
+    console.log(args);
     //Ver se esta logado
-    if (!userId) {
-      throw new Error("you must be signed in!");
-    }
+    // if (!userId) {
+    //   throw new Error("you must be signed in!");
+    // }
     //query o video atual
-    return ctx.db.query.videosuser(
+    return ctx.db.query.videos(
       {
         where: {
-          user: { id: userId }
+          user: { id: args.id }
         }
       },
       info
