@@ -23,6 +23,8 @@ const Div = styled.div`
   }
 `;
 
+const Img = styled.img``;
+
 class Video extends Component {
   static propTypes = {
     video: PropTypes.object.isRequired
@@ -30,7 +32,7 @@ class Video extends Component {
 
   render() {
     const { video } = this.props;
-    console.log(video);
+
     return (
       <ItemStyles>
         <Title>

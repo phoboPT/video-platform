@@ -25,10 +25,15 @@ const Center = styled.div`
 `;
 const ItemList = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 60px;
   max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
+  img {
+    width: 250px;
+    height: 150px;
+    align-self: center;
+  }
 `;
 
 class Videos extends Component {
