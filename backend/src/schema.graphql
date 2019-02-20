@@ -1,7 +1,7 @@
 #import * from './generated/prisma.graphql'
 
 type Mutation {
-  createVideo(title: String!, description: String, category: String!): Video!
+  createVideo(title: String!, description: String, category: ID!): Video!
   updateVideo(
     id: ID!
     title: String
@@ -12,7 +12,7 @@ type Mutation {
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Video!
   deleteCategory(id: ID!): Category
-  createComVideo(comment: String!): ComVideo!
+  createComVideo(comment: String!, video: ID!): ComVideo!
   updateComVideo(id: ID!, comment: String!): ComVideo!
   deleteComVideo(id: ID!): ComVideo
   signup(email: String!, password: String!, name: String!): User!
