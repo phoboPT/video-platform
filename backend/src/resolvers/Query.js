@@ -7,7 +7,6 @@ const Query = {
   users: forwardTo("db"),
   video: forwardTo("db"),
   category: forwardTo("db"),
-  comVideo: forwardTo("db"),
   me(parent, args, ctx, info) {
     //checkar se tem um current ID
     if (!ctx.request.userId) {
@@ -38,17 +37,17 @@ const Query = {
       info
     );
   },
-  comVideos(parent, args, ctx, info) {
+  comsVideo(parent, args, ctx, info) {
     console.log(args);
     //Ver se esta logado
     // if (!userId) {
     //   throw new Error("you must be signed in!");
     // }
     //query o video atual com comparaçao de ids de user
-    return ctx.db.query.comVideos(
+    return ctx.db.query.comVideo(
       {
         where: {
-          user: { id: args.id }
+          video: { id: args.id }
         }
       },
       info

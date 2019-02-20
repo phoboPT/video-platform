@@ -53,9 +53,9 @@ const Mutations = {
   },
   async createCategory(parent, args, ctx, info) {
     //Check if they are logged in
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
+    // if (!ctx.request.userId) {
+    //   throw new Error("You must be logged in to do that!");
+    // }
 
     const category = await ctx.db.mutation.createCategory(
       {
@@ -94,7 +94,7 @@ const Mutations = {
   },
 
   async createComVideo(parent, args, ctx, info) {
-    //TODO: Check if they are logged in
+    //  Check if they are logged in
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
     }
@@ -102,11 +102,6 @@ const Mutations = {
     const comvideo = await ctx.db.mutation.createComVideo(
       {
         data: {
-          video: {
-            connect: {
-              id: ctx.request.videoId
-            }
-          },
           user: {
             connect: {
               id: ctx.request.userId
