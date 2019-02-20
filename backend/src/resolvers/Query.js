@@ -25,7 +25,7 @@ const Query = {
       info
     );
   },
-  videosUser(parent, args, ctx, info) {
+  comVideos(parent, args, ctx, info) {
     console.log(args);
     //Ver se esta logado
     // if (!userId) {
