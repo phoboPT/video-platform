@@ -18,7 +18,9 @@ const Query = {
     }
     return ctx.db.query.user(
       {
-        where: { id: userId }
+        where: {
+          id: userId
+        }
       },
       info
     );
@@ -35,7 +37,9 @@ const Query = {
     return ctx.db.query.videos(
       {
         where: {
-          user: { id: userId }
+          user: {
+            id: userId
+          }
         }
       },
       info
@@ -51,7 +55,9 @@ const Query = {
     return ctx.db.query.comVideos(
       {
         where: {
-          user: { id: userId }
+          user: {
+            id: userId
+          }
         }
       },
       info
