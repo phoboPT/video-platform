@@ -37,6 +37,12 @@ const ItemList = styled.div`
   }
 `;
 
+const Columns = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
+`;
+
 class Videos extends Component {
   state = {
     id: "cjsd65ct8002a0842ykc11w9x"
@@ -48,7 +54,6 @@ class Videos extends Component {
         <br />
         <Query query={ALL_VIDEOS_USER} variables={this.state}>
           {({ data, error, loading }) => {
-            console.log("data", data);
             if (loading) {
               return <p>Loading...</p>;
             }
@@ -56,11 +61,13 @@ class Videos extends Component {
               return <p>Error:{error.message}</p>;
             }
             return (
-              <ItemList>
-                {data.videosUser.map(video => (
-                  <Video video={video} key={video.id} />
-                ))}
-              </ItemList>
+              <Columns>
+                <ItemList>
+                  {data.videosUser.map(video => (
+                    <Video video={video} key={video.id} />
+                  ))}
+                </ItemList>
+              </Columns>
             );
           }}
         </Query>

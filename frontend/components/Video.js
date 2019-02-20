@@ -13,11 +13,10 @@ const State = styled.strong(props => ({
 }));
 
 const Div = styled.div`
-  text-align: center;
   span {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    text-align: center;
+
     line-height: 1.5;
     padding: 0.3rem 1rem;
   }

@@ -16,11 +16,6 @@ const Mutations = {
               id: ctx.request.userId
             }
           },
-          category: {
-            connect: {
-              id: ctx.request.categoryId
-            }
-          },
           ...args
         }
       },
@@ -153,6 +148,7 @@ const Mutations = {
     return ctx.db.mutation.deleteCom({ where }, info);
   },
   async signup(parent, args, ctx, info) {
+    console.log("hey");
     //lowercase the email
     args.email = args.email.toLowerCase();
     //hash password
