@@ -8,15 +8,31 @@ const Query = {
   category: forwardTo("db"),
   comVideo: forwardTo("db"),
 
-  async videosUser(parent, args, ctx, info) {
-    const { userId } = ctx.request;
+  videosUser(parent, args, ctx, info) {
+    //const { userId } = ctx.request;
     console.log(args);
     //Ver se esta logado
     // if (!userId) {
     //   throw new Error("you must be signed in!");
     // }
-    //query o video atual
+    //query o video atual com comparaçao de ids de user
     return ctx.db.query.videos(
+      {
+        where: {
+          user: { id: args.id }
+        }
+      },
+      info
+    );
+  },
+  videosUser(parent, args, ctx, info) {
+    console.log(args);
+    //Ver se esta logado
+    // if (!userId) {
+    //   throw new Error("you must be signed in!");
+    // }
+    //query o video atual com comparaçao de ids de user
+    return ctx.db.query.comVideos(
       {
         where: {
           user: { id: args.id }

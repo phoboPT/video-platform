@@ -7,7 +7,14 @@ const server = createServer();
 
 //Use express middlware to handle cookies (JWT)
 server.express.use(cookieParser());
-// TODO Use express middlware to populate current user
+
+//decode the jwt para obter o id pretendido
+
+server.express.use((req, res, next) => {
+  const { token } = req.cookies;
+  console.log(req.cookies);
+  next();
+});
 
 server.start(
   {

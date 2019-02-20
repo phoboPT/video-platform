@@ -1,7 +1,7 @@
 #import * from './generated/prisma.graphql'
 
 type Mutation {
-  createVideo(title: String, description: String): Video!
+  createVideo(title: String!, description: String, category: String!): Video!
   updateVideo(
     id: ID!
     title: String
@@ -25,7 +25,8 @@ type Query {
   comVideos: [ComVideo]!
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
-  videosUser(id: ID!): [Video]
   category(where: CategoryWhereUniqueInput!): Category
-  comVideo(where: VideoWhereUniqueInput!): ComVideo
+  # querys selecionar a comparar com id de outra tabela(users)
+  videosUser(id: ID!): [Video]
+  comVideo(id: ID!): [ComVideo]
 }
