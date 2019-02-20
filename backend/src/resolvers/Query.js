@@ -4,9 +4,22 @@ const Query = {
   videos: forwardTo("db"),
   categorys: forwardTo("db"),
   comVideos: forwardTo("db"),
+  users: forwardTo("db"),
   video: forwardTo("db"),
   category: forwardTo("db"),
   comVideo: forwardTo("db"),
+  me(parent, args, ctx, info) {
+    //checkar se tem um current ID
+    if (!ctx.request.userId) {
+      return null;
+    }
+    return ctx.db.query.user(
+      {
+        where: { id: ctx.request.userId }
+      },
+      info
+    );
+  },
 
   videosUser(parent, args, ctx, info) {
     //const { userId } = ctx.request;
