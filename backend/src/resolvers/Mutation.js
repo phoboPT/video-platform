@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
-    //TODO: Check if they are logged in
+    //Check if they are logged in
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
     }
@@ -52,7 +52,7 @@ const Mutations = {
     return ctx.db.mutation.deleteVideo({ where }, info);
   },
   async createCategory(parent, args, ctx, info) {
-    //TODO: Check if they are logged in
+    //Check if they are logged in
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
     }
@@ -165,7 +165,7 @@ const Mutations = {
     //we set the jwt as a cookie on the ctx
     ctx.response.cookie("token", token, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 265 //1 year cookie
+      maxAge: 1000 * 60 * 60 * 24 * 365 //1 year cookie
     });
     //finally we return the user to the browser
     return user;
