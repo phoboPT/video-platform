@@ -5,8 +5,8 @@ import Video from "./Video";
 import styled from "styled-components";
 
 const ALL_VIDEOS_USER = gql`
-  query ALL_VIDEOS_USER($id: ID!) {
-    videosUser(id: $id) {
+  query ALL_VIDEOS_USER {
+    videosUser {
       id
       title
       description
@@ -44,15 +44,12 @@ const Columns = styled.div`
 `;
 
 class Videos extends Component {
-  state = {
-    id: "cjsd65ct8002a0842ykc11w9x"
-  };
   render() {
     return (
       <Center>
         <h2>Videos</h2>
         <br />
-        <Query query={ALL_VIDEOS_USER} variables={this.state}>
+        <Query query={ALL_VIDEOS_USER}>
           {({ data, error, loading }) => {
             if (loading) {
               return <p>Loading...</p>;
