@@ -5,6 +5,7 @@ const Query = {
   categorys: forwardTo("db"),
   comvideos: forwardTo("db"),
   video: forwardTo("db"),
+  videouser: forwardTo("db"),
   category: forwardTo("db"),
   comvideo: forwardTo("db")
 
