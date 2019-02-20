@@ -24,7 +24,8 @@ type Query {
   comvideos: [ComVideo]!
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
-  videouser(where: UserWhereUniqueInput!): Video
+  videosuser(orderBy: VideoOrderByInput): [Video]
+
   category(where: CategoryWhereUniqueInput!): Category
   comvideo(where: VideoWhereUniqueInput!): ComVideo
 }

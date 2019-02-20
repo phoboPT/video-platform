@@ -5,15 +5,25 @@ const Query = {
   categorys: forwardTo("db"),
   comvideos: forwardTo("db"),
   video: forwardTo("db"),
-  videouser: forwardTo("db"),
   category: forwardTo("db"),
-  comvideo: forwardTo("db")
+  comvideo: forwardTo("db"),
 
-  // async videos(parent, args, ctx, info) {
-  //   //ctx.db.query-> vai ao contexto->db -> query no schema do prisma e retira de la os videos
-  //   const videos = await ctx.db.query.videos();
-  //   return videos;
-  // }
+  async videosuser(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    //Ver se esta logado
+    if (!userId) {
+      throw new Error("you must be signed in!");
+    }
+    //query o video atual
+    return ctx.db.query.videosuser(
+      {
+        where: {
+          user: { id: userId }
+        }
+      },
+      info
+    );
+  }
 };
 
 module.exports = Query;
