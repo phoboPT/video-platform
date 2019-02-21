@@ -1,9 +1,9 @@
 import Link from "next/link";
-
+import CoursesPage from "../components/Courses";
 const Courses = props => (
   <div>
-    <p>Courses!</p>
+    <Courses />
   </div>
 );
 
-export default Courses;
+export default CoursesPage;
