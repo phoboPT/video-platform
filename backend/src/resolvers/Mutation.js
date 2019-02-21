@@ -19,9 +19,9 @@ const Mutations = {
               id: ctx.request.userId
             }
           },
-          user: {
+          category: {
             connect: {
-              id: ctx.request.userId
+              id: args.category
             }
           },
           ...args
@@ -152,6 +152,11 @@ const Mutations = {
           user: {
             connect: {
               id: ctx.request.userId
+            }
+          },
+          video: {
+            connect: {
+              id: args.video
             }
           },
           ...args
