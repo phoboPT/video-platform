@@ -1,7 +1,24 @@
 #import * from './generated/prisma.graphql'
 
+type SuccessMessage {
+  message: String
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  permission: [Permission]
+}
+
 type Mutation {
-  createVideo(title: String!, description: String, category: ID!): Video!
+  createVideo(
+    title: String!
+    description: String
+    category: ID!
+    thumbnail: String
+    urlVideo: String
+  ): Video!
   updateVideo(
     id: ID!
     title: String
@@ -17,6 +34,15 @@ type Mutation {
   deleteComVideo(id: ID!): ComVideo
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
+  signout: SuccessMessage
+  updatePassword(password: String): User!
+  updateUser(name: String, email: String): User!
+  requestReset(email: String!): SuccessMessage
+  resetPassword(
+    resetToken: String!
+    password: String!
+    confirmPassword: String!
+  ): User!
 }
 
 type Query {
@@ -28,6 +54,7 @@ type Query {
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
+  comVideo(where: VideoWhereUniqueInput!): ComVideo
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
   videosUser: [Video]
   comsVideo(id: ID!): [ComVideo]

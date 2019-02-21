@@ -7,6 +7,7 @@ const Query = {
   users: forwardTo("db"),
   video: forwardTo("db"),
   category: forwardTo("db"),
+  comVideo: forwardTo("db"),
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //checkar se tem um current ID
