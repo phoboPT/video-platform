@@ -1,4 +1,7 @@
 #import * from './generated/prisma.graphql'
+type SuccessMessage {
+  message: String
+}
 
 type Mutation {
   createVideo(title: String!, description: String, category: ID!): Video!
@@ -17,6 +20,7 @@ type Mutation {
   deleteComVideo(id: ID!): ComVideo
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
+  signout: SuccessMessage
 }
 
 type Query {
