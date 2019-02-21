@@ -29,7 +29,7 @@ type Query {
   category(where: CategoryWhereUniqueInput!): Category
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
   videosUser: [Video]
-  comVideo(id: ID!): [ComVideo]
+  comsVideo(id: ID!): [ComVideo]
 
   me: User
 }
