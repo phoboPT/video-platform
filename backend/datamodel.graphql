@@ -67,11 +67,18 @@ type Rate {
   updatedAt: DateTime!
 }
 
-type com_curso {
+type ComCurso {
   id: ID! @unique
   comment: String!
   user: User!
   curso: Curso!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type UserCurso {
+  id: ID! @unique
+  user: User!
+  curso: Curso!
+  Progesso: Float!
 }

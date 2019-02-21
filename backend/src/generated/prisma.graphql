@@ -1,7 +1,11 @@
 # source: http://localhost:4466
-# timestamp: Thu Feb 21 2019 10:48:33 GMT+0000 (WET)
+# timestamp: Thu Feb 21 2019 10:58:19 GMT+0000 (WET)
 
 type AggregateCategory {
+  count: Int!
+}
+
+type AggregateComCurso {
   count: Int!
 }
 
@@ -18,6 +22,10 @@ type AggregateRate {
 }
 
 type AggregateUser {
+  count: Int!
+}
+
+type AggregateUserCurso {
   count: Int!
 }
 
@@ -234,6 +242,248 @@ input CategoryWhereInput {
 }
 
 input CategoryWhereUniqueInput {
+  id: ID
+}
+
+type ComCurso implements Node {
+  id: ID!
+  comment: String!
+  user: User!
+  curso: Curso!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type ComCursoConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ComCursoEdge]!
+  aggregate: AggregateComCurso!
+}
+
+input ComCursoCreateInput {
+  comment: String!
+  user: UserCreateOneInput!
+  curso: CursoCreateOneInput!
+}
+
+"""An edge in a connection."""
+type ComCursoEdge {
+  """The item at the end of the edge."""
+  node: ComCurso!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ComCursoOrderByInput {
+  id_ASC
+  id_DESC
+  comment_ASC
+  comment_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ComCursoPreviousValues {
+  id: ID!
+  comment: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ComCursoSubscriptionPayload {
+  mutation: MutationType!
+  node: ComCurso
+  updatedFields: [String!]
+  previousValues: ComCursoPreviousValues
+}
+
+input ComCursoSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ComCursoSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ComCursoSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ComCursoSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ComCursoWhereInput
+}
+
+input ComCursoUpdateInput {
+  comment: String
+  user: UserUpdateOneRequiredInput
+  curso: CursoUpdateOneRequiredInput
+}
+
+input ComCursoUpdateManyMutationInput {
+  comment: String
+}
+
+input ComCursoWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ComCursoWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ComCursoWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ComCursoWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  comment: String
+
+  """All values that are not equal to given value."""
+  comment_not: String
+
+  """All values that are contained in given list."""
+  comment_in: [String!]
+
+  """All values that are not contained in given list."""
+  comment_not_in: [String!]
+
+  """All values less than the given value."""
+  comment_lt: String
+
+  """All values less than or equal the given value."""
+  comment_lte: String
+
+  """All values greater than the given value."""
+  comment_gt: String
+
+  """All values greater than or equal the given value."""
+  comment_gte: String
+
+  """All values containing the given string."""
+  comment_contains: String
+
+  """All values not containing the given string."""
+  comment_not_contains: String
+
+  """All values starting with the given string."""
+  comment_starts_with: String
+
+  """All values not starting with the given string."""
+  comment_not_starts_with: String
+
+  """All values ending with the given string."""
+  comment_ends_with: String
+
+  """All values not ending with the given string."""
+  comment_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  user: UserWhereInput
+  curso: CursoWhereInput
+}
+
+input ComCursoWhereUniqueInput {
   id: ID
 }
 
@@ -706,35 +956,47 @@ scalar Long
 type Mutation {
   createComVideo(data: ComVideoCreateInput!): ComVideo!
   createRate(data: RateCreateInput!): Rate!
+  createComCurso(data: ComCursoCreateInput!): ComCurso!
+  createUserCurso(data: UserCursoCreateInput!): UserCurso!
   createCurso(data: CursoCreateInput!): Curso!
   createCategory(data: CategoryCreateInput!): Category!
   createUser(data: UserCreateInput!): User!
   createVideo(data: VideoCreateInput!): Video!
   updateComVideo(data: ComVideoUpdateInput!, where: ComVideoWhereUniqueInput!): ComVideo
   updateRate(data: RateUpdateInput!, where: RateWhereUniqueInput!): Rate
+  updateComCurso(data: ComCursoUpdateInput!, where: ComCursoWhereUniqueInput!): ComCurso
+  updateUserCurso(data: UserCursoUpdateInput!, where: UserCursoWhereUniqueInput!): UserCurso
   updateCurso(data: CursoUpdateInput!, where: CursoWhereUniqueInput!): Curso
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
   deleteComVideo(where: ComVideoWhereUniqueInput!): ComVideo
   deleteRate(where: RateWhereUniqueInput!): Rate
+  deleteComCurso(where: ComCursoWhereUniqueInput!): ComCurso
+  deleteUserCurso(where: UserCursoWhereUniqueInput!): UserCurso
   deleteCurso(where: CursoWhereUniqueInput!): Curso
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteUser(where: UserWhereUniqueInput!): User
   deleteVideo(where: VideoWhereUniqueInput!): Video
   upsertComVideo(where: ComVideoWhereUniqueInput!, create: ComVideoCreateInput!, update: ComVideoUpdateInput!): ComVideo!
   upsertRate(where: RateWhereUniqueInput!, create: RateCreateInput!, update: RateUpdateInput!): Rate!
+  upsertComCurso(where: ComCursoWhereUniqueInput!, create: ComCursoCreateInput!, update: ComCursoUpdateInput!): ComCurso!
+  upsertUserCurso(where: UserCursoWhereUniqueInput!, create: UserCursoCreateInput!, update: UserCursoUpdateInput!): UserCurso!
   upsertCurso(where: CursoWhereUniqueInput!, create: CursoCreateInput!, update: CursoUpdateInput!): Curso!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
   updateManyComVideos(data: ComVideoUpdateManyMutationInput!, where: ComVideoWhereInput): BatchPayload!
   updateManyRates(data: RateUpdateManyMutationInput!, where: RateWhereInput): BatchPayload!
+  updateManyComCursoes(data: ComCursoUpdateManyMutationInput!, where: ComCursoWhereInput): BatchPayload!
+  updateManyUserCursoes(data: UserCursoUpdateManyMutationInput!, where: UserCursoWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
   deleteManyComVideos(where: ComVideoWhereInput): BatchPayload!
   deleteManyRates(where: RateWhereInput): BatchPayload!
+  deleteManyComCursoes(where: ComCursoWhereInput): BatchPayload!
+  deleteManyUserCursoes(where: UserCursoWhereInput): BatchPayload!
   deleteManyCursoes(where: CursoWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
@@ -780,18 +1042,24 @@ enum Permission {
 type Query {
   comVideos(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComVideo]!
   rates(where: RateWhereInput, orderBy: RateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Rate]!
+  comCursoes(where: ComCursoWhereInput, orderBy: ComCursoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComCurso]!
+  userCursoes(where: UserCursoWhereInput, orderBy: UserCursoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserCurso]!
   cursoes(where: CursoWhereInput, orderBy: CursoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Curso]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   comVideo(where: ComVideoWhereUniqueInput!): ComVideo
   rate(where: RateWhereUniqueInput!): Rate
+  comCurso(where: ComCursoWhereUniqueInput!): ComCurso
+  userCurso(where: UserCursoWhereUniqueInput!): UserCurso
   curso(where: CursoWhereUniqueInput!): Curso
   category(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
   video(where: VideoWhereUniqueInput!): Video
   comVideosConnection(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComVideoConnection!
   ratesConnection(where: RateWhereInput, orderBy: RateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RateConnection!
+  comCursoesConnection(where: ComCursoWhereInput, orderBy: ComCursoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComCursoConnection!
+  userCursoesConnection(where: UserCursoWhereInput, orderBy: UserCursoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserCursoConnection!
   cursoesConnection(where: CursoWhereInput, orderBy: CursoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CursoConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -1036,6 +1304,8 @@ enum State {
 type Subscription {
   comVideo(where: ComVideoSubscriptionWhereInput): ComVideoSubscriptionPayload
   rate(where: RateSubscriptionWhereInput): RateSubscriptionPayload
+  comCurso(where: ComCursoSubscriptionWhereInput): ComCursoSubscriptionPayload
+  userCurso(where: UserCursoSubscriptionWhereInput): UserCursoSubscriptionPayload
   curso(where: CursoSubscriptionWhereInput): CursoSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -1078,6 +1348,182 @@ input UserCreateOneInput {
 
 input UserCreatepermissionInput {
   set: [Permission!]
+}
+
+type UserCurso implements Node {
+  id: ID!
+  user: User!
+  curso: Curso!
+  Progesso: Float!
+}
+
+"""A connection to a list of items."""
+type UserCursoConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserCursoEdge]!
+  aggregate: AggregateUserCurso!
+}
+
+input UserCursoCreateInput {
+  Progesso: Float!
+  user: UserCreateOneInput!
+  curso: CursoCreateOneInput!
+}
+
+"""An edge in a connection."""
+type UserCursoEdge {
+  """The item at the end of the edge."""
+  node: UserCurso!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserCursoOrderByInput {
+  id_ASC
+  id_DESC
+  Progesso_ASC
+  Progesso_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserCursoPreviousValues {
+  id: ID!
+  Progesso: Float!
+}
+
+type UserCursoSubscriptionPayload {
+  mutation: MutationType!
+  node: UserCurso
+  updatedFields: [String!]
+  previousValues: UserCursoPreviousValues
+}
+
+input UserCursoSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserCursoSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserCursoSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserCursoSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserCursoWhereInput
+}
+
+input UserCursoUpdateInput {
+  Progesso: Float
+  user: UserUpdateOneRequiredInput
+  curso: CursoUpdateOneRequiredInput
+}
+
+input UserCursoUpdateManyMutationInput {
+  Progesso: Float
+}
+
+input UserCursoWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserCursoWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserCursoWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserCursoWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  Progesso: Float
+
+  """All values that are not equal to given value."""
+  Progesso_not: Float
+
+  """All values that are contained in given list."""
+  Progesso_in: [Float!]
+
+  """All values that are not contained in given list."""
+  Progesso_not_in: [Float!]
+
+  """All values less than the given value."""
+  Progesso_lt: Float
+
+  """All values less than or equal the given value."""
+  Progesso_lte: Float
+
+  """All values greater than the given value."""
+  Progesso_gt: Float
+
+  """All values greater than or equal the given value."""
+  Progesso_gte: Float
+  user: UserWhereInput
+  curso: CursoWhereInput
+}
+
+input UserCursoWhereUniqueInput {
+  id: ID
 }
 
 """An edge in a connection."""
