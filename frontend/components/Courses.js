@@ -51,8 +51,8 @@ class Courses extends Component {
               </Center>
               {me.permission[0] === "INSTRUTOR" && (
                 <LinkStyle>
-                  <div class="grid-container">
-                    <div class="item1">
+                  <div className="grid-container">
+                    <div className="item1">
                       <>
                         <div>
                           <Link href="/createCourse">
@@ -71,21 +71,23 @@ class Courses extends Component {
                         </div>
                       </>
                     </div>
-                    <div class="item2">Here will be the List of my courses</div>
+                    <div className="item2">
+                      Here will be the List of my courses
+                    </div>
                   </div>
                 </LinkStyle>
               )}
               {me.permission[0] === "USER" && (
                 <LinkStyle>
-                  <div class="grid-container">
-                    <div class="item1">
+                  <div className="grid-container">
+                    <div className="item1">
                       <>
                         <Link href="/videos">
                           <a>Finished</a>
                         </Link>
                       </>
                     </div>
-                    <div class="item2">
+                    <div className="item2">
                       <Videos>{this.props.children}</Videos>
                     </div>
                   </div>
