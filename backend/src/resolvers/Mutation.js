@@ -246,6 +246,29 @@ const Mutations = {
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie("token");
     return { message: "Goodbye!" };
+  },
+  async updateUser(parent, args, ctx, info) {
+    //faz uma copia dos updates para guardar o id nos args
+    const updates = {
+      ...args
+    };
+
+    //volta a encriptar a pass nova
+    if (updates.password) {
+      updates.password = await bcrypt.hash(updates.password, 10);
+    }
+    //elimina o id dos updates para nao dar update no id(unico)
+    delete updates.id;
+    //da run no update method
+    return ctx.db.mutation.updateComVideo(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
+      },
+      info
+    );
   }
 };
 
