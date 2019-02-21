@@ -29,26 +29,56 @@ type Video {
   state: State! @default(value: "UNPUBLISHED")
   user: User!
   category: Category!
+  urlVideo: String!
+  thumbnail: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
-
-# type State {
-#   id: ID! @unique
-#   name: String!
-# }
 
 type ComVideo {
   id: ID! @unique
   comment: String!
   video: Video!
   user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
-
-# type Rate {
-#   id: ID! @unique
-#   name: String!
-# }
 
 type Category {
   id: ID! @unique
   name: String!
+}
+
+type Curso {
+  id: ID! @unique
+  video: [Video]!
+  #user com permissao para poder criar um curso
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Rate {
+  id: ID! @unique
+  rate: Float!
+  user: User!
+  curso: Curso!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ComCurso {
+  id: ID! @unique
+  comment: String!
+  user: User!
+  curso: Curso!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserCurso {
+  id: ID! @unique
+  user: User!
+  curso: Curso!
+  Progesso: Float!
 }
