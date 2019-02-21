@@ -1,16 +1,24 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { randomBytes } = require("crypto");
+const { promisify } = require("util");
+const { transport, makeANiceEmail } = require("../mail");
 
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
     //Check if they are logged in
-    // if (!ctx.request.userId) {
-    //   throw new Error("You must be logged in to do that!");
-    // }
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
 
     const video = await ctx.db.mutation.createVideo(
       {
         data: {
+          user: {
+            connect: {
+              id: ctx.request.userId
+            }
+          },
           user: {
             connect: {
               id: ctx.request.userId
@@ -26,6 +34,9 @@ const Mutations = {
   },
   updateVideo(parent, args, ctx, info) {
     //faz uma copia dos updates
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
     const updates = {
       ...args
     };
@@ -43,6 +54,9 @@ const Mutations = {
     );
   },
   async deleteVideo(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
     const where = {
       id: args.id
     };
@@ -51,7 +65,7 @@ const Mutations = {
       {
         where
       },
-      `{id title description}`
+      `{id}`
     );
     //2.checkar se tem permissoes para o apagar
     const ownsVideo = video.user.id === ctx.request.userId;
@@ -69,9 +83,9 @@ const Mutations = {
   },
   async createCategory(parent, args, ctx, info) {
     //Check if they are logged in
-    // if (!ctx.request.userId) {
-    //   throw new Error("You must be logged in to do that!");
-    // }
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
 
     const category = await ctx.db.mutation.createCategory(
       {
@@ -85,6 +99,9 @@ const Mutations = {
     return category;
   },
   updateCategory(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
     //faz uma copia dos updates para guardar o id nos args
     const updates = {
       ...args
@@ -104,6 +121,9 @@ const Mutations = {
   },
 
   async deleteCategory(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
     const where = {
       id: args.id
     };
@@ -142,13 +162,30 @@ const Mutations = {
 
     return comvideo;
   },
-  updateComVideo(parent, args, ctx, info) {
+  async updateComVideo(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+    //1.encontrar o video
+    const comVideo = await ctx.db.query.comVideo(
+      {
+        where
+      },
+      `{id}`
+    );
+    //2.checkar se tem permissoes para o apagar
+    const ownsComVideo = comVideo.user.id === ctx.request.userId;
+    //falta verificar se é admin ou user (hasPermissions)
+    if (!ownsComVideo) {
+      throw new Error("You don't have permission to do that!");
+    }
     //faz uma copia dos updates para guardar o id nos args
     const updates = {
       ...args
     };
     //elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
+
     //da run no update method
     return ctx.db.mutation.updateComVideo(
       {
@@ -165,7 +202,7 @@ const Mutations = {
       id: args.id
     };
     //1.encontrar o video
-    const ComVideo = await ctx.db.query.comvideo(
+    const ComVideo = await ctx.db.query.comVideo(
       {
         where
       },
@@ -248,6 +285,30 @@ const Mutations = {
     return { message: "Goodbye!" };
   },
   async updateUser(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+    //faz uma copia dos updates para guardar o id nos args
+    const updates = {
+      ...args
+    };
+    //elimina o id dos updates para nao dar update no id(unico)
+    delete updates.id;
+    //da run no update method
+    return ctx.db.mutation.updateUser(
+      {
+        data: updates,
+        where: {
+          id: ctx.request.userId
+        }
+      },
+      info
+    );
+  },
+  async updatePassword(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
     //faz uma copia dos updates para guardar o id nos args
     const updates = {
       ...args
@@ -260,7 +321,7 @@ const Mutations = {
     //elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
     //da run no update method
-    return ctx.db.mutation.updateComVideo(
+    return ctx.db.mutation.updateUser(
       {
         data: updates,
         where: {
@@ -269,6 +330,73 @@ const Mutations = {
       },
       info
     );
+  },
+  async requestReset(parents, args, ctx, info) {
+    //1.check if the user is real
+    const user = await ctx.db.query.user({ where: { email: args.email } });
+
+    if (!user) {
+      throw new Error(`No such user found for email ${args.email}`);
+    }
+
+    //2. set a reset token and expiry on that user
+    const resetToken = (await promisify(randomBytes)(20)).toString("hex");
+    const resetTokenExpiry = Date.now() + 3600000; //1 hour from now
+
+    const res = await ctx.db.mutation.updateUser({
+      where: { email: args.email },
+      data: { resetToken, resetTokenExpiry }
+    });
+    console.log(res);
+
+    //3. Email them that reset token
+    const mailRes = await transport.sendMail({
+      from: "ruben@gmail.com",
+      to: user.email,
+      subject: "Your password reset",
+      html: makeANiceEmail(`Your  Password Reset Token is here!
+      \n\n <a href="${
+        process.env.FRONEND_URL
+      }/reset?resetToken=${resetToken}">Click Here to reset</a> `)
+    });
+    return { message: "Thanks" };
+  },
+  async resetPassword(parents, args, ctx, info) {
+    //checkar pw
+    if (args.password !== args.confirmPassword) {
+      throw new Error("Passwords don t match!");
+    }
+    //check legit token
+    //check if expired
+    const [user] = await ctx.db.query.users({
+      where: {
+        resetToken: args.resetToken,
+        resetTokenExpiry_gte: Datenow() - 3600000
+      }
+    });
+    if (!user) {
+      throw new Error("This token is either invalid or expired!");
+    }
+    //hash new pw
+    const password = await bcrypt.hash(args.password, 10);
+    //save the new pw remove old token
+    const updatedUser = await ctx.db.mutation.updateUser({
+      where: { email: user.email },
+      data: {
+        password,
+        resetToken: null,
+        resetTokenExpiry: null
+      }
+    });
+    //generate jwt
+    const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
+    //set jwt cookie
+    ctx.response.cookie("token", token, {
+      httpOnly: true,
+      magAge: 1000 * 60 * 60 * 25 * 365
+    });
+    //return new user
+    return updatedUser;
   }
 };
 
