@@ -11,11 +11,8 @@ const Nav = () => (
         </Link>
         {me && (
           <>
-            <Link href="/videos">
-              <a>My Videos</a>
-            </Link>
             <Link href="/courses">
-              <a>My Courses</a>
+              <a>Courses</a>
             </Link>
             <Link href="/account">
               <a>Account</a>

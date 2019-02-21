@@ -1,9 +1,9 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-const Sell = props => (
+const SellPage = props => (
   <div>
     <p>Sell!</p>
   </div>
 );
 
-export default Sell;
+export default SellPage;
