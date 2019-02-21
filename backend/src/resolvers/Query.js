@@ -44,11 +44,10 @@ const Query = {
     );
   },
   comsVideo(parent, args, ctx, info) {
-    console.log(args.id);
     //Ver se esta logado
-    // if (!userId) {
-    //   throw new Error("you must be signed in!");
-    // }
+    if (!userId) {
+      throw new Error("you must be signed in!");
+    }
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.comVideos(
       {

@@ -11,7 +11,7 @@ const theme = {
   darkblue: "#428bca",
   black: "#2c2f33",
   lightGrey: "#99aab5",
-  maxWidth: "1300px",
+  maxWidth: "1500px",
   bs: "0 12px 24px 0 rgba(0,0,0,0.09)"
 };
 

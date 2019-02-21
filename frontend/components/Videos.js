@@ -27,27 +27,24 @@ const Center = styled.div`
 const ItemList = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 60px;
+  grid-gap: 50px;
   max-width: ${props => props.theme.maxWidth};
-  margin: 0 auto;
+  margin: 3rem;
+  font-size: 1.5rem;
   img {
     width: 250px;
     height: 150px;
     align-self: center;
   }
-`;
-
-const Columns = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  grid-gap: 20px;
+  a {
+    font-size: 3rem;
+  }
 `;
 
 class Videos extends Component {
   render() {
     return (
-      <Center>
-        <h2>Videos</h2>
+      <>
         <br />
         <Query query={ALL_VIDEOS_USER}>
           {({ data, error, loading }) => {
@@ -58,17 +55,15 @@ class Videos extends Component {
               return <p>Error:{error.message}</p>;
             }
             return (
-              <Columns>
-                <ItemList>
-                  {data.videosUser.map(video => (
-                    <Video video={video} key={video.id} />
-                  ))}
-                </ItemList>
-              </Columns>
+              <ItemList>
+                {data.videosUser.map(video => (
+                  <Video video={video} key={video.id} />
+                ))}
+              </ItemList>
             );
           }}
         </Query>
-      </Center>
+      </>
     );
   }
 }

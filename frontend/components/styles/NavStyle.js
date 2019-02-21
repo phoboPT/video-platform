@@ -5,7 +5,7 @@ const NavStyle = styled.ul`
   padding: 0;
   display: flex;
   justify-self: end;
-  font-size: 2rem;
+  font-size: 1.5rem;
   a,
   button {
     padding: 1rem 3rem;
@@ -13,10 +13,11 @@ const NavStyle = styled.ul`
     align-items: center;
     position: relative;
     text-transform: uppercase;
-    font-weight: 900;
-    font-size: 1em;
+    font-size: 1.5rem;
     background: none;
     border: 0;
+    font-weight: 900;
+    color: ${props => props.theme.black};
     cursor: pointer;
     @media (max-width: 700px) {
       font-size: 10px;

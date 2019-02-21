@@ -2,6 +2,8 @@ import Link from "next/link";
 import NavStyle from "./styles/NavStyle";
 import styled from "styled-components";
 import User from "./User";
+import Signout from "./Signout";
+
 const Nav = () => (
   <User>
     {({ data: { me } }) => (
@@ -17,6 +19,7 @@ const Nav = () => (
             <Link href="/account">
               <a>Account</a>
             </Link>
+            <Signout />
           </>
         )}
         {!me && (
