@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Thu Feb 21 2019 10:58:19 GMT+0000 (WET)
+# timestamp: Fri Feb 22 2019 14:40:06 GMT+0000 (WET)
 
 type AggregateCategory {
   count: Int!
@@ -733,6 +733,7 @@ type Curso implements Node {
   id: ID!
   video(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
   user: User!
+  target: [Target!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -748,6 +749,7 @@ type CursoConnection {
 }
 
 input CursoCreateInput {
+  target: CursoCreatetargetInput
   video: VideoCreateManyInput
   user: UserCreateOneInput!
 }
@@ -755,6 +757,10 @@ input CursoCreateInput {
 input CursoCreateOneInput {
   create: CursoCreateInput
   connect: CursoWhereUniqueInput
+}
+
+input CursoCreatetargetInput {
+  set: [Target!]
 }
 
 """An edge in a connection."""
@@ -777,6 +783,7 @@ enum CursoOrderByInput {
 
 type CursoPreviousValues {
   id: ID!
+  target: [Target!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -821,13 +828,19 @@ input CursoSubscriptionWhereInput {
 }
 
 input CursoUpdateDataInput {
+  target: CursoUpdatetargetInput
   video: VideoUpdateManyInput
   user: UserUpdateOneRequiredInput
 }
 
 input CursoUpdateInput {
+  target: CursoUpdatetargetInput
   video: VideoUpdateManyInput
   user: UserUpdateOneRequiredInput
+}
+
+input CursoUpdateManyMutationInput {
+  target: CursoUpdatetargetInput
 }
 
 input CursoUpdateOneRequiredInput {
@@ -835,6 +848,10 @@ input CursoUpdateOneRequiredInput {
   connect: CursoWhereUniqueInput
   update: CursoUpdateDataInput
   upsert: CursoUpsertNestedInput
+}
+
+input CursoUpdatetargetInput {
+  set: [Target!]
 }
 
 input CursoUpsertNestedInput {
@@ -990,6 +1007,7 @@ type Mutation {
   updateManyRates(data: RateUpdateManyMutationInput!, where: RateWhereInput): BatchPayload!
   updateManyComCursoes(data: ComCursoUpdateManyMutationInput!, where: ComCursoWhereInput): BatchPayload!
   updateManyUserCursoes(data: UserCursoUpdateManyMutationInput!, where: UserCursoWhereInput): BatchPayload!
+  updateManyCursoes(data: CursoUpdateManyMutationInput!, where: CursoWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
@@ -1312,11 +1330,16 @@ type Subscription {
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
 }
 
+enum Target {
+  NaoDefinido
+}
+
 type User implements Node {
   id: ID!
   name: String!
   email: String!
   password: String!
+  interests: [Target!]!
   resetToken: String
   resetTokenExpiry: Float
   permission: [Permission!]!
@@ -1338,7 +1361,12 @@ input UserCreateInput {
   password: String!
   resetToken: String
   resetTokenExpiry: Float
+  interests: UserCreateinterestsInput
   permission: UserCreatepermissionInput
+}
+
+input UserCreateinterestsInput {
+  set: [Target!]
 }
 
 input UserCreateOneInput {
@@ -1559,6 +1587,7 @@ type UserPreviousValues {
   name: String!
   email: String!
   password: String!
+  interests: [Target!]!
   resetToken: String
   resetTokenExpiry: Float
   permission: [Permission!]!
@@ -1609,6 +1638,7 @@ input UserUpdateDataInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
+  interests: UserUpdateinterestsInput
   permission: UserUpdatepermissionInput
 }
 
@@ -1618,7 +1648,12 @@ input UserUpdateInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
+  interests: UserUpdateinterestsInput
   permission: UserUpdatepermissionInput
+}
+
+input UserUpdateinterestsInput {
+  set: [Target!]
 }
 
 input UserUpdateManyMutationInput {
@@ -1627,6 +1662,7 @@ input UserUpdateManyMutationInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
+  interests: UserUpdateinterestsInput
   permission: UserUpdatepermissionInput
 }
 

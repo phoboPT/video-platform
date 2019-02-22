@@ -12,11 +12,16 @@ enum State {
   UNPUBLISHED
 }
 
+enum Target {
+  NaoDefinido
+}
+
 type User {
   id: ID! @unique
   name: String!
   email: String! @unique
   password: String!
+  interests: [Target]
   resetToken: String
   resetTokenExpiry: Float
   permission: [Permission]
@@ -54,6 +59,7 @@ type Curso {
   video: [Video]!
   #user com permissao para poder criar um curso
   user: User!
+  target: [Target]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
