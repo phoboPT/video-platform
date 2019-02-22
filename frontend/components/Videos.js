@@ -69,3 +69,4 @@ class Videos extends Component {
 }
 
 export default Videos;
+export { ALL_VIDEOS_USER };
