@@ -1,8 +1,9 @@
 import Link from "next/link";
+import AccountDetails from "../components/AccountDetails";
 
 const Account = props => (
   <div>
-    <p>Account!</p>
+    <AccountDetails />
   </div>
 );
 

@@ -4,7 +4,27 @@ import { ALL_VIDEOS_USER } from "./Videos";
 import VideoSelect from "./VideoSelect";
 import styled from "styled-components";
 
-const Item = styled.div``;
+const Item = styled.button`
+  background-color: #44c767 !important;
+  -moz-border-radius: 28px !important;
+  -webkit-border-radius: 28px !important;
+  border-radius: 28px !important;
+  border: 1px solid #18ab29 !important;
+  display: inline-block !important;
+  cursor: pointer !important;
+  color: #ffffff !important;
+  padding: 16px 31px !important;
+  text-decoration: none !important;
+  text-shadow: 0px 1px 0px #2f6627 !important;
+
+  &:hover {
+    background-color: #5cbf2a !important;
+  }
+  &:active {
+    position: relative !important;
+    top: 1px !important;
+  }
+`;
 
 class CreateCourse extends Component {
   state = {
@@ -41,13 +61,13 @@ class CreateCourse extends Component {
             return (
               <div>
                 {data.videosUser.map(video => (
-                  <Item>
+                  <div>
                     <VideoSelect video={video} key={video.id}>
-                      <button id={video.id} onClick={this.addVideo}>
+                      <Item id={video.id} onClick={this.addVideo}>
                         Add
-                      </button>
+                      </Item>
                     </VideoSelect>
-                  </Item>
+                  </div>
                 ))}
               </div>
             );
