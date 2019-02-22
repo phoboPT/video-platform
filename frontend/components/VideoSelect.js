@@ -26,6 +26,7 @@ const List = styled.div`
   }
   .item3 {
     grid-area: button;
+    margin: auto;
   }
   .grid-container {
     display: grid;
@@ -42,9 +43,6 @@ const List = styled.div`
     font-size: 1.5rem;
     margin: 5px;
     text-align: left;
-  }
-  button {
-    text-align: center;
   }
 `;
 
@@ -74,7 +72,7 @@ class VideoSelect extends Component {
               Description: <span>{video.description}</span>
             </p>
             <p>
-              Title: <span>{video.title}</span>
+              Category: <span>{video.category.name}</span>
             </p>
           </div>
           <div className="item3">{this.props.children}</div>

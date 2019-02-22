@@ -33,10 +33,10 @@ const LinkStyle = styled.div`
     text-align: center;
   }
   button {
-    background: none !important;
+    background: none;
     color: inherit;
     border: none;
-    padding: 0 !important;
+    padding: 0;
     font: inherit;
     /*border is optional*/
     cursor: pointer;
