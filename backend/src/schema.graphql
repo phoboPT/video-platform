@@ -60,4 +60,7 @@ type Query {
   comsVideo(id: ID!): [ComVideo]
 
   me: User
+
+  #pagination
+  videosConnection(where: VideoWhereInput): VideoConnection!
 }

@@ -3,7 +3,16 @@ import User from "./User";
 
 class AccountDetails extends Component {
   render() {
-    return <User>{({ data: { me } }) => <p>Name: {me.name}</p>}</User>;
+    return (
+      <User>
+        {({ data: { me } }) => (
+          <>
+            <p>Name: {me.name}</p>
+            <p>Teste</p>
+          </>
+        )}
+      </User>
+    );
   }
 }
 
