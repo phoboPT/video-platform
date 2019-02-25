@@ -2,7 +2,7 @@ const { forwardTo } = require("prisma-binding");
 
 const Query = {
   videos: forwardTo("db"),
-  categorys: forwardTo("db"),
+  categories: forwardTo("db"),
   comVideos: forwardTo("db"),
   users: forwardTo("db"),
   courses: forwardTo("db"),
@@ -10,6 +10,7 @@ const Query = {
   category: forwardTo("db"),
   comVideo: forwardTo("db"),
   videosConnection: forwardTo("db"),
+
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //checkar se tem um current ID

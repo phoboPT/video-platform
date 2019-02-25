@@ -56,7 +56,7 @@ type Mutation {
 type Query {
   # querys sellect all
   videos: [Video]!
-  categorys: [Category]!
+  categories: [Category]!
   comVideos: [ComVideo]!
   users: [User]!
   courses: [Course]!

@@ -83,9 +83,9 @@ const Mutations = {
   },
   async createCategory(parent, args, ctx, info) {
     //Check if they are logged in
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
+    // if (!ctx.request.userId) {
+    //   throw new Error("You must be logged in to do that!");
+    // }
 
     const category = await ctx.db.mutation.createCategory(
       {
