@@ -43,6 +43,9 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
+  createCurso(name: String!, video: String!, target: String!): Curso!
+  updateCurso(id: ID!, name: String!, video: String!, target: String!): Curso!
+  deleteCurso(id: ID!): Curso
 }
 
 type Query {
@@ -51,12 +54,14 @@ type Query {
   categorys: [Category]!
   comVideos: [ComVideo]!
   users: [User]!
+  cursos: [Curso]!
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
   comVideo(where: VideoWhereUniqueInput!): ComVideo
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
   videosUser: [Video]
+  cursosUser: [Curso]
   comsVideo(id: ID!): [ComVideo]
 
   me: User

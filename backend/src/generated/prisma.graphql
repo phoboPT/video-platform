@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Fri Feb 22 2019 14:40:06 GMT+0000 (WET)
+# timestamp: Mon Feb 25 2019 10:25:41 GMT+0000 (WET)
 
 type AggregateCategory {
   count: Int!
@@ -731,6 +731,7 @@ input ComVideoWhereUniqueInput {
 
 type Curso implements Node {
   id: ID!
+  name: String!
   video(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
   user: User!
   target: [Target!]!
@@ -749,6 +750,7 @@ type CursoConnection {
 }
 
 input CursoCreateInput {
+  name: String!
   target: CursoCreatetargetInput
   video: VideoCreateManyInput
   user: UserCreateOneInput!
@@ -775,6 +777,8 @@ type CursoEdge {
 enum CursoOrderByInput {
   id_ASC
   id_DESC
+  name_ASC
+  name_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -783,6 +787,7 @@ enum CursoOrderByInput {
 
 type CursoPreviousValues {
   id: ID!
+  name: String!
   target: [Target!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -828,18 +833,21 @@ input CursoSubscriptionWhereInput {
 }
 
 input CursoUpdateDataInput {
+  name: String
   target: CursoUpdatetargetInput
   video: VideoUpdateManyInput
   user: UserUpdateOneRequiredInput
 }
 
 input CursoUpdateInput {
+  name: String
   target: CursoUpdatetargetInput
   video: VideoUpdateManyInput
   user: UserUpdateOneRequiredInput
 }
 
 input CursoUpdateManyMutationInput {
+  name: String
   target: CursoUpdatetargetInput
 }
 
@@ -908,6 +916,46 @@ input CursoWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
