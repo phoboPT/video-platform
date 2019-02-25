@@ -82,7 +82,6 @@ class CreateCourse extends Component {
     return (
       <>
         <p>Video Selection</p>
-
         <Query
           query={ALL_VIDEOS_USER}
           variables={{

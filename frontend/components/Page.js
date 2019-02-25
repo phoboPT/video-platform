@@ -5,7 +5,7 @@ import Meta from "./Meta";
 
 const theme = {
   red: "#d9534f",
-  white: "#f9f9f9",
+  white: "#ffffff",
   blue: "#5bc0de",
   green: "#5cb85c",
   darkblue: "#428bca",
