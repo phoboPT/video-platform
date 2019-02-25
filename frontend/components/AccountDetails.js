@@ -9,7 +9,11 @@ class AccountDetails extends Component {
         {({ data: { me } }) => (
           <>
             <p>Name: {me.name}</p>
+<<<<<<< HEAD
             <p>teste</p>
+=======
+            <p>Teste</p>
+>>>>>>> a4c1903dd89bdfb6347daf10c37610dad8d0d009
           </>
         )}
       </User>

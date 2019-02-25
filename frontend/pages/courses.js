@@ -1,9 +1,10 @@
 import Link from "next/link";
 import CoursesPage from "../components/Courses";
+
 const Courses = props => (
   <div>
-    <Courses />
+    <CoursesPage page={parseFloat(props.query.page) || 1} />
   </div>
 );
 
-export default CoursesPage;
+export default Courses;

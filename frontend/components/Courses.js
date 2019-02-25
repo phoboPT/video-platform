@@ -91,7 +91,7 @@ class Courses extends Component {
                   </div>
                   <div className="item2">
                     {this.state.createState === 1 ? (
-                      <CreateCourse />
+                      <CreateCourse page={this.props.page} />
                     ) : (
                       <p>Courses</p>
                     )}
