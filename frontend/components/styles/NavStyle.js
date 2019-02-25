@@ -117,15 +117,17 @@ li:hover {
 }
 
 ul li ul {
-  box-shadow: 5px 10px #888888;
+  background: #FFFFFF;
+  box-shadow: 3px 5px #888888;
     visibility: hidden;
     opacity: 0;
-    min-width: 5rem;
+    min-width:4rem;
     position: absolute;
     transition: all 0.5s ease;
     margin-top: 1rem;
     left: 0;
     display: none;
+    padding-right:  2rem ;
 }
 
 ul li:hover>ul,
