@@ -3,7 +3,6 @@ import NavStyle from "./styles/NavStyle";
 import styled from "styled-components";
 import User from "./User";
 import Signout from "./Signout";
-import Dropdown from "./styles/NavDropdown";
 
 const Nav = () => (
   <User>
@@ -19,27 +18,23 @@ const Nav = () => (
                 <a>Courses</a>
               </Link>
 
-              <Dropdown>
-                <nav role="navigation">
-                  <ul>
+              <ul>
+                <li>
+                  <a>Hi, {me.name}</a>
+                  <ul className="dropdown">
                     <li>
-                      <a href="#">Hi, {me.name}</a>
-                      <ul className="dropdown">
-                        <li>
-                          <Link href="/account">
-                            <a>Account</a>
-                          </Link>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <Signout />
-                          </a>
-                        </li>
-                      </ul>
+                      <Link href="/account">
+                        <a>Account</a>
+                      </Link>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <Signout />
+                      </a>
                     </li>
                   </ul>
-                </nav>
-              </Dropdown>
+                </li>
+              </ul>
             </>
           )}
           {!me && (

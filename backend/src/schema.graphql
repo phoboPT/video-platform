@@ -44,7 +44,12 @@ type Mutation {
     confirmPassword: String!
   ): User!
   createCourse(name: String!, video: String!, target: String!): Course!
-  updateCourse(id: ID!, name: String!, video: String!, target: String!): Course!
+  updateCourse(
+    id: ID!
+    name: String!
+    video: [String]!
+    target: [String]!
+  ): Course!
   deleteCourse(id: ID!): Course
 }
 
