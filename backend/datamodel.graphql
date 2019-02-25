@@ -54,7 +54,7 @@ type Category {
   name: String!
 }
 
-type Curso {
+type Course {
   id: ID! @unique
   name: String!
   video: [Video]!
@@ -69,23 +69,23 @@ type Rate {
   id: ID! @unique
   rate: Float!
   user: User!
-  curso: Curso!
+  course: Course!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-type ComCurso {
+type ComCourse {
   id: ID! @unique
   comment: String!
   user: User!
-  curso: Curso!
+  course: Course!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-type UserCurso {
+type UserCourse {
   id: ID! @unique
   user: User!
-  curso: Curso!
+  course: Course!
   Progesso: Float!
 }
