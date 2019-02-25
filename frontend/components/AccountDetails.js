@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import User from "./User";
+import styled from "styled-components";
 
 class AccountDetails extends Component {
   render() {
@@ -8,7 +9,7 @@ class AccountDetails extends Component {
         {({ data: { me } }) => (
           <>
             <p>Name: {me.name}</p>
-            <p>Teste</p>
+            <p>Email : {me.email}</p>
           </>
         )}
       </User>

@@ -5,6 +5,7 @@ const Query = {
   categorys: forwardTo("db"),
   comVideos: forwardTo("db"),
   users: forwardTo("db"),
+  courses: forwardTo("db"),
   video: forwardTo("db"),
   category: forwardTo("db"),
   comVideo: forwardTo("db"),
@@ -55,6 +56,23 @@ const Query = {
       {
         where: {
           video: { id: args.id }
+        }
+      },
+      info
+    );
+  },
+  coursesUser(parent, args, ctx, info) {
+    //Ve se esta logado
+    if (!userId) {
+      throw new Error("you must be signed in!");
+    }
+    //query o video atual com comparaçao de ids de user
+    return ctx.db.query.courses(
+      {
+        where: {
+          user: {
+            id: args.id
+          }
         }
       },
       info

@@ -402,6 +402,87 @@ const Mutations = {
     });
     //return new user
     return updatedUser;
+  },
+  async createCourse(parent, args, ctx, info) {
+    //Check if they are logged in
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+
+    const course = await ctx.db.mutation.createVideo(
+      {
+        data: {
+          user: {
+            connect: {
+              id: ctx.request.userId
+            }
+          },
+          video: {
+            connect: {
+              id: args.video
+            }
+          },
+          target: {
+            connect: {
+              id: args.target
+            }
+          },
+          ...args
+        }
+      },
+      info
+    );
+    //para dar debug console.log(video);
+    return course;
+  },
+  updateCourse(parent, args, ctx, info) {
+    //faz uma copia dos updates
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+    const updates = {
+      ...args
+    };
+    //elimina o id dos updates
+    delete updates.id;
+    //da run no update method
+    return ctx.db.mutation.updateCourse(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
+      },
+      info
+    );
+  },
+  async deleteCourse(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+    const where = {
+      id: args.id
+    };
+    //1.encontrar o video
+    const course = await ctx.db.query.course(
+      {
+        where
+      },
+      `{id}`
+    );
+    //2.checkar se tem permissoes para o apagar
+    const ownsCourse = course.user.id === ctx.request.userId;
+    //falta verificar se é admin ou user (hasPermissions)
+    if (!ownsCourse) {
+      throw new Error("You don't have permission to do that!");
+    }
+    //3.dar delete
+    return ctx.db.mutation.deleteCourse(
+      {
+        where
+      },
+      info
+    );
   }
 };
 
