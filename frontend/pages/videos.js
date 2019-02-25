@@ -4,7 +4,7 @@ class videos extends Component {
   render() {
     return (
       <div>
-        <Videos />
+        <Videos page={parseFloat(props.query.page) || 1} />
       </div>
     );
   }

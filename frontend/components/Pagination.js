@@ -25,6 +25,11 @@ const Pagination = props => (
       const page = props.page;
       return (
         <PaginationStyles>
+          <Head>
+            <title>
+              Sick Fits! - Page {page} of {pages}
+            </title>
+          </Head>
           <Link
             prefetch
             href={{
@@ -32,14 +37,14 @@ const Pagination = props => (
               query: { page: page - 1 }
             }}
           >
-            <a className="prev" aria-disable={page <= 1}>
-              Prev
+            <a className="prev" aria-disabled={page <= 1}>
+              ⬅ Prev
             </a>
           </Link>
           <p>
-            Page {props.page} of {pages}!
+            Page {page} of {pages}
           </p>
-          <p>{count} Videos Total</p>
+          <p>{count} Items Total</p>
           <Link
             prefetch
             href={{
@@ -47,8 +52,8 @@ const Pagination = props => (
               query: { page: page + 1 }
             }}
           >
-            <a className="prev" aria-disable={page >= 1}>
-              Next
+            <a className="prev" aria-disabled={page >= pages}>
+              Next ➡
             </a>
           </Link>
         </PaginationStyles>

@@ -7,16 +7,16 @@ const { transport, makeANiceEmail } = require("../mail");
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
     //Check if they are logged in
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
+    // if (!ctx.request.userId) {
+    //   throw new Error("You must be logged in to do that!");
+    // }
 
     const video = await ctx.db.mutation.createVideo(
       {
         data: {
           user: {
             connect: {
-              id: ctx.request.userId
+              id: "cjseiq1iz002a0742ul76w9si"
             }
           },
           category: {

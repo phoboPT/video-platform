@@ -3,10 +3,12 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import Video from "./Video";
 import styled from "styled-components";
+import { perPage } from "../config";
+import Pagination from "./Pagination";
 
 const ALL_VIDEOS_USER = gql`
-  query ALL_VIDEOS_USER {
-    videosUser {
+  query ALL_VIDEOS_USER ($skip: Int =0,$first:Int=${perPage}){ 
+      videosUser(first:$first,skip:$skip,orderBy:createdAt_DESC)  {
       id
       title
       description
@@ -46,7 +48,12 @@ class Videos extends Component {
     return (
       <>
         <br />
-        <Query query={ALL_VIDEOS_USER}>
+        <Query
+          query={ALL_VIDEOS_USER}
+          variables={{
+            skip: this.props.page * perPage - perPage
+          }}
+        >
           {({ data, error, loading }) => {
             if (loading) {
               return <p>Loading...</p>;
@@ -63,6 +70,7 @@ class Videos extends Component {
             );
           }}
         </Query>
+        <Pagination page={this.props.page} />
       </>
     );
   }

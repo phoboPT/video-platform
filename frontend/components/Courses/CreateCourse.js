@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import { ALL_VIDEOS_USER } from "./Videos";
-import VideoSelect from "./VideoSelect";
+import { ALL_VIDEOS_USER } from "../Videos";
+import VideoSelect from "../VideoSelect";
 import styled from "styled-components";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
+import { perPage } from "../../config";
 
 const ButtonAdd = styled.button`
   background-color: #44c767 !important;
@@ -82,7 +83,12 @@ class CreateCourse extends Component {
       <>
         <p>Video Selection</p>
 
-        <Query query={ALL_VIDEOS_USER}>
+        <Query
+          query={ALL_VIDEOS_USER}
+          variables={{
+            skip: this.props.page * perPage - perPage
+          }}
+        >
           {({ data, error, loading }) => {
             if (loading) {
               return <p>Loading...</p>;
@@ -94,7 +100,7 @@ class CreateCourse extends Component {
               <div>
                 {data.videosUser.map(video => (
                   <div key={video.id}>
-                    <VideoSelect video={video}>
+                    <VideoSelect page={this.props.page} video={video}>
                       {this.state.videos.includes(video.id) ? (
                         <ButtonDelete id={video.id} onClick={this.removeVideo}>
                           Delete

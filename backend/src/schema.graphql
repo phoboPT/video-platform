@@ -56,7 +56,12 @@ type Query {
   category(where: CategoryWhereUniqueInput!): Category
   comVideo(where: VideoWhereUniqueInput!): ComVideo
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
-  videosUser: [Video]
+  videosUser(
+    where: VideoWhereInput
+    orderBy: VideoOrderByInput
+    skip: Int
+    first: Int
+  ): [Video]
   comsVideo(id: ID!): [ComVideo]
 
   me: User
