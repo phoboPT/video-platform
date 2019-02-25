@@ -23,7 +23,8 @@ const NavStyle = styled.ul`
       font-size: 10px;
       padding: 0 10px;
     }
-    &:before {
+    /* barra retirada por causa do menu dropwdown*/
+    /* &:before {
       content: "";
       width: 2px;
       background: ${props => props.theme.lightGrey};
@@ -33,7 +34,7 @@ const NavStyle = styled.ul`
       transform: skew(-20deg);
       top: 0;
       bottom: 0;
-    }
+    } */
     &:after {
       height: 2px;
       background: red;
