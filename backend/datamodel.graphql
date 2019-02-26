@@ -56,13 +56,15 @@ type Category {
 
 type Course {
   id: ID! @unique
-  name: String!
+  title: String!
   video: [Video]!
   #user com permissao para poder criar um curso
   user: User!
   target: [Target]!
   createdAt: DateTime!
   updatedAt: DateTime!
+  description: String!
+  thumbnail: String
 }
 
 type Rate {

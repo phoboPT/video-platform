@@ -40,7 +40,7 @@ class Courses extends Component {
           <>
             {me.permission[0] !== "INSTRUTOR" && (
               <LinkStyle>
-                <div class="container">
+                <div className="container">
                   <section id="main">
                     <div>
                       <button id="1" onClick={this.createCourse}>
@@ -61,7 +61,9 @@ class Courses extends Component {
                   <aside id="sidebar">
                     {this.state.createState === 1 && (
                       <FormCourse>
-                        <button>Next</button>
+                        <button id="2" onClick={this.createCourse}>
+                          Next
+                        </button>
                       </FormCourse>
                     )}
                     {this.state.createState === 2 && (
