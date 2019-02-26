@@ -60,8 +60,15 @@ type Mutation {
 }
 
 type Query {
+  #searchbar
+  videos(
+    where: VideoWhereInput
+    orderBy: VideoOrderByInput
+    skip: Int
+    first: Int
+  ): [Video]!
+
   # querys sellect all
-  videos: [Video]!
   categories: [Category]!
   comVideos: [ComVideo]!
   users: [User]!
