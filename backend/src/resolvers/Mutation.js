@@ -8,11 +8,7 @@ const Mutations = {
   async createVideo(parent, args, ctx, info) {
     const { userId } = ctx.request.userId;
     //Check if they are logged in
-<<<<<<< HEAD
     if (!userId) {
-=======
-    if (!ctx.request.userId) {
->>>>>>> c0bb98298b69e2b2cedc0d067416a4823c4868a0
       throw new Error("You must be logged in to do that!");
     }
 
