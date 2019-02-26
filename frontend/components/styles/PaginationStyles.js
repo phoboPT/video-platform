@@ -8,6 +8,7 @@ const PaginationStyles = styled.div`
   justify-content: center;
   align-content: center;
   margin: 2rem 0;
+  max-height: 70px;
   border: 1px solid ${props => props.theme.lightgrey};
   border-radius: 10px;
   font-size: 1.5rem;

@@ -6,17 +6,18 @@ const { transport, makeANiceEmail } = require("../mail");
 
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
+    const { userId } = ctx.request.userId;
     //Check if they are logged in
-    // if (!ctx.request.userId) {
-    //   throw new Error("You must be logged in to do that!");
-    // }
+    if (!userId) {
+      throw new Error("You must be logged in to do that!");
+    }
 
     const video = await ctx.db.mutation.createVideo(
       {
         data: {
           user: {
             connect: {
-              id: "cjseiq1iz002a0742ul76w9si"
+              id: userId
             }
           },
           category: {
@@ -33,8 +34,9 @@ const Mutations = {
     return video;
   },
   updateVideo(parent, args, ctx, info) {
+    const { userId } = ctx.request.userId;
     //faz uma copia dos updates
-    if (!ctx.request.userId) {
+    if (!userId) {
       throw new Error("You must be logged in to do that!");
     }
     const updates = {
@@ -154,7 +156,7 @@ const Mutations = {
               id: ctx.request.userId
             }
           },
-          video: {
+          videos: {
             connect: {
               id: args.video
             }
@@ -404,27 +406,24 @@ const Mutations = {
     return updatedUser;
   },
   async createCourse(parent, args, ctx, info) {
-    //Check if they are logged in
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
-
-    const course = await ctx.db.mutation.createVideo(
+    // 1. Make sure they are signed in
+    const { userId } = ctx.request;
+    // if (!userId) {
+    //   throw new Error("You must be signed in soooon");
+    // }
+    console.log("args1", args);
+    // 4. If its not, create a fresh CartItem for that user!
+    return ctx.db.mutation.createCourse(
       {
         data: {
           user: {
             connect: {
-              id: ctx.request.userId
+              id: userId
             }
           },
-          video: {
+          videos: {
             connect: {
-              id: args.video
-            }
-          },
-          target: {
-            connect: {
-              id: args.target
+              id: args.videos
             }
           },
           ...args
@@ -432,8 +431,36 @@ const Mutations = {
       },
       info
     );
-    //para dar debug console.log(video);
-    return course;
+    // //Check if they are logged in
+    // // if (!ctx.request.userId) {
+    // //   throw new Error("You must be logged in to do that!");
+    // // }
+
+    // const videosToAdd = args.videos.map(video => {
+    //   console.log(video);
+    //   const videoId = {
+    //     video: { id: video }
+    //   };
+    //   return videoId;
+    // });
+
+    // console.log(args);
+    // const course = await ctx.db.mutation.createCourse(
+    //   {
+    //     data: {
+    //       user: {
+    //         connect: {
+    //           id: "cjskktc30022v0742st4y05au"
+    //         }
+    //       },
+
+    //       ...args
+    //     }
+    //   },
+    //   info
+    // );
+    // //para dar debug console.log(video);
+    // return course;
   },
   updateCourse(parent, args, ctx, info) {
     //faz uma copia dos updates

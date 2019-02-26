@@ -11,68 +11,67 @@ const Container = styled.div`
 `;
 
 class FormCourse extends Component {
-  state = {
-    email: "",
-    password: ""
-  };
-  saveToState = e => {
+  state = this.props.state;
+
+  saveToState(e) {
+    this.props.saveToState(this.state.title, e);
     this.setState({ [e.target.name]: e.target.value });
-  };
+  }
 
   render() {
     return (
       <Container>
         <Form>
           <fieldset disabled={false} aria-busy={false}>
-            <h2>Info</h2>
-            <label htmlFor="email">
+            <h2>Information</h2>
+            <label htmlFor="Title">
               Title
               <input
-                type="email"
-                name="email"
-                placeholder="email"
-                value={this.state.email}
-                onChange={this.saveToState}
+                type="text"
+                name="title"
+                placeholder="title"
+                value={this.state.title}
+                onChange={this.saveToState.bind(this)}
               />
             </label>
-            <label htmlFor="password">
+            <label htmlFor="description">
               Description
               <input
-                type="password"
-                name="password"
-                placeholder="password"
-                value={this.state.password}
-                onChange={this.saveToState}
+                type="text"
+                name="description"
+                placeholder="description"
+                value={this.state.description}
+                onChange={this.saveToState.bind(this)}
               />
             </label>
-            <label htmlFor="password">
+            <label htmlFor="state">
               State
               <input
-                type="password"
-                name="password"
-                placeholder="password"
-                value={this.state.password}
-                onChange={this.saveToState}
+                type="text"
+                name="state"
+                placeholder="state"
+                value={this.state.state}
+                onChange={this.saveToState.bind(this)}
               />
             </label>
-            <label htmlFor="password">
+            <label htmlFor="target">
               Target
               <input
-                type="password"
-                name="password"
-                placeholder="password"
-                value={this.state.password}
-                onChange={this.saveToState}
+                type="text"
+                name="target"
+                placeholder="target"
+                value={this.state.target}
+                onChange={this.saveToState.bind(this)}
               />
             </label>
-            <label htmlFor="password">
+            <label htmlFor="thumbnail">
               Thumbnail
               <input
-                type="password"
-                name="password"
-                placeholder="password"
-                value={this.state.password}
-                onChange={this.saveToState}
+                type="text"
+                name="thumbnail"
+                placeholder="thumbnail"
+                value={this.state.thumbnail}
+                onChange={this.saveToState.bind(this)}
               />
             </label>
 

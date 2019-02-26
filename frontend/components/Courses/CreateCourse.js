@@ -1,58 +1,40 @@
 import React, { Component } from "react";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import { ALL_VIDEOS_USER } from "../Videos";
 import VideoSelect from "../VideoSelect";
-import styled from "styled-components";
 import Pagination from "../Pagination";
 import { perPage } from "../../config";
+import { ButtonAdd, ButtonDelete } from "../styles/Buttons";
+import gql from "graphql-tag";
+import Form from "../styles/Form";
+import Error from "../ErrorMessage";
 
-const ButtonAdd = styled.button`
-  background-color: #44c767 !important;
-  -moz-border-radius: 28px !important;
-  -webkit-border-radius: 28px !important;
-  border-radius: 28px !important;
-  border: 1px solid #18ab29 !important;
-  display: inline-block !important;
-  cursor: pointer !important;
-  color: #ffffff !important;
-  padding: 16px 31px !important;
-  text-decoration: none !important;
-  text-shadow: 0px 1px 0px #2f6627 !important;
-
-  &:hover {
-    background-color: #5cbf2a !important;
-  }
-  &:active {
-    position: relative !important;
-    top: 1px !important;
-  }
-`;
-
-const ButtonDelete = styled.button`
-  background-color: #c93838 !important;
-  -moz-border-radius: 28px !important;
-  -webkit-border-radius: 28px !important;
-  border-radius: 28px !important;
-  border: 1px solid #db2e2e !important;
-  display: inline-block !important;
-  cursor: pointer !important;
-  color: #ffffff !important;
-
-  padding: 16px 31px !important;
-  text-decoration: none !important;
-  text-shadow: 0px 1px 0px #000000 !important;
-
-  &:hover {
-    background-color: #e08484 !important;
-  }
-  &:active {
-    position: relative !important;
-    top: 1px !important;
+const CREATE_COURSE_MUTATION = gql`
+  mutation CREATE_COURSE_MUTATION(
+    $title: String
+    $videos: ID!
+  ) # $target: String!
+  # $thumbnail: String
+  # $description: String!
+  {
+    createCourse(
+      title: $title
+      videos: $videos # target: $target
+    ) # thumbnail: $thumbnail
+    # description: $description
+    {
+      id
+    }
   }
 `;
 
 class CreateCourse extends Component {
   state = {
+    description: this.props.description,
+    state: this.props.state,
+    target: this.props.target,
+    thumbnail: this.props.thumbnail,
+    title: this.props.title,
     videos: []
   };
 
@@ -81,7 +63,7 @@ class CreateCourse extends Component {
   render() {
     return (
       <>
-        <p>Video Selection</p>
+        <Pagination page={this.props.page} />
         <Query
           query={ALL_VIDEOS_USER}
           variables={{
@@ -96,27 +78,47 @@ class CreateCourse extends Component {
               return <p>Error:{error.message}</p>;
             }
             return (
-              <div>
-                {data.videosUser.map(video => (
-                  <div key={video.id}>
-                    <VideoSelect page={this.props.page} video={video}>
-                      {this.state.videos.includes(video.id) ? (
-                        <ButtonDelete id={video.id} onClick={this.removeVideo}>
-                          Delete
-                        </ButtonDelete>
-                      ) : (
-                        <ButtonAdd id={video.id} onClick={this.addVideo}>
-                          Add
-                        </ButtonAdd>
-                      )}
-                    </VideoSelect>
-                  </div>
-                ))}
-              </div>
+              <Mutation
+                mutation={CREATE_COURSE_MUTATION}
+                variables={this.state}
+              >
+                {(createCourse, { isLoading, isError }) => (
+                  <Form
+                    onSubmit={async e => {
+                      e.preventDefault();
+                      const res = await createCourse();
+                      console.log(res);
+                    }}
+                  >
+                    <Error error={isError} />
+                    {data.videosUser.map(video => (
+                      <div key={video.id}>
+                        <VideoSelect page={this.props.page} video={video}>
+                          {this.state.videos.includes(video.id) ? (
+                            <ButtonDelete
+                              id={video.id}
+                              onClick={this.removeVideo}
+                            >
+                              Delete
+                            </ButtonDelete>
+                          ) : (
+                            <ButtonAdd id={video.id} onClick={this.addVideo}>
+                              Add
+                            </ButtonAdd>
+                          )}
+                        </VideoSelect>
+                      </div>
+                    ))}
+                    <div>
+                      <br />
+                      <button type="submit">Save Course</button>
+                    </div>
+                  </Form>
+                )}
+              </Mutation>
             );
           }}
         </Query>
-        <Pagination page={this.props.page} />
       </>
     );
   }

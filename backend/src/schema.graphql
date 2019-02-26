@@ -43,11 +43,17 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
-  createCourse(name: String!, video: String!, target: String!): Course!
+  createCourse(
+    title: String!
+    videos: ID!
+    # target: [String]!
+    thumbnail: String!
+    description: String!
+  ): Course!
   updateCourse(
     id: ID!
-    name: String!
-    video: [String]!
+    title: String!
+    videos: [String]!
     target: [String]!
   ): Course!
   deleteCourse(id: ID!): Course
@@ -71,6 +77,8 @@ type Query {
     skip: Int
     first: Int
   ): [Video]
+
+  videosSearch(where: VideoWhereInput!): [Video]
   comsVideo(id: ID!): [ComVideo]
   coursesUser: [Course]
   me: User

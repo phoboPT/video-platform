@@ -14,6 +14,7 @@ enum State {
 
 enum Target {
   NaoDefinido
+  JavaScript
 }
 
 type User {
@@ -56,15 +57,16 @@ type Category {
 
 type Course {
   id: ID! @unique
-  title: String!
-  video: [Video]!
+  title: String
+  videos: [Video!]!
   #user com permissao para poder criar um curso
   user: User!
-  target: [Target]!
   createdAt: DateTime!
   updatedAt: DateTime!
-  description: String!
+  description: String
   thumbnail: String
+  # target: [Target]! @default(value: "JavaScript")
+  state: State @default(value: "UNPUBLISHED")
 }
 
 type Rate {

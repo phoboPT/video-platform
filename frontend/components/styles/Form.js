@@ -22,7 +22,6 @@ const Form = styled.form`
   font-weight: 600;
   label {
     display: block;
-    padding-left: 50px;
     margin-bottom: 1rem;
   }
   input,
@@ -46,6 +45,7 @@ const Form = styled.form`
     font-size: 2rem;
     font-weight: 600;
     padding: 0.5rem 1.2rem;
+    text-align: center;
   }
   fieldset {
     border: 0;

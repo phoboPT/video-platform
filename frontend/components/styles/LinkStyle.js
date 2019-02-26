@@ -22,7 +22,7 @@ const LinkStyle = styled.div`
     width: 80%;
     margin: auto;
     overflow: hidden;
-    border: 1px solid black;
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.15);
   }
 
   #main {
@@ -34,7 +34,7 @@ const LinkStyle = styled.div`
   }
 
   #sidebar {
-    border-left: 1px solid black;
+    border-left: 1px solid #d6dbe1;
     min-height: 150px;
     float: right;
     width: 80%;

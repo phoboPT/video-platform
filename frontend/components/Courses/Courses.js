@@ -9,12 +9,30 @@ import CreateCourse from "./CreateCourse";
 import UploadVideo from "../UploadVideo";
 import FormCourse from "./FormCourse";
 import LinkStyle from "../styles/LinkStyle";
+import styled from "styled-components";
+
+const Button = styled.button`
+  width: auto !important;
+  background: red !important;
+  color: white !important;
+  border: 0 !important;
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 1.2rem !important;
+  text-align: center !important;
+`;
 
 class Courses extends Component {
   state = {
     createState: 0,
     uploadState: 0,
-    videosState: 0
+    videosState: 0,
+    title: "",
+    description: ""
+  };
+
+  saveToState = (e, info) => {
+    this.setState({ [info.target.name]: info.target.value });
   };
 
   createCourse = e => {
@@ -60,14 +78,17 @@ class Courses extends Component {
                   </section>
                   <aside id="sidebar">
                     {this.state.createState === 1 && (
-                      <FormCourse>
-                        <button id="2" onClick={this.createCourse}>
+                      <FormCourse
+                        saveToState={this.saveToState}
+                        state={this.state}
+                      >
+                        <Button id="2" onClick={this.createCourse}>
                           Next
-                        </button>
+                        </Button>
                       </FormCourse>
                     )}
                     {this.state.createState === 2 && (
-                      <CreateCourse page={this.props.page} />
+                      <CreateCourse page={this.props.page} state={this.state} />
                     )}
                     {this.state.uploadState === 1 && <UploadVideo />}
                     {this.state.videosState === 1 && (
