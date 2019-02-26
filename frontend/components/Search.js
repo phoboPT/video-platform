@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Downshift from "downshift";
+import Downshift, { resetIdCounter } from "downshift";
 import Router from "next/router";
 import { ApolloConsumer } from "react-apollo";
 import gql from "graphql-tag";
@@ -8,14 +8,7 @@ import { DropDown, DropDownItem, SearchStyles } from "./styles/DropDown";
 
 const SEARCH_VIDEOS_QUERY = gql`
   query SEARCH_VIDEOS_QUERY($searchTerm: String!) {
-    videosUser(
-      where: {
-        OR: [
-          { title_contains: $searchTerm }
-          { description_contains: $searchTerm }
-        ]
-      }
-    ) {
+    videos(where: { title_contains: $searchTerm }) {
       id
       title
       description
@@ -37,35 +30,54 @@ export class AutoComplete extends Component {
       variables: { searchTerm: e.target.value }
     });
     this.setState({
-      videos: res.data.videosUser,
+      videos: res.data.videos,
       loading: false
     });
   }, 400);
   render() {
     return (
       <SearchStyles>
-        <div>
-          <ApolloConsumer>
-            {client => (
-              <input
-                type="search"
-                onChange={e => {
-                  e.persist();
-                  this.onChange(e, client);
-                }}
-              />
-            )}
-          </ApolloConsumer>
-
-          <DropDown>
-            {this.state.videos.map(video => (
-              <DropDownItem key={video.id}>
-                <p>nome {video.title}</p>
-                <p>descricao {video.description}</p>
-              </DropDownItem>
-            ))}
-          </DropDown>
-        </div>
+        <Downshift itemToString={video => (video === null ? "" : video.title)}>
+          {({
+            getInputProps,
+            getItemProps,
+            isOpen,
+            inputValue,
+            highlightedIndex
+          }) => (
+            <div>
+              <ApolloConsumer>
+                {client => (
+                  <input
+                    {...getInputProps({
+                      type: "search",
+                      placeholder: "Search For An Item",
+                      id: "search",
+                      className: this.state.loading ? "loading" : "",
+                      onChange: e => {
+                        e.persist();
+                        this.onChange(e, client);
+                      }
+                    })}
+                  />
+                )}
+              </ApolloConsumer>
+              {isOpen && (
+                <DropDown>
+                  {this.state.videos.map((item, index) => (
+                    <DropDownItem
+                      {...getItemProps({ item })}
+                      key={item.id}
+                      highlighted={index === highlightedIndex}
+                    >
+                      {item.title}
+                    </DropDownItem>
+                  ))}
+                </DropDown>
+              )}
+            </div>
+          )}
+        </Downshift>
       </SearchStyles>
     );
   }

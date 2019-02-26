@@ -53,6 +53,7 @@ const Query = {
     if (!userId) {
       throw new Error("you must be signed in!");
     }
+
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.videos(
       {
