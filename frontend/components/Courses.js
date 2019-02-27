@@ -3,6 +3,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
 import Course from "./Course";
+import Search from "./SearchCourse";
 
 const ALL_COURSES_QUERY = gql`
   query ALL_COURSES_QUERY {
@@ -22,6 +23,7 @@ const Center = styled.div`
 const CoursesList = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding-top: 4rem;
   grid-gap: 60px;
   max-width: ${props => props.theme.maxWidth};
 `;
@@ -40,11 +42,14 @@ export class Courses extends Component {
               return <p>Error:{error.message}</p>;
             }
             return (
-              <CoursesList>
-                {data.courses.map(course => (
-                  <Course course={course} key={course.id} />
-                ))}
-              </CoursesList>
+              <>
+                <Search />
+                <CoursesList>
+                  {data.courses.map(course => (
+                    <Course course={course} key={course.id} />
+                  ))}
+                </CoursesList>
+              </>
             );
           }}
         </Query>

@@ -68,6 +68,13 @@ type Query {
     first: Int
   ): [Video]
 
+  coursesSearch(
+    where: CourseWhereInput
+    orderBy: CourseOrderByInput
+    skip: Int
+    first: Int
+  ): [Course]
+
   videos(
     where: VideoWhereInput
     orderBy: VideoOrderByInput
