@@ -100,7 +100,7 @@ const Query = {
   },
   videosUserSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    console.log(args);
+    // console.log(args);
     //Ver se esta logado
     if (!userId) {
       throw new Error("you must be signed in!");
@@ -114,6 +114,22 @@ const Query = {
             id: args.id
           }
         },
+        ...args
+      },
+      info
+    );
+  },
+  coursesSearch(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    console.log(args);
+    //Ver se esta logado
+    // if (!userId) {
+    //   throw new Error("you must be ssigned in!");
+    // }
+
+    //query o video atual com comparaçao de ids de user
+    return ctx.db.query.courses(
+      {
         ...args
       },
       info
