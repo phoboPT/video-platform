@@ -10,6 +10,7 @@ class AccountDetails extends Component {
           <>
             <p>Name: {me.name}</p>
             <p>Email : {me.email}</p>
+            <p>Id: {me.id}</p>
           </>
         )}
       </User>

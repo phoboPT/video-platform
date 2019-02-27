@@ -97,6 +97,27 @@ const Query = {
       },
       info
     );
+  },
+  videosUserSearch(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    console.log(args);
+    //Ver se esta logado
+    if (!userId) {
+      throw new Error("you must be signed in!");
+    }
+
+    //query o video atual com comparaçao de ids de user
+    return ctx.db.query.videos(
+      {
+        where: {
+          user: {
+            id: args.id
+          }
+        },
+        ...args
+      },
+      info
+    );
   }
 };
 

@@ -5,6 +5,7 @@ import Video from "./Video";
 import styled from "styled-components";
 import { perPage } from "../config";
 import Pagination from "./Pagination";
+import Search from "./Search";
 
 const ALL_VIDEOS_USER = gql`
   query ALL_VIDEOS_USER ($skip: Int =0,$first:Int=${perPage}){ 
@@ -27,11 +28,13 @@ const Center = styled.div`
   text-align: center;
 `;
 const ItemList = styled.div`
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 50px;
+  z-index: 1;
   max-width: ${props => props.theme.maxWidth};
-  margin: 3rem;
+  margin: 5rem;
   font-size: 1.5rem;
   img {
     width: 250px;
@@ -62,11 +65,14 @@ class Videos extends Component {
               return <p>Error:{error.message}</p>;
             }
             return (
-              <ItemList>
-                {data.videosUser.map(video => (
-                  <Video video={video} key={video.id} />
-                ))}
-              </ItemList>
+              <>
+                <Search />
+                <ItemList>
+                  {data.videosUser.map(video => (
+                    <Video video={video} key={video.id} />
+                  ))}
+                </ItemList>
+              </>
             );
           }}
         </Query>
