@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Nav from "./Nav";
 import Router from "next/router";
 import NProgress from "nprogress";
-import Search from "./Search";
 
 Router.onRouteChangeStart = () => {
   NProgress.start();

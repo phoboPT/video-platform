@@ -4,7 +4,7 @@ class ListVideosInterest extends Component {
   render() {
     return (
       <div>
-        <p>List videos</p>
+        <p>List courses</p>
       </div>
     );
   }

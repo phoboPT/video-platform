@@ -58,13 +58,13 @@ type Category {
 type Course {
   id: ID! @unique
   title: String
+  description: String
+  thumbnail: String
   videos: [Video!]!
   #user com permissao para poder criar um curso
   user: User!
   createdAt: DateTime!
   updatedAt: DateTime!
-  description: String
-  thumbnail: String
   # target: [Target]! @default(value: "JavaScript")
   state: State @default(value: "UNPUBLISHED")
 }
