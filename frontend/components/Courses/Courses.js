@@ -10,6 +10,7 @@ import UploadVideo from "../UploadVideo";
 import FormCourse from "./FormCourse";
 import LinkStyle from "../styles/LinkStyle";
 import styled from "styled-components";
+import MyCourses from "./MyCourses";
 
 const Button = styled.button`
   width: auto !important;
@@ -61,6 +62,9 @@ class Courses extends Component {
               <LinkStyle>
                 <div className="container">
                   <section id="main">
+                    <button id="3" onClick={this.createCourse}>
+                      My Courses
+                    </button>
                     <div>
                       <button id="1" onClick={this.createCourse}>
                         Create Course
@@ -78,6 +82,7 @@ class Courses extends Component {
                     </div>
                   </section>
                   <aside id="sidebar">
+                    {this.state.createState === 3 && <MyCourses />}
                     {this.state.createState === 1 && (
                       <FormCourse saveToState={this.saveToState} />
                     )}

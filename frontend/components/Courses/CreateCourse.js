@@ -8,6 +8,7 @@ import { ButtonAdd, ButtonDelete } from "../styles/Buttons";
 import gql from "graphql-tag";
 import Form from "../styles/Form";
 import Error from "../ErrorMessage";
+import Link from "next/link";
 import AddVideo from "./AddVideo";
 
 const CREATE_COURSE_MUTATION = gql`
@@ -84,6 +85,9 @@ class CreateCourse extends Component {
             ));
           }}
         </Query>
+        <Link href="/">
+          <a>Finish</a>
+        </Link>
       </>
     );
   }

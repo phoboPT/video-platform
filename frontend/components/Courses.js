@@ -29,7 +29,7 @@ export class Courses extends Component {
   render() {
     return (
       <Center>
-        <p>LISTA DE CURSOS</p>
+        <p>Courses</p>
         <Query query={ALL_COURSES_QUERY}>
           {({ data, error, loading }) => {
             console.log(data);
