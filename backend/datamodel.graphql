@@ -32,13 +32,17 @@ type User {
 type Course {
   id: ID! @unique
   title: String
+<<<<<<< HEAD
   videos: [CourseVideos!]!
+=======
+  description: String
+  thumbnail: String
+  videos: [Video!]!
+>>>>>>> 58410e0769490a26ee9ec11dfe5129fbacffd2b8
   #user com permissao para poder criar um curso
   user: User!
   createdAt: DateTime!
   updatedAt: DateTime!
-  description: String
-  thumbnail: String
   # target: [Target]! @default(value: "JavaScript")
   state: State @default(value: "UNPUBLISHED")
 }

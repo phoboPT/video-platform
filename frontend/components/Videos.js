@@ -5,7 +5,7 @@ import Video from "./Video";
 import styled from "styled-components";
 import { perPage } from "../config";
 import Pagination from "./Pagination";
-import Search from "./Search";
+import Search from "./SearchVideosUser";
 
 const ALL_VIDEOS_USER = gql`
   query ALL_VIDEOS_USER ($skip: Int =0,$first:Int=${perPage}){ 
