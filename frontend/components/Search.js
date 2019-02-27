@@ -8,13 +8,24 @@ import { DropDown, DropDownItem, SearchStyles } from "./styles/DropDown";
 
 const SEARCH_VIDEOS_QUERY = gql`
   query SEARCH_VIDEOS_QUERY($searchTerm: String!) {
-    videos(where: { title_contains: $searchTerm }) {
+    videosUserSearch(where: { title_contains: $searchTerm }) {
       id
       title
       description
+      user {
+        id
+      }
     }
   }
 `;
+function routeToVideo(item) {
+  Router.push({
+    pathname: "/video",
+    query: {
+      id: item.id
+    }
+  });
+}
 
 export class AutoComplete extends Component {
   state = {
@@ -30,14 +41,18 @@ export class AutoComplete extends Component {
       variables: { searchTerm: e.target.value }
     });
     this.setState({
-      videos: res.data.videos,
+      videos: res.data.videosUserSearch,
       loading: false
     });
   }, 400);
   render() {
+    resetIdCounter();
     return (
       <SearchStyles>
-        <Downshift itemToString={video => (video === null ? "" : video.title)}>
+        <Downshift
+          onChange={routeToVideo}
+          itemToString={video => (video === null ? "" : video.title)}
+        >
           {({
             getInputProps,
             getItemProps,
@@ -51,7 +66,7 @@ export class AutoComplete extends Component {
                   <input
                     {...getInputProps({
                       type: "search",
-                      placeholder: "Search For An Item",
+                      placeholder: "Search For An Video",
                       id: "search",
                       className: this.state.loading ? "loading" : "",
                       onChange: e => {
@@ -73,6 +88,9 @@ export class AutoComplete extends Component {
                       {item.title}
                     </DropDownItem>
                   ))}
+                  {!this.state.videos.length && !this.state.loading && (
+                    <DropDownItem> No video called {inputValue}</DropDownItem>
+                  )}
                 </DropDown>
               )}
             </div>

@@ -61,6 +61,13 @@ type Mutation {
 
 type Query {
   #searchbar
+  videosUserSearch(
+    where: VideoWhereInput
+    orderBy: VideoOrderByInput
+    skip: Int
+    first: Int
+  ): [Video]
+
   videos(
     where: VideoWhereInput
     orderBy: VideoOrderByInput
@@ -84,8 +91,6 @@ type Query {
     skip: Int
     first: Int
   ): [Video]
-
-  videosSearch(where: VideoWhereInput!): [Video]
   comsVideo(id: ID!): [ComVideo]
   coursesUser: [Course]
   me: User

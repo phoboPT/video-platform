@@ -8,12 +8,15 @@ const DropDown = styled.div`
 `;
 
 const DropDownItem = styled.div`
+  display: flex;
+  position: relative;
+  cursor: pointer;
   border-bottom: 1px solid ${props => props.theme.lightgrey};
   background: ${props => (props.highlighted ? "#f7f7f7" : "white")};
   padding: 1rem;
   transition: all 0.2s;
+  z-index: 2;
   ${props => (props.highlighted ? "padding-left: 2rem;" : null)};
-  display: flex;
   align-items: center;
   border-left: 10px solid
     ${props => (props.highlighted ? props.theme.lightgrey : "white")};
