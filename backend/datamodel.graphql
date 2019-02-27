@@ -28,6 +28,22 @@ type User {
   permission: [Permission]
 }
 
+# user
+type Course {
+  id: ID! @unique
+  title: String
+  videos: [CourseVideos!]!
+  #user com permissao para poder criar um curso
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  description: String
+  thumbnail: String
+  # target: [Target]! @default(value: "JavaScript")
+  state: State @default(value: "UNPUBLISHED")
+}
+
+# item
 type Video {
   id: ID! @unique
   title: String!
@@ -41,55 +57,48 @@ type Video {
   updatedAt: DateTime!
 }
 
-type ComVideo {
+# CartItem
+type CourseVideos {
   id: ID! @unique
-  comment: String!
-  video: Video!
-  user: User!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  course: Course!
+  video: Video
 }
+
+# type ComVideo {
+#   id: ID! @unique
+#   comment: String!
+#   video: Video!
+#   user: User!
+#   createdAt: DateTime!
+#   updatedAt: DateTime!
+# }
 
 type Category {
   id: ID! @unique
   name: String!
 }
 
-type Course {
-  id: ID! @unique
-  title: String
-  videos: [Video!]!
-  #user com permissao para poder criar um curso
-  user: User!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  description: String
-  thumbnail: String
-  # target: [Target]! @default(value: "JavaScript")
-  state: State @default(value: "UNPUBLISHED")
-}
+# type Rate {
+#   id: ID! @unique
+#   rate: Float!
+#   user: User!
+#   course: Course!
+#   createdAt: DateTime!
+#   updatedAt: DateTime!
+# }
 
-type Rate {
-  id: ID! @unique
-  rate: Float!
-  user: User!
-  course: Course!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
+# type ComCourse {
+#   id: ID! @unique
+#   comment: String!
+#   user: User!
+#   course: Course!
+#   createdAt: DateTime!
+#   updatedAt: DateTime!
+# }
 
-type ComCourse {
-  id: ID! @unique
-  comment: String!
-  user: User!
-  course: Course!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type UserCourse {
-  id: ID! @unique
-  user: User!
-  course: Course!
-  Progesso: Float!
-}
+# type UserCourse {
+#   id: ID! @unique
+#   user: User!
+#   course: Course!
+#   Progesso: Float!
+# }

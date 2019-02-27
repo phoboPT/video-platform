@@ -1,6 +1,27 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Form from "../styles/Form";
+import gql from "graphql-tag";
+import Error from "../ErrorMessage";
+import { Mutation } from "react-apollo";
+
+const CREATE_COURSE_MUTATION = gql`
+  mutation CREATE_COURSE_MUTATION(
+    $title: String!
+    # $target: String!
+    $thumbnail: String!
+    $description: String!
+  ) {
+    createCourse(
+      title: $title
+      # target: $target
+      thumbnail: $thumbnail
+      description: $description
+    ) {
+      id
+    }
+  }
+`;
 
 const Container = styled.div`
   max-width: 70%;
@@ -11,73 +32,95 @@ const Container = styled.div`
 `;
 
 class FormCourse extends Component {
-  state = this.props.state;
+  state = {
+    title: "",
+    description: "",
+    state_: "",
+    target: "",
+    thumbnail: ""
+  };
 
-  saveToState(e) {
-    this.props.saveToState(this.state.title, e);
+  saveState = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
   render() {
     return (
       <Container>
-        <Form>
-          <fieldset disabled={false} aria-busy={false}>
-            <h2>Information</h2>
-            <label htmlFor="Title">
-              Title
-              <input
-                type="text"
-                name="title"
-                placeholder="title"
-                value={this.state.title}
-                onChange={this.saveToState.bind(this)}
-              />
-            </label>
-            <label htmlFor="description">
-              Description
-              <input
-                type="text"
-                name="description"
-                placeholder="description"
-                value={this.state.description}
-                onChange={this.saveToState.bind(this)}
-              />
-            </label>
-            <label htmlFor="state">
-              State
-              <input
-                type="text"
-                name="state"
-                placeholder="state"
-                value={this.state.state}
-                onChange={this.saveToState.bind(this)}
-              />
-            </label>
-            <label htmlFor="target">
-              Target
-              <input
-                type="text"
-                name="target"
-                placeholder="target"
-                value={this.state.target}
-                onChange={this.saveToState.bind(this)}
-              />
-            </label>
-            <label htmlFor="thumbnail">
-              Thumbnail
-              <input
-                type="text"
-                name="thumbnail"
-                placeholder="thumbnail"
-                value={this.state.thumbnail}
-                onChange={this.saveToState.bind(this)}
-              />
-            </label>
-
-            {this.props.children}
-          </fieldset>
-        </Form>
+        <Mutation mutation={CREATE_COURSE_MUTATION} variables={this.state}>
+          {(createCourse, { isLoading, isError }) => (
+            <Form
+              method="post"
+              onSubmit={async e => {
+                console.log("submit");
+                e.preventDefault();
+                const res = await createCourse();
+                this.props.saveToState(res.data.createCourse.id);
+              }}
+            >
+              <Error error={isError} />
+              <fieldset disabled={isLoading} aria-busy={isLoading}>
+                <h2>Information</h2>
+                <label htmlFor="Title">
+                  Title
+                  <input
+                    type="text"
+                    name="title"
+                    placeholder="title"
+                    value={this.title}
+                    onChange={this.saveState}
+                    required
+                  />
+                </label>
+                <label htmlFor="description">
+                  Description
+                  <input
+                    type="text"
+                    name="description"
+                    placeholder="description"
+                    value={this.description}
+                    onChange={this.saveState}
+                    required
+                  />
+                </label>
+                <label htmlFor="state">
+                  State
+                  <input
+                    type="text"
+                    name="state"
+                    placeholder="state"
+                    value={this.state_}
+                    onChange={this.saveState}
+                    required
+                  />
+                </label>
+                <label htmlFor="target">
+                  Target
+                  <input
+                    type="text"
+                    name="target"
+                    placeholder="target"
+                    value={this.target}
+                    onChange={this.saveState}
+                    required
+                  />
+                </label>
+                <label htmlFor="thumbnail">
+                  Thumbnail
+                  <input
+                    type="text"
+                    name="thumbnail"
+                    placeholder="thumbnail"
+                    value={this.thumbnail}
+                    onChange={this.saveState}
+                    required
+                  />
+                </label>
+                <button type="submit">Next</button>
+              </fieldset>
+            </Form>
+          )}
+        </Mutation>
       </Container>
     );
   }

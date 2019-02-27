@@ -8,21 +8,23 @@ import { ButtonAdd, ButtonDelete } from "../styles/Buttons";
 import gql from "graphql-tag";
 import Form from "../styles/Form";
 import Error from "../ErrorMessage";
+import AddVideo from "./AddVideo";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
-    $title: String
-    $videos: ID!
-  ) # $target: String!
-  # $thumbnail: String
-  # $description: String!
-  {
+    $title: String!
+    $videos: [ID]!
+    # $target: String!
+    $thumbnail: String!
+    $description: String!
+  ) {
     createCourse(
       title: $title
-      videos: $videos # target: $target
-    ) # thumbnail: $thumbnail
-    # description: $description
-    {
+      videos: $videos
+      # target: $target
+      thumbnail: $thumbnail
+      description: $description
+    ) {
       id
     }
   }
@@ -30,11 +32,7 @@ const CREATE_COURSE_MUTATION = gql`
 
 class CreateCourse extends Component {
   state = {
-    description: this.props.description,
-    state: this.props.state,
-    target: this.props.target,
-    thumbnail: this.props.thumbnail,
-    title: this.props.title,
+    ...this.props.state,
     videos: []
   };
 
@@ -77,46 +75,13 @@ class CreateCourse extends Component {
             if (error) {
               return <p>Error:{error.message}</p>;
             }
-            return (
-              <Mutation
-                mutation={CREATE_COURSE_MUTATION}
-                variables={this.state}
-              >
-                {(createCourse, { isLoading, isError }) => (
-                  <Form
-                    onSubmit={async e => {
-                      e.preventDefault();
-                      const res = await createCourse();
-                      console.log(res);
-                    }}
-                  >
-                    <Error error={isError} />
-                    {data.videosUser.map(video => (
-                      <div key={video.id}>
-                        <VideoSelect page={this.props.page} video={video}>
-                          {this.state.videos.includes(video.id) ? (
-                            <ButtonDelete
-                              id={video.id}
-                              onClick={this.removeVideo}
-                            >
-                              Delete
-                            </ButtonDelete>
-                          ) : (
-                            <ButtonAdd id={video.id} onClick={this.addVideo}>
-                              Add
-                            </ButtonAdd>
-                          )}
-                        </VideoSelect>
-                      </div>
-                    ))}
-                    <div>
-                      <br />
-                      <button type="submit">Save Course</button>
-                    </div>
-                  </Form>
-                )}
-              </Mutation>
-            );
+            return data.videosUser.map(video => (
+              <div key={video.id}>
+                <VideoSelect page={this.props.page} video={video}>
+                  <AddVideo courseId={this.state.courseId} id={video.id} />
+                </VideoSelect>
+              </div>
+            ));
           }}
         </Query>
       </>

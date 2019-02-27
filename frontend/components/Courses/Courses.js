@@ -27,15 +27,16 @@ class Courses extends Component {
     createState: 0,
     uploadState: 0,
     videosState: 0,
-    title: "",
-    description: ""
+    courseId: ""
   };
 
-  saveToState = (e, info) => {
-    this.setState({ [info.target.name]: info.target.value });
+  // This method will be sent to the child component
+  saveToState = e => {
+    this.setState({ courseId: e });
+    this.setState({ createState: 2 });
   };
 
-  createCourse = e => {
+  createCourse = (e, info) => {
     this.setState({ createState: parseInt(e.target.id) });
     this.setState({ uploadState: 0 });
     this.setState({ videosState: 0 });
@@ -78,21 +79,14 @@ class Courses extends Component {
                   </section>
                   <aside id="sidebar">
                     {this.state.createState === 1 && (
-                      <FormCourse
-                        saveToState={this.saveToState}
-                        state={this.state}
-                      >
-                        <Button id="2" onClick={this.createCourse}>
-                          Next
-                        </Button>
-                      </FormCourse>
+                      <FormCourse saveToState={this.saveToState} />
                     )}
                     {this.state.createState === 2 && (
                       <CreateCourse page={this.props.page} state={this.state} />
                     )}
                     {this.state.uploadState === 1 && <UploadVideo />}
                     {this.state.videosState === 1 && (
-                      <Videos page={this.props.page} />
+                      <Videos page={this.props.page} courseId={this.courseId} />
                     )}
                   </aside>
                 </div>

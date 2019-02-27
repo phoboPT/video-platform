@@ -142,95 +142,94 @@ const Mutations = {
     );
   },
 
-  async createComVideo(parent, args, ctx, info) {
-    //  Check if they are logged in
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
+  // async createComVideo(parent, args, ctx, info) {
+  //   //  Check if they are logged in
+  //   if (!ctx.request.userId) {
+  //     throw new Error("You must be logged in to do that!");
+  //   }
 
-    const comvideo = await ctx.db.mutation.createComVideo(
-      {
-        data: {
-          user: {
-            connect: {
-              id: ctx.request.userId
-            }
-          },
-          videos: {
-            connect: {
-              id: args.video
-            }
-          },
-          ...args
-        }
-      },
-      info
-    );
+  //   const comvideo = await ctx.db.mutation.createComVideo(
+  //     {
+  //       data: {
+  //         user: {
+  //           connect: {
+  //             id: ctx.request.userId
+  //           }
+  //         },
+  //         videos: {
+  //           connect: {
+  //             id: args.video
+  //           }
+  //         },
+  //         ...args
+  //       }
+  //     },
+  //     info
+  //   );
 
-    return comvideo;
-  },
-  async updateComVideo(parent, args, ctx, info) {
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
-    //1.encontrar o video
-    const comVideo = await ctx.db.query.comVideo(
-      {
-        where
-      },
-      `{id}`
-    );
-    //2.checkar se tem permissoes para o apagar
-    const ownsComVideo = comVideo.user.id === ctx.request.userId;
-    //falta verificar se é admin ou user (hasPermissions)
-    if (!ownsComVideo) {
-      throw new Error("You don't have permission to do that!");
-    }
-    //faz uma copia dos updates para guardar o id nos args
-    const updates = {
-      ...args
-    };
-    //elimina o id dos updates para nao dar update no id(unico)
-    delete updates.id;
+  //   return comvideo;
+  // },
+  // async updateComVideo(parent, args, ctx, info) {
+  //   if (!ctx.request.userId) {
+  //     throw new Error("You must be logged in to do that!");
+  //   }
+  //   //1.encontrar o video
+  //   const comVideo = await ctx.db.query.comVideo(
+  //     {
+  //       where
+  //     },
+  //     `{id}`
+  //   );
+  //   //2.checkar se tem permissoes para o apagar
+  //   const ownsComVideo = comVideo.user.id === ctx.request.userId;
+  //   //falta verificar se é admin ou user (hasPermissions)
+  //   if (!ownsComVideo) {
+  //     throw new Error("You don't have permission to do that!");
+  //   }
+  //   //faz uma copia dos updates para guardar o id nos args
+  //   const updates = {
+  //     ...args
+  //   };
+  //   //elimina o id dos updates para nao dar update no id(unico)
+  //   delete updates.id;
 
-    //da run no update method
-    return ctx.db.mutation.updateComVideo(
-      {
-        data: updates,
-        where: {
-          id: args.id
-        }
-      },
-      info
-    );
-  },
-  async deleteComVideo(parent, args, ctx, info) {
-    const where = {
-      id: args.id
-    };
-    //1.encontrar o video
-    const ComVideo = await ctx.db.query.comVideo(
-      {
-        where
-      },
-      `{id comment}`
-    );
-    //2.checkar se tem permissoes para o apagar
-    const ownsComVideo = ComVideo.user.id === ctx.request.userId;
-    //falta verificar se é admin ou user (hasPermissions)
-    if (!ownsComVideo) {
-      throw new Error("You don't have permission to do that!");
-    }
-    //3.dar delete
-    return ctx.db.mutation.deleteCom(
-      {
-        where
-      },
-      info
-    );
-  },
+  //   //da run no update method
+  //   return ctx.db.mutation.updateComVideo(
+  //     {
+  //       data: updates,
+  //       where: {
+  //         id: args.id
+  //       }
+  //     },
+  //     info
+  //   );
+  // },
+  // async deleteComVideo(parent, args, ctx, info) {
+  //   const where = {
+  //     id: args.id
+  //   };
+  //   //1.encontrar o video
+  //   const ComVideo = await ctx.db.query.comVideo(
+  //     {
+  //       where
+  //     },
+  //     `{id comment}`
+  //   );
+  //   //2.checkar se tem permissoes para o apagar
+  //   const ownsComVideo = ComVideo.user.id === ctx.request.userId;
+  //   //falta verificar se é admin ou user (hasPermissions)
+  //   if (!ownsComVideo) {
+  //     throw new Error("You don't have permission to do that!");
+  //   }
+  //   //3.dar delete
+  //   return ctx.db.mutation.deleteCom(
+  //     {
+  //       where
+  //     },
+  //     info
+  //   );
+  // },
   async signup(parent, args, ctx, info) {
-    console.log("hey");
     //lowercase the email
     args.email = args.email.toLowerCase();
     //hash password
@@ -408,9 +407,9 @@ const Mutations = {
   async createCourse(parent, args, ctx, info) {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
-    // if (!userId) {
-    //   throw new Error("You must be signed in soooon");
-    // }
+    if (!userId) {
+      throw new Error("You must be signed in soooon");
+    }
     console.log("args1", args);
     // 4. If its not, create a fresh CartItem for that user!
     return ctx.db.mutation.createCourse(
@@ -421,50 +420,60 @@ const Mutations = {
               id: userId
             }
           },
-          videos: {
-            connect: {
-              id: args.videos
-            }
-          },
           ...args
         }
       },
       info
     );
-    // //Check if they are logged in
-    // // if (!ctx.request.userId) {
-    // //   throw new Error("You must be logged in to do that!");
-    // // }
+  },
+  async addToCourse(parent, args, ctx, info) {
+    //Make sure they are signin
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in soooon");
+    }
+    console.log(args);
+    //query the users current cart
+    const [existingVideo] = await ctx.db.query.courseVideoses({
+      where: {
+        course: { id: args.courseId },
+        video: { id: args.id }
+      }
+    });
+    console.log(existingVideo);
+    //check if that item is already in their cart
+    if (existingVideo) {
+      console.log("Already added");
+      return ctx.db.mutation.deleteCourseVideos(
+        {
+          where: { videos: args.id }
+        },
+        info
+      );
+    }
 
-    // const videosToAdd = args.videos.map(video => {
-    //   console.log(video);
-    //   const videoId = {
-    //     video: { id: video }
-    //   };
-    //   return videoId;
-    // });
+    //send a message if it is
 
-    // console.log(args);
-    // const course = await ctx.db.mutation.createCourse(
-    //   {
-    //     data: {
-    //       user: {
-    //         connect: {
-    //           id: "cjskktc30022v0742st4y05au"
-    //         }
-    //       },
-
-    //       ...args
-    //     }
-    //   },
-    //   info
-    // );
-    // //para dar debug console.log(video);
-    // return course;
+    //if its not, create a fresh Video
+    return ctx.db.mutation.createCourseVideos(
+      {
+        data: {
+          course: {
+            connect: { id: args.courseId }
+          },
+          video: {
+            connect: { id: args.id }
+          }
+        }
+      },
+      info
+    );
   },
   updateCourse(parent, args, ctx, info) {
     //faz uma copia dos updates
-    if (!ctx.request.userId) {
+    const { userId } = ctx.request.userId;
+    //Check if they are logged in
+    if (!userId) {
       throw new Error("You must be logged in to do that!");
     }
     const updates = {

@@ -1,15 +1,7 @@
-# source: http://localhost:4466
-# timestamp: Tue Feb 26 2019 16:41:25 GMT+0000 (Hora padrão da Europa Ocidental)
+# source: https://eu1.prisma.sh/hugobrancoc-5773e9/picus/dev
+# timestamp: Wed Feb 27 2019 16:20:12 GMT+0000 (Hora padrão da Europa Ocidental)
 
 type AggregateCategory {
-  count: Int!
-}
-
-type AggregateComCourse {
-  count: Int!
-}
-
-type AggregateComVideo {
   count: Int!
 }
 
@@ -17,15 +9,11 @@ type AggregateCourse {
   count: Int!
 }
 
-type AggregateRate {
+type AggregateCourseVideos {
   count: Int!
 }
 
 type AggregateUser {
-  count: Int!
-}
-
-type AggregateUserCourse {
   count: Int!
 }
 
@@ -245,494 +233,10 @@ input CategoryWhereUniqueInput {
   id: ID
 }
 
-type ComCourse implements Node {
-  id: ID!
-  comment: String!
-  user: User!
-  course: Course!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-"""A connection to a list of items."""
-type ComCourseConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [ComCourseEdge]!
-  aggregate: AggregateComCourse!
-}
-
-input ComCourseCreateInput {
-  comment: String!
-  user: UserCreateOneInput!
-  course: CourseCreateOneInput!
-}
-
-"""An edge in a connection."""
-type ComCourseEdge {
-  """The item at the end of the edge."""
-  node: ComCourse!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum ComCourseOrderByInput {
-  id_ASC
-  id_DESC
-  comment_ASC
-  comment_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type ComCoursePreviousValues {
-  id: ID!
-  comment: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type ComCourseSubscriptionPayload {
-  mutation: MutationType!
-  node: ComCourse
-  updatedFields: [String!]
-  previousValues: ComCoursePreviousValues
-}
-
-input ComCourseSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ComCourseSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ComCourseSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ComCourseSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: ComCourseWhereInput
-}
-
-input ComCourseUpdateInput {
-  comment: String
-  user: UserUpdateOneRequiredInput
-  course: CourseUpdateOneRequiredInput
-}
-
-input ComCourseUpdateManyMutationInput {
-  comment: String
-}
-
-input ComCourseWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ComCourseWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ComCourseWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ComCourseWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  comment: String
-
-  """All values that are not equal to given value."""
-  comment_not: String
-
-  """All values that are contained in given list."""
-  comment_in: [String!]
-
-  """All values that are not contained in given list."""
-  comment_not_in: [String!]
-
-  """All values less than the given value."""
-  comment_lt: String
-
-  """All values less than or equal the given value."""
-  comment_lte: String
-
-  """All values greater than the given value."""
-  comment_gt: String
-
-  """All values greater than or equal the given value."""
-  comment_gte: String
-
-  """All values containing the given string."""
-  comment_contains: String
-
-  """All values not containing the given string."""
-  comment_not_contains: String
-
-  """All values starting with the given string."""
-  comment_starts_with: String
-
-  """All values not starting with the given string."""
-  comment_not_starts_with: String
-
-  """All values ending with the given string."""
-  comment_ends_with: String
-
-  """All values not ending with the given string."""
-  comment_not_ends_with: String
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  user: UserWhereInput
-  course: CourseWhereInput
-}
-
-input ComCourseWhereUniqueInput {
-  id: ID
-}
-
-type ComVideo implements Node {
-  id: ID!
-  comment: String!
-  video: Video!
-  user: User!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-"""A connection to a list of items."""
-type ComVideoConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [ComVideoEdge]!
-  aggregate: AggregateComVideo!
-}
-
-input ComVideoCreateInput {
-  comment: String!
-  video: VideoCreateOneInput!
-  user: UserCreateOneInput!
-}
-
-"""An edge in a connection."""
-type ComVideoEdge {
-  """The item at the end of the edge."""
-  node: ComVideo!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum ComVideoOrderByInput {
-  id_ASC
-  id_DESC
-  comment_ASC
-  comment_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type ComVideoPreviousValues {
-  id: ID!
-  comment: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type ComVideoSubscriptionPayload {
-  mutation: MutationType!
-  node: ComVideo
-  updatedFields: [String!]
-  previousValues: ComVideoPreviousValues
-}
-
-input ComVideoSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ComVideoSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ComVideoSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ComVideoSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: ComVideoWhereInput
-}
-
-input ComVideoUpdateInput {
-  comment: String
-  video: VideoUpdateOneRequiredInput
-  user: UserUpdateOneRequiredInput
-}
-
-input ComVideoUpdateManyMutationInput {
-  comment: String
-}
-
-input ComVideoWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ComVideoWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ComVideoWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ComVideoWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  comment: String
-
-  """All values that are not equal to given value."""
-  comment_not: String
-
-  """All values that are contained in given list."""
-  comment_in: [String!]
-
-  """All values that are not contained in given list."""
-  comment_not_in: [String!]
-
-  """All values less than the given value."""
-  comment_lt: String
-
-  """All values less than or equal the given value."""
-  comment_lte: String
-
-  """All values greater than the given value."""
-  comment_gt: String
-
-  """All values greater than or equal the given value."""
-  comment_gte: String
-
-  """All values containing the given string."""
-  comment_contains: String
-
-  """All values not containing the given string."""
-  comment_not_contains: String
-
-  """All values starting with the given string."""
-  comment_starts_with: String
-
-  """All values not starting with the given string."""
-  comment_not_starts_with: String
-
-  """All values ending with the given string."""
-  comment_ends_with: String
-
-  """All values not ending with the given string."""
-  comment_not_ends_with: String
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  video: VideoWhereInput
-  user: UserWhereInput
-}
-
-input ComVideoWhereUniqueInput {
-  id: ID
-}
-
 type Course implements Node {
   id: ID!
   title: String
-  videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video!]
+  videos(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseVideos!]
   user: User!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -756,13 +260,21 @@ input CourseCreateInput {
   description: String
   thumbnail: String
   state: State
-  videos: VideoCreateManyInput
+  videos: CourseVideosCreateManyWithoutCourseInput
   user: UserCreateOneInput!
 }
 
-input CourseCreateOneInput {
-  create: CourseCreateInput
+input CourseCreateOneWithoutVideosInput {
+  create: CourseCreateWithoutVideosInput
   connect: CourseWhereUniqueInput
+}
+
+input CourseCreateWithoutVideosInput {
+  title: String
+  description: String
+  thumbnail: String
+  state: State
+  user: UserCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -840,21 +352,12 @@ input CourseSubscriptionWhereInput {
   node: CourseWhereInput
 }
 
-input CourseUpdateDataInput {
-  title: String
-  description: String
-  thumbnail: String
-  state: State
-  videos: VideoUpdateManyInput
-  user: UserUpdateOneRequiredInput
-}
-
 input CourseUpdateInput {
   title: String
   description: String
   thumbnail: String
   state: State
-  videos: VideoUpdateManyInput
+  videos: CourseVideosUpdateManyWithoutCourseInput
   user: UserUpdateOneRequiredInput
 }
 
@@ -865,16 +368,254 @@ input CourseUpdateManyMutationInput {
   state: State
 }
 
-input CourseUpdateOneRequiredInput {
-  create: CourseCreateInput
+input CourseUpdateOneRequiredWithoutVideosInput {
+  create: CourseCreateWithoutVideosInput
   connect: CourseWhereUniqueInput
-  update: CourseUpdateDataInput
-  upsert: CourseUpsertNestedInput
+  update: CourseUpdateWithoutVideosDataInput
+  upsert: CourseUpsertWithoutVideosInput
 }
 
-input CourseUpsertNestedInput {
-  update: CourseUpdateDataInput!
-  create: CourseCreateInput!
+input CourseUpdateWithoutVideosDataInput {
+  title: String
+  description: String
+  thumbnail: String
+  state: State
+  user: UserUpdateOneRequiredInput
+}
+
+input CourseUpsertWithoutVideosInput {
+  update: CourseUpdateWithoutVideosDataInput!
+  create: CourseCreateWithoutVideosInput!
+}
+
+type CourseVideos implements Node {
+  id: ID!
+  course: Course!
+  video: Video
+}
+
+"""A connection to a list of items."""
+type CourseVideosConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CourseVideosEdge]!
+  aggregate: AggregateCourseVideos!
+}
+
+input CourseVideosCreateInput {
+  course: CourseCreateOneWithoutVideosInput!
+  video: VideoCreateOneInput
+}
+
+input CourseVideosCreateManyWithoutCourseInput {
+  create: [CourseVideosCreateWithoutCourseInput!]
+  connect: [CourseVideosWhereUniqueInput!]
+}
+
+input CourseVideosCreateWithoutCourseInput {
+  video: VideoCreateOneInput
+}
+
+"""An edge in a connection."""
+type CourseVideosEdge {
+  """The item at the end of the edge."""
+  node: CourseVideos!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CourseVideosOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type CourseVideosPreviousValues {
+  id: ID!
+}
+
+input CourseVideosScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CourseVideosScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CourseVideosScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CourseVideosScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+}
+
+type CourseVideosSubscriptionPayload {
+  mutation: MutationType!
+  node: CourseVideos
+  updatedFields: [String!]
+  previousValues: CourseVideosPreviousValues
+}
+
+input CourseVideosSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CourseVideosSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CourseVideosSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CourseVideosSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CourseVideosWhereInput
+}
+
+input CourseVideosUpdateInput {
+  course: CourseUpdateOneRequiredWithoutVideosInput
+  video: VideoUpdateOneInput
+}
+
+input CourseVideosUpdateManyWithoutCourseInput {
+  create: [CourseVideosCreateWithoutCourseInput!]
+  connect: [CourseVideosWhereUniqueInput!]
+  set: [CourseVideosWhereUniqueInput!]
+  disconnect: [CourseVideosWhereUniqueInput!]
+  delete: [CourseVideosWhereUniqueInput!]
+  update: [CourseVideosUpdateWithWhereUniqueWithoutCourseInput!]
+  deleteMany: [CourseVideosScalarWhereInput!]
+  upsert: [CourseVideosUpsertWithWhereUniqueWithoutCourseInput!]
+}
+
+input CourseVideosUpdateWithoutCourseDataInput {
+  video: VideoUpdateOneInput
+}
+
+input CourseVideosUpdateWithWhereUniqueWithoutCourseInput {
+  where: CourseVideosWhereUniqueInput!
+  data: CourseVideosUpdateWithoutCourseDataInput!
+}
+
+input CourseVideosUpsertWithWhereUniqueWithoutCourseInput {
+  where: CourseVideosWhereUniqueInput!
+  update: CourseVideosUpdateWithoutCourseDataInput!
+  create: CourseVideosCreateWithoutCourseInput!
+}
+
+input CourseVideosWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CourseVideosWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CourseVideosWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CourseVideosWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  course: CourseWhereInput
+  video: VideoWhereInput
+}
+
+input CourseVideosWhereUniqueInput {
+  id: ID
 }
 
 input CourseWhereInput {
@@ -1100,9 +841,9 @@ input CourseWhereInput {
 
   """All values that are not contained in given list."""
   state_not_in: [State!]
-  videos_every: VideoWhereInput
-  videos_some: VideoWhereInput
-  videos_none: VideoWhereInput
+  videos_every: CourseVideosWhereInput
+  videos_some: CourseVideosWhereInput
+  videos_none: CourseVideosWhereInput
   user: UserWhereInput
 }
 
@@ -1119,54 +860,35 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createComVideo(data: ComVideoCreateInput!): ComVideo!
-  createRate(data: RateCreateInput!): Rate!
-  createComCourse(data: ComCourseCreateInput!): ComCourse!
-  createUserCourse(data: UserCourseCreateInput!): UserCourse!
-  createVideo(data: VideoCreateInput!): Video!
   createCourse(data: CourseCreateInput!): Course!
-  createCategory(data: CategoryCreateInput!): Category!
+  createCourseVideos(data: CourseVideosCreateInput!): CourseVideos!
+  createVideo(data: VideoCreateInput!): Video!
   createUser(data: UserCreateInput!): User!
-  updateComVideo(data: ComVideoUpdateInput!, where: ComVideoWhereUniqueInput!): ComVideo
-  updateRate(data: RateUpdateInput!, where: RateWhereUniqueInput!): Rate
-  updateComCourse(data: ComCourseUpdateInput!, where: ComCourseWhereUniqueInput!): ComCourse
-  updateUserCourse(data: UserCourseUpdateInput!, where: UserCourseWhereUniqueInput!): UserCourse
-  updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
+  createCategory(data: CategoryCreateInput!): Category!
   updateCourse(data: CourseUpdateInput!, where: CourseWhereUniqueInput!): Course
-  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateCourseVideos(data: CourseVideosUpdateInput!, where: CourseVideosWhereUniqueInput!): CourseVideos
+  updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  deleteComVideo(where: ComVideoWhereUniqueInput!): ComVideo
-  deleteRate(where: RateWhereUniqueInput!): Rate
-  deleteComCourse(where: ComCourseWhereUniqueInput!): ComCourse
-  deleteUserCourse(where: UserCourseWhereUniqueInput!): UserCourse
-  deleteVideo(where: VideoWhereUniqueInput!): Video
+  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   deleteCourse(where: CourseWhereUniqueInput!): Course
-  deleteCategory(where: CategoryWhereUniqueInput!): Category
+  deleteCourseVideos(where: CourseVideosWhereUniqueInput!): CourseVideos
+  deleteVideo(where: VideoWhereUniqueInput!): Video
   deleteUser(where: UserWhereUniqueInput!): User
-  upsertComVideo(where: ComVideoWhereUniqueInput!, create: ComVideoCreateInput!, update: ComVideoUpdateInput!): ComVideo!
-  upsertRate(where: RateWhereUniqueInput!, create: RateCreateInput!, update: RateUpdateInput!): Rate!
-  upsertComCourse(where: ComCourseWhereUniqueInput!, create: ComCourseCreateInput!, update: ComCourseUpdateInput!): ComCourse!
-  upsertUserCourse(where: UserCourseWhereUniqueInput!, create: UserCourseCreateInput!, update: UserCourseUpdateInput!): UserCourse!
-  upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
+  deleteCategory(where: CategoryWhereUniqueInput!): Category
   upsertCourse(where: CourseWhereUniqueInput!, create: CourseCreateInput!, update: CourseUpdateInput!): Course!
-  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
+  upsertCourseVideos(where: CourseVideosWhereUniqueInput!, create: CourseVideosCreateInput!, update: CourseVideosUpdateInput!): CourseVideos!
+  upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  updateManyComVideos(data: ComVideoUpdateManyMutationInput!, where: ComVideoWhereInput): BatchPayload!
-  updateManyRates(data: RateUpdateManyMutationInput!, where: RateWhereInput): BatchPayload!
-  updateManyComCourses(data: ComCourseUpdateManyMutationInput!, where: ComCourseWhereInput): BatchPayload!
-  updateManyUserCourses(data: UserCourseUpdateManyMutationInput!, where: UserCourseWhereInput): BatchPayload!
-  updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
+  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   updateManyCourses(data: CourseUpdateManyMutationInput!, where: CourseWhereInput): BatchPayload!
-  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
+  updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  deleteManyComVideos(where: ComVideoWhereInput): BatchPayload!
-  deleteManyRates(where: RateWhereInput): BatchPayload!
-  deleteManyComCourses(where: ComCourseWhereInput): BatchPayload!
-  deleteManyUserCourses(where: UserCourseWhereInput): BatchPayload!
-  deleteManyVideos(where: VideoWhereInput): BatchPayload!
+  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   deleteManyCourses(where: CourseWhereInput): BatchPayload!
-  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
+  deleteManyCourseVideoses(where: CourseVideosWhereInput): BatchPayload!
+  deleteManyVideos(where: VideoWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1206,30 +928,21 @@ enum Permission {
 }
 
 type Query {
-  comVideos(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComVideo]!
-  rates(where: RateWhereInput, orderBy: RateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Rate]!
-  comCourses(where: ComCourseWhereInput, orderBy: ComCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComCourse]!
-  userCourses(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserCourse]!
-  videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course]!
-  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  courseVideoses(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseVideos]!
+  videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  comVideo(where: ComVideoWhereUniqueInput!): ComVideo
-  rate(where: RateWhereUniqueInput!): Rate
-  comCourse(where: ComCourseWhereUniqueInput!): ComCourse
-  userCourse(where: UserCourseWhereUniqueInput!): UserCourse
-  video(where: VideoWhereUniqueInput!): Video
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   course(where: CourseWhereUniqueInput!): Course
-  category(where: CategoryWhereUniqueInput!): Category
+  courseVideos(where: CourseVideosWhereUniqueInput!): CourseVideos
+  video(where: VideoWhereUniqueInput!): Video
   user(where: UserWhereUniqueInput!): User
-  comVideosConnection(where: ComVideoWhereInput, orderBy: ComVideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComVideoConnection!
-  ratesConnection(where: RateWhereInput, orderBy: RateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RateConnection!
-  comCoursesConnection(where: ComCourseWhereInput, orderBy: ComCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComCourseConnection!
-  userCoursesConnection(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserCourseConnection!
-  videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
+  category(where: CategoryWhereUniqueInput!): Category
   coursesConnection(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseConnection!
-  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  courseVideosesConnection(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseVideosConnection!
+  videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -1238,244 +951,17 @@ type Query {
   ): Node
 }
 
-type Rate implements Node {
-  id: ID!
-  rate: Float!
-  user: User!
-  course: Course!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-"""A connection to a list of items."""
-type RateConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [RateEdge]!
-  aggregate: AggregateRate!
-}
-
-input RateCreateInput {
-  rate: Float!
-  user: UserCreateOneInput!
-  course: CourseCreateOneInput!
-}
-
-"""An edge in a connection."""
-type RateEdge {
-  """The item at the end of the edge."""
-  node: Rate!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum RateOrderByInput {
-  id_ASC
-  id_DESC
-  rate_ASC
-  rate_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type RatePreviousValues {
-  id: ID!
-  rate: Float!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type RateSubscriptionPayload {
-  mutation: MutationType!
-  node: Rate
-  updatedFields: [String!]
-  previousValues: RatePreviousValues
-}
-
-input RateSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [RateSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [RateSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [RateSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: RateWhereInput
-}
-
-input RateUpdateInput {
-  rate: Float
-  user: UserUpdateOneRequiredInput
-  course: CourseUpdateOneRequiredInput
-}
-
-input RateUpdateManyMutationInput {
-  rate: Float
-}
-
-input RateWhereInput {
-  """Logical AND on all given filters."""
-  AND: [RateWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [RateWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [RateWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  rate: Float
-
-  """All values that are not equal to given value."""
-  rate_not: Float
-
-  """All values that are contained in given list."""
-  rate_in: [Float!]
-
-  """All values that are not contained in given list."""
-  rate_not_in: [Float!]
-
-  """All values less than the given value."""
-  rate_lt: Float
-
-  """All values less than or equal the given value."""
-  rate_lte: Float
-
-  """All values greater than the given value."""
-  rate_gt: Float
-
-  """All values greater than or equal the given value."""
-  rate_gte: Float
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  user: UserWhereInput
-  course: CourseWhereInput
-}
-
-input RateWhereUniqueInput {
-  id: ID
-}
-
 enum State {
   PUBLISHED
   UNPUBLISHED
 }
 
 type Subscription {
-  comVideo(where: ComVideoSubscriptionWhereInput): ComVideoSubscriptionPayload
-  rate(where: RateSubscriptionWhereInput): RateSubscriptionPayload
-  comCourse(where: ComCourseSubscriptionWhereInput): ComCourseSubscriptionPayload
-  userCourse(where: UserCourseSubscriptionWhereInput): UserCourseSubscriptionPayload
-  video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
   course(where: CourseSubscriptionWhereInput): CourseSubscriptionPayload
-  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  courseVideos(where: CourseVideosSubscriptionWhereInput): CourseVideosSubscriptionPayload
+  video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
 }
 
 enum Target {
@@ -1502,182 +988,6 @@ type UserConnection {
   """A list of edges."""
   edges: [UserEdge]!
   aggregate: AggregateUser!
-}
-
-type UserCourse implements Node {
-  id: ID!
-  user: User!
-  course: Course!
-  Progesso: Float!
-}
-
-"""A connection to a list of items."""
-type UserCourseConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [UserCourseEdge]!
-  aggregate: AggregateUserCourse!
-}
-
-input UserCourseCreateInput {
-  Progesso: Float!
-  user: UserCreateOneInput!
-  course: CourseCreateOneInput!
-}
-
-"""An edge in a connection."""
-type UserCourseEdge {
-  """The item at the end of the edge."""
-  node: UserCourse!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum UserCourseOrderByInput {
-  id_ASC
-  id_DESC
-  Progesso_ASC
-  Progesso_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type UserCoursePreviousValues {
-  id: ID!
-  Progesso: Float!
-}
-
-type UserCourseSubscriptionPayload {
-  mutation: MutationType!
-  node: UserCourse
-  updatedFields: [String!]
-  previousValues: UserCoursePreviousValues
-}
-
-input UserCourseSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [UserCourseSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [UserCourseSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [UserCourseSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: UserCourseWhereInput
-}
-
-input UserCourseUpdateInput {
-  Progesso: Float
-  user: UserUpdateOneRequiredInput
-  course: CourseUpdateOneRequiredInput
-}
-
-input UserCourseUpdateManyMutationInput {
-  Progesso: Float
-}
-
-input UserCourseWhereInput {
-  """Logical AND on all given filters."""
-  AND: [UserCourseWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [UserCourseWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [UserCourseWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  Progesso: Float
-
-  """All values that are not equal to given value."""
-  Progesso_not: Float
-
-  """All values that are contained in given list."""
-  Progesso_in: [Float!]
-
-  """All values that are not contained in given list."""
-  Progesso_not_in: [Float!]
-
-  """All values less than the given value."""
-  Progesso_lt: Float
-
-  """All values less than or equal the given value."""
-  Progesso_lte: Float
-
-  """All values greater than the given value."""
-  Progesso_gt: Float
-
-  """All values greater than or equal the given value."""
-  Progesso_gte: Float
-  user: UserWhereInput
-  course: CourseWhereInput
-}
-
-input UserCourseWhereUniqueInput {
-  id: ID
 }
 
 input UserCreateInput {
@@ -2102,11 +1412,6 @@ input VideoCreateInput {
   category: CategoryCreateOneInput!
 }
 
-input VideoCreateManyInput {
-  create: [VideoCreateInput!]
-  connect: [VideoWhereUniqueInput!]
-}
-
 input VideoCreateOneInput {
   create: VideoCreateInput
   connect: VideoWhereUniqueInput
@@ -2149,271 +1454,6 @@ type VideoPreviousValues {
   thumbnail: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-}
-
-input VideoScalarWhereInput {
-  """Logical AND on all given filters."""
-  AND: [VideoScalarWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [VideoScalarWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [VideoScalarWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  title: String
-
-  """All values that are not equal to given value."""
-  title_not: String
-
-  """All values that are contained in given list."""
-  title_in: [String!]
-
-  """All values that are not contained in given list."""
-  title_not_in: [String!]
-
-  """All values less than the given value."""
-  title_lt: String
-
-  """All values less than or equal the given value."""
-  title_lte: String
-
-  """All values greater than the given value."""
-  title_gt: String
-
-  """All values greater than or equal the given value."""
-  title_gte: String
-
-  """All values containing the given string."""
-  title_contains: String
-
-  """All values not containing the given string."""
-  title_not_contains: String
-
-  """All values starting with the given string."""
-  title_starts_with: String
-
-  """All values not starting with the given string."""
-  title_not_starts_with: String
-
-  """All values ending with the given string."""
-  title_ends_with: String
-
-  """All values not ending with the given string."""
-  title_not_ends_with: String
-  description: String
-
-  """All values that are not equal to given value."""
-  description_not: String
-
-  """All values that are contained in given list."""
-  description_in: [String!]
-
-  """All values that are not contained in given list."""
-  description_not_in: [String!]
-
-  """All values less than the given value."""
-  description_lt: String
-
-  """All values less than or equal the given value."""
-  description_lte: String
-
-  """All values greater than the given value."""
-  description_gt: String
-
-  """All values greater than or equal the given value."""
-  description_gte: String
-
-  """All values containing the given string."""
-  description_contains: String
-
-  """All values not containing the given string."""
-  description_not_contains: String
-
-  """All values starting with the given string."""
-  description_starts_with: String
-
-  """All values not starting with the given string."""
-  description_not_starts_with: String
-
-  """All values ending with the given string."""
-  description_ends_with: String
-
-  """All values not ending with the given string."""
-  description_not_ends_with: String
-  state: State
-
-  """All values that are not equal to given value."""
-  state_not: State
-
-  """All values that are contained in given list."""
-  state_in: [State!]
-
-  """All values that are not contained in given list."""
-  state_not_in: [State!]
-  urlVideo: String
-
-  """All values that are not equal to given value."""
-  urlVideo_not: String
-
-  """All values that are contained in given list."""
-  urlVideo_in: [String!]
-
-  """All values that are not contained in given list."""
-  urlVideo_not_in: [String!]
-
-  """All values less than the given value."""
-  urlVideo_lt: String
-
-  """All values less than or equal the given value."""
-  urlVideo_lte: String
-
-  """All values greater than the given value."""
-  urlVideo_gt: String
-
-  """All values greater than or equal the given value."""
-  urlVideo_gte: String
-
-  """All values containing the given string."""
-  urlVideo_contains: String
-
-  """All values not containing the given string."""
-  urlVideo_not_contains: String
-
-  """All values starting with the given string."""
-  urlVideo_starts_with: String
-
-  """All values not starting with the given string."""
-  urlVideo_not_starts_with: String
-
-  """All values ending with the given string."""
-  urlVideo_ends_with: String
-
-  """All values not ending with the given string."""
-  urlVideo_not_ends_with: String
-  thumbnail: String
-
-  """All values that are not equal to given value."""
-  thumbnail_not: String
-
-  """All values that are contained in given list."""
-  thumbnail_in: [String!]
-
-  """All values that are not contained in given list."""
-  thumbnail_not_in: [String!]
-
-  """All values less than the given value."""
-  thumbnail_lt: String
-
-  """All values less than or equal the given value."""
-  thumbnail_lte: String
-
-  """All values greater than the given value."""
-  thumbnail_gt: String
-
-  """All values greater than or equal the given value."""
-  thumbnail_gte: String
-
-  """All values containing the given string."""
-  thumbnail_contains: String
-
-  """All values not containing the given string."""
-  thumbnail_not_contains: String
-
-  """All values starting with the given string."""
-  thumbnail_starts_with: String
-
-  """All values not starting with the given string."""
-  thumbnail_not_starts_with: String
-
-  """All values ending with the given string."""
-  thumbnail_ends_with: String
-
-  """All values not ending with the given string."""
-  thumbnail_not_ends_with: String
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
 }
 
 type VideoSubscriptionPayload {
@@ -2475,26 +1515,6 @@ input VideoUpdateInput {
   category: CategoryUpdateOneRequiredInput
 }
 
-input VideoUpdateManyDataInput {
-  title: String
-  description: String
-  state: State
-  urlVideo: String
-  thumbnail: String
-}
-
-input VideoUpdateManyInput {
-  create: [VideoCreateInput!]
-  connect: [VideoWhereUniqueInput!]
-  set: [VideoWhereUniqueInput!]
-  disconnect: [VideoWhereUniqueInput!]
-  delete: [VideoWhereUniqueInput!]
-  update: [VideoUpdateWithWhereUniqueNestedInput!]
-  updateMany: [VideoUpdateManyWithWhereNestedInput!]
-  deleteMany: [VideoScalarWhereInput!]
-  upsert: [VideoUpsertWithWhereUniqueNestedInput!]
-}
-
 input VideoUpdateManyMutationInput {
   title: String
   description: String
@@ -2503,30 +1523,16 @@ input VideoUpdateManyMutationInput {
   thumbnail: String
 }
 
-input VideoUpdateManyWithWhereNestedInput {
-  where: VideoScalarWhereInput!
-  data: VideoUpdateManyDataInput!
-}
-
-input VideoUpdateOneRequiredInput {
+input VideoUpdateOneInput {
   create: VideoCreateInput
   connect: VideoWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: VideoUpdateDataInput
   upsert: VideoUpsertNestedInput
 }
 
-input VideoUpdateWithWhereUniqueNestedInput {
-  where: VideoWhereUniqueInput!
-  data: VideoUpdateDataInput!
-}
-
 input VideoUpsertNestedInput {
-  update: VideoUpdateDataInput!
-  create: VideoCreateInput!
-}
-
-input VideoUpsertWithWhereUniqueNestedInput {
-  where: VideoWhereUniqueInput!
   update: VideoUpdateDataInput!
   create: VideoCreateInput!
 }
