@@ -82,7 +82,7 @@ const NavStyle = styled.ul`
     }
   }
   li {
-    display: block;
+    display: block !important;
     float: left;
     padding: 1rem;
     position: relative;
@@ -104,6 +104,7 @@ const NavStyle = styled.ul`
     opacity: 0;
     min-width: 4rem;
     position: absolute;
+    z-index: 3;
     transition: all 0.5s ease;
     margin-top: 1rem;
     left: 0;
