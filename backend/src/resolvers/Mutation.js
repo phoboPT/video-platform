@@ -410,7 +410,7 @@ const Mutations = {
     if (!userId) {
       throw new Error("You must be signed in soooon");
     }
-    console.log("args1", args);
+
     // 4. If its not, create a fresh CartItem for that user!
     return ctx.db.mutation.createCourse(
       {
@@ -432,7 +432,7 @@ const Mutations = {
     if (!userId) {
       throw new Error("You must be signed in soooon");
     }
-    console.log(args);
+
     //query the users current cart
     const [existingVideo] = await ctx.db.query.courseVideoses({
       where: {
@@ -440,7 +440,6 @@ const Mutations = {
         video: { id: args.id }
       }
     });
-    console.log(existingVideo);
     //check if that item is already in their cart
     if (existingVideo) {
       console.log("Already added");
