@@ -8,6 +8,7 @@ const Query = {
   courses: forwardTo("db"),
   video: forwardTo("db"),
   category: forwardTo("db"),
+  user: forwardTo("db"),
   // comVideo: forwardTo("db"),
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
@@ -121,7 +122,7 @@ const Query = {
   },
   coursesSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    console.log(args);
+    // console.log(args);
     //Ver se esta logado
     // if (!userId) {
     //   throw new Error("you must be ssigned in!");

@@ -36,7 +36,7 @@ type Mutation {
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
   updatePassword(password: String): User!
-  updateUser(name: String, email: String): User!
+  updateUser(id: ID!, name: String, email: String): User!
   requestReset(email: String!): SuccessMessage
   resetPassword(
     resetToken: String!
@@ -90,6 +90,7 @@ type Query {
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
+  user(where: UserWhereUniqueInput!): User
   # comVideo(where: VideoWhereUniqueInput!): ComVideo
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
   videosUser(
