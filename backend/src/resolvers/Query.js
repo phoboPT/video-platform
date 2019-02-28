@@ -6,6 +6,7 @@ const Query = {
   // comVideos: forwardTo("db"),
   users: forwardTo("db"),
   courses: forwardTo("db"),
+  course: forwardTo("db"),
   video: forwardTo("db"),
   category: forwardTo("db"),
   user: forwardTo("db"),
@@ -85,10 +86,9 @@ const Query = {
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //Ve se esta logado
-    // if (!userId) {
-    //   throw new Error("you must be signed in!");
-    // }
-    console.log("HI");
+    if (!userId) {
+      throw new Error("you must be signed in!");
+    }
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
@@ -127,9 +127,9 @@ const Query = {
     const { userId } = ctx.request;
     // console.log(args);
     //Ver se esta logado
-    // if (!userId) {
-    //   throw new Error("you must be ssigned in!");
-    // }
+    if (!userId) {
+      throw new Error("you must be ssigned in!");
+    }
 
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(

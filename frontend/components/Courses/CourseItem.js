@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ItemStyles from "./styles/ItemStyles";
-import Title from "./styles/Title";
+import ItemStyles from "../styles/ItemStyles";
+import Title from "../styles/Title";
 import Link from "next/link";
 import styled from "styled-components";
-import formatDate from "../lib/formatDate";
+import formatDate from "../../lib/formatDate";
 
 const Div = styled.div`
   span {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.5fr 1fr;
     line-height: 1.5;
     padding-top: 0.5rem;
     margin-left: 0.5rem;
@@ -33,18 +33,27 @@ class ListCourses extends Component {
     console.log("course", course);
     return (
       <ItemStyles>
-        <Title>
+        <Div>
+          <Title>
+            <Link
+              href={{
+                pathname: "/updateCourse",
+                query: { id: course.id }
+              }}
+            >
+              <a>{course.title}</a>
+            </Link>
+          </Title>
           <Link
             href={{
-              pathname: "/course",
+              pathname: "/updateCourse",
               query: { id: course.id }
             }}
           >
-            <a>{course.title}</a>
+            <a>
+              <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+            </a>
           </Link>
-        </Title>
-        <Div>
-          <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
           <br />
           <span>
             Description: <State>{course.description}</State>

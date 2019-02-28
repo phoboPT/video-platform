@@ -19,8 +19,8 @@ const Signout = props => (
   >
     {signout => (
       <Link href="/">
-        <button onClick={signout}>
-          <a>Sign Out</a>
+        <button tag="a" onClick={signout}>
+          Sign Out
         </button>
       </Link>
     )}

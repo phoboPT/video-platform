@@ -29,6 +29,17 @@ const Container = styled.div`
   label {
     text-align: left;
   }
+  button,
+  input[type="submit"] {
+    width: auto;
+    background: red;
+    color: white;
+    border: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+    text-align: center;
+  }
 `;
 
 class FormCourse extends Component {
@@ -48,7 +59,7 @@ class FormCourse extends Component {
     return (
       <Container>
         <Mutation mutation={CREATE_COURSE_MUTATION} variables={this.state}>
-          {(createCourse, { isLoading, isError }) => (
+          {(createCourse, { loading, error }) => (
             <Form
               method="post"
               onSubmit={async e => {
@@ -58,8 +69,8 @@ class FormCourse extends Component {
                 this.props.saveToState(res.data.createCourse.id);
               }}
             >
-              <Error error={isError} />
-              <fieldset disabled={isLoading} aria-busy={isLoading}>
+              <Error error={error} />
+              <fieldset disabled={loading} aria-busy={loading}>
                 <h2>Information</h2>
                 <label htmlFor="Title">
                   Title

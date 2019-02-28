@@ -19,7 +19,7 @@ const LinkStyle = styled.div`
 
   .container {
     text-align: center;
-    width: 80%;
+    width: 100%;
     margin: auto;
     overflow: hidden;
     box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.15);
@@ -28,7 +28,7 @@ const LinkStyle = styled.div`
   #main {
     margin-top: 20px;
     float: left;
-    width: 20%;
+    width: 15%;
     padding: 0 30px;
     box-sizing: border-box;
   }
@@ -37,7 +37,7 @@ const LinkStyle = styled.div`
     border-left: 1px solid #d6dbe1;
     min-height: 150px;
     float: right;
-    width: 80%;
+    width: 85%;
     padding: 10px;
     box-sizing: border-box;
   }
