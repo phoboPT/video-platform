@@ -470,11 +470,11 @@ const Mutations = {
   },
   updateCourse(parent, args, ctx, info) {
     //faz uma copia dos updates
-    const { userId } = ctx.request.userId;
-    //Check if they are logged in
+    const { userId } = ctx.request;
     if (!userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error("You must be signed in soooon");
     }
+
     const updates = {
       ...args
     };

@@ -52,9 +52,9 @@ type Mutation {
   addToCourse(id: ID!, courseId: ID!): Course
   updateCourse(
     id: ID!
-    title: String!
-    videos: [String]!
-    target: [String]!
+    title: String
+    thumbnail: String
+    description: String
   ): Course!
   deleteCourse(id: ID!): CourseVideos
 }
@@ -91,6 +91,7 @@ type Query {
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
+  course(where: CourseWhereUniqueInput!): Course!
   # comVideo(where: VideoWhereUniqueInput!): ComVideo
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
   videosUser(

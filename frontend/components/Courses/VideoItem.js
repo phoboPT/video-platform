@@ -15,7 +15,7 @@ const State = styled.strong(props => ({
 const Div = styled.div`
   span {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.5fr 1fr;
     line-height: 1.5;
     padding: 0.3rem 1rem;
   }
