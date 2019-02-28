@@ -1,8 +1,8 @@
 import Link from "next/link";
 import NavStyle from "./styles/NavStyle";
 import styled from "styled-components";
-import User from "./User";
-import Signout from "./Signout";
+import User from "./Authentication/User";
+import Signout from "./Authentication/Signout";
 
 const Nav = () => (
   <User>

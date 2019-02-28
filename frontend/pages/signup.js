@@ -1,6 +1,6 @@
-import Signup from "../components/Signup";
+import Signup from "../components/Authentication/Signup";
 import styled from "styled-components";
-import Signin from "../components/Signin";
+import Signin from "../components/Authentication/Signin";
 // import RequestReset from "../components/RequestReset";
 
 const Columns = styled.div`

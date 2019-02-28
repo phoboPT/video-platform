@@ -1,10 +1,9 @@
-import Link from "next/link";
-import CoursesPage from "../components/Courses/Courses";
+import Courses from "../components/Courses/Courses";
 
-const Courses = props => (
+const CoursesPage = props => (
   <div>
-    <CoursesPage page={parseFloat(props.query.page) || 1} />
+    <Courses page={parseFloat(props.query.page) || 1} />
   </div>
 );
 
-export default Courses;
+export default CoursesPage;

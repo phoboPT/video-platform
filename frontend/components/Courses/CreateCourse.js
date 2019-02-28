@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
-import { ALL_VIDEOS_USER } from "../Videos";
-import VideoSelect from "../VideoSelect";
+import { ALL_VIDEOS_USER } from "../Videos/Videos";
+import VideoSelect from "../Videos/VideoSelect";
 import Pagination from "../Pagination";
 import { perPage } from "../../config";
 import { ButtonAdd, ButtonDelete } from "../styles/Buttons";

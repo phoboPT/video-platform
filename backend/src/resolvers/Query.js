@@ -95,7 +95,8 @@ const Query = {
           user: {
             id: userId
           }
-        }
+        },
+        ...args
       },
       info
     );

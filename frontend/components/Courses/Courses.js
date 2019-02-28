@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
-import Video from "../Video";
-import User from "../User";
+import User from "../Authentication/User";
 import Link from "next/link";
-import Videos from "../Videos";
+import Videos from "../Videos/Videos";
 import CreateCourse from "./CreateCourse";
 import UploadVideo from "../UploadVideo";
 import FormCourse from "./FormCourse";
