@@ -115,7 +115,7 @@ const Query = {
       {
         where: {
           user: {
-            id: args.id
+            id: userId
           }
         },
         ...args
