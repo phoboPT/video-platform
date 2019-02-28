@@ -1,9 +1,9 @@
 import Link from "next/link";
-import AccountDetails from "../components/PersonalArea/AccountDetails";
+import PersonalArea from "../components/PersonalArea/PersonalArea";
 
 const Account = props => (
   <div>
-    <AccountDetails />
+    <PersonalArea />
   </div>
 );
 

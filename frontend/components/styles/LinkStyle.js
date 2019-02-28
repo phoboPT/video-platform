@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const LinkStyle = styled.div`
   background-color: ${props => props.theme.white};
+  line-height: 2;
 
   a {
     margin: 20px;
