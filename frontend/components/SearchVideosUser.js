@@ -12,9 +12,6 @@ const SEARCH_VIDEOS_QUERY = gql`
       id
       title
       description
-      user {
-        id
-      }
     }
   }
 `;

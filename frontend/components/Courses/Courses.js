@@ -53,65 +53,74 @@ class Courses extends Component {
   render() {
     return (
       <User>
-        {({ data: { me } }) => (
-          <>
-            {me.permission[0] !== "INSTRUTOR" && (
-              <LinkStyle>
-                <div className="container">
-                  <section id="main">
-                    <button id="3" onClick={this.createCourse}>
-                      My Courses
-                    </button>
-                    <div>
-                      <button id="1" onClick={this.createCourse}>
-                        Create Course
+        {({ data: { me } }) => {
+          if (!me) return <p>No Courses</p>;
+          return (
+            <>
+              {me.permission[0] !== "INSTRUTOR" && (
+                <LinkStyle>
+                  <div className="container">
+                    <section id="main">
+                      <button id="3" onClick={this.createCourse}>
+                        My Courses
                       </button>
-                    </div>
-                    <div>
-                      <button id="1" onClick={this.uploadVideo}>
-                        Upload Video
-                      </button>
-                    </div>
-                    <div>
-                      <button id="1" onClick={this.videosState}>
-                        My Videos
-                      </button>
-                    </div>
-                  </section>
-                  <aside id="sidebar">
-                    {this.state.createState === 3 && <MyCourses />}
-                    {this.state.createState === 1 && (
-                      <FormCourse saveToState={this.saveToState} />
-                    )}
-                    {this.state.createState === 2 && (
-                      <CreateCourse page={this.props.page} state={this.state} />
-                    )}
-                    {this.state.uploadState === 1 && <UploadVideo />}
-                    {this.state.videosState === 1 && (
-                      <Videos page={this.props.page} courseId={this.courseId} />
-                    )}
-                  </aside>
-                </div>
-              </LinkStyle>
-            )}
-            {me.permission[0] !== "USER" && (
-              <LinkStyle>
-                <div className="grid-container">
-                  <div className="left">
-                    <>
-                      <Link href="/videos">
-                        <a>Finished</a>
-                      </Link>
-                    </>
+                      <div>
+                        <button id="1" onClick={this.createCourse}>
+                          Create Course
+                        </button>
+                      </div>
+                      <div>
+                        <button id="1" onClick={this.uploadVideo}>
+                          Upload Video
+                        </button>
+                      </div>
+                      <div>
+                        <button id="1" onClick={this.videosState}>
+                          My Videos
+                        </button>
+                      </div>
+                    </section>
+                    <aside id="sidebar">
+                      {this.state.createState === 3 && <MyCourses />}
+                      {this.state.createState === 1 && (
+                        <FormCourse saveToState={this.saveToState} />
+                      )}
+                      {this.state.createState === 2 && (
+                        <CreateCourse
+                          page={this.props.page}
+                          state={this.state}
+                        />
+                      )}
+                      {this.state.uploadState === 1 && <UploadVideo />}
+                      {this.state.videosState === 1 && (
+                        <Videos
+                          page={this.props.page}
+                          courseId={this.courseId}
+                        />
+                      )}
+                    </aside>
                   </div>
-                  <div className="right">
-                    <Videos>{this.props.children}</Videos>
+                </LinkStyle>
+              )}
+              {me.permission[0] !== "USER" && (
+                <LinkStyle>
+                  <div className="grid-container">
+                    <div className="left">
+                      <>
+                        <Link href="/videos">
+                          <a>Finished</a>
+                        </Link>
+                      </>
+                    </div>
+                    <div className="right">
+                      <Videos>{this.props.children}</Videos>
+                    </div>
                   </div>
-                </div>
-              </LinkStyle>
-            )}
-          </>
-        )}
+                </LinkStyle>
+              )}
+            </>
+          );
+        }}
       </User>
     );
   }

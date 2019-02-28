@@ -104,7 +104,7 @@ const Query = {
   },
   videosUserSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    // console.log(args);
+    console.log(args);
     //Ver se esta logado
     if (!userId) {
       throw new Error("you must be signed in!");
@@ -114,11 +114,15 @@ const Query = {
     return ctx.db.query.videos(
       {
         where: {
-          user: {
-            id: userId
-          }
-        },
-        ...args
+          AND: [
+            {
+              user: { id: userId }
+            },
+            {
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
       info
     );
