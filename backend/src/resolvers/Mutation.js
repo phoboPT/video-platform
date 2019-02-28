@@ -368,7 +368,7 @@ const Mutations = {
     return { message: "Thanks" };
   },
   async resetPassword(parents, args, ctx, info) {
-    //checkar pw
+    //checkar pwbb
     if (args.password !== args.confirmPassword) {
       throw new Error("Passwords don t match!");
     }
