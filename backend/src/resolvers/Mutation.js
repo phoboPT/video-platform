@@ -355,7 +355,7 @@ const Mutations = {
     });
     console.log(res);
 
-    //3. Email them that reset token
+    //3. Email them that reset tokenaaa
     const mailRes = await transport.sendMail({
       from: "ruben@gmail.com",
       to: user.email,
