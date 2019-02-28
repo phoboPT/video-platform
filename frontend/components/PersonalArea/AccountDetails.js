@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import User from "./User";
+import User from "../Authentication/User";
 import styled from "styled-components";
 
 class AccountDetails extends Component {
