@@ -80,33 +80,31 @@ class UpdatePassword extends Component {
                   {(updatePassword, { loading, error }) => (
                     <Form onSubmit={e => this.update(e, updatePassword, me.id)}>
                       <Error error={error} />
-                      <aside id="sidebar">
-                        <fieldset disabled={loading} aria-busy={loading}>
-                          <h2>Change Password</h2>
-                          <label htmlFor="Password">
-                            <input
-                              type="text"
-                              name="password"
-                              placeholder="New password"
-                              defaultValue={me.password}
-                              onChange={this.handleChange}
-                              required
-                            />
-                          </label>
-                          <label htmlFor="Confirm Password">
-                            <input
-                              type="text"
-                              name="confirmPassword"
-                              placeholder="Confirm Password"
-                              onChange={this.handleChange}
-                              required
-                            />
-                          </label>
-                          <button type="submit">
-                            Sav{loading ? "ing" : "e"} Alterations
-                          </button>
-                        </fieldset>
-                      </aside>
+                      <fieldset disabled={loading} aria-busy={loading}>
+                        <h2>Change Password</h2>
+                        <label htmlFor="Password">
+                          <input
+                            type="text"
+                            name="password"
+                            placeholder="New password"
+                            defaultValue={me.password}
+                            onChange={this.handleChange}
+                            required
+                          />
+                        </label>
+                        <label htmlFor="Confirm Password">
+                          <input
+                            type="text"
+                            name="confirmPassword"
+                            placeholder="Confirm Password"
+                            onChange={this.handleChange}
+                            required
+                          />
+                        </label>
+                        <button type="submit">
+                          Sav{loading ? "ing" : "e"} Alterations
+                        </button>
+                      </fieldset>
                     </Form>
                   )}
                 </Mutation>

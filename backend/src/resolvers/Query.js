@@ -86,9 +86,9 @@ const Query = {
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //Ve se esta logado
-    if (!userId) {
-      throw new Error("you must be signed in!");
-    }
+    // if (!userId) {
+    //   throw new Error("you must be signed in!");
+    // }
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {

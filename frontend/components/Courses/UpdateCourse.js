@@ -84,67 +84,65 @@ class UpdateCourse extends Component {
                   {(updateCourse, { loading, error }) => (
                     <Form onSubmit={e => this.updateCourse(e, updateCourse)}>
                       <Error error={error} />
-                      <aside id="sidebar">
-                        <fieldset disabled={loading} aria-busy={loading}>
-                          <h2>Information</h2>
-                          <label htmlFor="Title">
-                            Title
-                            <input
-                              type="text"
-                              name="title"
-                              placeholder="title"
-                              defaultValue={data.course.title}
-                              onChange={this.handleChange}
-                            />
-                          </label>
-                          <label htmlFor="description">
-                            Description
-                            <input
-                              type="text"
-                              name="description"
-                              placeholder="description"
-                              defaultValue={data.course.description}
-                              onChange={this.handleChange}
-                            />
-                          </label>
-                          <label htmlFor="state">
-                            State
-                            <input
-                              type="text"
-                              name="state"
-                              placeholder="state"
-                              defaultValue={data.course.state}
-                              onChange={this.handleChange}
-                            />
-                          </label>
-                          <label htmlFor="target">
-                            Target
-                            <input
-                              type="text"
-                              name="target"
-                              placeholder="target"
-                              value={this.target}
-                              onChange={this.handleChange}
-                              defaultValue={data.course.target}
-                            />
-                          </label>
-                          <label htmlFor="thumbnail">
-                            Thumbnail
-                            <input
-                              type="text"
-                              name="thumbnail"
-                              placeholder="thumbnail"
-                              value={this.thumbnail}
-                              defaultValue={data.course.thumbnail}
-                              onChange={this.handleChange}
-                            />
-                          </label>
+                      <fieldset disabled={loading} aria-busy={loading}>
+                        <h2>Information</h2>
+                        <label htmlFor="Title">
+                          Title
+                          <input
+                            type="text"
+                            name="title"
+                            placeholder="title"
+                            defaultValue={data.course.title}
+                            onChange={this.handleChange}
+                          />
+                        </label>
+                        <label htmlFor="description">
+                          Description
+                          <input
+                            type="text"
+                            name="description"
+                            placeholder="description"
+                            defaultValue={data.course.description}
+                            onChange={this.handleChange}
+                          />
+                        </label>
+                        <label htmlFor="state">
+                          State
+                          <input
+                            type="text"
+                            name="state"
+                            placeholder="state"
+                            defaultValue={data.course.state}
+                            onChange={this.handleChange}
+                          />
+                        </label>
+                        <label htmlFor="target">
+                          Target
+                          <input
+                            type="text"
+                            name="target"
+                            placeholder="target"
+                            value={this.target}
+                            onChange={this.handleChange}
+                            defaultValue={data.course.target}
+                          />
+                        </label>
+                        <label htmlFor="thumbnail">
+                          Thumbnail
+                          <input
+                            type="text"
+                            name="thumbnail"
+                            placeholder="thumbnail"
+                            value={this.thumbnail}
+                            defaultValue={data.course.thumbnail}
+                            onChange={this.handleChange}
+                          />
+                        </label>
 
-                          <button type="submit">
-                            Sav{loading ? "ing" : "e"} To Course
-                          </button>
-                        </fieldset>
-                      </aside>
+                        <button type="submit">
+                          Sav{loading ? "ing" : "e"} To Course
+                        </button>
+                      </fieldset>
                     </Form>
                   )}
                 </Mutation>

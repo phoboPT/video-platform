@@ -15,17 +15,15 @@ export class Information extends Component {
       <User>
         {({ data: { me } }) => (
           <>
+            <img src="https://www.iamlivingit.com/front/images/user-img.jpg" />
             <Style>
-              <img src="https://www.iamlivingit.com/front/images/user-img.jpg" />
-              <p>
-                Id User: <a>{me.id}</a>
-              </p>
-              <p>
-                Nome: <a>{me.name}</a>
-              </p>
-              <p>
-                Email: <a>{me.email}</a>
-              </p>
+              Id User: <a>{me.id}</a>
+            </Style>
+            <Style>
+              Nome: <a>{me.name}</a>
+            </Style>
+            <Style>
+              Email: <a>{me.email}</a>
             </Style>
           </>
         )}

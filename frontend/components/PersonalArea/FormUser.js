@@ -77,33 +77,32 @@ class UpdateUser extends Component {
                     {(updateUser, { loading, error }) => (
                       <Form onSubmit={e => this.update(e, updateUser, me.id)}>
                         <Error error={error} />
-                        <aside id="sidebar">
-                          <fieldset disabled={loading} aria-busy={loading}>
-                            <h2>Information</h2>
-                            <label htmlFor="Name">
-                              Name
-                              <input
-                                type="text"
-                                name="name"
-                                placeholder="name"
-                                defaultValue={me.name}
-                                onChange={this.handleChange}
-                              />
-                            </label>
-                            <label htmlFor="Email">
-                              <input
-                                type="text"
-                                name="email"
-                                placeholder="email"
-                                defaultValue={me.email}
-                                onChange={this.handleChange}
-                              />
-                            </label>
-                            <button type="submit">
-                              Sav{loading ? "ing" : "e"} Alterations
-                            </button>
-                          </fieldset>
-                        </aside>
+
+                        <fieldset disabled={loading} aria-busy={loading}>
+                          <h2>Information</h2>
+                          <label htmlFor="Name">
+                            Name
+                            <input
+                              type="text"
+                              name="name"
+                              placeholder="name"
+                              defaultValue={me.name}
+                              onChange={this.handleChange}
+                            />
+                          </label>
+                          <label htmlFor="Email">
+                            <input
+                              type="text"
+                              name="email"
+                              placeholder="email"
+                              defaultValue={me.email}
+                              onChange={this.handleChange}
+                            />
+                          </label>
+                          <button type="submit">
+                            Sav{loading ? "ing" : "e"} Alterations
+                          </button>
+                        </fieldset>
                       </Form>
                     )}
                   </Mutation>
