@@ -40,11 +40,12 @@ const Mutations = {
     return videos;
   },
   updateVideo(parent, args, ctx, info) {
-    const { userId } = ctx.request.userId;
-    //faz uma copia dos updates
+    const { userId } = ctx.request;
+
     if (!userId) {
       throw new Error("You must be logged in to do that!");
     }
+    //faz uma copia dos updates
     const updates = {
       ...args
     };
@@ -297,6 +298,7 @@ const Mutations = {
     return { message: "Goodbye!" };
   },
   async updateUser(parent, args, ctx, info) {
+    const { userId } = ctx.request;
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
     }
@@ -311,21 +313,26 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: ctx.request.userId
+          id: userId
         }
       },
       info
     );
   },
   async updatePassword(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
     }
+    if (args.password !== args.confirmPassword) {
+      throw new Error("The Passwords are not equal!");
+    }
     //faz uma copia dos updates para guardar o id nos args
     const updates = {
-      ...args
+      password: args.password
     };
-
+    console.log(args);
     //volta a encriptar a pass nova
     if (updates.password) {
       updates.password = await bcrypt.hash(updates.password, 10);
@@ -337,7 +344,7 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: args.id
+          id: userId
         }
       },
       info

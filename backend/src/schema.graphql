@@ -35,7 +35,7 @@ type Mutation {
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
-  updatePassword(password: String): User!
+  updatePassword(id: ID!, password: String, confirmPassword: String): User!
   updateUser(id: ID!, name: String, email: String): User!
   requestReset(email: String!): SuccessMessage
   resetPassword(
