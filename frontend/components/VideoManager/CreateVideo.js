@@ -5,6 +5,7 @@ import Form from "../styles/Form";
 import styled from "styled-components";
 import Error from "../ErrorMessage.js";
 import { ALL_VIDEOS_USER } from "../Videos/Videos";
+import Router from "next/router";
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
@@ -44,6 +45,17 @@ const Container = styled.div`
     text-align: center;
     margin-top: 1rem;
   }
+  .true {
+    width: auto;
+    background: #d6887c;
+    color: white;
+    border: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+    text-align: center;
+    margin-top: 1rem;
+  }
 `;
 const ALL_CATEGORY = gql`
   query ALL_CATEGORY {
@@ -60,13 +72,35 @@ class CreateVideo extends Component {
     description: "",
     urlVideo: "",
     thumbnail: "",
-    category: ""
+    category: "",
+    hasVideo: true
   };
 
   handleChange = e => {
     const { name, type, value } = e.target;
     const val = type === "number" ? parseFloat(value) : value;
     this.setState({ [name]: val });
+  };
+
+  uploadVideo = async e => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "video-platform");
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/deky2cxlm/video/upload",
+      { method: "POST", body: data }
+    );
+    const file = await res.json();
+    if (file) {
+      this.setState({
+        hasVideo: false
+      });
+    }
+    console.log(file);
+    this.setState({
+      urlVideo: file.url
+    });
   };
 
   saveCategory = e => {
@@ -95,11 +129,24 @@ class CreateVideo extends Component {
                     onSubmit={async e => {
                       e.preventDefault();
                       const res = await createVideo();
+                      Router.push({
+                        pathname: "/video",
+                        query: { id: res.data.createVideo.id }
+                      });
                     }}
                   >
                     <Error error={error} />
                     <fieldset disabled={loading} aria-busy={loading}>
                       <h2>Video</h2>
+                      <label htmlFor="file">Video</label>
+                      <input
+                        type="file"
+                        name="file"
+                        id="file"
+                        placeholder="Upload a Video"
+                        required
+                        onChange={this.uploadVideo}
+                      />
                       <label htmlFor="title">Title</label>
                       <input
                         type="text"
@@ -120,16 +167,7 @@ class CreateVideo extends Component {
                         value={this.state.description}
                         onChange={this.handleChange}
                       />
-                      <label htmlFor="urlVideo">Video</label>
-                      <input
-                        type="text"
-                        name="urlVideo"
-                        id="urlVideo"
-                        placeholder="Video"
-                        required
-                        value={this.state.urlVideo}
-                        onChange={this.handleChange}
-                      />
+
                       <label htmlFor="thumbnail">Thumbnail</label>
                       <input
                         type="text"
@@ -154,7 +192,14 @@ class CreateVideo extends Component {
                           </option>
                         ))}
                       </select>
-                      <button type="submit">Sav{loading ? "ing" : "e"}</button>
+
+                      <button
+                        type="submit"
+                        disabled={this.state.hasVideo}
+                        className={this.state.hasVideo.toString()}
+                      >
+                        Sav{loading ? "ing" : "e"}
+                      </button>
                     </fieldset>
                   </Form>
                 )}

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import Video from "./VideoItem";
+import VideoItem from "./VideoItem";
 import styled from "styled-components";
 import { perPage } from "../../config";
 import Pagination from "../Pagination";
@@ -15,6 +15,7 @@ const ALL_VIDEOS_USER = gql`
       title
       description
       state
+      urlVideo
       category {
         name
       }
@@ -48,7 +49,7 @@ class Videos extends Component {
                 <Search />
                 <ItemList>
                   {data.videosUser.map(video => (
-                    <Video video={video} key={video.id} />
+                    <VideoItem video={video} key={video.id} />
                   ))}
                 </ItemList>
               </>

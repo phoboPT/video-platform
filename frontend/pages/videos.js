@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Videos from "../components/Videos";
+import Videos from "../components/Videos/Videos";
 class videos extends Component {
   render() {
     return (

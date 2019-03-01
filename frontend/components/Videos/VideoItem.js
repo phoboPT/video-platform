@@ -9,15 +9,22 @@ import styled from "styled-components";
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
+  "word-wrap": "wrap",
   padding: "0 1rem"
 }));
 
 const Div = styled.div`
+  max-width: 300px;
+  display: grid;
+
   span {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    flex: 1;
+    flex-wrap: wrap;
+    grid-template-columns: 0.5fr 1fr;
     line-height: 1.5;
-    padding: 0.3rem 1rem;
+    padding-top: 0.5rem;
+    margin-left: 0.5rem;
+    text-align: left;
   }
 `;
 

@@ -65,7 +65,7 @@ const Header = () => (
       <Nav />
     </div>
     <div className="sub-bar" />
-    <div>Cart</div>
+    <div />
   </StyledHeader>
 );
 
