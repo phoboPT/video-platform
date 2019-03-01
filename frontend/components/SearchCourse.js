@@ -30,7 +30,6 @@ export class AutoComplete extends Component {
     loading: false
   };
   onChange = debounce(async (e, client) => {
-    console.log("Searching results...");
     //turn loading on
     this.setState({ loading: true });
     const res = await client.query({

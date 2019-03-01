@@ -5,6 +5,8 @@ import gql from "graphql-tag";
 import Error from "../ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import LinkStyle from "../styles/LinkStyle";
+import Link from "next/link";
+import { Container } from "../styles/Container";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -42,36 +44,6 @@ const UPDATE_COURSE_MUTATION = gql`
   }
 `;
 
-const Container = styled.div`
-  margin: auto;
-  label {
-    text-align: left;
-  }
-  img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-  }
-  #main {
-    width: 40%;
-  }
-
-  #sidebar {
-    width: 60%;
-  }
-  button,
-  input[type="submit"] {
-    width: auto;
-    background: red;
-    color: white;
-    border: 0;
-    font-size: 2rem;
-    font-weight: 600;
-    padding: 0.5rem 1.2rem;
-    text-align: center;
-  }
-`;
-
 class UpdateCourse extends Component {
   state = {};
 
@@ -98,7 +70,7 @@ class UpdateCourse extends Component {
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
-          console.log(data);
+
           return (
             <LinkStyle>
               <Container className="container">
@@ -167,6 +139,7 @@ class UpdateCourse extends Component {
                               onChange={this.handleChange}
                             />
                           </label>
+
                           <button type="submit">
                             Sav{loading ? "ing" : "e"} To Course
                           </button>

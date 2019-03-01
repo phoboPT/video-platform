@@ -6,13 +6,19 @@ const { transport, makeANiceEmail } = require("../mail");
 
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
-    const { userId } = ctx.request.userId;
+    const { userId } = ctx.request;
     //Check if they are logged in
     if (!userId) {
       throw new Error("You must be logged in to do that!");
     }
+    console.log(args);
+    const video = {
+      ...args
+    };
+    //elimina o id dos updates
+    delete video.category;
 
-    const video = await ctx.db.mutation.createVideo(
+    const videos = await ctx.db.mutation.createVideo(
       {
         data: {
           user: {
@@ -25,13 +31,13 @@ const Mutations = {
               id: args.category
             }
           },
-          ...args
+          ...video
         }
       },
       info
     );
     //para dar debug console.log(video);
-    return video;
+    return videos;
   },
   updateVideo(parent, args, ctx, info) {
     const { userId } = ctx.request.userId;
@@ -85,9 +91,9 @@ const Mutations = {
   },
   async createCategory(parent, args, ctx, info) {
     //Check if they are logged in
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
+    // if (!ctx.request.userId) {
+    //   throw new Error("You must be logged in to do that!");
+    // }
 
     const category = await ctx.db.mutation.createCategory(
       {

@@ -30,7 +30,7 @@ class ListCourses extends Component {
   };
   render() {
     const { course } = this.props;
-    console.log("course", course);
+
     return (
       <ItemStyles>
         <Div>

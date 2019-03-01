@@ -34,7 +34,6 @@ export class Courses extends Component {
         <p>Courses</p>
         <Query query={ALL_COURSES_QUERY}>
           {({ data, error, loading }) => {
-            console.log(data);
             if (loading) {
               return <p>Loading...</p>;
             }

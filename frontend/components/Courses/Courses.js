@@ -3,7 +3,7 @@ import User from "../Authentication/User";
 import Link from "next/link";
 import Videos from "../Videos/Videos";
 import CreateCourse from "./CreateCourse";
-import UploadVideo from "../UploadVideo";
+import CreateVideo from "../VideoManager/CreateVideo";
 import FormCourse from "./FormCourse";
 import LinkStyle from "../styles/LinkStyle";
 import styled from "styled-components";
@@ -91,7 +91,7 @@ class Courses extends Component {
                           state={this.state}
                         />
                       )}
-                      {this.state.uploadState === 1 && <UploadVideo />}
+                      {this.state.uploadState === 1 && <CreateVideo />}
                       {this.state.videosState === 1 && (
                         <Videos
                           page={this.props.page}

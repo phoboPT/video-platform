@@ -4,6 +4,7 @@ import Form from "../styles/Form";
 import gql from "graphql-tag";
 import Error from "../ErrorMessage";
 import { Mutation } from "react-apollo";
+import { CURRENT_COURSES_QUERY } from "./MyCourses";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -58,12 +59,15 @@ class FormCourse extends Component {
   render() {
     return (
       <Container>
-        <Mutation mutation={CREATE_COURSE_MUTATION} variables={this.state}>
+        <Mutation
+          mutation={CREATE_COURSE_MUTATION}
+          variables={this.state}
+          refetchQueries={[{ query: CURRENT_COURSES_QUERY }]}
+        >
           {(createCourse, { loading, error }) => (
             <Form
               method="post"
               onSubmit={async e => {
-                console.log("submit");
                 e.preventDefault();
                 const res = await createCourse();
                 this.props.saveToState(res.data.createCourse.id);
