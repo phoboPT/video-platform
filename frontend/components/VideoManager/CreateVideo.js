@@ -30,6 +30,7 @@ const CREATE_VIDEO_MUTATION = gql`
 const Container = styled.div`
   max-width: 70%;
   margin: auto;
+  text-align: center;
   label {
     text-align: left;
   }
@@ -42,9 +43,9 @@ const Container = styled.div`
     font-size: 2rem;
     font-weight: 600;
     padding: 0.5rem 1.2rem;
-    text-align: center;
     margin-top: 1rem;
   }
+
   .true {
     width: auto;
     background: #d6887c;
@@ -55,6 +56,9 @@ const Container = styled.div`
     padding: 0.5rem 1.2rem;
     text-align: center;
     margin-top: 1rem;
+  }
+  img {
+    height: 50px;
   }
 `;
 const ALL_CATEGORY = gql`
@@ -73,7 +77,8 @@ class CreateVideo extends Component {
     urlVideo: "",
     thumbnail: "",
     category: "",
-    hasVideo: true
+    hasVideo: true,
+    isUploading: 0
   };
 
   handleChange = e => {
@@ -83,6 +88,13 @@ class CreateVideo extends Component {
   };
 
   uploadVideo = async e => {
+    console.log(this.state.isUploading);
+
+    this.setState({
+      isUploading: 1
+    });
+    console.log(this.state.isUploading);
+
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
@@ -99,7 +111,8 @@ class CreateVideo extends Component {
     }
     console.log(file);
     this.setState({
-      urlVideo: file.url
+      urlVideo: file.url,
+      isUploading: 0
     });
   };
 
@@ -139,14 +152,20 @@ class CreateVideo extends Component {
                     <fieldset disabled={loading} aria-busy={loading}>
                       <h2>Video</h2>
                       <label htmlFor="file">Video</label>
-                      <input
-                        type="file"
-                        name="file"
-                        id="file"
-                        placeholder="Upload a Video"
-                        required
-                        onChange={this.uploadVideo}
-                      />
+
+                      {this.state.isUploading === 1 ? (
+                        <img src="../../static/loading.gif" />
+                      ) : (
+                        <input
+                          className="file"
+                          type="file"
+                          name="file"
+                          id="file"
+                          placeholder="Upload a Video"
+                          required
+                          onChange={this.uploadVideo}
+                        />
+                      )}
                       <label htmlFor="title">Title</label>
                       <input
                         type="text"
