@@ -3,6 +3,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
 import Overview from "./Overview";
+import VideoItem from "../VideoItem";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -16,12 +17,34 @@ const SINGLE_COURSE_QUERY = gql`
       user {
         name
       }
+      videos {
+        id
+        video {
+          id
+          title
+          description
+          state
+          category {
+            name
+          }
+          thumbnail
+          createdAt
+        }
+      }
     }
   }
 `;
 
+const VideosList = styled.div`
+  display: inline;
+  grid-template-columns: 1fr;
+  padding-top: 4rem;
+  grid-gap: 60px;
+  max-width: ${props => props.theme.maxWidth};
+`;
+
 const CourseContainer = styled.div`
-  display: columuns;
+  display: grid;
   color: white;
   display: flex;
   background: #333350;
@@ -79,6 +102,13 @@ const Bar = styled.div`
 `;
 
 class ViewCourse extends Component {
+  state = {
+    view: 1
+  };
+
+  changeView = e => {
+    this.setState({ view: parseInt(e.target.id) });
+  };
   render() {
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id: this.props.id }}>
@@ -99,9 +129,21 @@ class ViewCourse extends Component {
                 </div>
               </CourseContainer>
               <Bar>
-                <button>Overview</button>
+                <button id="1" onClick={this.changeView}>
+                  Overview
+                </button>
+                <button id="2" onClick={this.changeView}>
+                  Course Content
+                </button>
               </Bar>
-              <Overview data={course} />
+
+              {this.state.view === 1 && <Overview data={course} />}
+              {this.state.view === 2 &&
+                data.course.videos.map(video => (
+                  <VideosList>
+                    <VideoItem videos={video} key={video.id} data={video} />
+                  </VideosList>
+                ))}
             </>
           );
         }}

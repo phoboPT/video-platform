@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import styled from "styled-components";
 import { element } from "prop-types";
-import Video from "./VideoItem";
+import VideoItem from "./VideoItem";
 
 const VideosList = styled.div`
   display: grid;
@@ -58,7 +58,7 @@ export class ShowCourse extends Component {
                   <h3>Content of Course {data.course.title} </h3>
                   <VideosList>
                     {data.course.videos.map(videos => (
-                      <Video
+                      <VideoItem
                         videos={videos}
                         key={videos.id}
                         data={data.course}
