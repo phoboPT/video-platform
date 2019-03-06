@@ -3,9 +3,7 @@ import CommentForm from "./CommentForm";
 
 export class Comments extends Component {
   render() {
-    <>
-      <CommentForm />
-    </>;
+    return <CommentForm />;
   }
 }
 

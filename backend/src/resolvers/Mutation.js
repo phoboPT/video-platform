@@ -530,6 +530,33 @@ const Mutations = {
       },
       info
     );
+  },
+  async createComCourse(parent, args, ctx, info) {
+    //  Check if they are logged in
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+
+    const comvideo = await ctx.db.mutation.createComCourse(
+      {
+        data: {
+          user: {
+            connect: {
+              id: ctx.request.userId
+            }
+          },
+          course: {
+            connect: {
+              id: args.id
+            }
+          },
+          ...args
+        }
+      },
+      info
+    );
+
+    return comvideo;
   }
 };
 
