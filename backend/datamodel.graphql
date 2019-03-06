@@ -89,14 +89,14 @@ type Category {
 #   updatedAt: DateTime!
 # }
 
-# type ComCourse {
-#   id: ID! @unique
-#   comment: String!
-#   user: User!
-#   course: Course!
-#   createdAt: DateTime!
-#   updatedAt: DateTime!
-# }
+type ComCourse {
+  id: ID! @unique
+  comment: String!
+  user: User!
+  course: Course!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
 
 type UserCourse {
   id: ID! @unique
