@@ -13,6 +13,7 @@ const CURRENT_COURSES_QUERY = gql`
       thumbnail
       state
       createdAt
+      price
       videos {
         id
         video {

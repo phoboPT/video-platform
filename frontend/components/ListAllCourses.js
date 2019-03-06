@@ -13,6 +13,7 @@ const ALL_COURSES_QUERY = gql`
       description
       thumbnail
       createdAt
+      price
     }
   }
 `;

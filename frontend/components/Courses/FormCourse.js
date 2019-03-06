@@ -140,8 +140,8 @@ class FormCourse extends Component {
                     type="number"
                     min="1"
                     step="any"
-                    name="thumbnail"
-                    placeholder="Price, "
+                    name="price"
+                    placeholder="Price in cents"
                     value={this.price}
                     onChange={this.saveState}
                     required

@@ -5,6 +5,7 @@ import Title from "../styles/Title";
 import Link from "next/link";
 import styled from "styled-components";
 import formatDate from "../../lib/formatDate";
+import formatMoney from "../../lib/formatMoney";
 
 const Div = styled.div`
   span {
@@ -72,6 +73,9 @@ class ListCourses extends Component {
           </span>
           <span>
             Created at: <State>{formatDate(course.createdAt)}</State>
+          </span>
+          <span>
+            Price: <State>{formatMoney(course.price)}</State>
           </span>
         </Div>
       </ItemStyles>

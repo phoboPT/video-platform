@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import styled from "styled-components";
 import Form from "../styles/Form";
 import gql from "graphql-tag";
 import Error from "../ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import LinkStyle from "../styles/LinkStyle";
-import Link from "next/link";
 import { Container } from "../styles/Container";
 
 const SINGLE_COURSE_QUERY = gql`
