@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Markdown from "react-markdown";
 
 class Overview extends Component {
   state = this.props;
@@ -9,7 +10,7 @@ class Overview extends Component {
         <br />
 
         <p>Title: {this.state.data.title}</p>
-        <p>Description: {this.state.data.description}</p>
+        <Markdown escapeHtml={false} source={this.state.data.description} />
       </div>
     );
   }

@@ -3,36 +3,51 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Item = styled.div`
-  max-width: 500px;
-  border: 1px solid black;
-  text-align: center;
+const List = styled.div`
+  max-width: 1400px;
+  margin: 40px auto 0 auto;
+
+  .image {
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    flex-basis: 5%;
+    border-bottom: 1px solid lightgray;
+  }
+  .call-out {
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    flex-basis: 50%;
+    border-bottom: 1px solid lightgray;
+  }
   img {
-    height: 45px !important;
-    width: 45px;
+    height: 30px;
+    width: 30px;
   }
-  .main {
-    width: 50%;
-    float: left;
-  }
-  .info {
-    width: 50%;
-    float: right;
-  }
+
   span {
     padding-left: 15px;
+  }
+  @media (min-width: 900px) {
+    display: flex;
+    justify-content: space-between;
   }
 `;
 
 export class Video extends Component {
-  static propTypes = { videos: PropTypes.object.isRequired };
+  static propTypes = {
+    videos: PropTypes.object.isRequired,
+    data: PropTypes.string.isRequired
+  };
 
   render() {
-    const { videos } = this.props;
+    const { videos, data } = this.props;
+
     console.log(videos);
     return (
-      <Item>
-        <div className="main">
+      <List>
+        <div className="image">
           <Link
             href={{
               pathname: "/video",
@@ -43,12 +58,17 @@ export class Video extends Component {
               <img src="../static/play-button.png" />
             </a>
           </Link>
-          <span>{videos.video.title}</span>
         </div>
-        <div className="info">
-          <p>{videos.video.description}</p>
+
+        <div className="call-out">
+          <span>
+            {data + 1} {videos.video.title}
+          </span>
         </div>
-      </Item>
+        <div className="call-out">
+          <span>{videos.video.description}</span>
+        </div>
+      </List>
     );
   }
 }

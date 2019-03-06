@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Overview from "./Overview";
 import VideoItem from "../VideoItem";
 import Comments from "./Comments";
+import Markdown from "react-markdown";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -19,7 +20,6 @@ const SINGLE_COURSE_QUERY = gql`
         name
       }
       videos {
-        id
         video {
           id
           title
@@ -97,6 +97,19 @@ const Bar = styled.div`
   }
 `;
 
+const List = styled.div`
+  display: inline;
+  max-width: 1400px;
+  margin: 40px auto 0 auto;
+
+  .call-out {
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    flex-basis: 30%;
+  }
+`;
+
 class ViewCourse extends Component {
   state = {
     view: 1
@@ -112,6 +125,7 @@ class ViewCourse extends Component {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
           const { course } = data;
+          console.log(course);
           return (
             <>
               <CourseContainer>
@@ -138,8 +152,10 @@ class ViewCourse extends Component {
 
               {this.state.view === 1 && <Overview data={course} />}
               {this.state.view === 2 &&
-                data.course.videos.map(video => (
-                  <VideoItem videos={video} key={video.id} data={video} />
+                data.course.videos.map((video, index) => (
+                  <>
+                    <VideoItem videos={video} data={index} key={video.id} />
+                  </>
                 ))}
               {this.state.view === 3 && <Comments data={course} />}
             </>
