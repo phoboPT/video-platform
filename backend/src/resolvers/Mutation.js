@@ -332,7 +332,7 @@ const Mutations = {
     const updates = {
       password: args.password
     };
-    console.log(args);
+
     //volta a encriptar a pass nova
     if (updates.password) {
       updates.password = await bcrypt.hash(updates.password, 10);
@@ -366,17 +366,16 @@ const Mutations = {
       where: { email: args.email },
       data: { resetToken, resetTokenExpiry }
     });
-    console.log(res);
 
     //3. Email them that reset tokenaaa
     const mailRes = await transport.sendMail({
-      from: "ruben@gmail.com",
+      from: "picus@gmail.com",
       to: user.email,
       subject: "Your password reset",
       html: makeANiceEmail(`Your  Password Reset Token is here!
-      \n\n <a href="${
-        process.env.FRONEND_URL
-      }/reset?resetToken=${resetToken}">Click Here to reset</a> `)
+      \n\n 
+      <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">
+      Click Here to reset</a> `)
     });
     return { message: "Thanks" };
   },

@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import Overview from "./Overview";
 import VideoItem from "../VideoItem";
-import { Container } from "../styles/Container";
+import Comments from "./Comments";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -72,6 +72,7 @@ const CourseContainer = styled.div`
     background: red;
     color: white;
     border: 0;
+    cursor: pointer;
     font-size: 2rem;
     font-weight: 600;
     padding: 0.5rem 1.2rem;
@@ -89,6 +90,7 @@ const Bar = styled.div`
     font-weight: 600;
     padding: 0.5rem 1.2rem;
     text-align: center;
+    cursor: pointer;
     &:hover {
       border-bottom: 3px solid red;
     }
@@ -129,15 +131,17 @@ class ViewCourse extends Component {
                 <button id="2" onClick={this.changeView}>
                   Course Content
                 </button>
+                <button id="3" onClick={this.changeView}>
+                  Comments
+                </button>
               </Bar>
 
               {this.state.view === 1 && <Overview data={course} />}
-              <div>
-                {this.state.view === 2 &&
-                  data.course.videos.map(video => (
-                    <VideoItem videos={video} key={video.id} data={video} />
-                  ))}
-              </div>
+              {this.state.view === 2 &&
+                data.course.videos.map(video => (
+                  <VideoItem videos={video} key={video.id} data={video} />
+                ))}
+              {this.state.view === 3 && <Comments data={course} />}
             </>
           );
         }}
