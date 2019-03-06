@@ -4,9 +4,23 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const Item = styled.div`
-  display: inline;
+  max-width: 500px;
+  border: 1px solid black;
+  text-align: center;
   img {
-    height: 45px;
+    height: 45px !important;
+    width: 45px;
+  }
+  .main {
+    width: 50%;
+    float: left;
+  }
+  .info {
+    width: 50%;
+    float: right;
+  }
+  span {
+    padding-left: 15px;
   }
 `;
 
@@ -15,20 +29,25 @@ export class Video extends Component {
 
   render() {
     const { videos } = this.props;
+    console.log(videos);
     return (
       <Item>
-        <Link
-          href={{
-            pathname: "/video",
-            query: { id: videos.video.id }
-          }}
-        >
-          <a>
-            <img src="../static/play-button.png" />
-          </a>
-        </Link>
-        <p>{videos.video.title}</p>
-        <p>{videos.price}</p>
+        <div className="main">
+          <Link
+            href={{
+              pathname: "/video",
+              query: { id: videos.video.id }
+            }}
+          >
+            <a>
+              <img src="../static/play-button.png" />
+            </a>
+          </Link>
+          <span>{videos.video.title}</span>
+        </div>
+        <div className="info">
+          <p>{videos.video.description}</p>
+        </div>
       </Item>
     );
   }

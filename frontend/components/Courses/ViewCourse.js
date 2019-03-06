@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import Overview from "./Overview";
 import VideoItem from "../VideoItem";
+import { Container } from "../styles/Container";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -35,15 +36,8 @@ const SINGLE_COURSE_QUERY = gql`
   }
 `;
 
-const VideosList = styled.div`
-  display: inline;
-  grid-template-columns: 1fr;
-  padding-top: 4rem;
-  grid-gap: 60px;
-  max-width: ${props => props.theme.maxWidth};
-`;
-
 const CourseContainer = styled.div`
+  border: 1px solid red;
   display: grid;
   color: white;
   display: flex;
@@ -138,12 +132,12 @@ class ViewCourse extends Component {
               </Bar>
 
               {this.state.view === 1 && <Overview data={course} />}
-              {this.state.view === 2 &&
-                data.course.videos.map(video => (
-                  <VideosList>
+              <div>
+                {this.state.view === 2 &&
+                  data.course.videos.map(video => (
                     <VideoItem videos={video} key={video.id} data={video} />
-                  </VideosList>
-                ))}
+                  ))}
+              </div>
             </>
           );
         }}
