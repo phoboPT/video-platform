@@ -20,6 +20,45 @@ const Button = styled.button`
   text-align: center !important;
 `;
 
+const Style = styled.div`
+  .container {
+    display: columuns;
+  }
+
+  .top-bar {
+    min-height: 50px;
+    background: lightgray;
+    order: 1;
+    padding-inline-start: 1fr;
+    text-align: center;
+    align-items: center;
+    border-radius: 25px;
+    button {
+      background-color: Transparent;
+      background-repeat: no-repeat;
+      border: none;
+      cursor: pointer;
+      overflow: hidden;
+      outline: none;
+      font-size: 17px;
+      padding: 16px 31px;
+      text-decoration: none;
+      text-shadow: 0px 1px 0px #000000;
+      &hover {
+        background-color: transparent;
+      }
+      &active {
+        position: relative;
+        top: 1px;
+      }
+    }
+  }
+
+  .main-bar {
+    float: bottom;
+  }
+`;
+
 class Courses extends Component {
   state = {
     createState: 0,
@@ -57,30 +96,27 @@ class Courses extends Component {
           if (!me) return <p>No Courses</p>;
           return (
             <>
-              {me.permission[0] !== "INSTRUTOR" && (
-                <LinkStyle>
+              {me.permission[0] === "INSTRUTOR" && (
+                <Style>
                   <div className="container">
-                    <section id="main">
+                    <section id="main" className="top-bar">
                       <button id="3" onClick={this.createCourse}>
                         My Courses
                       </button>
-                      <div>
-                        <button id="1" onClick={this.createCourse}>
-                          Create Course
-                        </button>
-                      </div>
-                      <div>
-                        <button id="1" onClick={this.uploadVideo}>
-                          Upload Video
-                        </button>
-                      </div>
-                      <div>
-                        <button id="1" onClick={this.videosState}>
-                          My Videos
-                        </button>
-                      </div>
+
+                      <button id="1" onClick={this.createCourse}>
+                        Create Course
+                      </button>
+
+                      <button id="1" onClick={this.uploadVideo}>
+                        Upload Video
+                      </button>
+
+                      <button id="1" onClick={this.videosState}>
+                        My Videos
+                      </button>
                     </section>
-                    <aside id="sidebar">
+                    <aside id="sidebar" className="main-bar">
                       {this.state.createState === 3 && <MyCourses />}
                       {this.state.createState === 1 && (
                         <FormCourse saveToState={this.saveToState} />
@@ -100,9 +136,9 @@ class Courses extends Component {
                       )}
                     </aside>
                   </div>
-                </LinkStyle>
+                </Style>
               )}
-              {me.permission[0] !== "USER" && (
+              {me.permission[0] === "USER" && (
                 <LinkStyle>
                   <div className="grid-container">
                     <div className="left">
