@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import ShowCourse from "../components/ShowCourse";
-const CoursePage = ({ query }) => (
+import ViewCourse from "../components/Courses/ViewCourse";
+
+const ViewCoursePage = ({ query }) => (
   <div>
-    <ShowCourse id={query.id} />
+    <ViewCourse id={query.id} />
   </div>
 );
 
-export default CoursePage;
+export default ViewCoursePage;
