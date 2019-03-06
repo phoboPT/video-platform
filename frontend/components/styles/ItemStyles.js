@@ -9,7 +9,7 @@ const Item = styled.div`
   flex-wrap: wrap;
   img {
     width: 100%;
-    height: 400px;
+    height: 250px;
     object-fit: cover;
   }
   p {

@@ -56,6 +56,7 @@ const Style = styled.div`
 
   .main-bar {
     float: bottom;
+    text-align: center;
   }
 `;
 

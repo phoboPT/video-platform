@@ -12,12 +12,14 @@ const CREATE_COURSE_MUTATION = gql`
     # $target: String!
     $thumbnail: String!
     $description: String!
+    $price: Float!
   ) {
     createCourse(
       title: $title
       # target: $target
       thumbnail: $thumbnail
       description: $description
+      price: $price
     ) {
       id
     }
@@ -49,7 +51,8 @@ class FormCourse extends Component {
     description: "",
     state_: "",
     target: "",
-    thumbnail: ""
+    thumbnail: "",
+    price: 0
   };
 
   saveState = e => {
@@ -84,7 +87,7 @@ class FormCourse extends Component {
                     placeholder="title"
                     value={this.title}
                     onChange={this.saveState}
-                    required
+                    // required
                   />
                 </label>
                 <label htmlFor="description">
@@ -127,6 +130,19 @@ class FormCourse extends Component {
                     name="thumbnail"
                     placeholder="thumbnail"
                     value={this.thumbnail}
+                    onChange={this.saveState}
+                    required
+                  />
+                </label>
+                <label htmlFor="price">
+                  Price
+                  <input
+                    type="number"
+                    min="1"
+                    step="any"
+                    name="thumbnail"
+                    placeholder="Price, "
+                    value={this.price}
                     onChange={this.saveState}
                     required
                   />
