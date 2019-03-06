@@ -25,6 +25,7 @@ export class Course extends Component {
         </Title>
         <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
         <p>{course.description}</p>
+        <p>{course.price}</p>
       </ItemStyles>
     );
   }

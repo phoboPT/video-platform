@@ -162,7 +162,7 @@ class CreateVideo extends Component {
                           name="file"
                           id="file"
                           placeholder="Upload a Video"
-                          required
+                          // required
                           onChange={this.uploadVideo}
                         />
                       )}
