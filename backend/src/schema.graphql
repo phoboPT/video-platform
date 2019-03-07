@@ -58,7 +58,7 @@ type Mutation {
     description: String
   ): Course!
   deleteCourse(id: ID!): CourseVideos
-  createComCourse(id: ID!, comment: String!): ComCourse!
+  createComCourse(courseId: ID!, comment: String!): ComCourse!
   # updateComCourse(id: ID!, comment: String!): ComCourse!
   # deleteComCourse(id: ID!): ComCourse
 }

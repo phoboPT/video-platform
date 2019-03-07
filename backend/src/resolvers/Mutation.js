@@ -547,15 +547,15 @@ const Mutations = {
           },
           course: {
             connect: {
-              id: args.id
+              id: args.courseId
             }
           },
-          ...args
+          comment: args.comment
         }
       },
       info
     );
-
+    console.log("boa");
     return comvideo;
   }
 };
