@@ -15,8 +15,10 @@ const Mutations = {
     const video = {
       ...args
     };
+    const { course } = video;
     //elimina o id dos updates
     delete video.category;
+    delete video.course;
 
     const videos = await ctx.db.mutation.createVideo(
       {
@@ -36,6 +38,21 @@ const Mutations = {
       },
       info
     );
+
+    ctx.db.mutation.createCourseVideos(
+      {
+        data: {
+          course: {
+            connect: { id: course }
+          },
+          video: {
+            connect: { id: videos.id }
+          }
+        }
+      },
+      info
+    );
+
     //para dar debug console.log(video);
     return videos;
   },
@@ -423,7 +440,7 @@ const Mutations = {
       throw new Error("You must be signed in soooon");
     }
 
-    // 4. If its not, create a fresh CartItem for that user!
+    // 4. If its not, create a fresh CourseVideo for that Course!
     return ctx.db.mutation.createCourse(
       {
         data: {
@@ -438,48 +455,7 @@ const Mutations = {
       info
     );
   },
-  async addToCourse(parent, args, ctx, info) {
-    //Make sure they are signin
-    const { userId } = ctx.request;
-    if (!userId) {
-      throw new Error("You must be signed in soooon");
-    }
 
-    //query the users current cart
-    const [existingVideo] = await ctx.db.query.courseVideoses({
-      where: {
-        course: { id: args.courseId },
-        video: { id: args.id }
-      }
-    });
-    //check if that item is already in their cart
-    if (existingVideo) {
-      console.log("Already added");
-      return ctx.db.mutation.deleteCourseVideos(
-        {
-          where: { videos: args.id }
-        },
-        info
-      );
-    }
-
-    //send a message if it is
-
-    //if its not, create a fresh Video
-    return ctx.db.mutation.createCourseVideos(
-      {
-        data: {
-          course: {
-            connect: { id: args.courseId }
-          },
-          video: {
-            connect: { id: args.id }
-          }
-        }
-      },
-      info
-    );
-  },
   updateCourse(parent, args, ctx, info) {
     //faz uma copia dos updates
     const { userId } = ctx.request;

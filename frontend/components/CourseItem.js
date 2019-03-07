@@ -14,17 +14,14 @@ export class Course extends Component {
     const { course } = this.props;
     return (
       <ItemStyles>
-        <Title>
-          <Link
-            href={{
-              pathname: "/course",
-              query: { id: course.id }
-            }}
-          >
-            <a>{course.title}</a>
-          </Link>
-        </Title>
-        <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+        <Link
+          href={{
+            pathname: "/course",
+            query: { id: course.id }
+          }}
+        >
+          <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+        </Link>
         <p>{course.description}</p>
         <p>{formatMoney(course.price)}</p>
       </ItemStyles>

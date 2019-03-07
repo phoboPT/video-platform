@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Error from "../ErrorMessage.js";
 import { ALL_VIDEOS_USER } from "../Videos/Videos";
 import Router from "next/router";
+import { ALL_COURSES_QUERY } from "../ListAllCourses";
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
@@ -14,6 +15,7 @@ const CREATE_VIDEO_MUTATION = gql`
     $category: ID!
     $thumbnail: String
     $urlVideo: String
+    $course: ID!
   ) {
     createVideo(
       title: $title
@@ -21,6 +23,7 @@ const CREATE_VIDEO_MUTATION = gql`
       category: $category
       thumbnail: $thumbnail
       urlVideo: $urlVideo
+      course: $course
     ) {
       id
     }
@@ -61,11 +64,15 @@ const Container = styled.div`
     height: 50px;
   }
 `;
-const ALL_CATEGORY = gql`
-  query ALL_CATEGORY {
+const CATEGORY_COURSE_QUERY = gql`
+  query CATEGORY_COURSE_QUERY {
     categories {
       id
       name
+    }
+    courses {
+      id
+      title
     }
   }
 `;
@@ -77,6 +84,7 @@ class CreateVideo extends Component {
     urlVideo: "",
     thumbnail: "",
     category: "",
+    course: "",
     hasVideo: true,
     isUploading: 0
   };
@@ -109,21 +117,24 @@ class CreateVideo extends Component {
         hasVideo: false
       });
     }
-    console.log(file);
     this.setState({
       urlVideo: file.url,
-      isUploading: 0
+      isUploading: 2
     });
   };
 
   saveCategory = e => {
     this.setState({ category: e.target.value });
   };
+  saveCourse = e => {
+    this.setState({ course: e.target.value });
+  };
 
   render() {
     return (
-      <Query query={ALL_CATEGORY}>
+      <Query query={CATEGORY_COURSE_QUERY}>
         {({ data, error, loading }) => {
+          console.log(data);
           if (loading) {
             return <p>Loading...</p>;
           }
@@ -135,7 +146,10 @@ class CreateVideo extends Component {
               <Mutation
                 mutation={CREATE_VIDEO_MUTATION}
                 variables={this.state}
-                refetchQueries={[{ query: ALL_VIDEOS_USER }]}
+                refetchQueries={[
+                  { query: ALL_VIDEOS_USER },
+                  { query: ALL_COURSES_QUERY }
+                ]}
               >
                 {(createVideo, { loading, error }) => (
                   <Form
@@ -153,9 +167,7 @@ class CreateVideo extends Component {
                       <h2>Video</h2>
                       <label htmlFor="file">Video</label>
 
-                      {this.state.isUploading === 1 ? (
-                        <img src="../../static/loading.gif" />
-                      ) : (
+                      {this.state.isUploading === 0 && (
                         <input
                           className="file"
                           type="file"
@@ -165,6 +177,13 @@ class CreateVideo extends Component {
                           // required
                           onChange={this.uploadVideo}
                         />
+                      )}
+
+                      {this.state.isUploading === 1 && (
+                        <img src="../../static/loading.gif" />
+                      )}
+                      {this.state.isUploading === 2 && (
+                        <img src="../../static/done.png" />
                       )}
                       <label htmlFor="title">Title</label>
                       <input
@@ -204,10 +223,33 @@ class CreateVideo extends Component {
                       ) : (
                         <></>
                       )}
-                      <select id="dropdownlist" onChange={this.saveCategory}>
+                      <select
+                        id="dropdownlist"
+                        onChange={this.handleChange}
+                        name="category"
+                      >
                         {data.categories.map(category => (
                           <option key={category.id} value={category.id}>
                             {category.name}
+                          </option>
+                        ))}
+                      </select>
+
+                      <label htmlFor="thumbnail">Course</label>
+
+                      {this.state.course === "" ? (
+                        this.setState({ course: data.courses[0].id })
+                      ) : (
+                        <></>
+                      )}
+                      <select
+                        id="dropdownlist"
+                        name="course"
+                        onChange={this.handleChange}
+                      >
+                        {data.courses.map(course => (
+                          <option key={course.id} value={course.id}>
+                            {course.title}
                           </option>
                         ))}
                       </select>

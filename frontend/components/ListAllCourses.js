@@ -61,3 +61,4 @@ export class Courses extends Component {
 }
 
 export default Courses;
+export { ALL_COURSES_QUERY };

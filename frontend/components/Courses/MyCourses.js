@@ -36,19 +36,19 @@ class MyCourses extends Component {
     return (
       <Query query={CURRENT_COURSES_QUERY}>
         {({ data, error, loading }) => {
-          if (loading) {
-            return <p>Loading...</p>;
+          if (loading) return <p>Loading...</p>;
+
+          if (error) return <p>Error:{error.message}</p>;
+          if (data.coursesUser) {
+            return (
+              <ItemList>
+                {data.coursesUser.map(course => (
+                  <CourseItem course={course} key={course.id} />
+                ))}
+              </ItemList>
+            );
           }
-          if (error) {
-            return <p>Error:{error.message}</p>;
-          }
-          return (
-            <ItemList>
-              {data.coursesUser.map(course => (
-                <CourseItem course={course} key={course.id} />
-              ))}
-            </ItemList>
-          );
+          return null;
         }}
       </Query>
     );

@@ -37,7 +37,6 @@ const SINGLE_COURSE_QUERY = gql`
 `;
 
 const CourseContainer = styled.div`
-  border: 1px solid red;
   display: grid;
   color: white;
   display: flex;
@@ -94,19 +93,10 @@ const Bar = styled.div`
     &:hover {
       border-bottom: 3px solid red;
     }
-  }
-`;
 
-const List = styled.div`
-  display: inline;
-  max-width: 1400px;
-  margin: 40px auto 0 auto;
-
-  .call-out {
-    padding: 20px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    flex-basis: 30%;
+    &:active {
+      border-bottom: 3px solid red;
+    }
   }
 `;
 
@@ -125,7 +115,6 @@ class ViewCourse extends Component {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
           const { course } = data;
-          console.log(course);
           return (
             <>
               <CourseContainer>
@@ -154,10 +143,17 @@ class ViewCourse extends Component {
               {this.state.view === 2 &&
                 data.course.videos.map((video, index) => (
                   <>
-                    <VideoItem videos={video} data={index} key={video.id} />
+                    <p>{video.video.id} ahah</p>
+                    <VideoItem
+                      videos={video}
+                      data={index}
+                      key={video.video.id}
+                    />
                   </>
                 ))}
-              {this.state.view === 3 && <Comments data={course} />}
+              {this.state.view === 3 && (
+                <Comments data={course} key={course.comment.id} />
+              )}
             </>
           );
         }}

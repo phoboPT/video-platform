@@ -23,7 +23,8 @@ const Div = styled.div`
 
 class Video extends Component {
   static propTypes = {
-    video: PropTypes.object.isRequired
+    video: PropTypes.object.isRequired,
+    data: PropTypes.number.isRequired
   };
 
   render() {

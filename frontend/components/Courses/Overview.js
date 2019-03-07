@@ -2,15 +2,14 @@ import React, { Component } from "react";
 import Markdown from "react-markdown";
 
 class Overview extends Component {
-  state = this.props;
   render() {
     return (
       <div>
-        <p>Author: {this.state.data.user.name}</p>
+        <p>Author: {this.props.data.user.name}</p>
         <br />
 
-        <p>Title: {this.state.data.title}</p>
-        <Markdown escapeHtml={false} source={this.state.data.description} />
+        <p>Title: {this.props.data.title}</p>
+        <Markdown escapeHtml={false} source={this.props.data.description} />
       </div>
     );
   }

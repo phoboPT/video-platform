@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 const List = styled.div`
   max-width: 1400px;
-  margin: 40px auto 0 auto;
 
   .image {
     padding: 20px;
@@ -14,12 +13,28 @@ const List = styled.div`
     flex-basis: 5%;
     border-bottom: 1px solid lightgray;
   }
-  .call-out {
+  .title {
     padding: 20px;
     box-sizing: border-box;
     margin-bottom: 20px;
-    flex-basis: 50%;
+    flex-basis: 20%;
     border-bottom: 1px solid lightgray;
+  }
+  .description {
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    flex-basis: 70%;
+    border-bottom: 1px solid lightgray;
+  }
+  .end {
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    flex-basis: 5%;
+    border-bottom: 1px solid lightgray;
+    button {
+    }
   }
   img {
     height: 30px;
@@ -44,7 +59,6 @@ export class Video extends Component {
   render() {
     const { videos, data } = this.props;
 
-    console.log(videos);
     return (
       <List>
         <div className="image">
@@ -60,14 +74,15 @@ export class Video extends Component {
           </Link>
         </div>
 
-        <div className="call-out">
+        <div className="title">
           <span>
             {data + 1} {videos.video.title}
           </span>
         </div>
-        <div className="call-out">
+        <div className="description">
           <span>{videos.video.description}</span>
         </div>
+        <div className="end">{this.props.children}</div>
       </List>
     );
   }

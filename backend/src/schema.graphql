@@ -18,6 +18,7 @@ type Mutation {
     category: ID!
     thumbnail: String
     urlVideo: String
+    course: ID!
   ): Video!
   updateVideo(
     id: ID!
