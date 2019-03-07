@@ -533,6 +533,33 @@ const Mutations = {
     );
 
     return comvideo;
+  },
+  async removeFromCourse(parent, args, ctx, info) {
+    //Make sure they are signin
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in soooon");
+    }
+
+    //query the users current cart
+    const [existingVideo] = await ctx.db.query.courseVideoses({
+      where: {
+        course: { id: args.courseId },
+        video: { id: args.id }
+      }
+    });
+    //check if that item is already in their cart
+    if (existingVideo) {
+      console.log("Already added");
+      return ctx.db.mutation.deleteCourseVideos(
+        {
+          where: { id: existingVideo.id }
+        },
+        info
+      );
+    } else {
+      throw "Video already removed";
+    }
   }
 };
 

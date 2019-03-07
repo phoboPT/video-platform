@@ -5,6 +5,7 @@ import Error from "../ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
 import VideoItem from "../VideoItem";
+import RemoveVideo from "./RemoveVideo";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -128,7 +129,6 @@ class UpdateCourse extends Component {
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
-          console.log(data);
           return (
             <Mutation mutation={UPDATE_COURSE_MUTATION} variables={this.state}>
               {(updateCourse, { loading, error }) => (
@@ -205,13 +205,24 @@ class UpdateCourse extends Component {
                   </CourseContainer>
                   {this.state.showVideos && (
                     <div>
-                      {data.course.videos.map((video, index) => (
-                        <>
-                          <VideoItem videos={video} data={index} key={video.id}>
-                            <button>Remove</button>
-                          </VideoItem>
-                        </>
-                      ))}
+                      {data.course.videos.map((video, index) => {
+                        if (video) {
+                          return (
+                            <VideoItem
+                              videos={video}
+                              data={index}
+                              key={video.video.id}
+                            >
+                              <RemoveVideo
+                                courseId={data.course.id}
+                                id={video.video.id}
+                              />
+                            </VideoItem>
+                          );
+                        } else {
+                          <p>HI</p>;
+                        }
+                      })}
                     </div>
                   )}
                 </>
@@ -225,3 +236,4 @@ class UpdateCourse extends Component {
 }
 
 export default UpdateCourse;
+export { SINGLE_COURSE_QUERY };

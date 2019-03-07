@@ -140,17 +140,16 @@ class ViewCourse extends Component {
                 </button>
               </Bar>
 
-              {this.state.view === 1 && <Overview data={course} />}
+              {this.state.view === 1 && (
+                <Overview data={course} key={course.id} />
+              )}
               {this.state.view === 2 &&
                 data.course.videos.map((video, index) => (
-                  <>
-                    <p>{video.video.id} ahah</p>
-                    <VideoItem
-                      videos={video}
-                      data={index}
-                      key={video.video.id}
-                    />
-                  </>
+                  <VideoItem
+                    videos={video}
+                    data={parseInt(index)}
+                    key={video.video.id}
+                  />
                 ))}
               {this.state.view === 3 && (
                 <>

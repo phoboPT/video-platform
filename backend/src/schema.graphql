@@ -51,7 +51,7 @@ type Mutation {
     description: String!
     price: Float!
   ): Course!
-  addToCourse(id: ID!, courseId: ID!): Course
+  removeFromCourse(id: ID!, courseId: ID!): Course
   updateCourse(
     id: ID!
     title: String

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Error from "../ErrorMessage.js";
 import { ALL_VIDEOS_USER } from "../Videos/Videos";
 import Router from "next/router";
-import { ALL_COURSES_QUERY } from "../ListAllCourses";
+import { ALL_COURSES_QUERY } from "../Courses/ListAllCourses";
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(

@@ -9,7 +9,6 @@ import gql from "graphql-tag";
 import Form from "../styles/Form";
 import Error from "../ErrorMessage";
 import Link from "next/link";
-import AddVideo from "./AddVideo";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -78,9 +77,7 @@ class CreateCourse extends Component {
             }
             return data.videosUser.map(video => (
               <div key={video.id}>
-                <VideoSelect page={this.props.page} video={video}>
-                  <AddVideo courseId={this.state.courseId} id={video.id} />
-                </VideoSelect>
+                <VideoSelect page={this.props.page} video={video} />
               </div>
             ));
           }}
