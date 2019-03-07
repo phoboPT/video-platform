@@ -58,11 +58,7 @@ export class ShowCourse extends Component {
                   <h3>Content of Course {data.course.title} </h3>
                   <VideosList>
                     {data.course.videos.map(videos => (
-                      <VideoItem
-                        videos={videos}
-                        key={videos.id}
-                        data={data.course}
-                      />
+                      <VideoItem videos={videos} key={videos.id} />
                     ))}
                   </VideosList>
                 </>

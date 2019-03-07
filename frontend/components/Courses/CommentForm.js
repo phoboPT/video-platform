@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import Error from "../ErrorMessage";
+import { ALL_COMMENTS_QUERY } from "./ListComments";
 
 const Style = styled.div`
   text-align: right;
@@ -49,7 +50,12 @@ export class CommentForm extends Component {
       <Mutation
         mutation={ADD_COMMENT}
         variables={this.state}
-        // refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+        refetchQueries={[
+          {
+            query: ALL_COMMENTS_QUERY,
+            variables: { courseId: this.state.courseId }
+          }
+        ]}
       >
         {(createComCourse, { loading, error }) => (
           <Style>

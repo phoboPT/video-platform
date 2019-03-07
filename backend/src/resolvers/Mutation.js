@@ -11,7 +11,7 @@ const Mutations = {
     if (!userId) {
       throw new Error("You must be logged in to do that!");
     }
-    console.log(args);
+
     const video = {
       ...args
     };
@@ -555,7 +555,7 @@ const Mutations = {
       },
       info
     );
-    console.log("boa");
+
     return comvideo;
   }
 };

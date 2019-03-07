@@ -104,6 +104,13 @@ type Query {
     skip: Int
     first: Int
   ): [Video]
+  # listar todos os comentarios de um cursos
+  comCourse(
+    where: ComCourseWhereInput
+    orderBy: VideoOrderByInput
+    skip: Int
+    first: Int
+  ): [ComCourse]
 
   videosSearch(where: VideoWhereInput!): [Video]
   # comsVideo(id: ID!): [ComVideo]
