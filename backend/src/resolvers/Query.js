@@ -104,7 +104,7 @@ const Query = {
   },
   videosUserSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    console.log(args);
+
     //Ver se esta logado
     if (!userId) {
       throw new Error("you must be signed in!");
@@ -139,6 +139,20 @@ const Query = {
     return ctx.db.query.courses(
       {
         ...args
+      },
+      info
+    );
+  },
+  comCourse(parent, args, ctx, info) {
+    //query o video atual com comparaçao de ids de user
+
+    return ctx.db.query.comCourses(
+      {
+        where: {
+          course: {
+            id: args.courseId
+          }
+        }
       },
       info
     );

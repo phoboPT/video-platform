@@ -4,8 +4,9 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import Overview from "./Overview";
 import VideoItem from "../VideoItem";
-import Comments from "./Comments";
 import Markdown from "react-markdown";
+import CommentForm from "./CommentForm";
+import ListComments from "./ListComments";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -152,7 +153,10 @@ class ViewCourse extends Component {
                   </>
                 ))}
               {this.state.view === 3 && (
-                <Comments data={course} key={course.comment.id} />
+                <>
+                  <CommentForm data={course} />
+                  <ListComments data={course} />
+                </>
               )}
             </>
           );
