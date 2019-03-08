@@ -9,6 +9,7 @@ const ALL_COMMENTS_QUERY = gql`
       id
       comment
       user {
+        id
         name
       }
       createdAt
