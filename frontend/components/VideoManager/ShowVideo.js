@@ -49,8 +49,6 @@ const Grid = styled.div`
 
 class ShowVideo extends Component {
   render() {
-    console.log(this.props.id);
-
     return (
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading }) => {

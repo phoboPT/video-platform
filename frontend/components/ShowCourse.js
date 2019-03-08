@@ -32,9 +32,7 @@ const SINGLE_COURSE_QUERY = gql`
           title
           description
           state
-          category {
-            name
-          }
+
           thumbnail
           createdAt
         }

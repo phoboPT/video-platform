@@ -14,6 +14,9 @@ const ALL_COURSES_QUERY = gql`
       thumbnail
       createdAt
       price
+      user {
+        name
+      }
     }
   }
 `;

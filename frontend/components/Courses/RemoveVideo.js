@@ -46,7 +46,6 @@ class AddVideo extends Component {
   render() {
     const { id } = this.props;
     const { courseId } = this.props;
-    console.log(this.props);
     return (
       <Mutation
         mutation={ADD_VIDEO_COURSE}
