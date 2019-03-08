@@ -60,7 +60,7 @@ type Mutation {
   deleteCourse(id: ID!): CourseVideos
   createComCourse(courseId: ID!, comment: String!): ComCourse!
   # updateComCourse(id: ID!, comment: String!): ComCourse!
-  # deleteComCourse(id: ID!): ComCourse
+  deleteComCourse(id: ID!): ComCourse
 }
 
 type Query {
@@ -107,9 +107,7 @@ type Query {
   # listar todos os comentarios de um cursos
   comCourse(
     where: ComCourseWhereInput
-    orderBy: VideoOrderByInput
-    skip: Int
-    first: Int
+    orderBy: ComCourseOrderByInput
   ): [ComCourse]
 
   videosSearch(where: VideoWhereInput!): [Video]
