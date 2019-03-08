@@ -67,7 +67,7 @@ class Video extends Component {
           <Link href={{ pathname: "updateVideo", query: { id: video.id } }}>
             <a>Edit </a>
           </Link>
-          <p>Add to cart</p>
+
           <DeleteVideo id={video.id}> Delete</DeleteVideo>
         </div>
       </ItemStyles>

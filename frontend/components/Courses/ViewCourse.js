@@ -141,6 +141,7 @@ class ViewCourse extends Component {
                 <Overview data={course} key={course.id} />
               )}
               {this.state.view === 2 &&
+                data.course.videos === null &&
                 data.course.videos.map((video, index) => (
                   <VideoItem
                     videos={video}

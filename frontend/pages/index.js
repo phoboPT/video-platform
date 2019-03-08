@@ -1,6 +1,6 @@
 import Link from "next/link";
-import ListVideosInterest from "../components/ListVideosInterest";
-import ListAllCourses from "../components/Courses/ListAllCourses";
+import ListVideosInterest from "../components/CoursesList/ListVideosInterest";
+import ListAllCourses from "../components/CoursesList/ListAllCourses";
 const Home = props => (
   <div>
     <ListVideosInterest />

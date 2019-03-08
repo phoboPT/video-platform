@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Error from "../ErrorMessage.js";
 import { ALL_VIDEOS_USER } from "../Videos/Videos";
 import Router from "next/router";
-import { ALL_COURSES_QUERY } from "../Courses/ListAllCourses";
+import { ALL_COURSES_QUERY } from "../CoursesList/ListAllCourses";
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
@@ -90,12 +90,9 @@ class CreateVideo extends Component {
   };
 
   uploadVideo = async e => {
-    console.log(this.state.isUploading);
-
     this.setState({
       isUploading: 1
     });
-    console.log(this.state.isUploading);
 
     const files = e.target.files;
     const data = new FormData();
@@ -128,7 +125,6 @@ class CreateVideo extends Component {
     return (
       <Query query={COURSE_QUERY}>
         {({ data, error, loading }) => {
-          console.log(data);
           if (loading) {
             return <p>Loading...</p>;
           }
