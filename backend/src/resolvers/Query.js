@@ -152,7 +152,8 @@ const Query = {
           course: {
             id: args.courseId
           }
-        }
+        },
+        orderBy: "createdAt_DESC"
       },
       info
     );

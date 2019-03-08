@@ -540,6 +540,34 @@ const Mutations = {
 
     return comvideo;
   },
+  async deleteComCourse(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+    const where = {
+      id: args.id
+    };
+    //1.encontrar o video
+    const comCourse = await ctx.db.query.ComCourse(
+      {
+        where
+      },
+      `{id}`
+    );
+    //2.checkar se tem permissoes para o apagar
+    const ownsComCourse = comCourse.user.id === ctx.request.userId;
+
+    if (!ownsCourse) {
+      throw new Error("You don't have permission to do that!");
+    }
+    //3.dar delete
+    return ctx.db.mutation.deleteComCourse(
+      {
+        where
+      },
+      info
+    );
+  },
   async removeFromCourse(parent, args, ctx, info) {
     //Make sure they are signin
     const { userId } = ctx.request;

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import formatDate from "../../lib/formatDate";
-import User from "../Authentication/User";
-import { MenuDots, List } from "../styles/CommentItemStyle";
+import formatDate from "../../../lib/formatDate";
+import User from "../../Authentication/User";
+import { MenuDots, List } from "../../styles/CommentItemStyle";
 
 export class Video extends Component {
   static propTypes = {
@@ -42,9 +42,7 @@ export class Video extends Component {
                           </Link>
                         </li>
                         <li className="item">
-                          <Link href="#">
-                            <a>Eliminar</a>
-                          </Link>
+                          <button>delete</button>
                         </li>
                       </ul>
                     </li>

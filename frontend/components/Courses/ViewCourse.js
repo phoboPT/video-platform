@@ -5,8 +5,8 @@ import styled from "styled-components";
 import Overview from "./Overview";
 import VideoItem from "../VideoItem";
 import Markdown from "react-markdown";
-import CommentForm from "./CommentForm";
-import ListComments from "./ListComments";
+import CommentForm from "./Comments/CommentForm";
+import ListComments from "./Comments/ListComments";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import Error from "../ErrorMessage";
+import Error from "../../ErrorMessage";
 import { ALL_COMMENTS_QUERY } from "./ListComments";
 
 const Style = styled.div`
@@ -15,6 +15,9 @@ const Style = styled.div`
     float: right;
     width: calc(100% - 35px);
     height: auto;
+  }
+  fieldset {
+    border: none;
   }
   button {
     color: #ffffff;
@@ -67,17 +70,18 @@ export class CommentForm extends Component {
               }}
             >
               <Error error={error} />
-
-              <textarea
-                id="comment"
-                name="comment"
-                placeholder="Write your comment"
-                required
-                rows="6"
-                value={this.state.comment}
-                onChange={this.saveState}
-              />
-              <button>Comment</button>
+              <fieldset disabled={loading} aria-busy={loading}>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  placeholder="Write your comment"
+                  required
+                  rows="6"
+                  value={this.state.comment}
+                  onChange={this.saveState}
+                />
+                <button>Comment</button>
+              </fieldset>
             </form>
           </Style>
         )}
@@ -85,5 +89,4 @@ export class CommentForm extends Component {
     );
   }
 }
-
 export default CommentForm;
