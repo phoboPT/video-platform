@@ -7,11 +7,13 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  text-align: center;
   img {
     width: 100%;
     height: 250px;
     object-fit: cover;
     cursor: pointer;
+    padding: auto;
   }
   p {
     font-size: 12px;
@@ -27,6 +29,7 @@ const Item = styled.div`
     border-top: 1px solid ${props => props.theme.lightgrey};
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     grid-gap: 1px;
+
     background: ${props => props.theme.lightgrey};
     & > * {
       background: white;
@@ -34,6 +37,9 @@ const Item = styled.div`
       font-family: "radnika_next";
       font-size: 1rem;
       padding: 1rem;
+    }
+    a {
+      padding-top: 25%;
     }
   }
 `;

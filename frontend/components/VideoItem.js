@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const List = styled.div`
-  max-width: 1400px;
-
   .image {
     padding: 20px;
     box-sizing: border-box;
@@ -24,14 +22,14 @@ const List = styled.div`
     padding: 20px;
     box-sizing: border-box;
     margin-bottom: 20px;
-    flex-basis: 70%;
+    flex-basis: 65%;
     border-bottom: 1px solid lightgray;
   }
   .end {
     padding: 20px;
     box-sizing: border-box;
     margin-bottom: 20px;
-    flex-basis: 5%;
+    flex-basis: 10%;
     border-bottom: 1px solid lightgray;
     button {
     }
@@ -53,7 +51,7 @@ const List = styled.div`
 export class Video extends Component {
   static propTypes = {
     videos: PropTypes.object.isRequired,
-    data: PropTypes.string.isRequired
+    data: PropTypes.number.isRequired
   };
 
   render() {

@@ -20,9 +20,7 @@ const CURRENT_COURSES_QUERY = gql`
           title
           description
           state
-          category {
-            name
-          }
+
           thumbnail
           createdAt
         }

@@ -15,7 +15,6 @@ type Mutation {
   createVideo(
     title: String!
     description: String
-    category: ID!
     thumbnail: String
     urlVideo: String
     course: ID!
@@ -51,7 +50,7 @@ type Mutation {
     description: String!
     price: Float!
   ): Course!
-  addToCourse(id: ID!, courseId: ID!): Course
+  removeFromCourse(id: ID!, courseId: ID!): Course
   updateCourse(
     id: ID!
     title: String

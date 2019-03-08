@@ -17,7 +17,6 @@ const Mutations = {
     };
     const { course } = video;
     //elimina o id dos updates
-    delete video.category;
     delete video.course;
 
     const videos = await ctx.db.mutation.createVideo(
@@ -28,11 +27,7 @@ const Mutations = {
               id: userId
             }
           },
-          category: {
-            connect: {
-              id: args.category
-            }
-          },
+
           ...video
         }
       },
@@ -94,11 +89,11 @@ const Mutations = {
       `{id}`
     );
     //2.checkar se tem permissoes para o apagar
-    const ownsVideo = video.user.id === ctx.request.userId;
-    //falta verificar se é admin ou user (hasPermissions)
-    if (!ownsVideo) {
-      throw new Error("You don't have permission to do that!");
-    }
+    //const ownsVideo = video.user.id === ctx.request.userId;
+    //TODO falta verificar se é admin ou user (hasPermissions)
+    // if (!ownsVideo) {
+    //   throw new Error("You don't have permission to do that!");
+    // }
     //3.dar delete
     return ctx.db.mutation.deleteVideo(
       {
@@ -533,6 +528,33 @@ const Mutations = {
     );
 
     return comvideo;
+  },
+  async removeFromCourse(parent, args, ctx, info) {
+    //Make sure they are signin
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in soooon");
+    }
+
+    //query the users current cart
+    const [existingVideo] = await ctx.db.query.courseVideoses({
+      where: {
+        course: { id: args.courseId },
+        video: { id: args.id }
+      }
+    });
+    //check if that item is already in their cart
+    if (existingVideo) {
+      console.log("Already added");
+      return ctx.db.mutation.deleteCourseVideos(
+        {
+          where: { id: existingVideo.id }
+        },
+        info
+      );
+    } else {
+      throw "Video already removed";
+    }
   }
 };
 

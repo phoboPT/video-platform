@@ -6,13 +6,12 @@ import styled from "styled-components";
 import Error from "../ErrorMessage.js";
 import { ALL_VIDEOS_USER } from "../Videos/Videos";
 import Router from "next/router";
-import { ALL_COURSES_QUERY } from "../ListAllCourses";
+import { ALL_COURSES_QUERY } from "../Courses/ListAllCourses";
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
     $title: String!
     $description: String!
-    $category: ID!
     $thumbnail: String
     $urlVideo: String
     $course: ID!
@@ -20,7 +19,6 @@ const CREATE_VIDEO_MUTATION = gql`
     createVideo(
       title: $title
       description: $description
-      category: $category
       thumbnail: $thumbnail
       urlVideo: $urlVideo
       course: $course
@@ -64,12 +62,8 @@ const Container = styled.div`
     height: 50px;
   }
 `;
-const CATEGORY_COURSE_QUERY = gql`
-  query CATEGORY_COURSE_QUERY {
-    categories {
-      id
-      name
-    }
+const COURSE_QUERY = gql`
+  query COURSE_QUERY {
     courses {
       id
       title
@@ -132,7 +126,7 @@ class CreateVideo extends Component {
 
   render() {
     return (
-      <Query query={CATEGORY_COURSE_QUERY}>
+      <Query query={COURSE_QUERY}>
         {({ data, error, loading }) => {
           console.log(data);
           if (loading) {
@@ -216,24 +210,6 @@ class CreateVideo extends Component {
                         value={this.state.thumbnail}
                         onChange={this.handleChange}
                       />
-                      <label htmlFor="thumbnail">Category</label>
-
-                      {this.state.category === "" ? (
-                        this.setState({ category: data.categories[0].id })
-                      ) : (
-                        <></>
-                      )}
-                      <select
-                        id="dropdownlist"
-                        onChange={this.handleChange}
-                        name="category"
-                      >
-                        {data.categories.map(category => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
 
                       <label htmlFor="thumbnail">Course</label>
 

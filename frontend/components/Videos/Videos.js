@@ -7,7 +7,6 @@ import { perPage } from "../../config";
 import Pagination from "../Pagination";
 import Search from "../SearchVideosUser";
 import ItemList from "../styles/ItemList";
-
 const ALL_VIDEOS_USER = gql`
   query ALL_VIDEOS_USER ($skip: Int =0,$first:Int=${perPage}){
       videosUser(first:$first,skip:$skip,orderBy:createdAt_DESC)  {
@@ -16,12 +15,8 @@ const ALL_VIDEOS_USER = gql`
       description
       state
       urlVideo
-      category {
-        name
-      }
-      user {
-        name
-      }
+      createdAt
+     
     }
   }
 `;

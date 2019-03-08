@@ -5,9 +5,10 @@ import Title from "../styles/Title";
 import Link from "next/link";
 import styled from "styled-components";
 import formatDate from "../../lib/formatDate";
-import formatMoney from "../../lib/formatMoney";
+import formatString from "../../lib/formatString";
 
 const Div = styled.div`
+  padding: none;
   span {
     display: grid;
     grid-template-columns: 0.5fr 1fr;
@@ -16,13 +17,15 @@ const Div = styled.div`
     margin-left: 0.5rem;
     text-align: left;
   }
+  strong {
+  }
 `;
 
 // Adapting based on props
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  padding: "0 1rem"
+  padding: "0 0,5rem"
 }));
 
 class ListCourses extends Component {
@@ -57,7 +60,7 @@ class ListCourses extends Component {
           </Link>
           <br />
           <span>
-            Description: <State>{course.description}</State>
+            Description: <State>{formatString(course.description, 20)}</State>
           </span>
           <span>
             Thumbnail: <State>{course.thumbnail}</State>
@@ -75,7 +78,7 @@ class ListCourses extends Component {
             Created at: <State>{formatDate(course.createdAt)}</State>
           </span>
           <span>
-            Price: <State>{formatMoney(course.price)}</State>
+            Price: <State>{course.price} €</State>
           </span>
         </Div>
       </ItemStyles>

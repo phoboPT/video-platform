@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
-import Course from "./CourseItem";
-import Search from "./SearchCourse";
+import Course from "../CourseItem";
+import Search from "../SearchCourse";
 
 const ALL_COURSES_QUERY = gql`
   query ALL_COURSES_QUERY {
@@ -19,12 +19,10 @@ const ALL_COURSES_QUERY = gql`
 `;
 
 const Center = styled.div`
-  text-align: center;
   height: 250px;
 `;
 const CoursesList = styled.div`
   display: grid;
-
   grid-template-columns: 1fr 1fr 1fr 1fr;
   padding-top: 4rem;
   grid-gap: 60px;

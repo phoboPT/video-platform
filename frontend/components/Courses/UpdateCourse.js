@@ -5,6 +5,7 @@ import Error from "../ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
 import VideoItem from "../VideoItem";
+import RemoveVideo from "./RemoveVideo";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -19,7 +20,6 @@ const SINGLE_COURSE_QUERY = gql`
         video {
           id
           title
-          description
         }
       }
     }
@@ -98,6 +98,9 @@ const CourseContainer = styled.div`
     margin: auto;
   }
 `;
+const VideoListStyle = styled.h3`
+  text-align: center;
+`;
 
 class UpdateCourse extends Component {
   state = { showVideos: false };
@@ -128,7 +131,6 @@ class UpdateCourse extends Component {
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
-          console.log(data);
           return (
             <Mutation mutation={UPDATE_COURSE_MUTATION} variables={this.state}>
               {(updateCourse, { loading, error }) => (
@@ -198,22 +200,19 @@ class UpdateCourse extends Component {
                           <button type="submit">
                             Sav{loading ? "ing" : "e"} To Course
                           </button>
-                          <button onClick={this.showVideos}>Videos</button>
                         </fieldset>
                       </Form>
                     </div>
                   </CourseContainer>
-                  {this.state.showVideos && (
-                    <div>
-                      {data.course.videos.map((video, index) => (
-                        <>
-                          <VideoItem videos={video} data={index} key={video.id}>
-                            <button>Remove</button>
-                          </VideoItem>
-                        </>
-                      ))}
-                    </div>
-                  )}
+                  <VideoListStyle>Videos</VideoListStyle>
+                  {data.course.videos.map((video, index) => (
+                    <VideoItem videos={video} data={index} key={video.video.id}>
+                      <RemoveVideo
+                        courseId={data.course.id}
+                        id={video.video.id}
+                      />
+                    </VideoItem>
+                  ))}
                 </>
               )}
             </Mutation>
@@ -225,3 +224,4 @@ class UpdateCourse extends Component {
 }
 
 export default UpdateCourse;
+export { SINGLE_COURSE_QUERY, CourseContainer };

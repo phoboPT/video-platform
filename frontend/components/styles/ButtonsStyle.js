@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ButtonAdd = styled.button`
+const ButtonAddStyle = styled.button`
   background-color: #44c767 !important;
   -moz-border-radius: 28px !important;
   -webkit-border-radius: 28px !important;
@@ -22,7 +22,7 @@ const ButtonAdd = styled.button`
   }
 `;
 
-const ButtonDelete = styled.button`
+const ButtonDeleteStyle = styled.button`
   background-color: #c93838 !important;
   -moz-border-radius: 28px !important;
   -webkit-border-radius: 28px !important;
@@ -45,5 +45,5 @@ const ButtonDelete = styled.button`
   }
 `;
 
-export { ButtonAdd };
-export { ButtonDelete };
+export { ButtonAddStyle };
+export { ButtonDeleteStyle };
