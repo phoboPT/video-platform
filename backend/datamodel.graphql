@@ -12,9 +12,20 @@ enum State {
   UNPUBLISHED
 }
 
-enum Target {
-  NaoDefinido
-  JavaScript
+type Interest {
+  id: ID! @unique
+  name: String!
+}
+type CourseInterest {
+  id: ID! @unique
+  interest: Interest!
+  course: Course!
+}
+
+type UserInterest {
+  id: ID! @unique
+  interest: Interest!
+  user: User!
 }
 
 type User {
@@ -22,7 +33,7 @@ type User {
   name: String!
   email: String! @unique
   password: String!
-  interests: [Target]
+  interests: [UserInterest!]!
   resetToken: String
   resetTokenExpiry: Float
   permission: [Permission]
@@ -43,6 +54,8 @@ type Course {
   # target: [Target]! @default(value: "JavaScript")
   state: State @default(value: "UNPUBLISHED")
   price: Float!
+  category: Category!
+  target: [CourseInterest!]!
 }
 
 # item

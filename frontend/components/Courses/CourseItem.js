@@ -66,6 +66,9 @@ class ListCourses extends Component {
             Thumbnail: <State>{course.thumbnail}</State>
           </span>
           <span>
+            Category: <State>{course.category.name} </State>
+          </span>
+          <span>
             State:
             <State
               background={course.state === "Published" ? "green" : "red"}

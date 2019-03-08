@@ -49,6 +49,7 @@ type Mutation {
     thumbnail: String!
     description: String!
     price: Float!
+    category: ID!
   ): Course!
   removeFromCourse(id: ID!, courseId: ID!): Course
   updateCourse(
