@@ -20,7 +20,6 @@ const SINGLE_COURSE_QUERY = gql`
         video {
           id
           title
-          description
         }
       }
     }
@@ -98,6 +97,9 @@ const CourseContainer = styled.div`
     order: 1;
     margin: auto;
   }
+`;
+const VideoListStyle = styled.h3`
+  text-align: center;
 `;
 
 class UpdateCourse extends Component {
@@ -198,33 +200,19 @@ class UpdateCourse extends Component {
                           <button type="submit">
                             Sav{loading ? "ing" : "e"} To Course
                           </button>
-                          <button onClick={this.showVideos}>Videos</button>
                         </fieldset>
                       </Form>
                     </div>
                   </CourseContainer>
-                  {this.state.showVideos && (
-                    <div>
-                      {data.course.videos.map((video, index) => {
-                        if (video) {
-                          return (
-                            <VideoItem
-                              videos={video}
-                              data={index}
-                              key={video.video.id}
-                            >
-                              <RemoveVideo
-                                courseId={data.course.id}
-                                id={video.video.id}
-                              />
-                            </VideoItem>
-                          );
-                        } else {
-                          <p>HI</p>;
-                        }
-                      })}
-                    </div>
-                  )}
+                  <VideoListStyle>Videos</VideoListStyle>
+                  {data.course.videos.map((video, index) => (
+                    <VideoItem videos={video} data={index} key={video.video.id}>
+                      <RemoveVideo
+                        courseId={data.course.id}
+                        id={video.video.id}
+                      />
+                    </VideoItem>
+                  ))}
                 </>
               )}
             </Mutation>
@@ -236,4 +224,4 @@ class UpdateCourse extends Component {
 }
 
 export default UpdateCourse;
-export { SINGLE_COURSE_QUERY };
+export { SINGLE_COURSE_QUERY, CourseContainer };

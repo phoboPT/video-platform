@@ -52,7 +52,6 @@ type Video {
   description: String!
   state: State! @default(value: "UNPUBLISHED")
   user: User!
-  category: Category!
   urlVideo: String!
   thumbnail: String!
   createdAt: DateTime!

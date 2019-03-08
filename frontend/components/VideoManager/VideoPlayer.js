@@ -22,7 +22,7 @@ class VideoPlayer extends Component {
     const { url } = this.props;
     return (
       <Div>
-        <Player width={800} height={600} fluid={false}>
+        <Player fluid={true}>
           <source src={url} />
           <LoadingSpinner />
           <ControlBar autoHide={true}>

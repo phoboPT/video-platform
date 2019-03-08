@@ -4,7 +4,7 @@ import { ALL_VIDEOS_USER } from "../Videos/Videos";
 import VideoSelect from "../Videos/VideoSelect";
 import Pagination from "../Pagination";
 import { perPage } from "../../config";
-import { ButtonAdd, ButtonDelete } from "../styles/Buttons";
+import { ButtonAddStyle, ButtonDeleteStyle } from "../styles/ButtonsStyle";
 import gql from "graphql-tag";
 import Form from "../styles/Form";
 import Error from "../ErrorMessage";

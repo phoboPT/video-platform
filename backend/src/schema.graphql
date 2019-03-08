@@ -15,7 +15,6 @@ type Mutation {
   createVideo(
     title: String!
     description: String
-    category: ID!
     thumbnail: String
     urlVideo: String
     course: ID!

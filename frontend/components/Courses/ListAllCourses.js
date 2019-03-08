@@ -19,12 +19,10 @@ const ALL_COURSES_QUERY = gql`
 `;
 
 const Center = styled.div`
-  text-align: center;
   height: 250px;
 `;
 const CoursesList = styled.div`
   display: grid;
-
   grid-template-columns: 1fr 1fr 1fr 1fr;
   padding-top: 4rem;
   grid-gap: 60px;

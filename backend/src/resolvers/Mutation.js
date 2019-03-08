@@ -17,7 +17,6 @@ const Mutations = {
     };
     const { course } = video;
     //elimina o id dos updates
-    delete video.category;
     delete video.course;
 
     const videos = await ctx.db.mutation.createVideo(
@@ -28,11 +27,7 @@ const Mutations = {
               id: userId
             }
           },
-          category: {
-            connect: {
-              id: args.category
-            }
-          },
+
           ...video
         }
       },
@@ -94,11 +89,11 @@ const Mutations = {
       `{id}`
     );
     //2.checkar se tem permissoes para o apagar
-    const ownsVideo = video.user.id === ctx.request.userId;
-    //falta verificar se é admin ou user (hasPermissions)
-    if (!ownsVideo) {
-      throw new Error("You don't have permission to do that!");
-    }
+    //const ownsVideo = video.user.id === ctx.request.userId;
+    //TODO falta verificar se é admin ou user (hasPermissions)
+    // if (!ownsVideo) {
+    //   throw new Error("You don't have permission to do that!");
+    // }
     //3.dar delete
     return ctx.db.mutation.deleteVideo(
       {

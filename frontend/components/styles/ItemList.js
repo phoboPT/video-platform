@@ -9,15 +9,6 @@ const ItemList = styled.div`
   font-size: 1.5rem;
   text-align: center;
   flex-wrap: wrap;
-
-  img {
-    width: 250px;
-    height: 150px;
-    margin-bottom: 25px;
-  }
-  a {
-    font-size: 3rem;
-  }
 `;
 
 export default ItemList;
