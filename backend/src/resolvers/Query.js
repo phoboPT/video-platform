@@ -10,7 +10,7 @@ const Query = {
   video: forwardTo("db"),
   category: forwardTo("db"),
   user: forwardTo("db"),
-  // comVideo: forwardTo("db"),
+  comCourse: forwardTo("db"),
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -143,9 +143,9 @@ const Query = {
       info
     );
   },
-  comCourse(parent, args, ctx, info) {
+  comCourseList(parent, args, ctx, info) {
     //query o video atual com comparaçao de ids de user
-    console.log(args);
+    // console.log(args);
     return ctx.db.query.comCourses(
       {
         where: {

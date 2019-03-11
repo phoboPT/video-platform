@@ -60,7 +60,7 @@ type Mutation {
   ): Course!
   deleteCourse(id: ID!): CourseVideos
   createComCourse(courseId: ID!, comment: String!): ComCourse!
-  # updateComCourse(id: ID!, comment: String!): ComCourse!
+  updateComCourse(id: ID!, comment: String): ComCourse!
   deleteComCourse(id: ID!): ComCourse
 }
 
@@ -80,23 +80,18 @@ type Query {
     first: Int
   ): [Course]
 
-  videos(
-    where: VideoWhereInput
-    orderBy: VideoOrderByInput
-    skip: Int
-    first: Int
-  ): [Video]!
-
   # querys sellect all
   categories: [Category]!
-  # comVideos: [ComVideo]!
   users: [User]!
   courses: [Course]!
+
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput!): Course!
+  comCourse(where: ComCourseWhereUniqueInput!): ComCourse
+
   # comVideo(where: VideoWhereUniqueInput!): ComVideo
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
   videosUser(
@@ -105,11 +100,19 @@ type Query {
     skip: Int
     first: Int
   ): [Video]
-  # listar todos os comentarios de um cursos
-  comCourse(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
+
+  videos(
+    where: VideoWhereInput
+    orderBy: VideoOrderByInput
+    skip: Int
+    first: Int
+  ): [Video]!
 
   videosSearch(where: VideoWhereInput!): [Video]
-  # comsVideo(id: ID!): [ComVideo]
+
+  # listar todos os comentarios de um curso
+  comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
+
   coursesUser: [Course]
   me: User
 

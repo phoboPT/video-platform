@@ -542,7 +542,6 @@ const Mutations = {
     return comvideo;
   },
   async deleteComCourse(parent, args, ctx, info) {
-    console.log(args);
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
     }
@@ -566,6 +565,29 @@ const Mutations = {
     return ctx.db.mutation.deleteComCourse(
       {
         where
+      },
+      info
+    );
+  },
+  updateComCourse(parent, args, ctx, info) {
+    //faz uma copia dos updates
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in");
+    }
+
+    const updates = {
+      ...args
+    };
+    //elimina o id dos updates
+    delete updates.id;
+    //da run no update method
+    return ctx.db.mutation.updateComCourse(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
       },
       info
     );

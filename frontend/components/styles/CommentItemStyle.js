@@ -48,7 +48,7 @@ const MenuDots = styled.ul`
     background: #f7f7f7;
     visibility: hidden;
     opacity: 0;
-    min-width: 4rem;
+    min-width: 5rem;
     position: absolute;
     transition: all 0.5s ease;
     margin-top: 1rem;
@@ -71,53 +71,67 @@ const MenuDots = styled.ul`
 
 const List = styled.div`
   max-width: 1000px;
-  margin: 20px auto 0 auto;
+  margin: 30px auto 0 auto;
   padding-bottom: 25px;
 
-  .left-side {
-    box-sizing: border-box;
-    flex-basis: 25%;
-  }
-  .middle {
-    box-sizing: border-box;
-    flex-basis: 70%;
-    margin: auto;
-  }
-  .right-side {
-    box-sizing: border-box;
-    flex-basis: 5%;
-    margin: auto;
-  }
   img {
     height: 30px;
     width: 40px;
     padding-right: 10px;
   }
+  .left-side {
+    box-sizing: border-box;
+    flex-basis: 25%;
+    #name {
+      padding: 0px;
+      color: #000000;
+      font-size: 15px;
+      font-weight: 700;
+      word-spacing: 0px;
+      line-height: 20px;
+      white-space: pre-wrap;
+    }
+    p {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #606060;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+  }
+  .middle {
+    box-sizing: border-box;
+    flex-basis: 70%;
+    margin: auto;
+    #comment {
+      color: #282828;
+      font-size: 14px;
+      font-weight: 700;
+      word-spacing: 0px;
+      line-height: 20px;
+      white-space: pre-wrap;
+    }
+  }
 
-  #name {
-    padding: 0px;
-    color: #000000;
-    font-size: 15px;
-    font-weight: 700;
-    word-spacing: 0px;
-    line-height: 20px;
-    white-space: pre-wrap;
+  .right-side {
+    box-sizing: border-box;
+    flex-basis: 5%;
+    margin: auto;
+    button {
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      color: #2c2f33 !important;
+      padding: 0;
+      line-height: 1;
+      font-family: "radnika_next";
+      border: none;
+      background: none;
+      cursor: pointer;
+      list-style: none;
+    }
   }
-  #comment {
-    color: #282828;
-    font-size: 14px;
-    font-weight: 700;
-    word-spacing: 0px;
-    line-height: 20px;
-    white-space: pre-wrap;
-  }
-  p {
-    font-size: 1.1rem;
-    font-weight: 400;
-    color: #606060;
-    white-space: nowrap;
-    text-decoration: none;
-  }
+
   @media (min-width: 900px) {
     display: flex;
     justify-content: space-between;

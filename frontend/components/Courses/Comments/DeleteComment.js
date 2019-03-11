@@ -21,7 +21,7 @@ export class DeleteComment extends Component {
 
     // console.log(data.comCourse, " ", payload.data.deleteComCourse.id);
     // 2. Filter the deleted itemout of the page
-    data.comCourse = data.comCourse.filter(
+    data.comCourseList = data.comCourseList.filter(
       comment => comment.id !== payload.data.deleteComCourse.id
     );
     // 3. Put the items back!
@@ -46,7 +46,7 @@ export class DeleteComment extends Component {
               }
             }}
           >
-            Delete Button
+            {this.props.children}
           </button>
         )}
       </Mutation>
