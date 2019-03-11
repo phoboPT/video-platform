@@ -4,13 +4,16 @@ import { Query } from "react-apollo";
 import CommentItem from "./CommentItem";
 
 const ALL_COMMENTS_QUERY = gql`
-  query ALL_COMMENTS_QUERY($courseId: ID!) {
-    comCourse(where: { id: $courseId }) {
+  query ALL_COMMENTS_QUERY($id: ID!) {
+    comCourse(id: $id) {
       id
       comment
       user {
         id
         name
+      }
+      course {
+        id
       }
       createdAt
     }
@@ -20,10 +23,7 @@ const ALL_COMMENTS_QUERY = gql`
 export class ListComments extends Component {
   render() {
     return (
-      <Query
-        query={ALL_COMMENTS_QUERY}
-        variables={{ courseId: this.props.data.id }}
-      >
+      <Query query={ALL_COMMENTS_QUERY} variables={{ id: this.props.data.id }}>
         {({ error, loading, data }) => {
           if (error) return <p>Error!</p>;
           if (loading) return <p>Loading...</p>;

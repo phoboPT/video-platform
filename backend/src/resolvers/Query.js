@@ -145,12 +145,12 @@ const Query = {
   },
   comCourse(parent, args, ctx, info) {
     //query o video atual com comparaçao de ids de user
-
+    console.log(args);
     return ctx.db.query.comCourses(
       {
         where: {
           course: {
-            id: args.courseId
+            id: args.id
           }
         },
         orderBy: "createdAt_DESC"

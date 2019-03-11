@@ -56,7 +56,7 @@ export class CommentForm extends Component {
         refetchQueries={[
           {
             query: ALL_COMMENTS_QUERY,
-            variables: { courseId: this.state.courseId }
+            variables: { id: this.state.courseId }
           }
         ]}
       >

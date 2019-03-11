@@ -4,6 +4,12 @@ import PropTypes from "prop-types";
 import formatDate from "../../../lib/formatDate";
 import User from "../../Authentication/User";
 import { MenuDots, List } from "../../styles/CommentItemStyle";
+import styled from "styled-components";
+import DeleteComment from "./DeleteComment";
+
+const Style = styled.p`
+  min-width: 150px;
+`;
 
 export class Video extends Component {
   static propTypes = {
@@ -27,8 +33,8 @@ export class Video extends Component {
             <div className="middle">
               <span id="comment">{comments.comment}</span>
             </div>
-            {me.id === comments.user.id && (
-              <div className="right-side">
+            <div className="right-side">
+              {(me.id === comments.user.id && (
                 <MenuDots>
                   <ul>
                     <li>
@@ -42,14 +48,14 @@ export class Video extends Component {
                           </Link>
                         </li>
                         <li className="item">
-                          <button>delete</button>
+                          <DeleteComment data={comments} />
                         </li>
                       </ul>
                     </li>
                   </ul>
                 </MenuDots>
-              </div>
-            )}
+              )) || <Style />}
+            </div>
           </List>
         )}
       </User>
