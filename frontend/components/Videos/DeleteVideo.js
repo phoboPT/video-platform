@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { ALL_VIDEOS_USER } from "./Videos";
+import styled from "styled-components";
 
 const DELETE_VIDEO_MUTATION = gql`
   mutation DELETE_VIDEO_MUTATION($id: ID!) {
@@ -10,6 +11,10 @@ const DELETE_VIDEO_MUTATION = gql`
       id
     }
   }
+`;
+
+const ButtonStyle = styled.button`
+  border-radius: ${props => props.theme.borderRadius};
 `;
 
 export class DeleteVideo extends Component {
@@ -34,7 +39,7 @@ export class DeleteVideo extends Component {
           variables={{ id: this.props.id }}
         >
           {(deleteVideo, { error, loading }) => (
-            <button
+            <ButtonStyle
               onClick={() => {
                 if (confirm("Are you sure you want to delete this Video?")) {
                   deleteVideo();
@@ -42,7 +47,7 @@ export class DeleteVideo extends Component {
               }}
             >
               {this.props.children}
-            </button>
+            </ButtonStyle>
           )}
         </Mutation>
       </>

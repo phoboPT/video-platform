@@ -14,6 +14,9 @@ const CURRENT_COURSES_QUERY = gql`
       state
       createdAt
       price
+      category {
+        name
+      }
       videos {
         id
         video {

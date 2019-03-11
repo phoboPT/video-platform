@@ -434,6 +434,12 @@ const Mutations = {
     if (!userId) {
       throw new Error("You must be signed in soooon");
     }
+    const data = {
+      ...args
+    };
+
+    //elimina o id dos updates
+    delete data.category;
 
     // 4. If its not, create a fresh CourseVideo for that Course!
     return ctx.db.mutation.createCourse(
@@ -444,7 +450,12 @@ const Mutations = {
               id: userId
             }
           },
-          ...args
+          category: {
+            connect: {
+              id: args.category
+            }
+          },
+          ...data
         }
       },
       info

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/hugobrancoc-5773e9/picus/dev
-# timestamp: Fri Mar 08 2019 10:51:07 GMT+0000 (Hora padrão da Europa Ocidental)
+# timestamp: Fri Mar 08 2019 16:10:09 GMT+0000 (Hora padrão da Europa Ocidental)
 
 type AggregateCategory {
   count: Int!
@@ -13,7 +13,15 @@ type AggregateCourse {
   count: Int!
 }
 
+type AggregateCourseInterest {
+  count: Int!
+}
+
 type AggregateCourseVideos {
+  count: Int!
+}
+
+type AggregateInterest {
   count: Int!
 }
 
@@ -22,6 +30,10 @@ type AggregateUser {
 }
 
 type AggregateUserCourse {
+  count: Int!
+}
+
+type AggregateUserInterest {
   count: Int!
 }
 
@@ -51,6 +63,11 @@ type CategoryConnection {
 
 input CategoryCreateInput {
   name: String!
+}
+
+input CategoryCreateOneInput {
+  create: CategoryCreateInput
+  connect: CategoryWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -117,12 +134,28 @@ input CategorySubscriptionWhereInput {
   node: CategoryWhereInput
 }
 
+input CategoryUpdateDataInput {
+  name: String
+}
+
 input CategoryUpdateInput {
   name: String
 }
 
 input CategoryUpdateManyMutationInput {
   name: String
+}
+
+input CategoryUpdateOneRequiredInput {
+  create: CategoryCreateInput
+  connect: CategoryWhereUniqueInput
+  update: CategoryUpdateDataInput
+  upsert: CategoryUpsertNestedInput
+}
+
+input CategoryUpsertNestedInput {
+  update: CategoryUpdateDataInput!
+  create: CategoryCreateInput!
 }
 
 input CategoryWhereInput {
@@ -473,6 +506,8 @@ type Course implements Node {
   updatedAt: DateTime!
   state: State
   price: Float!
+  category: Category!
+  target(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseInterest!]
 }
 
 """A connection to a list of items."""
@@ -493,6 +528,8 @@ input CourseCreateInput {
   price: Float!
   videos: CourseVideosCreateManyWithoutCourseInput
   user: UserCreateOneInput!
+  category: CategoryCreateOneInput!
+  target: CourseInterestCreateManyWithoutCourseInput
 }
 
 input CourseCreateOneInput {
@@ -500,9 +537,25 @@ input CourseCreateOneInput {
   connect: CourseWhereUniqueInput
 }
 
+input CourseCreateOneWithoutTargetInput {
+  create: CourseCreateWithoutTargetInput
+  connect: CourseWhereUniqueInput
+}
+
 input CourseCreateOneWithoutVideosInput {
   create: CourseCreateWithoutVideosInput
   connect: CourseWhereUniqueInput
+}
+
+input CourseCreateWithoutTargetInput {
+  title: String
+  description: String!
+  thumbnail: String!
+  state: State
+  price: Float!
+  videos: CourseVideosCreateManyWithoutCourseInput
+  user: UserCreateOneInput!
+  category: CategoryCreateOneInput!
 }
 
 input CourseCreateWithoutVideosInput {
@@ -512,6 +565,8 @@ input CourseCreateWithoutVideosInput {
   state: State
   price: Float!
   user: UserCreateOneInput!
+  category: CategoryCreateOneInput!
+  target: CourseInterestCreateManyWithoutCourseInput
 }
 
 """An edge in a connection."""
@@ -521,6 +576,236 @@ type CourseEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
+}
+
+type CourseInterest implements Node {
+  id: ID!
+  interest: Interest!
+  course: Course!
+}
+
+"""A connection to a list of items."""
+type CourseInterestConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CourseInterestEdge]!
+  aggregate: AggregateCourseInterest!
+}
+
+input CourseInterestCreateInput {
+  interest: InterestCreateOneInput!
+  course: CourseCreateOneWithoutTargetInput!
+}
+
+input CourseInterestCreateManyWithoutCourseInput {
+  create: [CourseInterestCreateWithoutCourseInput!]
+  connect: [CourseInterestWhereUniqueInput!]
+}
+
+input CourseInterestCreateWithoutCourseInput {
+  interest: InterestCreateOneInput!
+}
+
+"""An edge in a connection."""
+type CourseInterestEdge {
+  """The item at the end of the edge."""
+  node: CourseInterest!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CourseInterestOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type CourseInterestPreviousValues {
+  id: ID!
+}
+
+input CourseInterestScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CourseInterestScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CourseInterestScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CourseInterestScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+}
+
+type CourseInterestSubscriptionPayload {
+  mutation: MutationType!
+  node: CourseInterest
+  updatedFields: [String!]
+  previousValues: CourseInterestPreviousValues
+}
+
+input CourseInterestSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CourseInterestSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CourseInterestSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CourseInterestSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CourseInterestWhereInput
+}
+
+input CourseInterestUpdateInput {
+  interest: InterestUpdateOneRequiredInput
+  course: CourseUpdateOneRequiredWithoutTargetInput
+}
+
+input CourseInterestUpdateManyWithoutCourseInput {
+  create: [CourseInterestCreateWithoutCourseInput!]
+  connect: [CourseInterestWhereUniqueInput!]
+  set: [CourseInterestWhereUniqueInput!]
+  disconnect: [CourseInterestWhereUniqueInput!]
+  delete: [CourseInterestWhereUniqueInput!]
+  update: [CourseInterestUpdateWithWhereUniqueWithoutCourseInput!]
+  deleteMany: [CourseInterestScalarWhereInput!]
+  upsert: [CourseInterestUpsertWithWhereUniqueWithoutCourseInput!]
+}
+
+input CourseInterestUpdateWithoutCourseDataInput {
+  interest: InterestUpdateOneRequiredInput
+}
+
+input CourseInterestUpdateWithWhereUniqueWithoutCourseInput {
+  where: CourseInterestWhereUniqueInput!
+  data: CourseInterestUpdateWithoutCourseDataInput!
+}
+
+input CourseInterestUpsertWithWhereUniqueWithoutCourseInput {
+  where: CourseInterestWhereUniqueInput!
+  update: CourseInterestUpdateWithoutCourseDataInput!
+  create: CourseInterestCreateWithoutCourseInput!
+}
+
+input CourseInterestWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CourseInterestWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CourseInterestWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CourseInterestWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  interest: InterestWhereInput
+  course: CourseWhereInput
+}
+
+input CourseInterestWhereUniqueInput {
+  id: ID
 }
 
 enum CourseOrderByInput {
@@ -600,6 +885,8 @@ input CourseUpdateDataInput {
   price: Float
   videos: CourseVideosUpdateManyWithoutCourseInput
   user: UserUpdateOneRequiredInput
+  category: CategoryUpdateOneRequiredInput
+  target: CourseInterestUpdateManyWithoutCourseInput
 }
 
 input CourseUpdateInput {
@@ -610,6 +897,8 @@ input CourseUpdateInput {
   price: Float
   videos: CourseVideosUpdateManyWithoutCourseInput
   user: UserUpdateOneRequiredInput
+  category: CategoryUpdateOneRequiredInput
+  target: CourseInterestUpdateManyWithoutCourseInput
 }
 
 input CourseUpdateManyMutationInput {
@@ -627,11 +916,29 @@ input CourseUpdateOneRequiredInput {
   upsert: CourseUpsertNestedInput
 }
 
+input CourseUpdateOneRequiredWithoutTargetInput {
+  create: CourseCreateWithoutTargetInput
+  connect: CourseWhereUniqueInput
+  update: CourseUpdateWithoutTargetDataInput
+  upsert: CourseUpsertWithoutTargetInput
+}
+
 input CourseUpdateOneRequiredWithoutVideosInput {
   create: CourseCreateWithoutVideosInput
   connect: CourseWhereUniqueInput
   update: CourseUpdateWithoutVideosDataInput
   upsert: CourseUpsertWithoutVideosInput
+}
+
+input CourseUpdateWithoutTargetDataInput {
+  title: String
+  description: String
+  thumbnail: String
+  state: State
+  price: Float
+  videos: CourseVideosUpdateManyWithoutCourseInput
+  user: UserUpdateOneRequiredInput
+  category: CategoryUpdateOneRequiredInput
 }
 
 input CourseUpdateWithoutVideosDataInput {
@@ -641,11 +948,18 @@ input CourseUpdateWithoutVideosDataInput {
   state: State
   price: Float
   user: UserUpdateOneRequiredInput
+  category: CategoryUpdateOneRequiredInput
+  target: CourseInterestUpdateManyWithoutCourseInput
 }
 
 input CourseUpsertNestedInput {
   update: CourseUpdateDataInput!
   create: CourseCreateInput!
+}
+
+input CourseUpsertWithoutTargetInput {
+  update: CourseUpdateWithoutTargetDataInput!
+  create: CourseCreateWithoutTargetInput!
 }
 
 input CourseUpsertWithoutVideosInput {
@@ -1132,6 +1446,10 @@ input CourseWhereInput {
   videos_some: CourseVideosWhereInput
   videos_none: CourseVideosWhereInput
   user: UserWhereInput
+  category: CategoryWhereInput
+  target_every: CourseInterestWhereInput
+  target_some: CourseInterestWhereInput
+  target_none: CourseInterestWhereInput
 }
 
 input CourseWhereUniqueInput {
@@ -1140,6 +1458,213 @@ input CourseWhereUniqueInput {
 
 scalar DateTime
 
+type Interest implements Node {
+  id: ID!
+  name: String!
+}
+
+"""A connection to a list of items."""
+type InterestConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [InterestEdge]!
+  aggregate: AggregateInterest!
+}
+
+input InterestCreateInput {
+  name: String!
+}
+
+input InterestCreateOneInput {
+  create: InterestCreateInput
+  connect: InterestWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type InterestEdge {
+  """The item at the end of the edge."""
+  node: Interest!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum InterestOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type InterestPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type InterestSubscriptionPayload {
+  mutation: MutationType!
+  node: Interest
+  updatedFields: [String!]
+  previousValues: InterestPreviousValues
+}
+
+input InterestSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [InterestSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [InterestSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [InterestSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: InterestWhereInput
+}
+
+input InterestUpdateDataInput {
+  name: String
+}
+
+input InterestUpdateInput {
+  name: String
+}
+
+input InterestUpdateManyMutationInput {
+  name: String
+}
+
+input InterestUpdateOneRequiredInput {
+  create: InterestCreateInput
+  connect: InterestWhereUniqueInput
+  update: InterestUpdateDataInput
+  upsert: InterestUpsertNestedInput
+}
+
+input InterestUpsertNestedInput {
+  update: InterestUpdateDataInput!
+  create: InterestCreateInput!
+}
+
+input InterestWhereInput {
+  """Logical AND on all given filters."""
+  AND: [InterestWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [InterestWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [InterestWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input InterestWhereUniqueInput {
+  id: ID
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -1147,46 +1672,62 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+  createCourseInterest(data: CourseInterestCreateInput!): CourseInterest!
+  createUserInterest(data: UserInterestCreateInput!): UserInterest!
   createCourseVideos(data: CourseVideosCreateInput!): CourseVideos!
-  createCategory(data: CategoryCreateInput!): Category!
   createComCourse(data: ComCourseCreateInput!): ComCourse!
   createUserCourse(data: UserCourseCreateInput!): UserCourse!
+  createCategory(data: CategoryCreateInput!): Category!
   createVideo(data: VideoCreateInput!): Video!
   createUser(data: UserCreateInput!): User!
+  createInterest(data: InterestCreateInput!): Interest!
   createCourse(data: CourseCreateInput!): Course!
+  updateCourseInterest(data: CourseInterestUpdateInput!, where: CourseInterestWhereUniqueInput!): CourseInterest
+  updateUserInterest(data: UserInterestUpdateInput!, where: UserInterestWhereUniqueInput!): UserInterest
   updateCourseVideos(data: CourseVideosUpdateInput!, where: CourseVideosWhereUniqueInput!): CourseVideos
-  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateComCourse(data: ComCourseUpdateInput!, where: ComCourseWhereUniqueInput!): ComCourse
   updateUserCourse(data: UserCourseUpdateInput!, where: UserCourseWhereUniqueInput!): UserCourse
+  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateInterest(data: InterestUpdateInput!, where: InterestWhereUniqueInput!): Interest
   updateCourse(data: CourseUpdateInput!, where: CourseWhereUniqueInput!): Course
+  deleteCourseInterest(where: CourseInterestWhereUniqueInput!): CourseInterest
+  deleteUserInterest(where: UserInterestWhereUniqueInput!): UserInterest
   deleteCourseVideos(where: CourseVideosWhereUniqueInput!): CourseVideos
-  deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteComCourse(where: ComCourseWhereUniqueInput!): ComCourse
   deleteUserCourse(where: UserCourseWhereUniqueInput!): UserCourse
+  deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteVideo(where: VideoWhereUniqueInput!): Video
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteInterest(where: InterestWhereUniqueInput!): Interest
   deleteCourse(where: CourseWhereUniqueInput!): Course
+  upsertCourseInterest(where: CourseInterestWhereUniqueInput!, create: CourseInterestCreateInput!, update: CourseInterestUpdateInput!): CourseInterest!
+  upsertUserInterest(where: UserInterestWhereUniqueInput!, create: UserInterestCreateInput!, update: UserInterestUpdateInput!): UserInterest!
   upsertCourseVideos(where: CourseVideosWhereUniqueInput!, create: CourseVideosCreateInput!, update: CourseVideosUpdateInput!): CourseVideos!
-  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertComCourse(where: ComCourseWhereUniqueInput!, create: ComCourseCreateInput!, update: ComCourseUpdateInput!): ComCourse!
   upsertUserCourse(where: UserCourseWhereUniqueInput!, create: UserCourseCreateInput!, update: UserCourseUpdateInput!): UserCourse!
+  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertInterest(where: InterestWhereUniqueInput!, create: InterestCreateInput!, update: InterestUpdateInput!): Interest!
   upsertCourse(where: CourseWhereUniqueInput!, create: CourseCreateInput!, update: CourseUpdateInput!): Course!
-  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyComCourses(data: ComCourseUpdateManyMutationInput!, where: ComCourseWhereInput): BatchPayload!
   updateManyUserCourses(data: UserCourseUpdateManyMutationInput!, where: UserCourseWhereInput): BatchPayload!
+  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyInterests(data: InterestUpdateManyMutationInput!, where: InterestWhereInput): BatchPayload!
   updateManyCourses(data: CourseUpdateManyMutationInput!, where: CourseWhereInput): BatchPayload!
+  deleteManyCourseInterests(where: CourseInterestWhereInput): BatchPayload!
+  deleteManyUserInterests(where: UserInterestWhereInput): BatchPayload!
   deleteManyCourseVideoses(where: CourseVideosWhereInput): BatchPayload!
-  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyComCourses(where: ComCourseWhereInput): BatchPayload!
   deleteManyUserCourses(where: UserCourseWhereInput): BatchPayload!
+  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyVideos(where: VideoWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyInterests(where: InterestWhereInput): BatchPayload!
   deleteManyCourses(where: CourseWhereInput): BatchPayload!
 }
 
@@ -1227,26 +1768,35 @@ enum Permission {
 }
 
 type Query {
+  courseInterests(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseInterest]!
+  userInterests(where: UserInterestWhereInput, orderBy: UserInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserInterest]!
   courseVideoses(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseVideos]!
-  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   comCourses(where: ComCourseWhereInput, orderBy: ComCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComCourse]!
   userCourses(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserCourse]!
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  interests(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest]!
   courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course]!
+  courseInterest(where: CourseInterestWhereUniqueInput!): CourseInterest
+  userInterest(where: UserInterestWhereUniqueInput!): UserInterest
   courseVideos(where: CourseVideosWhereUniqueInput!): CourseVideos
-  category(where: CategoryWhereUniqueInput!): Category
   comCourse(where: ComCourseWhereUniqueInput!): ComCourse
   userCourse(where: UserCourseWhereUniqueInput!): UserCourse
+  category(where: CategoryWhereUniqueInput!): Category
   video(where: VideoWhereUniqueInput!): Video
   user(where: UserWhereUniqueInput!): User
+  interest(where: InterestWhereUniqueInput!): Interest
   course(where: CourseWhereUniqueInput!): Course
+  courseInterestsConnection(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseInterestConnection!
+  userInterestsConnection(where: UserInterestWhereInput, orderBy: UserInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserInterestConnection!
   courseVideosesConnection(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseVideosConnection!
-  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   comCoursesConnection(where: ComCourseWhereInput, orderBy: ComCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComCourseConnection!
   userCoursesConnection(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserCourseConnection!
+  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  interestsConnection(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InterestConnection!
   coursesConnection(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseConnection!
 
   """Fetches an object given its ID"""
@@ -1262,18 +1812,16 @@ enum State {
 }
 
 type Subscription {
+  courseInterest(where: CourseInterestSubscriptionWhereInput): CourseInterestSubscriptionPayload
+  userInterest(where: UserInterestSubscriptionWhereInput): UserInterestSubscriptionPayload
   courseVideos(where: CourseVideosSubscriptionWhereInput): CourseVideosSubscriptionPayload
-  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   comCourse(where: ComCourseSubscriptionWhereInput): ComCourseSubscriptionPayload
   userCourse(where: UserCourseSubscriptionWhereInput): UserCourseSubscriptionPayload
+  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   video(where: VideoSubscriptionWhereInput): VideoSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  interest(where: InterestSubscriptionWhereInput): InterestSubscriptionPayload
   course(where: CourseSubscriptionWhereInput): CourseSubscriptionPayload
-}
-
-enum Target {
-  NaoDefinido
-  JavaScript
 }
 
 type User implements Node {
@@ -1281,7 +1829,7 @@ type User implements Node {
   name: String!
   email: String!
   password: String!
-  interests: [Target!]!
+  interests(where: UserInterestWhereInput, orderBy: UserInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserInterest!]
   resetToken: String
   resetTokenExpiry: Float
   permission: [Permission!]!
@@ -1600,13 +2148,9 @@ input UserCreateInput {
   password: String!
   resetToken: String
   resetTokenExpiry: Float
-  interests: UserCreateinterestsInput
   permission: UserCreatepermissionInput
+  interests: UserInterestCreateManyWithoutUserInput
   courses: UserCourseCreateManyWithoutUserInput
-}
-
-input UserCreateinterestsInput {
-  set: [Target!]
 }
 
 input UserCreateOneInput {
@@ -1616,6 +2160,11 @@ input UserCreateOneInput {
 
 input UserCreateOneWithoutCoursesInput {
   create: UserCreateWithoutCoursesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutInterestsInput {
+  create: UserCreateWithoutInterestsInput
   connect: UserWhereUniqueInput
 }
 
@@ -1629,8 +2178,18 @@ input UserCreateWithoutCoursesInput {
   password: String!
   resetToken: String
   resetTokenExpiry: Float
-  interests: UserCreateinterestsInput
   permission: UserCreatepermissionInput
+  interests: UserInterestCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutInterestsInput {
+  name: String!
+  email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permission: UserCreatepermissionInput
+  courses: UserCourseCreateManyWithoutUserInput
 }
 
 """An edge in a connection."""
@@ -1640,6 +2199,236 @@ type UserEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
+}
+
+type UserInterest implements Node {
+  id: ID!
+  interest: Interest!
+  user: User!
+}
+
+"""A connection to a list of items."""
+type UserInterestConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserInterestEdge]!
+  aggregate: AggregateUserInterest!
+}
+
+input UserInterestCreateInput {
+  interest: InterestCreateOneInput!
+  user: UserCreateOneWithoutInterestsInput!
+}
+
+input UserInterestCreateManyWithoutUserInput {
+  create: [UserInterestCreateWithoutUserInput!]
+  connect: [UserInterestWhereUniqueInput!]
+}
+
+input UserInterestCreateWithoutUserInput {
+  interest: InterestCreateOneInput!
+}
+
+"""An edge in a connection."""
+type UserInterestEdge {
+  """The item at the end of the edge."""
+  node: UserInterest!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserInterestOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserInterestPreviousValues {
+  id: ID!
+}
+
+input UserInterestScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserInterestScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserInterestScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserInterestScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+}
+
+type UserInterestSubscriptionPayload {
+  mutation: MutationType!
+  node: UserInterest
+  updatedFields: [String!]
+  previousValues: UserInterestPreviousValues
+}
+
+input UserInterestSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserInterestSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserInterestSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserInterestSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserInterestWhereInput
+}
+
+input UserInterestUpdateInput {
+  interest: InterestUpdateOneRequiredInput
+  user: UserUpdateOneRequiredWithoutInterestsInput
+}
+
+input UserInterestUpdateManyWithoutUserInput {
+  create: [UserInterestCreateWithoutUserInput!]
+  connect: [UserInterestWhereUniqueInput!]
+  set: [UserInterestWhereUniqueInput!]
+  disconnect: [UserInterestWhereUniqueInput!]
+  delete: [UserInterestWhereUniqueInput!]
+  update: [UserInterestUpdateWithWhereUniqueWithoutUserInput!]
+  deleteMany: [UserInterestScalarWhereInput!]
+  upsert: [UserInterestUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input UserInterestUpdateWithoutUserDataInput {
+  interest: InterestUpdateOneRequiredInput
+}
+
+input UserInterestUpdateWithWhereUniqueWithoutUserInput {
+  where: UserInterestWhereUniqueInput!
+  data: UserInterestUpdateWithoutUserDataInput!
+}
+
+input UserInterestUpsertWithWhereUniqueWithoutUserInput {
+  where: UserInterestWhereUniqueInput!
+  update: UserInterestUpdateWithoutUserDataInput!
+  create: UserInterestCreateWithoutUserInput!
+}
+
+input UserInterestWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserInterestWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserInterestWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserInterestWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  interest: InterestWhereInput
+  user: UserWhereInput
+}
+
+input UserInterestWhereUniqueInput {
+  id: ID
 }
 
 enum UserOrderByInput {
@@ -1666,7 +2455,6 @@ type UserPreviousValues {
   name: String!
   email: String!
   password: String!
-  interests: [Target!]!
   resetToken: String
   resetTokenExpiry: Float
   permission: [Permission!]!
@@ -1717,8 +2505,8 @@ input UserUpdateDataInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  interests: UserUpdateinterestsInput
   permission: UserUpdatepermissionInput
+  interests: UserInterestUpdateManyWithoutUserInput
   courses: UserCourseUpdateManyWithoutUserInput
 }
 
@@ -1728,13 +2516,9 @@ input UserUpdateInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  interests: UserUpdateinterestsInput
   permission: UserUpdatepermissionInput
+  interests: UserInterestUpdateManyWithoutUserInput
   courses: UserCourseUpdateManyWithoutUserInput
-}
-
-input UserUpdateinterestsInput {
-  set: [Target!]
 }
 
 input UserUpdateManyMutationInput {
@@ -1743,7 +2527,6 @@ input UserUpdateManyMutationInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  interests: UserUpdateinterestsInput
   permission: UserUpdatepermissionInput
 }
 
@@ -1761,6 +2544,13 @@ input UserUpdateOneRequiredWithoutCoursesInput {
   upsert: UserUpsertWithoutCoursesInput
 }
 
+input UserUpdateOneRequiredWithoutInterestsInput {
+  create: UserCreateWithoutInterestsInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutInterestsDataInput
+  upsert: UserUpsertWithoutInterestsInput
+}
+
 input UserUpdatepermissionInput {
   set: [Permission!]
 }
@@ -1771,8 +2561,18 @@ input UserUpdateWithoutCoursesDataInput {
   password: String
   resetToken: String
   resetTokenExpiry: Float
-  interests: UserUpdateinterestsInput
   permission: UserUpdatepermissionInput
+  interests: UserInterestUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutInterestsDataInput {
+  name: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permission: UserUpdatepermissionInput
+  courses: UserCourseUpdateManyWithoutUserInput
 }
 
 input UserUpsertNestedInput {
@@ -1783,6 +2583,11 @@ input UserUpsertNestedInput {
 input UserUpsertWithoutCoursesInput {
   update: UserUpdateWithoutCoursesDataInput!
   create: UserCreateWithoutCoursesInput!
+}
+
+input UserUpsertWithoutInterestsInput {
+  update: UserUpdateWithoutInterestsDataInput!
+  create: UserCreateWithoutInterestsInput!
 }
 
 input UserWhereInput {
@@ -2016,6 +2821,9 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   resetTokenExpiry_gte: Float
+  interests_every: UserInterestWhereInput
+  interests_some: UserInterestWhereInput
+  interests_none: UserInterestWhereInput
   courses_every: UserCourseWhereInput
   courses_some: UserCourseWhereInput
   courses_none: UserCourseWhereInput
