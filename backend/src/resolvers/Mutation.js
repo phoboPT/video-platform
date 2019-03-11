@@ -618,6 +618,29 @@ const Mutations = {
     } else {
       throw "Video already removed";
     }
+  },
+  async addTargetCourse(parent, args, ctx, info) {
+    // 1. Make sure they are signed in
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in soooon");
+    }
+    console.log(args);
+
+    // 4. If its not, create a fresh CartItem for that user!
+    return ctx.db.mutation.createCourseInterest(
+      {
+        data: {
+          course: {
+            connect: { id: args.courseId }
+          },
+          interest: {
+            connect: { id: args.interestId }
+          }
+        }
+      },
+      info
+    );
   }
 };
 

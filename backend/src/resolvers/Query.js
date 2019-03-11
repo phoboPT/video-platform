@@ -11,6 +11,8 @@ const Query = {
   category: forwardTo("db"),
   user: forwardTo("db"),
   comCourse: forwardTo("db"),
+  interests: forwardTo("db"),
+  // comVideo: forwardTo("db"),
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;

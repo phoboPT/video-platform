@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/hugobrancoc-5773e9/picus/dev
-# timestamp: Fri Mar 08 2019 16:10:09 GMT+0000 (Hora padrão da Europa Ocidental)
+# timestamp: Mon Mar 11 2019 16:04:31 GMT+0000 (Hora padrão da Europa Ocidental)
 
 type AggregateCategory {
   count: Int!
@@ -507,7 +507,7 @@ type Course implements Node {
   state: State
   price: Float!
   category: Category!
-  target(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseInterest!]
+  interest(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseInterest!]
 }
 
 """A connection to a list of items."""
@@ -529,7 +529,7 @@ input CourseCreateInput {
   videos: CourseVideosCreateManyWithoutCourseInput
   user: UserCreateOneInput!
   category: CategoryCreateOneInput!
-  target: CourseInterestCreateManyWithoutCourseInput
+  interest: CourseInterestCreateManyWithoutCourseInput
 }
 
 input CourseCreateOneInput {
@@ -537,8 +537,8 @@ input CourseCreateOneInput {
   connect: CourseWhereUniqueInput
 }
 
-input CourseCreateOneWithoutTargetInput {
-  create: CourseCreateWithoutTargetInput
+input CourseCreateOneWithoutInterestInput {
+  create: CourseCreateWithoutInterestInput
   connect: CourseWhereUniqueInput
 }
 
@@ -547,7 +547,7 @@ input CourseCreateOneWithoutVideosInput {
   connect: CourseWhereUniqueInput
 }
 
-input CourseCreateWithoutTargetInput {
+input CourseCreateWithoutInterestInput {
   title: String
   description: String!
   thumbnail: String!
@@ -566,7 +566,7 @@ input CourseCreateWithoutVideosInput {
   price: Float!
   user: UserCreateOneInput!
   category: CategoryCreateOneInput!
-  target: CourseInterestCreateManyWithoutCourseInput
+  interest: CourseInterestCreateManyWithoutCourseInput
 }
 
 """An edge in a connection."""
@@ -596,7 +596,7 @@ type CourseInterestConnection {
 
 input CourseInterestCreateInput {
   interest: InterestCreateOneInput!
-  course: CourseCreateOneWithoutTargetInput!
+  course: CourseCreateOneWithoutInterestInput!
 }
 
 input CourseInterestCreateManyWithoutCourseInput {
@@ -722,7 +722,7 @@ input CourseInterestSubscriptionWhereInput {
 
 input CourseInterestUpdateInput {
   interest: InterestUpdateOneRequiredInput
-  course: CourseUpdateOneRequiredWithoutTargetInput
+  course: CourseUpdateOneRequiredWithoutInterestInput
 }
 
 input CourseInterestUpdateManyWithoutCourseInput {
@@ -886,7 +886,7 @@ input CourseUpdateDataInput {
   videos: CourseVideosUpdateManyWithoutCourseInput
   user: UserUpdateOneRequiredInput
   category: CategoryUpdateOneRequiredInput
-  target: CourseInterestUpdateManyWithoutCourseInput
+  interest: CourseInterestUpdateManyWithoutCourseInput
 }
 
 input CourseUpdateInput {
@@ -898,7 +898,7 @@ input CourseUpdateInput {
   videos: CourseVideosUpdateManyWithoutCourseInput
   user: UserUpdateOneRequiredInput
   category: CategoryUpdateOneRequiredInput
-  target: CourseInterestUpdateManyWithoutCourseInput
+  interest: CourseInterestUpdateManyWithoutCourseInput
 }
 
 input CourseUpdateManyMutationInput {
@@ -916,11 +916,11 @@ input CourseUpdateOneRequiredInput {
   upsert: CourseUpsertNestedInput
 }
 
-input CourseUpdateOneRequiredWithoutTargetInput {
-  create: CourseCreateWithoutTargetInput
+input CourseUpdateOneRequiredWithoutInterestInput {
+  create: CourseCreateWithoutInterestInput
   connect: CourseWhereUniqueInput
-  update: CourseUpdateWithoutTargetDataInput
-  upsert: CourseUpsertWithoutTargetInput
+  update: CourseUpdateWithoutInterestDataInput
+  upsert: CourseUpsertWithoutInterestInput
 }
 
 input CourseUpdateOneRequiredWithoutVideosInput {
@@ -930,7 +930,7 @@ input CourseUpdateOneRequiredWithoutVideosInput {
   upsert: CourseUpsertWithoutVideosInput
 }
 
-input CourseUpdateWithoutTargetDataInput {
+input CourseUpdateWithoutInterestDataInput {
   title: String
   description: String
   thumbnail: String
@@ -949,7 +949,7 @@ input CourseUpdateWithoutVideosDataInput {
   price: Float
   user: UserUpdateOneRequiredInput
   category: CategoryUpdateOneRequiredInput
-  target: CourseInterestUpdateManyWithoutCourseInput
+  interest: CourseInterestUpdateManyWithoutCourseInput
 }
 
 input CourseUpsertNestedInput {
@@ -957,9 +957,9 @@ input CourseUpsertNestedInput {
   create: CourseCreateInput!
 }
 
-input CourseUpsertWithoutTargetInput {
-  update: CourseUpdateWithoutTargetDataInput!
-  create: CourseCreateWithoutTargetInput!
+input CourseUpsertWithoutInterestInput {
+  update: CourseUpdateWithoutInterestDataInput!
+  create: CourseCreateWithoutInterestInput!
 }
 
 input CourseUpsertWithoutVideosInput {
@@ -1447,9 +1447,9 @@ input CourseWhereInput {
   videos_none: CourseVideosWhereInput
   user: UserWhereInput
   category: CategoryWhereInput
-  target_every: CourseInterestWhereInput
-  target_some: CourseInterestWhereInput
-  target_none: CourseInterestWhereInput
+  interest_every: CourseInterestWhereInput
+  interest_some: CourseInterestWhereInput
+  interest_none: CourseInterestWhereInput
 }
 
 input CourseWhereUniqueInput {

@@ -55,7 +55,7 @@ type Course {
   state: State @default(value: "UNPUBLISHED")
   price: Float!
   category: Category!
-  target: [CourseInterest!]!
+  interest: [CourseInterest!]!
 }
 
 # item

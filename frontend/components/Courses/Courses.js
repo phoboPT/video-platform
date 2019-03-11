@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import User from "../Authentication/User";
 import Link from "next/link";
 import Videos from "../Videos/Videos";
-import CreateCourse from "./CreateCourse";
+import CreateCourse from "./Create/CreateCourse";
 import CreateVideo from "../VideoManager/CreateVideo";
-import FormCourse from "./FormCourse";
+import FormCourse from "./Create/FormCourse";
 import LinkStyle from "../styles/LinkStyle";
 import styled from "styled-components";
 import MyCourses from "./MyCourses";
@@ -57,12 +57,22 @@ const Style = styled.div`
   .main-bar {
     float: bottom;
     text-align: center;
+    .create-course {
+      width: auto;
+      background: red;
+      color: white;
+      border: 0;
+      font-size: 2rem;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      text-align: center;
+    }
   }
 `;
 
 class Courses extends Component {
   state = {
-    createState: 0,
+    createState: 2,
     uploadState: 0,
     videosState: 0,
     courseId: ""
@@ -123,10 +133,7 @@ class Courses extends Component {
                         <FormCourse saveToState={this.saveToState} />
                       )}
                       {this.state.createState === 2 && (
-                        <CreateCourse
-                          page={this.props.page}
-                          state={this.state}
-                        />
+                        <CreateCourse state={this.state} />
                       )}
                       {this.state.uploadState === 1 && <CreateVideo />}
                       {this.state.videosState === 1 && (
