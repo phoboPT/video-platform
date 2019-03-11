@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { CURRENT_USER_QUERY } from "../Authentication/User";
+import { CURRENT_USER_QUERY } from "../../Authentication/User";
 import PropTypes from "prop-types";
 import { SINGLE_COURSE_QUERY } from "./UpdateCourse";
 import styled from "styled-components";
 
-const ADD_VIDEO_COURSE = gql`
-  mutation ADD_VIDEO_COURSE($id: ID!, $courseId: ID!) {
+const REMOVE_VIDEO_COURSE = gql`
+  mutation REMOVE_VIDEO_COURSE($id: ID!, $courseId: ID!) {
     removeFromCourse(id: $id, courseId: $courseId) {
       id
     }
@@ -41,14 +41,14 @@ const ButtonStyle = styled.button`
   }
 `;
 
-class AddVideo extends Component {
+class RemoveVideoButton extends Component {
   state = this.props.state;
   render() {
     const { id } = this.props;
     const { courseId } = this.props;
     return (
       <Mutation
-        mutation={ADD_VIDEO_COURSE}
+        mutation={REMOVE_VIDEO_COURSE}
         variables={{
           id,
           courseId
@@ -68,8 +68,8 @@ class AddVideo extends Component {
   }
 }
 
-AddVideo.propTypes = {
+RemoveVideoButton.propTypes = {
   courseId: PropTypes.string.isRequired
 };
 
-export default AddVideo;
+export default RemoveVideoButton;

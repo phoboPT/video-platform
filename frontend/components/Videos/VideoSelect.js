@@ -71,9 +71,7 @@ class VideoSelect extends Component {
             <p>
               Description: <span>{video.description}</span>
             </p>
-            <p>
-              Category: <span>{video.category.name}</span>
-            </p>
+            <p />
           </div>
           <div className="item3">{this.props.children}</div>
         </div>

@@ -10,6 +10,7 @@ const Query = {
   video: forwardTo("db"),
   category: forwardTo("db"),
   user: forwardTo("db"),
+  interests: forwardTo("db"),
   // comVideo: forwardTo("db"),
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
