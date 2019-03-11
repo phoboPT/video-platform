@@ -29,9 +29,6 @@ type Mutation {
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Video!
   deleteCategory(id: ID!): Category
-  # createComVideo(comment: String!, video: ID!): ComVideo!
-  # updateComVideo(id: ID!, comment: String!): ComVideo!
-  # deleteComVideo(id: ID!): ComVideo
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
@@ -85,6 +82,7 @@ type Query {
   categories: [Category]!
   users: [User]!
   courses: [Course]!
+  interests: [Interest]!
 
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
@@ -93,7 +91,6 @@ type Query {
   course(where: CourseWhereUniqueInput!): Course!
   comCourse(where: ComCourseWhereUniqueInput!): ComCourse
 
-  # comVideo(where: VideoWhereUniqueInput!): ComVideo
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
   videosUser(
     where: VideoWhereInput
@@ -113,11 +110,11 @@ type Query {
 
   # listar todos os comentarios de um curso
   comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
-
+  # Listar todos os cursos de um User
   coursesUser: [Course]
+  # Information about actual user
   me: User
 
   #pagination
   videosConnection(where: VideoWhereInput): VideoConnection!
-  interests: [Interest]!
 }

@@ -3,7 +3,6 @@ const { forwardTo } = require("prisma-binding");
 const Query = {
   videos: forwardTo("db"),
   categories: forwardTo("db"),
-  // comVideos: forwardTo("db"),
   users: forwardTo("db"),
   courses: forwardTo("db"),
   course: forwardTo("db"),
@@ -12,7 +11,7 @@ const Query = {
   user: forwardTo("db"),
   comCourse: forwardTo("db"),
   interests: forwardTo("db"),
-  // comVideo: forwardTo("db"),
+
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -70,21 +69,7 @@ const Query = {
       info
     );
   },
-  // comsVideo(parent, args, ctx, info) {
-  //   //Ver se esta logado
-  //   if (!userId) {
-  //     throw new Error("you must be signed in!");
-  //   }
-  //   //query o video atual com comparaçao de ids de user
-  //   return ctx.db.query.comVideos(
-  //     {
-  //       where: {
-  //         video: { id: args.id }
-  //       }
-  //     },
-  //     info
-  //   );
-  // },
+
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //Ve se esta logado
@@ -146,8 +131,6 @@ const Query = {
     );
   },
   comCourseList(parent, args, ctx, info) {
-    //query o video atual com comparaçao de ids de user
-    // console.log(args);
     return ctx.db.query.comCourses(
       {
         where: {
