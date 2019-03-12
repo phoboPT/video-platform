@@ -3,7 +3,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
 import Overview from "./Overview";
-import VideoItem from "../VideoItem";
+import VideoItem from "./VideoItem";
 import Markdown from "react-markdown";
 import CommentForm from "./Comments/CommentForm";
 import ListComments from "./Comments/ListComments";

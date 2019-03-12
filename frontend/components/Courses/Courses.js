@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import User from "../Authentication/User";
 import Link from "next/link";
-import Videos from "../Videos/Videos";
-import CreateCourse from "./Create/CreateCourse";
-import CreateVideo from "../VideoManager/CreateVideo";
-import FormCourse from "./Create/FormCourse";
+import Videos from "./MyVideos/Videos";
+import CreateCourse from "./CreateCourse/CreateCourse";
+import CreateVideo from "./UploadVideo/CreateVideo";
+import FormCourse from "./CreateCourse/FormCourse";
 import LinkStyle from "../styles/LinkStyle";
 import styled from "styled-components";
-import MyCourses from "./MyCourses";
+import MyCourses from "./MyCourses/MyCourses";
 
 const Button = styled.button`
   width: auto !important;

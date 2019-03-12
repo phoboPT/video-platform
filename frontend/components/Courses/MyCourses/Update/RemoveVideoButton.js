@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { CURRENT_USER_QUERY } from "../../Authentication/User";
+import { CURRENT_USER_QUERY } from "../../../Authentication/User";
 import PropTypes from "prop-types";
 import { SINGLE_COURSE_QUERY } from "./UpdateCourse";
 import styled from "styled-components";

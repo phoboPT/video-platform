@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Form from "../styles/Form";
-import Error from "../ErrorMessage";
+import Error from "../Static/ErrorMessage";
 import { CURRENT_USER_QUERY } from "./User";
 
 const SIGNUP_MUTATION = gql`

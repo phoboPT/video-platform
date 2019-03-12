@@ -1,4 +1,4 @@
-import ViewCourse from "../components/Courses/ViewCourse";
+import ViewCourse from "../components/Home/CourseInfo/ViewCourse";
 
 const ViewCoursePage = ({ query }) => (
   <div>

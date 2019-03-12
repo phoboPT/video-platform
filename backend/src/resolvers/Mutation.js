@@ -535,6 +535,7 @@ const Mutations = {
           comment: args.comment
         }
       },
+
       info
     );
 
@@ -548,22 +549,45 @@ const Mutations = {
       id: args.id
     };
     //1.encontrar o video
-    const comCourse = await ctx.db.query.ComCourse(
+    const comCourse = await ctx.db.query.comCourse(
       {
         where
       },
-      `{id}`
+      `{id user{id}}`
     );
     //2.checkar se tem permissoes para o apagar
     const ownsComCourse = comCourse.user.id === ctx.request.userId;
 
-    if (!ownsCourse) {
+    if (!ownsComCourse) {
       throw new Error("You don't have permission to do that!");
     }
     //3.dar delete
     return ctx.db.mutation.deleteComCourse(
       {
         where
+      },
+      info
+    );
+  },
+  updateComCourse(parent, args, ctx, info) {
+    //faz uma copia dos updates
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in");
+    }
+
+    const updates = {
+      ...args
+    };
+    //elimina o id dos updates
+    delete updates.id;
+    //da run no update method
+    return ctx.db.mutation.updateComCourse(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
       },
       info
     );

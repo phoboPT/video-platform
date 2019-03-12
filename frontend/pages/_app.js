@@ -1,5 +1,5 @@
 import App, { Container } from "next/app";
-import Page from "../components/Page";
+import Page from "../components/Static/Page";
 import { ApolloProvider } from "react-apollo";
 import withData from "../lib/withData";
 

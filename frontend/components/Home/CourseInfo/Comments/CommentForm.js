@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import Error from "../../ErrorMessage";
+import Error from "../../../Static/ErrorMessage";
 import { ALL_COMMENTS_QUERY } from "./ListComments";
 
 const Style = styled.div`
@@ -56,7 +56,7 @@ export class CommentForm extends Component {
         refetchQueries={[
           {
             query: ALL_COMMENTS_QUERY,
-            variables: { courseId: this.state.courseId }
+            variables: { id: this.state.courseId }
           }
         ]}
       >

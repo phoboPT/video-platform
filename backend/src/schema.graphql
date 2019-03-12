@@ -29,9 +29,6 @@ type Mutation {
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Video!
   deleteCategory(id: ID!): Category
-  # createComVideo(comment: String!, video: ID!): ComVideo!
-  # updateComVideo(id: ID!, comment: String!): ComVideo!
-  # deleteComVideo(id: ID!): ComVideo
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
@@ -61,7 +58,7 @@ type Mutation {
   ): Course!
   deleteCourse(id: ID!): CourseVideos
   createComCourse(courseId: ID!, comment: String!): ComCourse!
-  # updateComCourse(id: ID!, comment: String!): ComCourse!
+  updateComCourse(id: ID!, comment: String): ComCourse!
   deleteComCourse(id: ID!): ComCourse
 }
 
@@ -81,24 +78,19 @@ type Query {
     first: Int
   ): [Course]
 
-  videos(
-    where: VideoWhereInput
-    orderBy: VideoOrderByInput
-    skip: Int
-    first: Int
-  ): [Video]!
-
   # querys sellect all
   categories: [Category]!
-  # comVideos: [ComVideo]!
   users: [User]!
   courses: [Course]!
+  interests: [Interest]!
+
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput!): Course!
-  # comVideo(where: VideoWhereUniqueInput!): ComVideo
+  comCourse(where: ComCourseWhereUniqueInput!): ComCourse
+
   # querys selecionar a comparar com id de outra tabela(users) ( select geral)
   videosUser(
     where: VideoWhereInput
@@ -106,18 +98,23 @@ type Query {
     skip: Int
     first: Int
   ): [Video]
-  # listar todos os comentarios de um cursos
-  comCourse(
-    where: ComCourseWhereInput
-    orderBy: ComCourseOrderByInput
-  ): [ComCourse]
+
+  videos(
+    where: VideoWhereInput
+    orderBy: VideoOrderByInput
+    skip: Int
+    first: Int
+  ): [Video]!
 
   videosSearch(where: VideoWhereInput!): [Video]
-  # comsVideo(id: ID!): [ComVideo]
+
+  # listar todos os comentarios de um curso
+  comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
+  # Listar todos os cursos de um User
   coursesUser: [Course]
+  # Information about actual user
   me: User
 
   #pagination
   videosConnection(where: VideoWhereInput): VideoConnection!
-  interests: [Interest]!
 }

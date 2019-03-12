@@ -3,10 +3,10 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import VideoItem from "./VideoItem";
 import styled from "styled-components";
-import { perPage } from "../../config";
-import Pagination from "../Pagination";
-import Search from "../SearchVideosUser";
-import ItemList from "../styles/ItemList";
+import { perPage } from "../../../config";
+import Pagination from "./Pagination";
+import Search from "./SearchVideosUser";
+import ItemList from "../../styles/ItemList";
 const ALL_VIDEOS_USER = gql`
   query ALL_VIDEOS_USER ($skip: Int =0,$first:Int=${perPage}){
       videosUser(first:$first,skip:$skip,orderBy:createdAt_DESC)  {

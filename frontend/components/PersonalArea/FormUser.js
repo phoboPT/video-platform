@@ -2,22 +2,13 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Form from "../styles/Form";
 import gql from "graphql-tag";
-import Error from "../ErrorMessage";
+import Error from "../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import LinkStyle from "../styles/LinkStyle";
 import Link from "next/link";
 import { Container } from "../styles/Container";
 import User from "../Authentication/User";
 
-const UPDATE_USER_MUTATION = gql`
-  mutation UPDATE_USER_MUTATION($id: ID!, $name: String, $email: String) {
-    updateUser(id: $id, name: $name, email: $email) {
-      id
-      name
-      email
-    }
-  }
-`;
 const Style = styled.div`
   button {
     color: #000000;
@@ -36,6 +27,16 @@ const Style = styled.div`
   #sidebar {
     border-left: none;
     vertical-align: center;
+  }
+`;
+
+const UPDATE_USER_MUTATION = gql`
+  mutation UPDATE_USER_MUTATION($id: ID!, $name: String, $email: String) {
+    updateUser(id: $id, name: $name, email: $email) {
+      id
+      name
+      email
+    }
   }
 `;
 

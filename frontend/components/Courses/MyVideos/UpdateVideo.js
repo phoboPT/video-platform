@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Form from "../styles/Form";
+import Form from "../../styles/Form";
 import gql from "graphql-tag";
-import Error from "../ErrorMessage";
+import Error from "../../ErrorMessage";
 import { Mutation, Query } from "react-apollo";
-import { CourseContainer } from "../Courses/Update/UpdateCourse";
-import VideoPlayer from "./VideoPlayer";
+import { CourseContainer } from "../Courses/UpdateCourse";
+import VideoPlayer from "../../VideoManager/VideoPlayer";
 
 const SINGLE_VIDEO_QUERY = gql`
   query SINGLE_VIDEO_QUERY($id: ID!) {
