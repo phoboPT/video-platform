@@ -72,32 +72,16 @@ const Style = styled.div`
 
 class Courses extends Component {
   state = {
-    createState: 0,
-    uploadState: 0,
-    videosState: 0,
-    courseId: ""
+    view: 0
   };
 
   // This method will be sent to the child component
   saveToState = e => {
-    this.setState({ courseId: e });
-    this.setState({ createState: 2 });
+    this.setState({ view: 3 });
   };
 
-  createCourse = (e, info) => {
-    this.setState({ createState: parseInt(e.target.id) });
-    this.setState({ uploadState: 0 });
-    this.setState({ videosState: 0 });
-  };
-  uploadVideo = e => {
-    this.setState({ uploadState: parseInt(e.target.id) });
-    this.setState({ createState: 0 });
-    this.setState({ videosState: 0 });
-  };
-  videosState = e => {
-    this.setState({ uploadState: 0 });
-    this.setState({ createState: 0 });
-    this.setState({ videosState: parseInt(e.target.id) });
+  changeView = e => {
+    this.setState({ view: parseInt(e.target.id) });
   };
 
   render() {
@@ -111,32 +95,32 @@ class Courses extends Component {
                 <Style>
                   <div className="container">
                     <section id="main" className="top-bar">
-                      <button id="3" onClick={this.createCourse}>
+                      <button id="1" onClick={this.changeView}>
                         My Courses
                       </button>
 
-                      <button id="1" onClick={this.createCourse}>
+                      <button id="2" onClick={this.changeView}>
                         Create Course
                       </button>
 
-                      <button id="1" onClick={this.uploadVideo}>
+                      <button id="4" onClick={this.changeView}>
                         Upload Video
                       </button>
 
-                      <button id="1" onClick={this.videosState}>
+                      <button id="5" onClick={this.changeView}>
                         My Videos
                       </button>
                     </section>
                     <aside id="sidebar" className="main-bar">
-                      {this.state.createState === 3 && <MyCourses />}
-                      {this.state.createState === 1 && (
+                      {this.state.view === 1 && <MyCourses />}
+                      {this.state.view === 2 && (
                         <FormCourse saveToState={this.saveToState} />
                       )}
-                      {this.state.createState === 2 && (
+                      {this.state.view === 3 && (
                         <CreateCourse state={this.state} />
                       )}
-                      {this.state.uploadState === 1 && <CreateVideo />}
-                      {this.state.videosState === 1 && (
+                      {this.state.view === 4 && <CreateVideo />}
+                      {this.state.view === 5 && (
                         <Videos
                           page={this.props.page}
                           courseId={this.courseId}

@@ -101,11 +101,12 @@ class FormCourse extends Component {
                 {(createCourse, { loading, error }) => (
                   <>
                     <Form
+                      id="3"
                       method="post"
                       onSubmit={async e => {
                         e.preventDefault();
                         const res = await createCourse();
-                        this.props.saveToState(res.data.createCourse.id);
+                        this.props.saveToState();
                       }}
                     >
                       <Error error={error} />

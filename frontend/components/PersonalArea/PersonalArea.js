@@ -37,28 +37,13 @@ const Style = styled.div`
 
 class PersonalArea extends Component {
   state = {
-    informationState: 1,
-    changeInformationState: 0,
-    changePasswordState: 0,
-    userId: ""
+    view: 1
   };
 
   // This method will be sent to the child component
 
-  information = e => {
-    this.setState({ informationState: parseInt(e.target.id) });
-    this.setState({ changeInformationState: 0 });
-    this.setState({ changePasswordState: 0 });
-  };
-  changeInformation = e => {
-    this.setState({ informationState: 0 });
-    this.setState({ changeInformationState: parseInt(e.target.id) });
-    this.setState({ changePasswordState: 0 });
-  };
-  changePassword = e => {
-    this.setState({ informationState: 0 });
-    this.setState({ changeInformationState: 0 });
-    this.setState({ changePasswordState: parseInt(e.target.id) });
+  changeView = e => {
+    this.setState({ view: parseInt(e.target.id) });
   };
 
   render() {
@@ -70,20 +55,23 @@ class PersonalArea extends Component {
               <LinkStyle>
                 <Style>
                   <section id="main">
-                    <button id="1" onClick={this.information}>
+                    <button id="1" onClick={this.changeView}>
                       Account Information
                     </button>
-                    <button id="2" onClick={this.changeInformation}>
+                    <button id="2" onClick={this.changeView}>
                       Change Informations
                     </button>
-                    <button id="3" onClick={this.changePassword}>
+                    <button id="3" onClick={this.changeView}>
                       Change Password
+                    </button>
+                    <button id="4" onClick={this.changeView}>
+                      Interests
                     </button>
                   </section>
                   <aside id="sidebar">
-                    {this.state.informationState === 1 && <Information />}
-                    {this.state.changeInformationState === 2 && <FormUser />}
-                    {this.state.changePasswordState === 3 && <FormPassword />}
+                    {this.state.view === 1 && <Information />}
+                    {this.state.view === 2 && <FormUser />}
+                    {this.state.view === 3 && <FormPassword />}
                   </aside>
                 </Style>
               </LinkStyle>
