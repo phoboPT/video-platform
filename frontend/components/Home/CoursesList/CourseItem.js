@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import ItemStyles from "./styles/ItemStyles";
+import ItemStyles from "../../styles/ItemStyles";
 import styled from "styled-components";
 
 const InfoStyle = styled.p`

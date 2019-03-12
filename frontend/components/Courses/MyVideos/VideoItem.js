@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ItemStyles from "../styles/ItemStyles";
-import Title from "../styles/Title";
+import ItemStyles from "../../styles/ItemStyles";
+import Title from "../../styles/Title";
 import Link from "next/link";
 import styled from "styled-components";
-import formatDate from "../../lib/formatDate";
+import formatDate from "../../../lib/formatDate";
 import DeleteVideo from "./DeleteVideo";
 
 // Adapting based on props

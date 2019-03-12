@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Form from "../../styles/Form";
+import Form from "../../../styles/Form";
 import gql from "graphql-tag";
-import Error from "../../ErrorMessage";
+import Error from "../../../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
-import VideoItem from "../../VideoItem";
+import VideoItem from "./VideoItem";
 import RemoveVideoButton from "./RemoveVideoButton";
 
 const SINGLE_COURSE_QUERY = gql`
@@ -205,14 +205,14 @@ class UpdateCourse extends Component {
                     </div>
                   </CourseContainer>
                   <VideoListStyle>Videos</VideoListStyle>
-                  {data.course.videos.map((video, index) => (
+                  {/* {data.course.videos.map((video, index) => (
                     <VideoItem videos={video} data={index} key={video.video.id}>
                       <RemoveVideoButton
                         courseId={data.course.id}
                         id={video.video.id}
                       />
                     </VideoItem>
-                  ))}
+                  ))} */}
                 </>
               )}
             </Mutation>

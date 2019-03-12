@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Form from "../styles/Form";
 import gql from "graphql-tag";
-import Error from "../ErrorMessage";
+import Error from "../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import LinkStyle from "../styles/LinkStyle";
 import Link from "next/link";

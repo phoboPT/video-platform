@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import CourseItem from "./CourseItem";
-import ItemList from "../styles/ItemList";
+import ItemList from "../../styles/ItemList";
 
 const CURRENT_COURSES_QUERY = gql`
   query CURRENT_COURSES_QUERY {

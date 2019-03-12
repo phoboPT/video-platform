@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import formatDate from "../../../lib/formatDate";
-import User from "../../Authentication/User";
-import { MenuDots, List } from "../../styles/CommentItemStyle";
+import formatDate from "../../../../lib/formatDate";
+import User from "../../../Authentication/User";
+import { MenuDots, List } from "../../../styles/CommentItemStyle";
 import styled from "styled-components";
 import DeleteComment from "./DeleteComment";
 import UpdateComment from "./UpdateComment";

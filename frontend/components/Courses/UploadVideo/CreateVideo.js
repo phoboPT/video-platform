@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import Form from "../styles/Form";
+import Form from "../../styles/Form";
 import styled from "styled-components";
-import Error from "../ErrorMessage.js";
-import { ALL_VIDEOS_USER } from "../Videos/Videos";
+import Error from "../../Static/ErrorMessage.js";
+import { ALL_VIDEOS_USER } from "../MyVideos/Videos";
 import Router from "next/router";
-import { ALL_COURSES_QUERY } from "../CoursesList/ListAllCourses";
+import { ALL_COURSES_QUERY } from "../../Home/CoursesList/ListAllCourses";
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(

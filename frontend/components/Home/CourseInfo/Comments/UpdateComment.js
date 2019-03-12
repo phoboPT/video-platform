@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Mutation, Query } from "react-apollo";
-import Error from "../../ErrorMessage";
+import Error from "../../../Static/ErrorMessage";
 import styled from "styled-components";
 
 const Style = styled.div`

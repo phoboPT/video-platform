@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Form from "../styles/Form";
-import Error from "../ErrorMessage";
+import Error from "../Static/ErrorMessage";
 import { CURRENT_USER_QUERY } from "./User";
-import { CURRENT_COURSES_QUERY } from "../Courses/MyCourses";
-import { ALL_VIDEOS_USER } from "../Videos/Videos";
+import { CURRENT_COURSES_QUERY } from "../Courses/MyCourses/MyCourses";
+import { ALL_VIDEOS_USER } from "..//Courses/MyVideos/Videos";
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
     signin(email: $email, password: $password) {

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Form from "../../styles/Form";
 import gql from "graphql-tag";
-import Error from "../../ErrorMessage";
+import Error from "../../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
-import { CURRENT_COURSES_QUERY } from "../MyCourses";
+import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
