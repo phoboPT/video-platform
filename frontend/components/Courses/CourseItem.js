@@ -19,6 +19,8 @@ const Div = styled.div`
   }
   strong {
   }
+  img {
+  }
 `;
 
 // Adapting based on props
@@ -55,16 +57,14 @@ class ListCourses extends Component {
             }}
           >
             <a>
-              <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+              <img src={course.thumbnail} />
             </a>
           </Link>
           <br />
           <span>
             Description: <State>{formatString(course.description, 20)}</State>
           </span>
-          <span>
-            Thumbnail: <State>{course.thumbnail}</State>
-          </span>
+
           <span>
             Category: <State>{course.category.name} </State>
           </span>

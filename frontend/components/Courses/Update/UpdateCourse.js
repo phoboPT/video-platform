@@ -137,7 +137,7 @@ class UpdateCourse extends Component {
                 <>
                   <CourseContainer>
                     <div className="video-bar">
-                      <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+                      <img src={data.course.thumbnail} />
                     </div>
                     <div className="info-bar">
                       <Form onSubmit={e => this.updateCourse(e, updateCourse)}>

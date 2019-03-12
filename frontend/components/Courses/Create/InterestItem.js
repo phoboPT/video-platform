@@ -34,26 +34,42 @@ const ButtonStyle = styled.button`
     position: relative;
     top: 1px;
   }
+  &:disabled {
+    background-color: #99aab5;
+    border: 1px solid #99aab5;
+  }
 `;
 
 class InterestItem extends Component {
   state = {
     interestId: this.props.interest.id,
-    courseId: this.props.courseId
+    courseId: this.props.courseId,
+    isActive: false
   };
   static propTypes = {
     interest: PropTypes.object.isRequired,
     courseId: PropTypes.string.isRequired
   };
 
+  updateState = e => {
+    console.log("hi");
+    this.setState({ isActive: true });
+  };
+
   render() {
-    const { interest, id } = this.props;
+    const { interest } = this.props;
     return (
       <Mutation mutation={ADD_TAGS_COURSE} variables={this.state}>
         {(addTargetCourse, { loading }) => {
           if (loading) return <p>loading</p>;
           return (
-            <ButtonStyle disabled={loading} onClick={addTargetCourse}>
+            <ButtonStyle
+              disabled={this.state.isActive}
+              onClick={() => {
+                addTargetCourse();
+                this.updateState();
+              }}
+            >
               {interest.name}
             </ButtonStyle>
           );

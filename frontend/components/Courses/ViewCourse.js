@@ -117,7 +117,7 @@ class ViewCourse extends Component {
             <>
               <CourseContainer>
                 <div className="video-bar">
-                  <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+                  <img src={course.thumbnail} />
                 </div>
                 <div className="info-bar">
                   <h2>{course.title}</h2>
@@ -141,7 +141,7 @@ class ViewCourse extends Component {
                 <Overview data={course} key={course.id} />
               )}
               {this.state.view === 2 &&
-                data.course.videos === null &&
+                data.course.videos !== null &&
                 data.course.videos.map((video, index) => (
                   <VideoItem
                     videos={video}

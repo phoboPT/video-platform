@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
-import Course from "../CourseItem";
+import CourseItem from "../CourseItem";
 import Search from "../SearchCourse";
 
 const ALL_COURSES_QUERY = gql`
@@ -49,7 +49,7 @@ export class Courses extends Component {
                 <Search />
                 <CoursesList>
                   {data.courses.map(course => (
-                    <Course course={course} key={course.id} />
+                    <CourseItem course={course} key={course.id} />
                   ))}
                 </CoursesList>
               </>

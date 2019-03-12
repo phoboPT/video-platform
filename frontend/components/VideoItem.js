@@ -56,7 +56,7 @@ export class Video extends Component {
 
   render() {
     const { videos, data } = this.props;
-
+    console.log("hi", videos);
     return (
       <List>
         <div className="image">
@@ -71,7 +71,6 @@ export class Video extends Component {
             </a>
           </Link>
         </div>
-
         <div className="title">
           <span>
             {data + 1} {videos.video.title}

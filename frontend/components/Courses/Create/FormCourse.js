@@ -9,7 +9,6 @@ import { CURRENT_COURSES_QUERY } from "../MyCourses";
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
     $title: String!
-    # $target: String!
     $thumbnail: String!
     $description: String!
     $price: Float!
@@ -17,7 +16,6 @@ const CREATE_COURSE_MUTATION = gql`
   ) {
     createCourse(
       title: $title
-      # target: $target
       thumbnail: $thumbnail
       description: $description
       price: $price
@@ -71,6 +69,22 @@ class FormCourse extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  uploadThumbnail = async e => {
+    const files = e.target.files;
+
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "thumbnail");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
+      { method: "POST", body: data }
+    );
+
+    const file = await res.json();
+    this.setState({ thumbnail: file.secure_url });
+  };
+
   render() {
     return (
       <Container>
@@ -102,7 +116,7 @@ class FormCourse extends Component {
                           <input
                             type="text"
                             name="title"
-                            placeholder="title"
+                            placeholder="Awsome "
                             value={this.title}
                             onChange={this.saveState}
                             required
@@ -113,7 +127,7 @@ class FormCourse extends Component {
                           <input
                             type="text"
                             name="description"
-                            placeholder="description"
+                            placeholder="This is the best Course you will find"
                             value={this.description}
                             onChange={this.saveState}
                             required
@@ -130,28 +144,24 @@ class FormCourse extends Component {
                             required
                           />
                         </label>
-                        <label htmlFor="target">
-                          Target
-                          <input
-                            type="text"
-                            name="target"
-                            placeholder="target"
-                            value={this.target}
-                            onChange={this.saveState}
-                            required
-                          />
-                        </label>
+
                         <label htmlFor="thumbnail">
                           Thumbnail
                           <input
-                            type="text"
+                            type="file"
                             name="thumbnail"
-                            placeholder="thumbnail"
-                            value={this.thumbnail}
-                            onChange={this.saveState}
+                            placeholder="Upload an Image"
+                            onChange={this.uploadThumbnail}
                             required
                           />
                         </label>
+                        {this.state.thumbnail && (
+                          <img
+                            src={this.state.thumbnail}
+                            alt="Upload Preview"
+                            width="200"
+                          />
+                        )}
                         <label htmlFor="price">
                           Price
                           <input
@@ -159,7 +169,7 @@ class FormCourse extends Component {
                             min="1"
                             step="any"
                             name="price"
-                            placeholder="Price in cents"
+                            placeholder="00,00"
                             value={this.price}
                             onChange={this.saveState}
                             required

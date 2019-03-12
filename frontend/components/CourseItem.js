@@ -25,7 +25,7 @@ export class Course extends Component {
               query: { id: course.id }
             }}
           >
-            <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+            <img src={course.thumbnail} />
           </Link>
           <InfoStyle>{course.description}</InfoStyle>
           <InfoStyle className="price">{course.price} €</InfoStyle>

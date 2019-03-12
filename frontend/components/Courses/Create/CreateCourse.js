@@ -14,14 +14,6 @@ const ALL_INTEREST_QUERY = gql`
   }
 `;
 
-const ADD_INTEREST_MUTATION = gql`
-  mutation ADD_INTEREST_MUTATION($courseId: ID!, $interestId: ID!) {
-    addInterestCourse(courseId: $courseId) {
-      id
-    }
-  }
-`;
-
 const InterestStyle = styled.div`
   max-width: 1400px;
   background-color: #fff;
@@ -70,3 +62,4 @@ class CreateCourse extends Component {
 }
 
 export default CreateCourse;
+export { ALL_INTEREST_QUERY };

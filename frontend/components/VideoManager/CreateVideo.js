@@ -97,6 +97,7 @@ class CreateVideo extends Component {
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
+    console.log(file);
     data.append("upload_preset", "video-platform");
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/video/upload",
@@ -155,19 +156,20 @@ class CreateVideo extends Component {
                     <Error error={error} />
                     <fieldset disabled={loading} aria-busy={loading}>
                       <h2>Video</h2>
-                      <label htmlFor="file">Video</label>
-
-                      {this.state.isUploading === 0 && (
-                        <input
-                          className="file"
-                          type="file"
-                          name="file"
-                          id="file"
-                          placeholder="Upload a Video"
-                          // required
-                          onChange={this.uploadVideo}
-                        />
-                      )}
+                      <label htmlFor="file">
+                        Video
+                        {this.state.isUploading === 0 && (
+                          <input
+                            className="file"
+                            type="file"
+                            name="file"
+                            id="file"
+                            placeholder="Upload a Video"
+                            // required
+                            onChange={this.uploadVideo}
+                          />
+                        )}
+                      </label>
 
                       {this.state.isUploading === 1 && (
                         <img src="../../static/loading.gif" />
@@ -175,57 +177,61 @@ class CreateVideo extends Component {
                       {this.state.isUploading === 2 && (
                         <img src="../../static/done.png" />
                       )}
-                      <label htmlFor="title">Title</label>
-                      <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        placeholder="Title"
-                        required
-                        value={this.state.title}
-                        onChange={this.handleChange}
-                      />
-                      <label htmlFor="description">Description</label>
-                      <input
-                        type="text"
-                        name="description"
-                        id="description"
-                        placeholder="Description"
-                        required
-                        value={this.state.description}
-                        onChange={this.handleChange}
-                      />
-
-                      <label htmlFor="thumbnail">Thumbnail</label>
-                      <input
-                        type="text"
-                        name="thumbnail"
-                        id="thumbnail"
-                        placeholder="Thumbnail"
-                        required
-                        value={this.state.thumbnail}
-                        onChange={this.handleChange}
-                      />
-
-                      <label htmlFor="thumbnail">Course</label>
-
-                      {this.state.course === "" ? (
-                        this.setState({ course: data.courses[0].id })
-                      ) : (
-                        <></>
-                      )}
-                      <select
-                        id="dropdownlist"
-                        name="course"
-                        onChange={this.handleChange}
-                      >
-                        {data.courses.map(course => (
-                          <option key={course.id} value={course.id}>
-                            {course.title}
-                          </option>
-                        ))}
-                      </select>
-
+                      <label htmlFor="title">
+                        Title
+                        <input
+                          type="text"
+                          name="title"
+                          id="title"
+                          placeholder="Title"
+                          required
+                          value={this.state.title}
+                          onChange={this.handleChange}
+                        />
+                      </label>
+                      <label htmlFor="description">
+                        Description
+                        <input
+                          type="text"
+                          name="description"
+                          id="description"
+                          placeholder="Description"
+                          required
+                          value={this.state.description}
+                          onChange={this.handleChange}
+                        />
+                      </label>
+                      <label htmlFor="thumbnail">
+                        Thumbnail
+                        <input
+                          type="text"
+                          name="thumbnail"
+                          id="thumbnail"
+                          placeholder="Thumbnail"
+                          required
+                          value={this.state.thumbnail}
+                          onChange={this.handleChange}
+                        />
+                      </label>
+                      <label htmlFor="course">
+                        Course
+                        {this.state.course === "" ? (
+                          this.setState({ course: data.courses[0].id })
+                        ) : (
+                          <></>
+                        )}
+                        <select
+                          id="dropdownlist"
+                          name="course"
+                          onChange={this.handleChange}
+                        >
+                          {data.courses.map(course => (
+                            <option key={course.id} value={course.id}>
+                              {course.title}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
                       <button
                         type="submit"
                         disabled={this.state.hasVideo}

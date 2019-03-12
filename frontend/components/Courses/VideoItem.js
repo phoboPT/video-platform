@@ -42,9 +42,7 @@ class Video extends Component {
             <a>{video.title}</a>
           </Link>
         </Title>
-        <br />
-        <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
-        <br />
+
         <Div>
           <span>Description: {video.description}</span>
           <span>

@@ -72,7 +72,7 @@ const Style = styled.div`
 
 class Courses extends Component {
   state = {
-    createState: 2,
+    createState: 0,
     uploadState: 0,
     videosState: 0,
     courseId: ""

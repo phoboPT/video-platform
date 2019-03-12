@@ -3,7 +3,7 @@ import Form from "../styles/Form";
 import gql from "graphql-tag";
 import Error from "../ErrorMessage";
 import { Mutation, Query } from "react-apollo";
-import { CourseContainer } from "../Courses/UpdateCourse";
+import { CourseContainer } from "../Courses/Update/UpdateCourse";
 import VideoPlayer from "./VideoPlayer";
 
 const SINGLE_VIDEO_QUERY = gql`
