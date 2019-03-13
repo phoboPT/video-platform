@@ -4,7 +4,6 @@ import gql from "graphql-tag";
 import styled from "styled-components";
 import CourseItem from "./CourseItem";
 import Search from "../SearchCourse";
-
 const ALL_COURSES_QUERY = gql`
   query ALL_COURSES_QUERY {
     courses {

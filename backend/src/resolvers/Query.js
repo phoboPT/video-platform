@@ -17,16 +17,16 @@ const Query = {
     const { userId } = ctx.request;
     //checkar se tem um current ID
 
-    if (!userId) {
-      return null;
-    }
+    // if (!userId) {
+    //   return null;
+    // }
     return ctx.db.query.user(
       {
         where: {
-          id: userId
-        }
+          id: "cjt4jfhg40q7l0b892c01o9n8",
+        },
       },
-      info
+      info,
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -41,11 +41,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
-      info
+      info,
     );
   },
 
@@ -62,11 +62,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
-      info
+      info,
     );
   },
 
@@ -81,12 +81,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
+            id: userId,
+          },
         },
-        ...args
+        ...args,
       },
-      info
+      info,
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -103,15 +103,15 @@ const Query = {
         where: {
           AND: [
             {
-              user: { id: userId }
+              user: { id: userId },
             },
             {
-              title_contains: args.title_contains
-            }
-          ]
-        }
+              title_contains: args.title_contains,
+            },
+          ],
+        },
       },
-      info
+      info,
     );
   },
   coursesSearch(parent, args, ctx, info) {
@@ -125,9 +125,9 @@ const Query = {
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
-        ...args
+        ...args,
       },
-      info
+      info,
     );
   },
   comCourseList(parent, args, ctx, info) {
@@ -135,14 +135,14 @@ const Query = {
       {
         where: {
           course: {
-            id: args.id
-          }
+            id: args.id,
+          },
         },
-        orderBy: "createdAt_DESC"
+        orderBy: "createdAt_DESC",
       },
-      info
+      info,
     );
-  }
+  },
 };
 
 module.exports = Query;

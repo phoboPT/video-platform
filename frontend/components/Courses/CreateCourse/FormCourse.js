@@ -5,6 +5,8 @@ import gql from "graphql-tag";
 import Error from "../../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
+import { EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -53,7 +55,10 @@ const Container = styled.div`
     text-align: center;
   }
   span {
-    font-size: 1rem;
+  }
+
+  .description {
+    background-color: lightgray;
   }
 `;
 
@@ -66,6 +71,7 @@ class FormCourse extends Component {
     thumbnail: "",
     price: 0,
     category: "",
+    editorState: EditorState.createEmpty(),
   };
 
   saveState = e => {
@@ -88,7 +94,14 @@ class FormCourse extends Component {
     this.setState({ thumbnail: file.secure_url });
   };
 
+  onEditorStateChange = editorState => {
+    this.setState({
+      editorState,
+    });
+  };
+
   render() {
+    const { editorState } = this.state;
     return (
       <Container>
         <Query query={ALL_CATEGORIES_QUERY}>
@@ -126,15 +139,22 @@ class FormCourse extends Component {
                             required
                           />
                         </label>
-                        <label htmlFor="description">
+
+                        <label className="description" htmlFor="description">
                           Description
-                          <input
+                          {/* <input
                             type="text"
                             name="description"
                             placeholder="This is the best Course you will find"
                             value={this.description}
                             onChange={this.saveState}
                             required
+                          /> */}
+                          <Editor
+                            editorState={editorState}
+                            wrapperClassName="demo-wrapper"
+                            editorClassName="demo-editor"
+                            onEditorStateChange={this.onEditorStateChange}
                           />
                         </label>
                         <label htmlFor="state">
@@ -148,7 +168,6 @@ class FormCourse extends Component {
                             required
                           />
                         </label>
-
                         <label htmlFor="thumbnail">
                           Thumbnail
                           <span> *20 mb max</span>
@@ -180,9 +199,7 @@ class FormCourse extends Component {
                             required
                           />
                         </label>
-
                         <label htmlFor="category">Category</label>
-
                         {this.state.category === "" ? (
                           this.setState({ category: data.categories[0].id })
                         ) : (
