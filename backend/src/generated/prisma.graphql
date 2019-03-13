@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/hugobrancoc-5773e9/picus/dev
-# timestamp: Mon Mar 11 2019 16:04:31 GMT+0000 (Hora padrão da Europa Ocidental)
+# timestamp: Wed Mar 13 2019 11:34:15 GMT+0000 (Hora padrão da Europa Ocidental)
 
 type AggregateCategory {
   count: Int!
@@ -2841,7 +2841,7 @@ type Video implements Node {
   state: State!
   user: User!
   urlVideo: String!
-  thumbnail: String!
+  file: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -2861,7 +2861,7 @@ input VideoCreateInput {
   description: String!
   state: State
   urlVideo: String!
-  thumbnail: String!
+  file: String
   user: UserCreateOneInput!
 }
 
@@ -2890,8 +2890,8 @@ enum VideoOrderByInput {
   state_DESC
   urlVideo_ASC
   urlVideo_DESC
-  thumbnail_ASC
-  thumbnail_DESC
+  file_ASC
+  file_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -2904,7 +2904,7 @@ type VideoPreviousValues {
   description: String!
   state: State!
   urlVideo: String!
-  thumbnail: String!
+  file: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -2953,7 +2953,7 @@ input VideoUpdateDataInput {
   description: String
   state: State
   urlVideo: String
-  thumbnail: String
+  file: String
   user: UserUpdateOneRequiredInput
 }
 
@@ -2962,7 +2962,7 @@ input VideoUpdateInput {
   description: String
   state: State
   urlVideo: String
-  thumbnail: String
+  file: String
   user: UserUpdateOneRequiredInput
 }
 
@@ -2971,7 +2971,7 @@ input VideoUpdateManyMutationInput {
   description: String
   state: State
   urlVideo: String
-  thumbnail: String
+  file: String
 }
 
 input VideoUpdateOneInput {
@@ -3167,46 +3167,46 @@ input VideoWhereInput {
 
   """All values not ending with the given string."""
   urlVideo_not_ends_with: String
-  thumbnail: String
+  file: String
 
   """All values that are not equal to given value."""
-  thumbnail_not: String
+  file_not: String
 
   """All values that are contained in given list."""
-  thumbnail_in: [String!]
+  file_in: [String!]
 
   """All values that are not contained in given list."""
-  thumbnail_not_in: [String!]
+  file_not_in: [String!]
 
   """All values less than the given value."""
-  thumbnail_lt: String
+  file_lt: String
 
   """All values less than or equal the given value."""
-  thumbnail_lte: String
+  file_lte: String
 
   """All values greater than the given value."""
-  thumbnail_gt: String
+  file_gt: String
 
   """All values greater than or equal the given value."""
-  thumbnail_gte: String
+  file_gte: String
 
   """All values containing the given string."""
-  thumbnail_contains: String
+  file_contains: String
 
   """All values not containing the given string."""
-  thumbnail_not_contains: String
+  file_not_contains: String
 
   """All values starting with the given string."""
-  thumbnail_starts_with: String
+  file_starts_with: String
 
   """All values not starting with the given string."""
-  thumbnail_not_starts_with: String
+  file_not_starts_with: String
 
   """All values ending with the given string."""
-  thumbnail_ends_with: String
+  file_ends_with: String
 
   """All values not ending with the given string."""
-  thumbnail_not_ends_with: String
+  file_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""

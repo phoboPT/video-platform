@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import Error from "../../../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
-import VideoItem from "./VideoItem";
+import VideoItem from "../../../Home/CourseInfo/VideoItem";
 import RemoveVideoButton from "./RemoveVideoButton";
 
 const SINGLE_COURSE_QUERY = gql`
@@ -19,7 +19,9 @@ const SINGLE_COURSE_QUERY = gql`
       videos {
         video {
           id
+          description
           title
+          file
         }
       }
     }
@@ -117,8 +119,8 @@ class UpdateCourse extends Component {
     const res = await updateCourseMutation({
       variables: {
         id: this.props.id,
-        ...this.state
-      }
+        ...this.state,
+      },
     });
   };
   showVideos = e => {
@@ -205,14 +207,14 @@ class UpdateCourse extends Component {
                     </div>
                   </CourseContainer>
                   <VideoListStyle>Videos</VideoListStyle>
-                  {/* {data.course.videos.map((video, index) => (
+                  {data.course.videos.map((video, index) => (
                     <VideoItem videos={video} data={index} key={video.video.id}>
                       <RemoveVideoButton
                         courseId={data.course.id}
                         id={video.video.id}
                       />
                     </VideoItem>
-                  ))} */}
+                  ))}
                 </>
               )}
             </Mutation>

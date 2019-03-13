@@ -66,6 +66,7 @@ type Video {
   state: State! @default(value: "UNPUBLISHED")
   user: User!
   urlVideo: String!
+  file: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
