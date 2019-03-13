@@ -9,7 +9,7 @@ import styled from "styled-components";
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  padding: "0 1rem"
+  padding: "0 1rem",
 }));
 
 const Div = styled.div`
@@ -24,19 +24,18 @@ const Div = styled.div`
 class Video extends Component {
   static propTypes = {
     video: PropTypes.object.isRequired,
-    data: PropTypes.number.isRequired
+    data: PropTypes.number.isRequired,
   };
 
   render() {
     const { video } = this.props;
-    console.log(video);
     return (
       <ItemStyles>
         <Title>
           <Link
             href={{
               pathname: "/video",
-              query: { id: video.id }
+              query: { id: video.id },
             }}
           >
             <a>{video.title}</a>

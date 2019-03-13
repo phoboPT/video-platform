@@ -57,7 +57,6 @@ export class Video extends Component {
 
   render() {
     const { videos, data } = this.props;
-    console.log("hi", videos);
     return (
       <List>
         <div className="image">

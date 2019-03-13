@@ -52,6 +52,9 @@ const Container = styled.div`
     padding: 0.5rem 1.2rem;
     text-align: center;
   }
+  span {
+    font-size: 1rem;
+  }
 `;
 
 class FormCourse extends Component {
@@ -62,7 +65,7 @@ class FormCourse extends Component {
     target: "",
     thumbnail: "",
     price: 0,
-    category: ""
+    category: "",
   };
 
   saveState = e => {
@@ -78,7 +81,7 @@ class FormCourse extends Component {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data }
+      { method: "POST", body: data },
     );
 
     const file = await res.json();
@@ -148,6 +151,7 @@ class FormCourse extends Component {
 
                         <label htmlFor="thumbnail">
                           Thumbnail
+                          <span> *20 mb max</span>
                           <input
                             type="file"
                             name="thumbnail"

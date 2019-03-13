@@ -135,7 +135,6 @@ class CreateVideo extends Component {
       );
 
       const file = await res.json();
-      console.log(file);
       if (file) {
         this.setState({
           hasFile: false,
