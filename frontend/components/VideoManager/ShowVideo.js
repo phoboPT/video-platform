@@ -9,8 +9,8 @@ const SINGLE_VIDEO_QUERY = gql`
     video(where: { id: $id }) {
       id
       title
+      file
       description
-      thumbnail
       urlVideo
       state
       createdAt
@@ -23,7 +23,7 @@ const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
   "word-wrap": "wrap",
-  padding: "0 1rem"
+  padding: "0 1rem",
 }));
 
 const Grid = styled.div`
@@ -64,7 +64,7 @@ class ShowVideo extends Component {
                 <div className="info">
                   <p>Title: {data.video.title}</p>
                   <p>Description: {data.video.description}</p>
-                  <p>Thumbnail: {data.video.thumbnail}</p>
+                  <p>File: {data.video.file}</p>
                   <State
                     background={
                       data.video.state === "Published" ? "green" : "red"

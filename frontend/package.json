@@ -14,16 +14,23 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
     "apollo-boost": "^0.1.16",
     "apollo-client": "^2.4.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-styled-components": "^1.7.1",
     "date-fns": "^2.0.0-alpha.7",
     "downshift": "^2.2.3",
+    "draft-convert": "^2.1.4",
+    "draft-js": "^0.10.5",
+    "draft-js-import-html": "^1.3.3",
+    "draftjs-to-html": "^0.8.4",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.9.2",
+    "html-to-draftjs": "^1.4.0",
+    "immutable": "^4.0.0-rc.12",
     "lodash.debounce": "^4.0.8",
     "next": "^7.0.0",
     "next-with-apollo": "^3.1.3",
@@ -37,6 +44,8 @@
     "react-markdown": "^4.0.6",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "react-draft-wysiwyg": "^1.13.2",
+    "react-quill": "^1.3.3",
     "react-stripe-checkout": "^2.6.3",
     "react-transition-group": "^2.5.0",
     "styled-components": "^3.4.9",
@@ -69,6 +78,8 @@
     "env": {
       "development": {
         "presets": [
+          "@babel/preset-env",
+          "@babel/preset-react",
           "next/babel"
         ],
         "plugins": [
@@ -83,6 +94,8 @@
       },
       "production": {
         "presets": [
+          "@babel/preset-env",
+          "@babel/preset-react",
           "next/babel"
         ],
         "plugins": [

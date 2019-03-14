@@ -5,33 +5,34 @@ import styled from "styled-components";
 
 const List = styled.div`
   .image {
-    padding: 20px;
+    padding: auto;
     box-sizing: border-box;
     margin-bottom: 20px;
     flex-basis: 5%;
     border-bottom: 1px solid lightgray;
   }
   .title {
-    padding: 20px;
+    padding: auto;
     box-sizing: border-box;
     margin-bottom: 20px;
     flex-basis: 20%;
     border-bottom: 1px solid lightgray;
   }
   .description {
-    padding: 20px;
+    padding: auto;
     box-sizing: border-box;
     margin-bottom: 20px;
     flex-basis: 65%;
     border-bottom: 1px solid lightgray;
   }
   .end {
-    padding: 20px;
     box-sizing: border-box;
     margin-bottom: 20px;
     flex-basis: 10%;
     border-bottom: 1px solid lightgray;
-    button {
+    text-align: right;
+    a {
+      padding-right: 20px;
     }
   }
   img {
@@ -51,7 +52,7 @@ const List = styled.div`
 export class Video extends Component {
   static propTypes = {
     videos: PropTypes.object.isRequired,
-    data: PropTypes.number.isRequired
+    data: PropTypes.number.isRequired,
   };
 
   render() {
@@ -62,7 +63,7 @@ export class Video extends Component {
           <Link
             href={{
               pathname: "/video",
-              query: { id: videos.video.id }
+              query: { id: videos.video.id },
             }}
           >
             <a>
@@ -78,7 +79,17 @@ export class Video extends Component {
         <div className="description">
           <span>{videos.video.description}</span>
         </div>
-        <div className="end">{this.props.children}</div>
+        <div className="end">
+          {videos.video.file && (
+            <Link href={videos.video.file}>
+              <a>
+                <img className="file" src="../../../static/fileIcon.png" />
+              </a>
+            </Link>
+          )}
+
+          {this.props.children}
+        </div>
       </List>
     );
   }

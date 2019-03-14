@@ -23,8 +23,7 @@ const CURRENT_COURSES_QUERY = gql`
           title
           description
           state
-
-          thumbnail
+          file
           createdAt
         }
       }

@@ -7,21 +7,22 @@ import Error from "../../Static/ErrorMessage.js";
 import { ALL_VIDEOS_USER } from "../MyVideos/Videos";
 import Router from "next/router";
 import { ALL_COURSES_QUERY } from "../../Home/CoursesList/ListAllCourses";
+import validateExtension from "../../../lib/validateFileExtensions";
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
     $title: String!
     $description: String!
-    $thumbnail: String
     $urlVideo: String
     $course: ID!
+    $file: String
   ) {
     createVideo(
       title: $title
       description: $description
-      thumbnail: $thumbnail
       urlVideo: $urlVideo
       course: $course
+      file: $file
     ) {
       id
     }
@@ -47,7 +48,7 @@ const Container = styled.div`
     margin-top: 1rem;
   }
 
-  .true {
+  .false {
     width: auto;
     background: #d6887c;
     color: white;
@@ -76,11 +77,12 @@ class CreateVideo extends Component {
     title: "",
     description: "",
     urlVideo: "",
-    thumbnail: "",
     category: "",
     course: "",
-    hasVideo: true,
-    isUploading: 0
+    file: "",
+    hasVideo: false,
+    isUploading: 0,
+    isUploadingFile: 0,
   };
 
   handleChange = e => {
@@ -91,7 +93,7 @@ class CreateVideo extends Component {
 
   uploadVideo = async e => {
     this.setState({
-      isUploading: 1
+      isUploading: 1,
     });
 
     const files = e.target.files;
@@ -100,18 +102,51 @@ class CreateVideo extends Component {
     data.append("upload_preset", "video-platform");
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/video/upload",
-      { method: "POST", body: data }
+      { method: "POST", body: data },
     );
     const file = await res.json();
     if (file) {
       this.setState({
-        hasVideo: false
+        hasVideo: true,
       });
     }
     this.setState({
-      urlVideo: file.url,
-      isUploading: 2
+      urlVideo: file.secure_url,
+      isUploading: 2,
     });
+  };
+
+  uploadFile = async e => {
+    this.setState({
+      isUploadingFile: 1,
+    });
+
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "fileUpload");
+    const fileName = files[0].name;
+    const isValid = validateExtension(fileName);
+
+    if (isValid) {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/deky2cxlm/raw/upload",
+        { method: "POST", body: data },
+      );
+
+      const file = await res.json();
+      if (file) {
+        this.setState({
+          hasFile: false,
+        });
+      }
+      this.setState({
+        file: file.secure_url,
+        isUploadingFile: 2,
+      });
+    } else {
+      console.log("Error ", fileName);
+    }
   };
 
   saveCategory = e => {
@@ -138,7 +173,7 @@ class CreateVideo extends Component {
                 variables={this.state}
                 refetchQueries={[
                   { query: ALL_VIDEOS_USER },
-                  { query: ALL_COURSES_QUERY }
+                  { query: ALL_COURSES_QUERY },
                 ]}
               >
                 {(createVideo, { loading, error }) => (
@@ -148,7 +183,7 @@ class CreateVideo extends Component {
                       const res = await createVideo();
                       Router.push({
                         pathname: "/video",
-                        query: { id: res.data.createVideo.id }
+                        query: { id: res.data.createVideo.id },
                       });
                     }}
                   >
@@ -200,25 +235,20 @@ class CreateVideo extends Component {
                           onChange={this.handleChange}
                         />
                       </label>
-                      <label htmlFor="thumbnail">
-                        Thumbnail
+                      <label htmlFor="file">
+                        Files
                         <input
-                          type="text"
-                          name="thumbnail"
-                          id="thumbnail"
-                          placeholder="Thumbnail"
-                          required
-                          value={this.state.thumbnail}
-                          onChange={this.handleChange}
+                          type="file"
+                          name="file"
+                          id="file"
+                          placeholder="file"
+                          onChange={this.uploadFile}
                         />
                       </label>
                       <label htmlFor="course">
                         Course
-                        {this.state.course === "" ? (
-                          this.setState({ course: data.courses[0].id })
-                        ) : (
-                          <></>
-                        )}
+                        {this.state.course === "" &&
+                          this.setState({ course: data.courses[0].id })}
                         <select
                           id="dropdownlist"
                           name="course"
@@ -233,7 +263,7 @@ class CreateVideo extends Component {
                       </label>
                       <button
                         type="submit"
-                        disabled={this.state.hasVideo}
+                        disabled={!this.state.hasVideo}
                         className={this.state.hasVideo.toString()}
                       >
                         Sav{loading ? "ing" : "e"}

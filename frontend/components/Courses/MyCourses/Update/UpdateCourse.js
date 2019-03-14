@@ -4,8 +4,9 @@ import gql from "graphql-tag";
 import Error from "../../../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
-import VideoItem from "./VideoItem";
+import VideoItem from "../../../Home/CourseInfo/VideoItem";
 import RemoveVideoButton from "./RemoveVideoButton";
+import ReactQuill from "react-quill"; // ES6
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -19,7 +20,9 @@ const SINGLE_COURSE_QUERY = gql`
       videos {
         video {
           id
+          description
           title
+          file
         }
       }
     }
@@ -67,29 +70,15 @@ const CourseContainer = styled.div`
     }
     form {
       border: none;
-      button {
-        margin-right: 10px;
-        width: auto;
-        background: red;
-        color: white;
-        border: 0;
-        cursor: pointer;
-        font-size: 2rem;
-        font-weight: 600;
-        padding: 0.5rem 1.2rem;
-      }
     }
   }
   img {
     max-height: 200px;
   }
 
-  a {
-    margin-top: 25px;
-    margin-left: 20px;
-    color: black;
+  .description {
+    background-color: lightgray;
   }
-
   .video-bar {
     padding-right: 25px;
     text-align: center;
@@ -103,8 +92,10 @@ const VideoListStyle = styled.h3`
 `;
 
 class UpdateCourse extends Component {
-  state = { showVideos: false };
-
+  constructor(props) {
+    super(props);
+    this.state = { text: "" }; // You can also pass a Quill Delta here
+  }
   handleChange = e => {
     const { name, type, value } = e.target;
     const val = type === "number" ? parseFloat(value) : value;
@@ -117,14 +108,15 @@ class UpdateCourse extends Component {
     const res = await updateCourseMutation({
       variables: {
         id: this.props.id,
-        ...this.state
-      }
+        ...this.state,
+      },
     });
   };
-  showVideos = e => {
-    e.preventDefault();
-    this.setState({ showVideos: true });
+
+  changeQuill = value => {
+    this.setState({ text: value, description: value });
   };
+
   render() {
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id: this.props.id }}>
@@ -132,90 +124,100 @@ class UpdateCourse extends Component {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
           return (
-            <Mutation mutation={UPDATE_COURSE_MUTATION} variables={this.state}>
-              {(updateCourse, { loading, error }) => (
-                <>
-                  <CourseContainer>
-                    <div className="video-bar">
-                      <img src={data.course.thumbnail} />
-                    </div>
-                    <div className="info-bar">
-                      <Form onSubmit={e => this.updateCourse(e, updateCourse)}>
-                        <Error error={error} />
-                        <fieldset disabled={loading} aria-busy={loading}>
-                          <h2>Information</h2>
-                          <label htmlFor="Title">
-                            Title
-                            <input
-                              type="text"
-                              name="title"
-                              placeholder="title"
-                              defaultValue={data.course.title}
-                              onChange={this.handleChange}
-                            />
-                          </label>
-                          <label htmlFor="description">
-                            Description
-                            <input
-                              type="text"
-                              name="description"
-                              placeholder="description"
-                              defaultValue={data.course.description}
-                              onChange={this.handleChange}
-                            />
-                          </label>
-                          <label htmlFor="state">
-                            State
-                            <input
-                              type="text"
-                              name="state"
-                              placeholder="state"
-                              defaultValue={data.course.state}
-                              onChange={this.handleChange}
-                            />
-                          </label>
-                          <label htmlFor="target">
-                            Target
-                            <input
-                              type="text"
-                              name="target"
-                              placeholder="target"
-                              value={this.target}
-                              onChange={this.handleChange}
-                              defaultValue={data.course.target}
-                            />
-                          </label>
-                          <label htmlFor="thumbnail">
-                            Thumbnail
-                            <input
-                              type="text"
-                              name="thumbnail"
-                              placeholder="thumbnail"
-                              value={this.thumbnail}
-                              defaultValue={data.course.thumbnail}
-                              onChange={this.handleChange}
-                            />
-                          </label>
+            <>
+              <Mutation
+                mutation={UPDATE_COURSE_MUTATION}
+                variables={this.state}
+              >
+                {(updateCourse, { loading, error }) => (
+                  <>
+                    <CourseContainer>
+                      <div className="video-bar">
+                        <img src={data.course.thumbnail} />
+                      </div>
+                      <div className="info-bar">
+                        <Form
+                          onSubmit={e => this.updateCourse(e, updateCourse)}
+                        >
+                          <Error error={error} />
+                          <fieldset disabled={loading} aria-busy={loading}>
+                            <h2>Information</h2>
+                            <label htmlFor="Title">
+                              Title
+                              <input
+                                type="text"
+                                name="title"
+                                placeholder="title"
+                                defaultValue={data.course.title}
+                                onChange={this.handleChange}
+                              />
+                            </label>
+                            <label htmlFor="description">
+                              Description
+                              <div className="description">
+                                <ReactQuill
+                                  defaultValue={data.course.description}
+                                  onChange={this.changeQuill}
+                                />
+                              </div>
+                            </label>
+                            <label htmlFor="state">
+                              State
+                              <input
+                                type="text"
+                                name="state"
+                                placeholder="state"
+                                defaultValue={data.course.state}
+                                onChange={this.handleChange}
+                              />
+                            </label>
+                            <label htmlFor="target">
+                              Target
+                              <input
+                                type="text"
+                                name="target"
+                                placeholder="target"
+                                value={this.target}
+                                onChange={this.handleChange}
+                                defaultValue={data.course.target}
+                              />
+                            </label>
+                            <label htmlFor="thumbnail">
+                              Thumbnail
+                              <input
+                                type="text"
+                                name="thumbnail"
+                                placeholder="thumbnail"
+                                value={this.thumbnail}
+                                defaultValue={data.course.thumbnail}
+                                onChange={this.handleChange}
+                              />
+                            </label>
 
-                          <button type="submit">
-                            Sav{loading ? "ing" : "e"} To Course
-                          </button>
-                        </fieldset>
-                      </Form>
-                    </div>
-                  </CourseContainer>
-                  <VideoListStyle>Videos</VideoListStyle>
-                  {/* {data.course.videos.map((video, index) => (
-                    <VideoItem videos={video} data={index} key={video.video.id}>
-                      <RemoveVideoButton
-                        courseId={data.course.id}
-                        id={video.video.id}
-                      />
-                    </VideoItem>
-                  ))} */}
-                </>
-              )}
-            </Mutation>
+                            <button type="submit">
+                              Sav{loading ? "ing" : "e"} To Course
+                            </button>
+                          </fieldset>
+                        </Form>
+                      </div>
+                    </CourseContainer>
+                    <VideoListStyle>Videos</VideoListStyle>
+                    {data.course.videos.map((video, index) => (
+                      <VideoItem
+                        videos={video}
+                        data={index}
+                        key={video.video.id}
+                      >
+                        <RemoveVideoButton
+                          courseId={data.course.id}
+                          id={video.video.id}
+                        />
+                      </VideoItem>
+                    ))}
+                  </>
+                )}
+              </Mutation>
+            </>
           );
         }}
       </Query>

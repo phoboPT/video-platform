@@ -51,16 +51,16 @@ class RemoveVideoButton extends Component {
         mutation={REMOVE_VIDEO_COURSE}
         variables={{
           id,
-          courseId
+          courseId,
         }}
         refetchQueries={[
           { query: CURRENT_USER_QUERY },
-          { query: SINGLE_COURSE_QUERY, variables: { id: courseId } }
+          { query: SINGLE_COURSE_QUERY, variables: { id: courseId } },
         ]}
       >
         {(removeFromCourse, { loading }) => (
           <ButtonStyle disabled={loading} onClick={removeFromCourse}>
-            Remov{loading ? "ing" : "e"} From Course
+            Remov{loading ? "ing" : "e"}
           </ButtonStyle>
         )}
       </Mutation>
@@ -69,7 +69,7 @@ class RemoveVideoButton extends Component {
 }
 
 RemoveVideoButton.propTypes = {
-  courseId: PropTypes.string.isRequired
+  courseId: PropTypes.string.isRequired,
 };
 
 export default RemoveVideoButton;

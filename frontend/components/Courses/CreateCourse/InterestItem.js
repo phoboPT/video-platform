@@ -44,11 +44,11 @@ class InterestItem extends Component {
   state = {
     interestId: this.props.interest.id,
     courseId: this.props.courseId,
-    isActive: false
+    isActive: false,
   };
   static propTypes = {
     interest: PropTypes.object.isRequired,
-    courseId: PropTypes.string.isRequired
+    courseId: PropTypes.string.isRequired,
   };
 
   updateState = e => {

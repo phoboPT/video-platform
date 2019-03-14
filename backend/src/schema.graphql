@@ -9,16 +9,16 @@ type User {
   name: String!
   email: String!
   permission: [Permission]
-  interests: [UserInterest]!
+  interests: [UserInterest!]!
 }
 
 type Mutation {
   createVideo(
     title: String!
     description: String
-    thumbnail: String
     urlVideo: String
     course: ID!
+    file: String
   ): Video!
   updateVideo(
     id: ID!

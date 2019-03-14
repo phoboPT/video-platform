@@ -26,11 +26,11 @@ const RESET_MUTATION = gql`
 
 class Reset extends Component {
   static propTypes = {
-    resetToken: PropTypes.string.isRequired
+    resetToken: PropTypes.string.isRequired,
   };
   state = {
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   };
   saveToState = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -42,7 +42,7 @@ class Reset extends Component {
         variables={{
           resetToken: this.props.resetToken,
           password: this.state.password,
-          confirmPassword: this.state.confirmPassword
+          confirmPassword: this.state.confirmPassword,
         }}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >

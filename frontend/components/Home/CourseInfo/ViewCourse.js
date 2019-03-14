@@ -25,8 +25,8 @@ const SINGLE_COURSE_QUERY = gql`
           id
           title
           description
+          file
           state
-          thumbnail
           createdAt
         }
       }
@@ -100,7 +100,7 @@ const Bar = styled.div`
 
 class ViewCourse extends Component {
   state = {
-    view: 1
+    view: 1,
   };
 
   changeView = e => {

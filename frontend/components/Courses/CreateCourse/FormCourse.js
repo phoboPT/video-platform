@@ -5,6 +5,9 @@ import gql from "graphql-tag";
 import Error from "../../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
 import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
+import { EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -52,6 +55,12 @@ const Container = styled.div`
     padding: 0.5rem 1.2rem;
     text-align: center;
   }
+  span {
+  }
+
+  .description {
+    background-color: lightgray;
+  }
 `;
 
 class FormCourse extends Component {
@@ -62,7 +71,8 @@ class FormCourse extends Component {
     target: "",
     thumbnail: "",
     price: 0,
-    category: ""
+    category: "",
+    editorState: EditorState.createEmpty(),
   };
 
   saveState = e => {
@@ -78,14 +88,24 @@ class FormCourse extends Component {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data }
+      { method: "POST", body: data },
     );
 
     const file = await res.json();
     this.setState({ thumbnail: file.secure_url });
   };
 
+  onEditorStateChange = editorState => {
+    this.setState({
+      editorState,
+    });
+    this.setState({
+      description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+    });
+  };
+
   render() {
+    const { editorState } = this.state;
     return (
       <Container>
         <Query query={ALL_CATEGORIES_QUERY}>
@@ -123,16 +143,32 @@ class FormCourse extends Component {
                             required
                           />
                         </label>
+
                         <label htmlFor="description">
                           Description
-                          <input
+                          {/* <input
                             type="text"
                             name="description"
                             placeholder="This is the best Course you will find"
                             value={this.description}
                             onChange={this.saveState}
                             required
-                          />
+                          /> */}
+                          <div className="description">
+                            <Editor
+                              editorState={editorState}
+                              wrapperClassName="demo-wrapper"
+                              editorClassName="demo-editor"
+                              onEditorStateChange={this.onEditorStateChange}
+                              toolbar={{
+                                inline: { inDropdown: true },
+                                list: { inDropdown: true },
+                                textAlign: { inDropdown: true },
+                                link: { inDropdown: true },
+                                history: { inDropdown: true },
+                              }}
+                            />
+                          </div>
                         </label>
                         <label htmlFor="state">
                           State
@@ -145,9 +181,9 @@ class FormCourse extends Component {
                             required
                           />
                         </label>
-
                         <label htmlFor="thumbnail">
                           Thumbnail
+                          <span> *20 mb max</span>
                           <input
                             type="file"
                             name="thumbnail"
@@ -176,9 +212,7 @@ class FormCourse extends Component {
                             required
                           />
                         </label>
-
                         <label htmlFor="category">Category</label>
-
                         {this.state.category === "" ? (
                           this.setState({ category: data.categories[0].id })
                         ) : (
