@@ -7,6 +7,7 @@ import { Mutation, Query } from "react-apollo";
 import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
 import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -98,6 +99,9 @@ class FormCourse extends Component {
     this.setState({
       editorState,
     });
+    this.setState({
+      description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+    });
   };
 
   render() {
@@ -140,7 +144,7 @@ class FormCourse extends Component {
                           />
                         </label>
 
-                        <label className="description" htmlFor="description">
+                        <label htmlFor="description">
                           Description
                           {/* <input
                             type="text"
@@ -150,12 +154,21 @@ class FormCourse extends Component {
                             onChange={this.saveState}
                             required
                           /> */}
-                          <Editor
-                            editorState={editorState}
-                            wrapperClassName="demo-wrapper"
-                            editorClassName="demo-editor"
-                            onEditorStateChange={this.onEditorStateChange}
-                          />
+                          <div className="description">
+                            <Editor
+                              editorState={editorState}
+                              wrapperClassName="demo-wrapper"
+                              editorClassName="demo-editor"
+                              onEditorStateChange={this.onEditorStateChange}
+                              toolbar={{
+                                inline: { inDropdown: true },
+                                list: { inDropdown: true },
+                                textAlign: { inDropdown: true },
+                                link: { inDropdown: true },
+                                history: { inDropdown: true },
+                              }}
+                            />
+                          </div>
                         </label>
                         <label htmlFor="state">
                           State

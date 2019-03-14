@@ -30,6 +30,7 @@ const CoursesList = styled.div`
   grid-gap: 60px;
   max-width: ${props => props.theme.maxWidth};
 `;
+
 export class Courses extends Component {
   render() {
     return (
