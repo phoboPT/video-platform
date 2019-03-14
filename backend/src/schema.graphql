@@ -9,6 +9,7 @@ type User {
   name: String!
   email: String!
   permission: [Permission]
+  interests: [UserInterest]!
 }
 
 type Mutation {
@@ -60,6 +61,8 @@ type Mutation {
   createComCourse(courseId: ID!, comment: String!): ComCourse!
   updateComCourse(id: ID!, comment: String): ComCourse!
   deleteComCourse(id: ID!): ComCourse
+  addTargetUser(interestId: ID!): User!
+  removeTargetUser(interestId: ID!): User!
 }
 
 type Query {
@@ -82,7 +85,8 @@ type Query {
   categories: [Category]!
   users: [User]!
   courses: [Course]!
-  interests: [Interest]!
+  interests: [Interest!]!
+  userInterests: [UserInterest]!
 
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video

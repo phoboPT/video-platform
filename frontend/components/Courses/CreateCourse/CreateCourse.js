@@ -8,8 +8,8 @@ import styled from "styled-components";
 const ALL_INTEREST_QUERY = gql`
   query ALL_INTEREST_QUERY {
     interests {
-      name
       id
+      name
     }
   }
 `;

@@ -6,6 +6,7 @@ import User from "../Authentication/User";
 import Information from "./Information";
 import FormUser from "./FormUser";
 import FormPassword from "./FormPassword";
+import Interest from "./Interests/Interest";
 
 const Style = styled.div`
   button {
@@ -19,7 +20,7 @@ const Style = styled.div`
     border: 0;
     text-align: center;
   }
-  button:hover {
+  button :hover {
     background: #b8c7d1;
   }
   #main {
@@ -65,13 +66,14 @@ class PersonalArea extends Component {
                       Change Password
                     </button>
                     <button id="4" onClick={this.changeView}>
-                      Interests
+                      Customize your Interests
                     </button>
                   </section>
                   <aside id="sidebar">
                     {this.state.view === 1 && <Information />}
                     {this.state.view === 2 && <FormUser />}
                     {this.state.view === 3 && <FormPassword />}
+                    {this.state.view === 4 && <Interest />}
                   </aside>
                 </Style>
               </LinkStyle>

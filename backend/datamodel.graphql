@@ -15,13 +15,13 @@ enum State {
 type Interest {
   id: ID! @unique
   name: String!
+  thumbnail: String!
 }
 type CourseInterest {
   id: ID! @unique
   interest: Interest!
   course: Course!
 }
-
 type UserInterest {
   id: ID! @unique
   interest: Interest!
@@ -33,7 +33,7 @@ type User {
   name: String!
   email: String! @unique
   password: String!
-  interests: [UserInterest!]!
+  interests: [UserInterest]!
   resetToken: String
   resetTokenExpiry: Float
   permission: [Permission]

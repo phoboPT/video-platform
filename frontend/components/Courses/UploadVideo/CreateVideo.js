@@ -97,7 +97,6 @@ class CreateVideo extends Component {
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
-    console.log(file);
     data.append("upload_preset", "video-platform");
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/video/upload",

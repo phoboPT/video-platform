@@ -52,7 +52,6 @@ class InterestItem extends Component {
   };
 
   updateState = e => {
-    console.log("hi");
     this.setState({ isActive: true });
   };
 

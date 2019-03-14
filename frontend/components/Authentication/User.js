@@ -9,6 +9,11 @@ const CURRENT_USER_QUERY = gql`
       email
       name
       permission
+      interests {
+        interest {
+          id
+        }
+      }
     }
   }
 `;

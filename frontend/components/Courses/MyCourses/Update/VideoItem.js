@@ -29,7 +29,6 @@ class Video extends Component {
 
   render() {
     const { video } = this.props;
-    console.log(video);
     return (
       <ItemStyles>
         <Title>

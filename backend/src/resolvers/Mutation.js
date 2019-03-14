@@ -641,6 +641,42 @@ const Mutations = {
       },
       info
     );
+  },
+  async addTargetUser(parent, args, ctx, info) {
+    // 1. Make sure they are signed in
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in ");
+    }
+
+    // 4. If its not, create a fresh CartItem for that user!
+    return ctx.db.mutation.createUserInterest(
+      {
+        data: {
+          user: {
+            connect: { id: userId }
+          },
+          interest: {
+            connect: { id: args.interestId }
+          }
+        }
+      },
+      info
+    );
+  },
+  async removeTargetUser(parent, args, ctx, info) {
+    //Make sure they are signin
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in soooon");
+    }
+
+    return ctx.db.mutation.deleteUserInterest(
+      {
+        where: { id: args.interestId }
+      },
+      info
+    );
   }
 };
 
