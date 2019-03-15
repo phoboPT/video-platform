@@ -38,6 +38,7 @@ type User {
   resetTokenExpiry: Float
   permission: [Permission]
   courses: [UserCourse!]!
+  cart: [CartItem!]!
 }
 
 # user
@@ -114,5 +115,11 @@ type UserCourse {
   id: ID! @unique
   user: User!
   course: Course!
-  progress: Float!
+  watched: Boolean! @default(value: false)
+}
+
+type CartItem {
+  id: ID! @unique
+  user: User!
+  course: Course!
 }

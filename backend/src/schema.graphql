@@ -10,6 +10,7 @@ type User {
   email: String!
   permission: [Permission]
   interests: [UserInterest!]!
+  cart: [CartItem!]!
 }
 
 type Mutation {
@@ -61,6 +62,8 @@ type Mutation {
   createComCourse(courseId: ID!, comment: String!): ComCourse!
   updateComCourse(id: ID!, comment: String): ComCourse!
   deleteComCourse(id: ID!): ComCourse
+  addToCart(id: ID!): CartItem!
+  removeFromCart(id: ID!): CartItem!
 }
 
 type Query {

@@ -6,7 +6,7 @@ import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
 import VideoItem from "../../../Home/CourseInfo/VideoItem";
 import RemoveVideoButton from "./RemoveVideoButton";
-import ReactQuill from "react-quill"; // ES6
+import RichTextEditor from "./RichTextEditor";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -71,7 +71,11 @@ const CourseContainer = styled.div`
     form {
       border: none;
     }
+    img {
+      text-align: center !important;
+    }
   }
+
   img {
     max-height: 200px;
   }
@@ -92,10 +96,8 @@ const VideoListStyle = styled.h3`
 `;
 
 class UpdateCourse extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { text: "" }; // You can also pass a Quill Delta here
-  }
+  state = { changeThumbnail: false };
+
   handleChange = e => {
     const { name, type, value } = e.target;
     const val = type === "number" ? parseFloat(value) : value;
@@ -112,11 +114,25 @@ class UpdateCourse extends Component {
       },
     });
   };
-
   changeQuill = value => {
     this.setState({ text: value, description: value });
   };
 
+  uploadThumbnail = async e => {
+    const files = e.target.files;
+
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "thumbnail");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
+      { method: "POST", body: data },
+    );
+
+    const file = await res.json();
+    this.setState({ thumbnail: file.secure_url, changeThumbnail: true });
+  };
   render() {
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id: this.props.id }}>
@@ -155,7 +171,7 @@ class UpdateCourse extends Component {
                             <label htmlFor="description">
                               Description
                               <div className="description">
-                                <ReactQuill
+                                <RichTextEditor
                                   defaultValue={data.course.description}
                                   onChange={this.changeQuill}
                                 />
@@ -171,29 +187,28 @@ class UpdateCourse extends Component {
                                 onChange={this.handleChange}
                               />
                             </label>
-                            <label htmlFor="target">
-                              Target
-                              <input
-                                type="text"
-                                name="target"
-                                placeholder="target"
-                                value={this.target}
-                                onChange={this.handleChange}
-                                defaultValue={data.course.target}
-                              />
-                            </label>
+
                             <label htmlFor="thumbnail">
                               Thumbnail
+                              <br />
                               <input
-                                type="text"
+                                type="file"
                                 name="thumbnail"
                                 placeholder="thumbnail"
                                 value={this.thumbnail}
-                                defaultValue={data.course.thumbnail}
-                                onChange={this.handleChange}
+                                onChange={this.uploadThumbnail}
                               />
                             </label>
-
+                            {this.state.changeThumbnail ? (
+                              data.course.thumbnail && (
+                                <img src={this.state.thumbnail} />
+                              )
+                            ) : (
+                              <img src={data.course.thumbnail} />
+                            )}
+                            <br />
+                            <b />
+                            <br />
                             <button type="submit">
                               Sav{loading ? "ing" : "e"} To Course
                             </button>

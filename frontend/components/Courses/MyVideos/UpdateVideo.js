@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Form from "../../styles/Form";
 import gql from "graphql-tag";
-import Error from "../../ErrorMessage";
+import Error from "../../Static/ErrorMessage";
 import { Mutation, Query } from "react-apollo";
-import { CourseContainer } from "../Courses/UpdateCourse";
+import { CourseContainer } from "../MyCourses/Update/UpdateCourse";
 import VideoPlayer from "../../VideoManager/VideoPlayer";
 
 const SINGLE_VIDEO_QUERY = gql`
@@ -44,8 +44,8 @@ class UpdateVideo extends Component {
     const res = await updateVideoMutation({
       variables: {
         id: this.props.id,
-        ...this.state
-      }
+        ...this.state,
+      },
     });
   };
   render() {

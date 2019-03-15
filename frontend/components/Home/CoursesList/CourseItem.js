@@ -3,7 +3,8 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import ItemStyles from "../../styles/ItemStyles";
 import styled from "styled-components";
-
+import AddToCart from "./AddToCart";
+import Item from "../../styles/ItemStyles";
 const InfoStyle = styled.p`
   text-align: left;
   padding: none;
@@ -11,7 +12,7 @@ const InfoStyle = styled.p`
 
 export class Course extends Component {
   static propTypes = {
-    course: PropTypes.object.isRequired
+    course: PropTypes.object.isRequired,
   };
 
   render() {
@@ -22,16 +23,16 @@ export class Course extends Component {
           <Link
             href={{
               pathname: "/course",
-              query: { id: course.id }
+              query: { id: course.id },
             }}
           >
             <img src={course.thumbnail} />
           </Link>
-          <InfoStyle>{course.description}</InfoStyle>
+          <InfoStyle>{course.title}</InfoStyle>
           <InfoStyle className="price">{course.price} €</InfoStyle>
           <span>{course.user.name}</span>
           <div className="buttonList">
-            <p>Add to cart</p>
+            <AddToCart id={course.id} />
             <p>5</p>
           </div>
         </ItemStyles>

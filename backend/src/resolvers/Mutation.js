@@ -642,6 +642,64 @@ const Mutations = {
       info,
     );
   },
+  async addToCart(parent, args, ctx, info) {
+    //Make sure they are signin
+    const { userId } = ctx.request;
+    //Query the users current cart
+    const [existingCartItem] = await ctx.db.query.cartItems({
+      where: {
+        user: { id: userId },
+        course: { id: args.id },
+      },
+    });
+
+    //Check if that item is already in their cart and increment by 1 id it is
+    if (existingCartItem) {
+      throw new Error("Arleady added to cart");
+    }
+    //If its not, create a fresh new item
+    return ctx.db.mutation.createCartItem({
+      data: {
+        user: {
+          connect: { id: userId },
+        },
+        course: {
+          connect: {
+            id: args.id,
+          },
+        },
+      },
+      info,
+    });
+  },
+  async removeFromCart(parent, args, ctx, info) {
+    //find cartItem
+    const cartItem = await ctx.db.query.cartItem(
+      {
+        where: {
+          id: args.id,
+        },
+      },
+      `{id,user{id}}`,
+    );
+    //Make sure we found an item
+    if (!cartItem) throw new Error("No Item found");
+
+    //Make sure they own the cart item
+    if (cartItem.user.id !== ctx.request.userId) {
+      throw new Error("Cheatin huhh");
+    }
+
+    //Delete cartItem
+    return ctx.db.mutation.deleteCartItem(
+      {
+        where: {
+          id: args.id,
+        },
+      },
+      info,
+    );
+  },
 };
 
 module.exports = Mutations;

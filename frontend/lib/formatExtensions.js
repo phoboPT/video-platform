@@ -10,6 +10,7 @@ const supportedExtensions = [
   "xz",
   "txz",
   "zz",
+  "pdf",
 ];
 
 export { supportedExtensions };

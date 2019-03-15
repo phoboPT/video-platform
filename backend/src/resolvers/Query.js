@@ -17,13 +17,13 @@ const Query = {
     const { userId } = ctx.request;
     //checkar se tem um current ID
 
-    // if (!userId) {
-    //   return null;
-    // }
+    if (!userId) {
+      return null;
+    }
     return ctx.db.query.user(
       {
         where: {
-          id: "cjt4jfhg40q7l0b892c01o9n8",
+          id: userId,
         },
       },
       info,
@@ -73,9 +73,9 @@ const Query = {
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //Ve se esta logado
-    // if (!userId) {
-    //   throw new Error("you must be signed in!");
-    // }
+    if (!userId) {
+      throw new Error("you must be signed in!");
+    }
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
