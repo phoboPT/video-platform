@@ -13,11 +13,11 @@ const REMOVE_TAGS_COURSE = gql`
 
 export class RemoveButton extends Component {
   state = {
-    interestId: this.props.interestId
+    interestId: this.props.interestId,
   };
 
   static propTypes = {
-    interestId: PropTypes.string.isRequired
+    interestId: PropTypes.string.isRequired,
   };
 
   mutate = async mutation => {

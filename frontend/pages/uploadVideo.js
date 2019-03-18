@@ -1,8 +1,8 @@
 import Link from "next/link";
-import UploadVideo from "../components/UploadVideo";
+import CreateVideo from "../components/Courses/UploadVideo/CreateVideo";
 const UploadPage = props => (
   <div>
-    <UploadVideo />
+    <CreateVideo />
   </div>
 );
 

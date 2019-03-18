@@ -145,7 +145,7 @@ class CreateVideo extends Component {
         isUploadingFile: 2,
       });
     } else {
-      console.log("Error ", fileName);
+      alert("File Format not supported");
     }
   };
 

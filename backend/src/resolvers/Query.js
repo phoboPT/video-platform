@@ -11,6 +11,7 @@ const Query = {
   user: forwardTo("db"),
   comCourse: forwardTo("db"),
   interests: forwardTo("db"),
+  userInterests: forwardTo("db"),
 
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {

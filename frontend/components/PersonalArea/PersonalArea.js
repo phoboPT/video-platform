@@ -38,7 +38,7 @@ const Style = styled.div`
 
 class PersonalArea extends Component {
   state = {
-    view: 1
+    view: 1,
   };
 
   // This method will be sent to the child component

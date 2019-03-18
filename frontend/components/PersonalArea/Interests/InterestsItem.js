@@ -53,18 +53,17 @@ class InterestItem extends Component {
     interestId: this.props.interest.id,
     isActive: false,
     idToDelete: "",
-    userInterest: [this.props.userInterest]
+    userInterest: [this.props.userInterest],
   };
 
   static propTypes = {
-    interest: PropTypes.object.isRequired
+    interest: PropTypes.object.isRequired,
   };
 
   changeFalse = e => {
     this.setState({ isActive: false });
   };
   changeTrue = e => {
-    console.log("recebeu", e);
     this.setState({ isActive: true, idToDelete: e });
   };
   componentDidMount = () => {

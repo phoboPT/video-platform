@@ -27,12 +27,12 @@ const Div = styled.div`
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  padding: "0 0,5rem"
+  padding: "0 0,5rem",
 }));
 
 class ListCourses extends Component {
   static propTypes = {
-    course: PropTypes.object.isRequired
+    course: PropTypes.object.isRequired,
   };
   render() {
     const { course } = this.props;
@@ -40,20 +40,10 @@ class ListCourses extends Component {
     return (
       <ItemStyles>
         <Div>
-          <Title>
-            <Link
-              href={{
-                pathname: "/updateCourse",
-                query: { id: course.id }
-              }}
-            >
-              <a>{course.title}</a>
-            </Link>
-          </Title>
           <Link
             href={{
               pathname: "/updateCourse",
-              query: { id: course.id }
+              query: { id: course.id },
             }}
           >
             <a>
@@ -62,7 +52,7 @@ class ListCourses extends Component {
           </Link>
           <br />
           <span>
-            Description: <State>{formatString(course.description, 20)}</State>
+            Title: <State>{formatString(course.title, 20)}</State>
           </span>
 
           <span>

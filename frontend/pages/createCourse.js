@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import CreateVideos from "../components/CreateCourse";
-import CreateCourse from "../components/CreateCourse";
+import CreateCourse from "../components/Courses/CreateCourse/CreateCourse";
 class createCourse extends Component {
   render() {
     return (

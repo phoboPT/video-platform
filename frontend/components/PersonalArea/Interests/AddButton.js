@@ -14,17 +14,16 @@ const ADD_TAGS_USER = gql`
 
 export class AddButton extends Component {
   state = {
-    interestId: this.props.interestId
+    interestId: this.props.interestId,
   };
 
   static propTypes = {
-    interestId: PropTypes.string.isRequired
+    interestId: PropTypes.string.isRequired,
   };
 
   mutate = async mutation => {
     const res = await mutation();
     if (res) {
-      console.log("id", res.data.addTargetUser.id);
       this.props.changeTrue(res.data.addTargetUser.id);
     }
   };

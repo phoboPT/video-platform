@@ -50,6 +50,7 @@ class Signup extends Component {
               <label htmlFor="email">
                 Email
                 <input
+                  required
                   type="email"
                   name="email"
                   placeholder="email"
@@ -60,6 +61,7 @@ class Signup extends Component {
               <label htmlFor="name">
                 Name
                 <input
+                  required
                   type="text"
                   name="name"
                   placeholder="name"
@@ -70,6 +72,7 @@ class Signup extends Component {
               <label htmlFor="password">
                 Password
                 <input
+                  required
                   type="password"
                   name="password"
                   placeholder="password"

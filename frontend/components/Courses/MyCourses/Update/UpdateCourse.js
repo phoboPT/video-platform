@@ -6,8 +6,7 @@ import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
 import VideoItem from "../../../Home/CourseInfo/VideoItem";
 import RemoveVideoButton from "./RemoveVideoButton";
-import RichTextEditor from "./RichTextEditor";
-
+import ReactQuill from "react-quill"; // ES6
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
     course(where: { id: $id }) {
@@ -120,7 +119,6 @@ class UpdateCourse extends Component {
 
   uploadThumbnail = async e => {
     const files = e.target.files;
-
     const data = new FormData();
     data.append("file", files[0]);
     data.append("upload_preset", "thumbnail");
@@ -171,7 +169,7 @@ class UpdateCourse extends Component {
                             <label htmlFor="description">
                               Description
                               <div className="description">
-                                <RichTextEditor
+                                <ReactQuill
                                   defaultValue={data.course.description}
                                   onChange={this.changeQuill}
                                 />

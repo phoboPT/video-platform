@@ -141,7 +141,8 @@ class Courses extends Component {
                       </>
                     </div>
                     <div className="right">
-                      <Videos>{this.props.children}</Videos>
+                      <MyCourses />
+                      {/* <Videos>{this.props.children}</Videos> */}
                     </div>
                   </div>
                 </LinkStyle>
