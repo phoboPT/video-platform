@@ -3,7 +3,7 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import ItemStyles from "../../styles/ItemStyles";
 import styled from "styled-components";
-import AddToCart from "./AddToCart";
+import AddToCart from "../Cart/AddToCart";
 import Item from "../../styles/ItemStyles";
 const InfoStyle = styled.p`
   text-align: left;
