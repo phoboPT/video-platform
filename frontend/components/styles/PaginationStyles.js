@@ -22,6 +22,10 @@ const PaginationStyles = styled.div`
     color: grey;
     pointer-events: none;
   }
+  img {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 export default PaginationStyles;

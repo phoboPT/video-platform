@@ -87,7 +87,7 @@ type Query {
   # querys sellect all
   categories: [Category]!
   users: [User]!
-  courses: [Course]!
+
   interests: [Interest!]!
   userInterests: [UserInterest]!
 
@@ -98,7 +98,7 @@ type Query {
   course(where: CourseWhereUniqueInput!): Course!
   comCourse(where: ComCourseWhereUniqueInput!): ComCourse
 
-  # querys selecionar a comparar com id de outra tabela(users) ( select geral)
+  # querys selecionar tudo com argumentos
   videosUser(
     where: VideoWhereInput
     orderBy: VideoOrderByInput
@@ -113,6 +113,13 @@ type Query {
     first: Int
   ): [Video]!
 
+  courses(
+    where: CourseWhereInput
+    orderBy: CourseOrderByInput
+    skip: Int
+    first: Int
+  ): [Course]
+
   videosSearch(where: VideoWhereInput!): [Video]
 
   # listar todos os comentarios de um curso
@@ -124,4 +131,6 @@ type Query {
 
   #pagination
   videosConnection(where: VideoWhereInput): VideoConnection!
+
+  coursesConnection(data: String): CourseConnection!
 }
