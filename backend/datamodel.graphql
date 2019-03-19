@@ -44,8 +44,8 @@ type User {
 # user
 type Course {
   id: ID! @unique
-  title: String
   videos: [CourseVideos!]!
+  title: String
   description: String!
   thumbnail: String!
   #user com permissao para poder criar um curso
@@ -122,4 +122,22 @@ type CartItem {
   id: ID! @unique
   user: User!
   course: Course!
+}
+
+type OrderItem {
+  id: ID! @unique
+  title: String
+  description: String!
+  thumbnail: String!
+  price: Float!
+  category: Category!
+  user: User
+}
+
+type Order {
+  id: ID! @unique
+  items: [OrderItem!]!
+  total: Int!
+  user: User!
+  charge: String!
 }

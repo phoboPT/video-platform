@@ -1,5 +1,5 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
+import React, { Component } from "react";
 import styled from "styled-components";
 import User from "../../Authentication/User";
 import AddButton from "./AddButton";
@@ -50,9 +50,9 @@ const Border = styled.div`
 
 class InterestItem extends Component {
   state = {
+    idToDelete: "",
     interestId: this.props.interest.id,
     isActive: false,
-    idToDelete: "",
     userInterest: [this.props.userInterest],
   };
 
@@ -64,7 +64,7 @@ class InterestItem extends Component {
     this.setState({ isActive: false });
   };
   changeTrue = e => {
-    this.setState({ isActive: true, idToDelete: e });
+    this.setState({ idToDelete: e, isActive: true });
   };
   componentDidMount = () => {
     this.state.userInterest.forEach(item => {
@@ -104,7 +104,7 @@ class InterestItem extends Component {
               )}
             </form>
 
-            <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+            <img src={interest.thumbnail} />
           </Border>
         )}
       </User>

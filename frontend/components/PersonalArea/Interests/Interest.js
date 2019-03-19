@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Query, Mutation } from "react-apollo";
-import Link from "next/link";
-import InterestItem from "./InterestsItem";
-import styled from "styled-components";
 import gql from "graphql-tag";
+import Link from "next/link";
+import React, { Component } from "react";
+import { Mutation, Query } from "react-apollo";
+import styled from "styled-components";
+import InterestItem from "./InterestsItem";
 const Title = styled.p`
   font-size: 46px;
   font-weight: 600;
@@ -28,6 +28,7 @@ const ALL_INTEREST_QUERY = gql`
     interests {
       id
       name
+      thumbnail
     }
     me {
       id

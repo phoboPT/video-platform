@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
-import RemoveFromCart from "./RemoveFromCart";
+import RemoveFromCart from "../Home/Cart/RemoveFromCart";
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -18,6 +18,14 @@ const CartItemStyles = styled.li`
   p {
     margin: 0px;
   }
+  span {
+    font-size: 1rem;
+    color: gray;
+  }
+  .price {
+    text-align: right;
+    padding-right: 15px;
+  }
 `;
 
 const CartItem = ({ cartItem }) => {
@@ -32,8 +40,12 @@ const CartItem = ({ cartItem }) => {
       />
       <div className="cart-item-details">
         <h3>{cartItem.course.title}</h3>
-        <p>{cartItem.course.price} €</p>
+        <span>{cartItem.course.user.name}</span>
+        <div className="price">
+          <p>{cartItem.course.price} €</p>
+        </div>
       </div>
+
       <RemoveFromCart id={cartItem.id} />
     </CartItemStyles>
   );
