@@ -122,6 +122,13 @@ type Query {
 
   videosSearch(where: VideoWhereInput!): [Video]
 
+  #Listar todos os cursos em que o user tenha o mesmo interest do curso
+  coursesUserInterestList(
+    orderBy: CourseOrderByInput
+    skip: Int
+    first: Int
+    userInterestId: [ID]!
+  ): [Course]
   # listar todos os comentarios de um curso
   comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
   # Listar todos os cursos de um User

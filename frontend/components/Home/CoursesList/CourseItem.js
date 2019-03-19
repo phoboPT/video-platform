@@ -12,7 +12,7 @@ const InfoStyle = styled.p`
 
 export class Course extends Component {
   static propTypes = {
-    course: PropTypes.object.isRequired,
+    course: PropTypes.object.isRequired
   };
 
   render() {
@@ -23,14 +23,15 @@ export class Course extends Component {
           <Link
             href={{
               pathname: "/course",
-              query: { id: course.id },
+              query: { id: course.id }
             }}
           >
-            <img src={course.thumbnail} />
+            <img classname="Thumbnail" src={course.thumbnail} />
           </Link>
           <InfoStyle>{course.title}</InfoStyle>
-          <InfoStyle className="price">{course.price} €</InfoStyle>
           <span>{course.user.name}</span>
+          <InfoStyle className="price">{course.price} €</InfoStyle>
+
           <div className="buttonList">
             <AddToCart id={course.id} />
             <p>5</p>

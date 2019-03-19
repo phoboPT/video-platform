@@ -11,7 +11,7 @@ const Item = styled.div`
     border-top-left-radius: ${props => props.theme.borderRadius};
     border-top-right-radius: ${props => props.theme.borderRadius};
     width: 100%;
-    height: 300px;
+    height: 210px;
     object-fit: cover;
   }
   p {
@@ -24,16 +24,17 @@ const Item = styled.div`
     margin: 0.5rem;
   }
   .price {
-    padding-top: 3rem;
+    font-size: 19px;
+    padding-top: 1rem;
     text-align: right;
   }
   span {
     padding: 5px 1rem;
-    font-size: 1.2rem;
+    font-size: 11px;
     color: #6e6e79;
   }
   .buttonList {
-    margin-top: 2rem;
+    margin-top: 0.5rem;
     display: grid;
     width: 100%;
     border-top: 1px solid ${props => props.theme.lightgrey};

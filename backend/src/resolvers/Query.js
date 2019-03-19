@@ -144,6 +144,17 @@ const Query = {
       },
       info
     );
+  },
+  coursesUserInterestList(parent, args, ctx, info) {
+    //foreach de cada elemento e fazer a query e guardar num array
+
+    //retorna um array
+    return ctx.db.query.courses(
+      {
+        ...args
+      },
+      info
+    );
   }
 };
 

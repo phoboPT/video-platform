@@ -42,24 +42,26 @@ const Pagination = props => (
         });
       };
       return (
-        <PaginationStyles>
-          {
-            <button onClick={() => props.saveState1()}>
-              <img src="https://cdn.icon-icons.com/icons2/936/PNG/512/long-arrow-pointing-to-left_icon-icons.com_73501.png" />
-            </button>
-          }
+        <>
+          <button
+            disabled={page <= 1}
+            className="Left"
+            id="arrowbutton"
+            onClick={() => props.saveState1()}
+          >
+            <img id="arrow" src="../../../static/arrowleft.png" />
+          </button>
 
-          <p>
-            {page} of {pages}
-          </p>
-          <p>Courses {count}</p>
-
-          {
-            <button onLoad={fetchNext()} onClick={() => props.saveState()}>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV04lvszjgi-_33prx5fcqM1cIxiRYuXOTIqmVzFEJ81M6mmgK" />
-            </button>
-          }
-        </PaginationStyles>
+          <button
+            disabled={page > 1}
+            className="Right"
+            id="arrowbutton"
+            onLoad={fetchNext()}
+            onClick={() => props.saveState()}
+          >
+            <img id="arrow" src="../../../static/arrowright.png" />
+          </button>
+        </>
       );
     }}
   </Query>

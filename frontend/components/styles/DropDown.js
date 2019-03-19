@@ -5,6 +5,9 @@ const DropDown = styled.div`
   width: 100%;
   z-index: 2;
   border: 1px solid ${props => props.theme.lightgrey};
+  :focus {
+    outline: none;
+  }
 `;
 
 const DropDownItem = styled.div`
@@ -42,6 +45,13 @@ const SearchStyles = styled.div`
     padding: 10px;
     border: 0;
     font-size: 2rem;
+    opacity: 0.8;
+    border-bottom: 2px solid #dddddd;
+    :focus {
+      outline: none;
+      opacity: 1;
+      border-bottom: 2px solid #1c1c1c;
+    }
     &.loading {
       animation: ${glow} 0.5s ease-in-out infinite alternate;
     }
