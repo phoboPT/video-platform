@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import Form from "../../styles/Form";
-import gql from "graphql-tag";
-import Error from "../../Static/ErrorMessage";
-import { Mutation, Query } from "react-apollo";
-import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
-import { EditorState, convertToRaw } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
+import { convertToRaw, EditorState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import gql from "graphql-tag";
+import React, { Component } from "react";
+import { Mutation, Query } from "react-apollo";
+import { Editor } from "react-draft-wysiwyg";
+import ReactQuill from "react-quill";
+import styled from "styled-components";
+import Error from "../../Static/ErrorMessage";
+import Form from "../../styles/Form";
+import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -65,14 +66,14 @@ const Container = styled.div`
 
 class FormCourse extends Component {
   state = {
-    title: "",
+    category: "",
     description: "",
+    editorState: EditorState.createEmpty(),
+    price: 0,
     state_: "",
     target: "",
     thumbnail: "",
-    price: 0,
-    category: "",
-    editorState: EditorState.createEmpty(),
+    title: "",
   };
 
   saveState = e => {
@@ -104,8 +105,13 @@ class FormCourse extends Component {
     });
   };
 
+  changeQuill = value => {
+    this.setState({ description: value, text: value });
+  };
+
   render() {
     const { editorState } = this.state;
+
     return (
       <Container>
         <Query query={ALL_CATEGORIES_QUERY}>
@@ -115,10 +121,10 @@ class FormCourse extends Component {
             return (
               <Mutation
                 mutation={CREATE_COURSE_MUTATION}
-                variables={this.state}
                 refetchQueries={[{ query: CURRENT_COURSES_QUERY }]}
+                variables={this.state}
               >
-                {(createCourse, { loading, error }) => (
+                {(createCourse, { error, loading }) => (
                   <>
                     <Form
                       id="3"
@@ -146,28 +152,8 @@ class FormCourse extends Component {
 
                         <label htmlFor="description">
                           Description
-                          {/* <input
-                            type="text"
-                            name="description"
-                            placeholder="This is the best Course you will find"
-                            value={this.description}
-                            onChange={this.saveState}
-                            required
-                          /> */}
                           <div className="description">
-                            <Editor
-                              editorState={editorState}
-                              wrapperClassName="demo-wrapper"
-                              editorClassName="demo-editor"
-                              onEditorStateChange={this.onEditorStateChange}
-                              toolbar={{
-                                inline: { inDropdown: true },
-                                list: { inDropdown: true },
-                                textAlign: { inDropdown: true },
-                                link: { inDropdown: true },
-                                history: { inDropdown: true },
-                              }}
-                            />
+                            <ReactQuill onChange={this.changeQuill} />
                           </div>
                         </label>
                         <label htmlFor="state">

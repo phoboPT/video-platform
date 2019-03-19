@@ -2,7 +2,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { randomBytes } = require("crypto");
 const { promisify } = require("util");
-const { transport, makeANiceEmail } = require("../mail");
+const { makeANiceEmail, transport } = require("../mail");
+const stripe = require("../stripe");
 
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
@@ -51,29 +52,6 @@ const Mutations = {
     //para dar debug console.log(video);
     return videos;
   },
-  updateVideo(parent, args, ctx, info) {
-    const { userId } = ctx.request;
-
-    if (!userId) {
-      throw new Error("You must be logged in to do that!");
-    }
-    //faz uma copia dos updates
-    const updates = {
-      ...args,
-    };
-    //elimina o id dos updates
-    delete updates.id;
-    //da run no update method
-    return ctx.db.mutation.updateVideo(
-      {
-        data: updates,
-        where: {
-          id: args.id,
-        },
-      },
-      info,
-    );
-  },
   async deleteVideo(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
@@ -98,6 +76,29 @@ const Mutations = {
     return ctx.db.mutation.deleteVideo(
       {
         where,
+      },
+      info,
+    );
+  },
+  updateVideo(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    if (!userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+    //faz uma copia dos updates
+    const updates = {
+      ...args,
+    };
+    //elimina o id dos updates
+    delete updates.id;
+    //da run no update method
+    return ctx.db.mutation.updateVideo(
+      {
+        data: updates,
+        where: {
+          id: args.id,
+        },
       },
       info,
     );
@@ -276,7 +277,7 @@ const Mutations = {
     //we set the jwt as a cookie on the ctx
     ctx.response.cookie("token", token, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, //1 year cookie
+      maxAge: 1000 * 24 * 365 * 60 * 60, //1 year cookie
     });
     //finally we return the user to the browser
     return user;
@@ -300,14 +301,10 @@ const Mutations = {
     //Set the cookie with the token
     ctx.response.cookie("token", token, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, //1 year cookie
+      maxAge: 1000 * 24 * 365 * 60 * 60, //1 year cookie
     });
     //return the user
     return user;
-  },
-  signout(parent, args, ctx, info) {
-    ctx.response.clearCookie("token");
-    return { message: "Goodbye!" };
   },
   async updateUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -330,6 +327,10 @@ const Mutations = {
       },
       info,
     );
+  },
+  signout(parent, args, ctx, info) {
+    ctx.response.clearCookie("token");
+    return { message: "Goodbye!" };
   },
   async updatePassword(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -423,7 +424,7 @@ const Mutations = {
     //set jwt cookie
     ctx.response.cookie("token", token, {
       httpOnly: true,
-      magAge: 1000 * 60 * 60 * 25 * 365,
+      magAge: 1000 * 25 * 365 * 60 * 60,
     });
     //return new user
     return updatedUser;
@@ -445,14 +446,14 @@ const Mutations = {
     return ctx.db.mutation.createCourse(
       {
         data: {
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
           category: {
             connect: {
               id: args.category,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
             },
           },
           ...data,
@@ -462,29 +463,6 @@ const Mutations = {
     );
   },
 
-  updateCourse(parent, args, ctx, info) {
-    //faz uma copia dos updates
-    const { userId } = ctx.request;
-    if (!userId) {
-      throw new Error("You must be signed in soooon");
-    }
-
-    const updates = {
-      ...args,
-    };
-    //elimina o id dos updates
-    delete updates.id;
-    //da run no update method
-    return ctx.db.mutation.updateCourse(
-      {
-        data: updates,
-        where: {
-          id: args.id,
-        },
-      },
-      info,
-    );
-  },
   async deleteCourse(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that!");
@@ -509,6 +487,29 @@ const Mutations = {
     return ctx.db.mutation.deleteCourse(
       {
         where,
+      },
+      info,
+    );
+  },
+  updateCourse(parent, args, ctx, info) {
+    //faz uma copia dos updates
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in soooon");
+    }
+
+    const updates = {
+      ...args,
+    };
+    //elimina o id dos updates
+    delete updates.id;
+    //da run no update method
+    return ctx.db.mutation.updateCourse(
+      {
+        data: updates,
+        where: {
+          id: args.id,
+        },
       },
       info,
     );
@@ -653,11 +654,11 @@ const Mutations = {
     return ctx.db.mutation.createUserInterest(
       {
         data: {
-          user: {
-            connect: { id: userId },
-          },
           interest: {
             connect: { id: args.interestId },
+          },
+          user: {
+            connect: { id: userId },
           },
         },
       },
@@ -682,13 +683,13 @@ const Mutations = {
     //If its not, create a fresh new item
     return ctx.db.mutation.createCartItem({
       data: {
-        user: {
-          connect: { id: userId },
-        },
         course: {
           connect: {
             id: args.id,
           },
+        },
+        user: {
+          connect: { id: userId },
         },
       },
       info,
@@ -735,6 +736,76 @@ const Mutations = {
       },
       info,
     );
+  },
+
+  async createOrder(parent, args, ctx, info) {
+    //query current user and make sure they are signin
+    const { userId } = ctx.request;
+    if (!userId)
+      throw new Error("You must be signed in to complete this order.");
+    const user = await ctx.db.query.user(
+      { where: { id: userId } },
+      `
+        {
+          id
+          name
+          email
+          cart{
+            id
+            course{
+              title
+              price
+              id
+              description
+              thumbnail
+              category{
+                id
+              }
+            }
+          }
+        }
+        `,
+    );
+    //recalculate the total for the price
+    const amount = user.cart.reduce(
+      (tally, cartItem) => tally + cartItem.course.price,
+      0,
+    );
+
+    // create the stripe charge(turn token into €€€€€€)
+    const charge = await stripe.charges.create({
+      amount: amount * 100,
+      currency: "EUR",
+      source: args.token,
+    });
+    //convert the cartitems in orderitems
+    const orderItems = user.cart.map(cartItem => {
+      const orderItem = {
+        ...cartItem.course,
+        category: { connect: { id: cartItem.course.category.id } },
+        user: { connect: { id: userId } },
+      };
+      delete orderItem.id;
+      return orderItem;
+    });
+
+    console.log("items", orderItems);
+    //create the order
+    const order = await ctx.db.mutation.createOrder({
+      data: {
+        total: charge.amount,
+        charge: charge.id,
+        items: { create: orderItems },
+        user: { connect: { id: userId } },
+      },
+    });
+    //clean up - clear the users cart, delete cartitems
+    const cartItemIds = user.cart.map(cartItem => cartItem.id);
+    await ctx.db.mutation.deleteManyCartItems({
+      where: { id_in: cartItemIds },
+    });
+    //return the Order to the client
+    return order;
   },
 };
 
