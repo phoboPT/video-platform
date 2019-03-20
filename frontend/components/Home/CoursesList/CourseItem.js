@@ -1,10 +1,10 @@
-import React, { Component } from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import ItemStyles from "../../styles/ItemStyles";
+import React, { Component } from "react";
 import styled from "styled-components";
-import AddToCart from "../Cart/AddToCart";
 import Item from "../../styles/ItemStyles";
+import ItemStyles from "../../styles/ItemStyles";
+import AddToCart from "../Cart/AddToCart";
 const InfoStyle = styled.p`
   text-align: left;
   padding: none;
@@ -12,7 +12,7 @@ const InfoStyle = styled.p`
 
 export class Course extends Component {
   static propTypes = {
-    course: PropTypes.object.isRequired
+    course: PropTypes.object.isRequired,
   };
 
   render() {
@@ -23,10 +23,10 @@ export class Course extends Component {
           <Link
             href={{
               pathname: "/course",
-              query: { id: course.id }
+              query: { id: course.id },
             }}
           >
-            <img classname="Thumbnail" src={course.thumbnail} />
+            <img className="Thumbnail" src={course.thumbnail} />
           </Link>
           <InfoStyle>{course.title}</InfoStyle>
           <span>{course.user.name}</span>
