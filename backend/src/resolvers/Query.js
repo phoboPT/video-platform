@@ -5,6 +5,7 @@ const Query = {
   category: forwardTo("db"),
   comCourse: forwardTo("db"),
   course: forwardTo("db"),
+  courseInterests: forwardTo("db"),
   courses: forwardTo("db"),
   coursesConnection: forwardTo("db"),
   interests: forwardTo("db"),

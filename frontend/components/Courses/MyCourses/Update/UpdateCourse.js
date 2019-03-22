@@ -115,7 +115,8 @@ class UpdateCourse extends Component {
       },
     });
   };
-  changeQuill = value => {
+  changeQuill = e => {
+    console.log(e);
     this.setState({ description: value, text: value });
   };
 
@@ -175,7 +176,10 @@ class UpdateCourse extends Component {
                                   defaultValue={data.course.description}
                                   onChange={this.changeQuill}
                                 /> */}
-                                <Editor />
+                                <Editor
+                                  value={data.course.description}
+                                  changeQuill={this.changeQuill}
+                                />
                               </div>
                             </label>
                             <label htmlFor="state">

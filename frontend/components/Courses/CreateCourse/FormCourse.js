@@ -110,8 +110,6 @@ class FormCourse extends Component {
   };
 
   render() {
-    const { editorState } = this.state;
-
     return (
       <Container>
         <Query query={ALL_CATEGORIES_QUERY}>
