@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "crypto";
 import React, { Component } from "react";
 
 class Editor extends Component {
@@ -8,17 +9,15 @@ class Editor extends Component {
     }
   }
 
+  changeState = e => {
+    this.props.changeQuill(e);
+  };
+
   render() {
     const ReactQuill = this.ReactQuill;
-    console.log(this.props.data);
+    console.log("data", this.props.data);
     if (typeof window !== "undefined" && ReactQuill) {
-      return (
-        <ReactQuill
-          modules={this.modules}
-          onChange={this.props.changeQuill()}
-          value={this.props.data}
-        />
-      );
+      return <ReactQuill onChange={this.changeState} value={this.props.data} />;
     } else {
       return <textarea />;
     }
