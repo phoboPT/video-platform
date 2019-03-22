@@ -129,7 +129,6 @@ type Query {
     orderBy: CourseOrderByInput
     skip: Int
     first: Int
-    userInterestId: [ID]!
   ): [Course]
   # listar todos os comentarios de um curso
   comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]

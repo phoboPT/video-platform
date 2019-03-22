@@ -24,10 +24,10 @@ const Query = {
     return ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
-      info,
+      info
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -42,11 +42,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -63,11 +63,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -77,11 +77,11 @@ const Query = {
         orderBy: "createdAt_DESC",
         where: {
           course: {
-            id: args.id,
-          },
-        },
+            id: args.id
+          }
+        }
       },
-      info,
+      info
     );
   },
   coursesUser(parent, args, ctx, info) {
@@ -95,12 +95,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
+            id: userId
+          }
         },
-        ...args,
+        ...args
       },
-      info,
+      info
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -117,15 +117,15 @@ const Query = {
         where: {
           AND: [
             {
-              user: { id: userId },
+              user: { id: userId }
             },
             {
-              title_contains: args.title_contains,
-            },
-          ],
-        },
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
   coursesSearch(parent, args, ctx, info) {
@@ -139,22 +139,57 @@ const Query = {
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
-        ...args,
+        ...args
       },
-      info,
+      info
     );
   },
-  coursesUserInterestList(parent, args, ctx, info) {
-    //foreach de cada elemento e fazer a query e guardar num array
+  async coursesUserInterestList(parent, args, ctx, info) {
+    const { userId } = ctx.request;
 
-    //retorna um array
-    return ctx.db.query.courses(
-      {
-        ...args,
-      },
-      info,
+    const user = await ctx.db.query.user(
+      { where: { id: userId } },
+      `
+        {
+          id
+          name
+          email
+          interests{
+            id
+            interest{
+              id
+            }
+          }
+        }
+        `
     );
-  },
+
+    //foreach de cada elemento e fazer a query e guardar num array
+    const interestsIds = [];
+
+    user.interests.map(interest => {
+      // console.log(interest.interest.id);
+
+      interestsIds.push(interest.interest.id);
+    });
+    //retorna um array
+    let arrayInterests = [];
+    interestsIds.forEach(async id => {
+      console.log(id);
+      arrayInterests.push(
+        await ctx.db.query.courses({
+          where: {
+            interest: {
+              interest: {
+                id: id
+              }
+            }
+          }
+        })
+      );
+    });
+    console.log("interests", arrayInterests);
+  }
 };
 
 module.exports = Query;

@@ -25,7 +25,7 @@ const ALL_COURSES_QUERY = gql`
 //interests query
 const ALL_COURSE_INTERESTS = gql`
   query ALL_COURSE_INTERESTS($skip: Int = 0, $first: Int = ${perPageCourse} ) {
-    coursesUserInterestList(first: $first, skip: $skip, userInterestId : $userInterestId , courseInterestId : $userInterestId ) {
+    coursesUserInterestList(first: $first, skip: $skip ) {
       id
       title
       description
@@ -38,6 +38,7 @@ const ALL_COURSE_INTERESTS = gql`
     }
   }
 `;
+
 //orderby query
 
 const ALL_COURSES_ORDERED = gql`
@@ -70,6 +71,13 @@ export class Courses extends Component {
         this.setState({
           query: ALL_COURSES_ORDERED,
           title: "By Creation List"
+        });
+        break;
+      }
+      case "ALL_COURSE_INTERESTS": {
+        this.setState({
+          query: ALL_COURSE_INTERESTS,
+          title: "Interests List"
         });
         break;
       }
