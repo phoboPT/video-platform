@@ -9,6 +9,19 @@ const CURRENT_USER_QUERY = gql`
       email
       name
       permission
+      courses {
+        course {
+          id
+          thumbnail
+          category {
+            name
+          }
+          state
+          createdAt
+          price
+          title
+        }
+      }
       cart {
         id
         course {
@@ -22,12 +35,6 @@ const CURRENT_USER_QUERY = gql`
           user {
             name
           }
-        }
-      }
-      interests {
-        interest {
-          id
-          name
         }
       }
     }

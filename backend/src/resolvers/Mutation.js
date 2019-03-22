@@ -789,7 +789,6 @@ const Mutations = {
       return orderItem;
     });
 
-    console.log("items", orderItems);
     //create the order
     const order = await ctx.db.mutation.createOrder({
       data: {
@@ -798,6 +797,17 @@ const Mutations = {
         items: { create: orderItems },
         user: { connect: { id: userId } },
       },
+    });
+
+    const courseIds = user.cart.map(cartItem => cartItem.course.id);
+
+    courseIds.forEach(async id => {
+      await ctx.db.mutation.createUserCourse({
+        data: {
+          course: { connect: { id: id } },
+          user: { connect: { id: userId } },
+        },
+      });
     });
     //clean up - clear the users cart, delete cartitems
     const cartItemIds = user.cart.map(cartItem => cartItem.id);

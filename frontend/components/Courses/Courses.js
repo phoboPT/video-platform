@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import User from "../Authentication/User";
 import Link from "next/link";
-import Videos from "./MyVideos/Videos";
-import CreateCourse from "./CreateCourse/CreateCourse";
-import CreateVideo from "./UploadVideo/CreateVideo";
-import FormCourse from "./CreateCourse/FormCourse";
-import LinkStyle from "../styles/LinkStyle";
+import React, { Component } from "react";
 import styled from "styled-components";
+import User from "../Authentication/User";
+import LinkStyle from "../styles/LinkStyle";
+import CreateCourse from "./CreateCourse/CreateCourse";
+import FormCourse from "./CreateCourse/FormCourse";
 import MyCourses from "./MyCourses/MyCourses";
+import UserCourses from "./MyCourses/UserCourses";
+import Videos from "./MyVideos/Videos";
+import CreateVideo from "./UploadVideo/CreateVideo";
 
 const Button = styled.button`
   width: auto !important;
@@ -53,7 +54,6 @@ const Style = styled.div`
       }
     }
   }
-
   .main-bar {
     float: bottom;
     text-align: center;
@@ -134,15 +134,10 @@ class Courses extends Component {
                 <LinkStyle>
                   <div className="grid-container">
                     <div className="left">
-                      <>
-                        <Link href="/videos">
-                          <a>Finished</a>
-                        </Link>
-                      </>
+                      <UserCourses />
                     </div>
                     <div className="right">
                       <MyCourses />
-                      {/* <Videos>{this.props.children}</Videos> */}
                     </div>
                   </div>
                 </LinkStyle>

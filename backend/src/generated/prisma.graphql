@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/hugobrancoc-5773e9/picus/dev
-# timestamp: Tue Mar 19 2019 15:15:58 GMT+0000 (Hora padrão da Europa Ocidental)
+# timestamp: Fri Mar 22 2019 11:01:46 GMT+0000 (Hora padrão da Europa Ocidental)
 
 type AggregateCartItem {
   count: Int!
@@ -75,6 +75,7 @@ type CartItemConnection {
 }
 
 input CartItemCreateInput {
+  id: ID
   user: UserCreateOneWithoutCartInput!
   course: CourseCreateOneInput!
 }
@@ -85,6 +86,7 @@ input CartItemCreateManyWithoutUserInput {
 }
 
 input CartItemCreateWithoutUserInput {
+  id: ID
   course: CourseCreateOneInput!
 }
 
@@ -304,6 +306,7 @@ type CategoryConnection {
 }
 
 input CategoryCreateInput {
+  id: ID
   name: String!
 }
 
@@ -515,6 +518,7 @@ type ComCourseConnection {
 }
 
 input ComCourseCreateInput {
+  id: ID
   comment: String!
   user: UserCreateOneInput!
   course: CourseCreateOneInput!
@@ -763,6 +767,7 @@ type CourseConnection {
 }
 
 input CourseCreateInput {
+  id: ID
   title: String
   description: String!
   thumbnail: String!
@@ -790,6 +795,7 @@ input CourseCreateOneWithoutVideosInput {
 }
 
 input CourseCreateWithoutInterestInput {
+  id: ID
   title: String
   description: String!
   thumbnail: String!
@@ -801,6 +807,7 @@ input CourseCreateWithoutInterestInput {
 }
 
 input CourseCreateWithoutVideosInput {
+  id: ID
   title: String
   description: String!
   thumbnail: String!
@@ -837,6 +844,7 @@ type CourseInterestConnection {
 }
 
 input CourseInterestCreateInput {
+  id: ID
   interest: InterestCreateOneInput!
   course: CourseCreateOneWithoutInterestInput!
 }
@@ -847,6 +855,7 @@ input CourseInterestCreateManyWithoutCourseInput {
 }
 
 input CourseInterestCreateWithoutCourseInput {
+  id: ID
   interest: InterestCreateOneInput!
 }
 
@@ -1226,6 +1235,7 @@ type CourseVideosConnection {
 }
 
 input CourseVideosCreateInput {
+  id: ID
   course: CourseCreateOneWithoutVideosInput!
   video: VideoCreateOneInput
 }
@@ -1236,6 +1246,7 @@ input CourseVideosCreateManyWithoutCourseInput {
 }
 
 input CourseVideosCreateWithoutCourseInput {
+  id: ID
   video: VideoCreateOneInput
 }
 
@@ -1717,6 +1728,7 @@ type InterestConnection {
 }
 
 input InterestCreateInput {
+  id: ID
   name: String!
   thumbnail: String!
 }
@@ -2069,6 +2081,7 @@ type OrderConnection {
 }
 
 input OrderCreateInput {
+  id: ID
   total: Int!
   charge: String!
   items: OrderItemCreateManyInput
@@ -2105,6 +2118,7 @@ type OrderItemConnection {
 }
 
 input OrderItemCreateInput {
+  id: ID
   title: String
   description: String!
   thumbnail: String!
@@ -2968,6 +2982,7 @@ type UserCourseConnection {
 }
 
 input UserCourseCreateInput {
+  id: ID
   watched: Boolean
   user: UserCreateOneWithoutCoursesInput!
   course: CourseCreateOneInput!
@@ -2979,6 +2994,7 @@ input UserCourseCreateManyWithoutUserInput {
 }
 
 input UserCourseCreateWithoutUserInput {
+  id: ID
   watched: Boolean
   course: CourseCreateOneInput!
 }
@@ -3211,6 +3227,7 @@ input UserCourseWhereUniqueInput {
 }
 
 input UserCreateInput {
+  id: ID
   name: String!
   email: String!
   password: String!
@@ -3247,6 +3264,7 @@ input UserCreatepermissionInput {
 }
 
 input UserCreateWithoutCartInput {
+  id: ID
   name: String!
   email: String!
   password: String!
@@ -3258,6 +3276,7 @@ input UserCreateWithoutCartInput {
 }
 
 input UserCreateWithoutCoursesInput {
+  id: ID
   name: String!
   email: String!
   password: String!
@@ -3269,6 +3288,7 @@ input UserCreateWithoutCoursesInput {
 }
 
 input UserCreateWithoutInterestsInput {
+  id: ID
   name: String!
   email: String!
   password: String!
@@ -3305,6 +3325,7 @@ type UserInterestConnection {
 }
 
 input UserInterestCreateInput {
+  id: ID
   interest: InterestCreateOneInput!
   user: UserCreateOneWithoutInterestsInput!
 }
@@ -3315,6 +3336,7 @@ input UserInterestCreateManyWithoutUserInput {
 }
 
 input UserInterestCreateWithoutUserInput {
+  id: ID
   interest: InterestCreateOneInput!
 }
 
@@ -3983,6 +4005,7 @@ type VideoConnection {
 }
 
 input VideoCreateInput {
+  id: ID
   title: String!
   description: String!
   state: State

@@ -1,34 +1,33 @@
 const { forwardTo } = require("prisma-binding");
 
 const Query = {
-  videos: forwardTo("db"),
   categories: forwardTo("db"),
-  users: forwardTo("db"),
-  courses: forwardTo("db"),
-  course: forwardTo("db"),
-  video: forwardTo("db"),
   category: forwardTo("db"),
-  user: forwardTo("db"),
   comCourse: forwardTo("db"),
-  interests: forwardTo("db"),
-  userInterests: forwardTo("db"),
+  course: forwardTo("db"),
+  courses: forwardTo("db"),
   coursesConnection: forwardTo("db"),
+  interests: forwardTo("db"),
+  user: forwardTo("db"),
+  userInterests: forwardTo("db"),
+  users: forwardTo("db"),
+  video: forwardTo("db"),
+  videos: forwardTo("db"),
 
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //checkar se tem um current ID
-
     if (!userId) {
       return null;
     }
     return ctx.db.query.user(
       {
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
-      info
+      info,
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -43,11 +42,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
-      info
+      info,
     );
   },
 
@@ -64,14 +63,27 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
-      info
+      info,
     );
   },
 
+  comCourseList(parent, args, ctx, info) {
+    return ctx.db.query.comCourses(
+      {
+        orderBy: "createdAt_DESC",
+        where: {
+          course: {
+            id: args.id,
+          },
+        },
+      },
+      info,
+    );
+  },
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //Ve se esta logado
@@ -83,12 +95,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
+            id: userId,
+          },
         },
-        ...args
+        ...args,
       },
-      info
+      info,
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -105,15 +117,15 @@ const Query = {
         where: {
           AND: [
             {
-              user: { id: userId }
+              user: { id: userId },
             },
             {
-              title_contains: args.title_contains
-            }
-          ]
-        }
+              title_contains: args.title_contains,
+            },
+          ],
+        },
       },
-      info
+      info,
     );
   },
   coursesSearch(parent, args, ctx, info) {
@@ -127,22 +139,9 @@ const Query = {
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
-        ...args
+        ...args,
       },
-      info
-    );
-  },
-  comCourseList(parent, args, ctx, info) {
-    return ctx.db.query.comCourses(
-      {
-        where: {
-          course: {
-            id: args.id
-          }
-        },
-        orderBy: "createdAt_DESC"
-      },
-      info
+      info,
     );
   },
   coursesUserInterestList(parent, args, ctx, info) {
@@ -151,11 +150,11 @@ const Query = {
     //retorna um array
     return ctx.db.query.courses(
       {
-        ...args
+        ...args,
       },
-      info
+      info,
     );
-  }
+  },
 };
 
 module.exports = Query;

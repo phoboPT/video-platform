@@ -1,12 +1,14 @@
-import React, { Component } from "react";
-import Form from "../../../styles/Form";
 import gql from "graphql-tag";
-import Error from "../../../Static/ErrorMessage";
+import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
+// import ReactQuill from "react-quill"; // ES6
 import styled from "styled-components";
 import VideoItem from "../../../Home/CourseInfo/VideoItem";
+import Error from "../../../Static/ErrorMessage";
+import Form from "../../../styles/Form";
+import Editor from "../../Editor";
 import RemoveVideoButton from "./RemoveVideoButton";
-import ReactQuill from "react-quill"; // ES6
+
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
     course(where: { id: $id }) {
@@ -114,7 +116,7 @@ class UpdateCourse extends Component {
     });
   };
   changeQuill = value => {
-    this.setState({ text: value, description: value });
+    this.setState({ description: value, text: value });
   };
 
   uploadThumbnail = async e => {
@@ -129,7 +131,7 @@ class UpdateCourse extends Component {
     );
 
     const file = await res.json();
-    this.setState({ thumbnail: file.secure_url, changeThumbnail: true });
+    this.setState({ changeThumbnail: true, thumbnail: file.secure_url });
   };
   render() {
     return (
@@ -169,10 +171,11 @@ class UpdateCourse extends Component {
                             <label htmlFor="description">
                               Description
                               <div className="description">
-                                <ReactQuill
+                                {/* <ReactQuill
                                   defaultValue={data.course.description}
                                   onChange={this.changeQuill}
-                                />
+                                /> */}
+                                <Editor />
                               </div>
                             </label>
                             <label htmlFor="state">
@@ -239,4 +242,4 @@ class UpdateCourse extends Component {
 }
 
 export default UpdateCourse;
-export { SINGLE_COURSE_QUERY, CourseContainer };
+export { CourseContainer, SINGLE_COURSE_QUERY };

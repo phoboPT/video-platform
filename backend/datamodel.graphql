@@ -79,15 +79,6 @@ type CourseVideos {
   video: Video
 }
 
-# type ComVideo {
-#   id: ID! @unique
-#   comment: String!
-#   video: Video!
-#   user: User!
-#   createdAt: DateTime!
-#   updatedAt: DateTime!
-# }
-
 type Category {
   id: ID! @unique
   name: String!

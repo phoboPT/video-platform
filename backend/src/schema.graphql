@@ -11,6 +11,7 @@ type User {
   permission: [Permission]
   interests: [UserInterest!]!
   cart: [CartItem!]!
+  courses: [UserCourse!]!
 }
 
 type Mutation {

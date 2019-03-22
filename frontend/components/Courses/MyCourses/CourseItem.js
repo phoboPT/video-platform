@@ -1,11 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ItemStyles from "../../styles/ItemStyles";
-import Title from "../../styles/Title";
 import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import styled from "styled-components";
 import formatDate from "../../../lib/formatDate";
 import formatString from "../../../lib/formatString";
+import ItemStyles from "../../styles/ItemStyles";
 
 const Div = styled.div`
   padding: none;
@@ -33,6 +32,7 @@ const State = styled.strong(props => ({
 class ListCourses extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
+    update: PropTypes.bool.isRequired,
   };
   render() {
     const { course } = this.props;
@@ -40,16 +40,29 @@ class ListCourses extends Component {
     return (
       <ItemStyles>
         <Div>
-          <Link
-            href={{
-              pathname: "/updateCourse",
-              query: { id: course.id },
-            }}
-          >
-            <a>
-              <img src={course.thumbnail} />
-            </a>
-          </Link>
+          {this.props.update ? (
+            <Link
+              href={{
+                pathname: "/updateCourse",
+                query: { id: course.id },
+              }}
+            >
+              <a>
+                <img src={course.thumbnail} />
+              </a>
+            </Link>
+          ) : (
+            <Link
+              href={{
+                pathname: "/course",
+                query: { id: course.id },
+              }}
+            >
+              <a>
+                <img src={course.thumbnail} />
+              </a>
+            </Link>
+          )}
           <br />
           <span>
             Title: <State>{formatString(course.title, 20)}</State>

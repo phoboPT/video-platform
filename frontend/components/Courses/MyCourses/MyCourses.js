@@ -1,8 +1,8 @@
-import React, { Component } from "react";
 import gql from "graphql-tag";
+import React, { Component } from "react";
 import { Query } from "react-apollo";
-import CourseItem from "./CourseItem";
 import ItemList from "../../styles/ItemList";
+import CourseItem from "./CourseItem";
 
 const CURRENT_COURSES_QUERY = gql`
   query CURRENT_COURSES_QUERY {
@@ -43,7 +43,7 @@ class MyCourses extends Component {
             return (
               <ItemList>
                 {data.coursesUser.map(course => (
-                  <CourseItem course={course} key={course.id} />
+                  <CourseItem course={course} key={course.id} update={true} />
                 ))}
               </ItemList>
             );

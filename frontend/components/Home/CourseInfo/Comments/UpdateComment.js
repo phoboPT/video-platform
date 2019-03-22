@@ -1,8 +1,8 @@
-import React, { Component } from "react";
 import gql from "graphql-tag";
+import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
-import Error from "../../../Static/ErrorMessage";
 import styled from "styled-components";
+import Error from "../../../Static/ErrorMessage";
 
 const Style = styled.div`
   button {
@@ -75,8 +75,8 @@ export class UpdateComment extends Component {
     const res = await updateCommentMutation({
       variables: {
         id: this.props.data.id,
-        ...this.state
-      }
+        ...this.state,
+      },
     });
   };
 
@@ -91,7 +91,7 @@ export class UpdateComment extends Component {
           return (
             <Style>
               <Mutation mutation={UPDATE_COMMENT_MUTATION}>
-                {(updateCommentMutation, { loading, error }) => (
+                {(updateCommentMutation, { error, loading }) => (
                   <form
                     onSubmit={e => {
                       this.update(e, updateCommentMutation);
@@ -99,16 +99,16 @@ export class UpdateComment extends Component {
                     }}
                   >
                     <Error error={error} />
-                    <fieldset disabled={loading} aria-busy={loading}>
+                    <fieldset aria-busy={loading} disabled={loading}>
                       <label htmlFor="comment">
                         <input
+                          defaultValue={data.comCourse.comment}
+                          name="comment"
+                          onChange={this.handleChange}
+                          placeholder="comment"
                           size="80"
                           type="text"
-                          name="comment"
-                          placeholder="comment"
                           value={this.comment}
-                          defaultValue={data.comCourse.comment}
-                          onChange={this.handleChange}
                         />
                       </label>
                       <button type="submit">Save</button>

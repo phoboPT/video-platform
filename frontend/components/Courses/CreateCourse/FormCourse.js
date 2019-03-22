@@ -3,8 +3,8 @@ import draftToHtml from "draftjs-to-html";
 import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
-import { Editor } from "react-draft-wysiwyg";
-import ReactQuill from "react-quill";
+// import { Editor } from "react-draft-wysiwyg";
+// import ReactQuill from "react-quill";
 import styled from "styled-components";
 import Error from "../../Static/ErrorMessage";
 import Form from "../../styles/Form";
@@ -153,7 +153,7 @@ class FormCourse extends Component {
                         <label htmlFor="description">
                           Description
                           <div className="description">
-                            <ReactQuill onChange={this.changeQuill} />
+                            {/* <ReactQuill onChange={this.changeQuill} /> */}
                           </div>
                         </label>
                         <label htmlFor="state">
