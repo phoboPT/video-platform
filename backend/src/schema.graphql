@@ -92,6 +92,7 @@ type Query {
 
   interests: [Interest!]!
   userInterests: [UserInterest]!
+  courseInterests(where: CourseInterestWhereInput): [CourseInterest]!
 
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video

@@ -10,9 +10,14 @@ class Editor extends Component {
 
   render() {
     const ReactQuill = this.ReactQuill;
+    console.log(this.props.data);
     if (typeof window !== "undefined" && ReactQuill) {
       return (
-        <ReactQuill onChange={this.props.onChange} value={this.props.value} />
+        <ReactQuill
+          modules={this.modules}
+          onChange={this.props.changeQuill()}
+          value={this.props.data}
+        />
       );
     } else {
       return <textarea />;
