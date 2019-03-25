@@ -7,7 +7,7 @@ import { perPageCourse } from "../../../config";
 import { Title, Container, CoursesList } from "../../styles/Home";
 
 const ALL_COURSES_QUERY = gql`
-  query ALL_COURSES_QUERYfalse($skip: Int = 0, $first: Int = ${perPageCourse}) {
+  query ALL_COURSES_QUERY($skip: Int = 0, $first: Int = ${perPageCourse}) {
     courses(first: $first, skip: $skip) {
       id
       title
@@ -132,20 +132,29 @@ export class Courses extends Component {
             if (error) {
               return <p>Error:{error.message}</p>;
             }
-            return (
-              <Container>
-                <CoursesList className={this.state.classe}>
-                  {data.courses.map(course => (
-                    <CourseItem course={course} key={course.id} />
-                  ))}
-                </CoursesList>
 
-                <Pagination
-                  page={this.state.page}
-                  saveState={this.saveState}
-                  saveState1={this.saveState1}
-                />
-              </Container>
+            return (
+              <>
+                <Container>
+                  {/* Filtering the data to show the correct list */}
+                  <CoursesList className={this.state.classe}>
+                    {data.courses &&
+                      data.courses.map(course => (
+                        <CourseItem course={course} key={course.id} />
+                      ))}
+                    {data.coursesUserInterestList &&
+                      data.coursesUserInterestList.map(course => (
+                        <CourseItem course={course} key={course.id} />
+                      ))}
+                  </CoursesList>
+
+                  <Pagination
+                    page={this.state.page}
+                    saveState={this.saveState}
+                    saveState1={this.saveState1}
+                  />
+                </Container>
+              </>
             );
           }}
         </Query>

@@ -118,7 +118,9 @@ const Query = {
         where: {
           AND: [
             {
-              user: { id: userId }
+              user: {
+                id: userId
+              }
             },
             {
               title_contains: args.title_contains
@@ -149,7 +151,11 @@ const Query = {
     const { userId } = ctx.request;
 
     const user = await ctx.db.query.user(
-      { where: { id: userId } },
+      {
+        where: {
+          id: userId
+        }
+      },
       `
         {
           id
@@ -169,27 +175,62 @@ const Query = {
     const interestsIds = [];
 
     user.interests.map(interest => {
-      // console.log(interest.interest.id);
-
       interestsIds.push(interest.interest.id);
     });
     //retorna um array
-    let arrayInterests = [];
-    interestsIds.forEach(async id => {
-      console.log(id);
-      arrayInterests.push(
-        await ctx.db.query.courses({
-          where: {
-            interest: {
+    let all = [];
+
+    const checkIds = actualId => {
+      let exist = false;
+      if (all.length < 1) {
+        all.push(actualId);
+        exist = false;
+      } else {
+        all.map(item => {
+          if (item === actualId) {
+            exist = true;
+          }
+          all.push(actualId);
+        });
+      }
+      return exist;
+    };
+
+    const result = await Promise.all(
+      interestsIds.map(async id => {
+        const res = await ctx.db.query.courseInterests(
+          {
+            where: {
               interest: {
                 id: id
               }
             }
-          }
-        })
-      );
+          },
+          `{
+            course{
+              id
+              title
+              description
+              thumbnail
+              createdAt
+              price
+              user {
+                name
+              }
+            }
+          }`,
+          info
+        );
+        if (checkIds(res[0].course.id)) {
+          return res[0].course;
+        }
+      })
+    );
+
+    var FilteredResult = result.filter(el => {
+      return el;
     });
-    console.log("interests", arrayInterests);
+    return FilteredResult;
   }
 };
 
