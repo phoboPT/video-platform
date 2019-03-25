@@ -116,8 +116,8 @@ class UpdateCourse extends Component {
     });
   };
   changeQuill = e => {
-    console.log(e);
-    this.setState({ description: value, text: value });
+    // console.log("2", e);
+    this.setState({ description: e });
   };
 
   uploadThumbnail = async e => {
@@ -177,7 +177,7 @@ class UpdateCourse extends Component {
                                   onChange={this.changeQuill}
                                 /> */}
                                 <Editor
-                                  value={data.course.description}
+                                  data={data.course.description}
                                   changeQuill={this.changeQuill}
                                 />
                               </div>

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
 class Editor extends Component {
+  state = { text: "" };
+
   constructor(props) {
     super(props);
     if (typeof window !== "undefined") {
@@ -8,17 +10,20 @@ class Editor extends Component {
     }
   }
 
+  changeState = e => {
+    this.setState({ text: e });
+    this.props.changeQuill(e);
+  };
+
+  componentWillMount = () => {
+    this.setState({ text: this.props.data });
+  };
+
   render() {
     const ReactQuill = this.ReactQuill;
-    console.log(this.props.data);
+
     if (typeof window !== "undefined" && ReactQuill) {
-      return (
-        <ReactQuill
-          modules={this.modules}
-          onChange={this.props.changeQuill()}
-          value={this.props.data}
-        />
-      );
+      return <ReactQuill onChange={this.changeState} value={this.state.text} />;
     } else {
       return <textarea />;
     }
