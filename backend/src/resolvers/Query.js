@@ -230,6 +230,7 @@ const Query = {
     var FilteredResult = result.filter(el => {
       return el;
     });
+
     return FilteredResult;
   }
 };
