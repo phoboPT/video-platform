@@ -191,18 +191,23 @@ const Query = {
         );
 
         return res;
+
+        console.log(res);
       }),
     );
 
+    var filteredResult = result.filter(el => {
+      console.log("el", el);
+      return el;
+    });
     // console.log("filtered", filteredResult)
     let res = [];
 
     res = filteredResult.flat();
 
-    let courses = res.map(item => {
+    const courses = res.map(item => {
       return item.course;
     });
-
     console.log("Res", courses);
 
     return courses;
