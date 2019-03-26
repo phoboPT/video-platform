@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "crypto";
 import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Query } from "react-apollo";
@@ -115,10 +116,10 @@ export class Courses extends Component {
       this.setState({ classe: "" });
     }, 1000);
   };
+
   render() {
     return (
       <>
-        <Title>{this.state.title}</Title>
         <Query
           query={this.state.query}
           variables={{
@@ -136,12 +137,14 @@ export class Courses extends Component {
             return (
               <>
                 <Container>
+                  <Title>{this.state.title}</Title>
                   {/* Filtering the data to show the correct list */}
                   <CoursesList className={this.state.classe}>
                     {data.courses &&
                       data.courses.map(course => (
                         <CourseItem course={course} key={course.id} />
                       ))}
+
                     {data.coursesUserInterestList &&
                       data.coursesUserInterestList.map(course => (
                         <CourseItem course={course} key={course.id} />

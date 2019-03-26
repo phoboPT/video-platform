@@ -21,8 +21,6 @@ const CartItemStyles = styled.li`
 `;
 
 const CartItem = ({ cartItem }) => {
-  console.log("entrou", cartItem);
-
   return (
     <CartItemStyles>
       <img

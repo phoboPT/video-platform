@@ -9,6 +9,9 @@ const CURRENT_USER_QUERY = gql`
       email
       name
       permission
+      interests {
+        id
+      }
       courses {
         course {
           id
