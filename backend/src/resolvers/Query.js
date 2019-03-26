@@ -131,10 +131,9 @@ const Query = {
       info,
     );
   },
-
   async coursesUserInterestList(parent, args, ctx, info) {
     const { userId } = ctx.request;
-
+    //Get user
     const user = await ctx.db.query.user(
       {
         where: {
@@ -155,17 +154,15 @@ const Query = {
         }
         `,
     );
-
-    //foreach de cada elemento e fazer a query e guardar num array
     const interestsIds = [];
-
+    //foreach de cada elemento e fazer a query e guardar num array
     user.interests.map(interest => {
       interestsIds.push(interest.interest.id);
     });
 
+    //Search all the courses that have the interests match wiith user
     const result = await Promise.all(
       interestsIds.map(async id => {
-        console.log(id);
         const res = await ctx.db.query.courseInterests(
           {
             where: {
@@ -189,28 +186,29 @@ const Query = {
          }`,
           info,
         );
-
         return res;
-
-        console.log(res);
       }),
     );
 
-    var filteredResult = result.filter(el => {
-      console.log("el", el);
-      return el;
-    });
-    // console.log("filtered", filteredResult)
-    let res = [];
-
-    res = filteredResult.flat();
-
+    let res = result.flat();
+    //this remove the header on the array to clean it before send it to frontend
     const courses = res.map(item => {
       return item.course;
     });
-    console.log("Res", courses);
 
-    return courses;
+    //Sort the array by id
+    courses.sort(function(a, b) {
+      if (a.id.toLowerCase() < b.id.toLowerCase()) return -1;
+      if (a.id.toLowerCase() > b.id.toLowerCase()) return 1;
+      return 0;
+    });
+
+    //Filter the array to remove duplicates
+    const final = Object.values(
+      courses.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {}),
+    );
+
+    return final;
   },
 };
 
