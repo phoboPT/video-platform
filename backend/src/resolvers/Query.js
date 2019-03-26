@@ -25,10 +25,10 @@ const Query = {
     return ctx.db.query.user(
       {
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
-      info
+      info,
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -43,11 +43,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
-      info
+      info,
     );
   },
 
@@ -64,11 +64,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
-      info
+      info,
     );
   },
 
@@ -78,11 +78,11 @@ const Query = {
         orderBy: "createdAt_DESC",
         where: {
           course: {
-            id: args.id
-          }
-        }
+            id: args.id,
+          },
+        },
       },
-      info
+      info,
     );
   },
   coursesUser(parent, args, ctx, info) {
@@ -96,12 +96,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
+            id: userId,
+          },
         },
-        ...args
+        ...args,
       },
-      info
+      info,
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -119,42 +119,27 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId
-              }
+                id: userId,
+              },
             },
             {
-              title_contains: args.title_contains
-            }
-          ]
-        }
+              title_contains: args.title_contains,
+            },
+          ],
+        },
       },
-      info
+      info,
     );
   },
-  coursesSearch(parent, args, ctx, info) {
-    const { userId } = ctx.request;
-    // console.log(args);
-    //Ver se esta logado
-    if (!userId) {
-      throw new Error("you must be ssigned in!");
-    }
 
-    //query o video atual com comparaçao de ids de user
-    return ctx.db.query.courses(
-      {
-        ...args
-      },
-      info
-    );
-  },
   async coursesUserInterestList(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
     const user = await ctx.db.query.user(
       {
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
       `
         {
@@ -168,7 +153,7 @@ const Query = {
             }
           }
         }
-        `
+        `,
     );
 
     //foreach de cada elemento e fazer a query e guardar num array
@@ -177,62 +162,51 @@ const Query = {
     user.interests.map(interest => {
       interestsIds.push(interest.interest.id);
     });
-    //retorna um array
-    let all = [];
-
-    const checkIds = actualId => {
-      let exist = false;
-      if (all.length < 1) {
-        all.push(actualId);
-        exist = false;
-      } else {
-        all.map(item => {
-          if (item === actualId) {
-            exist = true;
-          }
-          all.push(actualId);
-        });
-      }
-      return exist;
-    };
 
     const result = await Promise.all(
       interestsIds.map(async id => {
+        console.log(id);
         const res = await ctx.db.query.courseInterests(
           {
             where: {
               interest: {
-                id: id
-              }
-            }
+                id: id,
+              },
+            },
           },
           `{
-            course{
-              id
-              title
-              description
-              thumbnail
-              createdAt
-              price
-              user {
-                name
-              }
-            }
-          }`,
-          info
+           course{
+             id
+             title
+             description
+             thumbnail
+             createdAt
+             price
+             user {
+               name
+             }
+           }
+         }`,
+          info,
         );
-        if (checkIds(res[0].course.id)) {
-          return res[0].course;
-        }
-      })
+
+        return res;
+      }),
     );
 
-    var FilteredResult = result.filter(el => {
-      return el;
+    // console.log("filtered", filteredResult)
+    let res = [];
+
+    res = filteredResult.flat();
+
+    let courses = res.map(item => {
+      return item.course;
     });
 
-    return FilteredResult;
-  }
+    console.log("Res", courses);
+
+    return courses;
+  },
 };
 
 module.exports = Query;

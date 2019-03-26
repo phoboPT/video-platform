@@ -1,10 +1,10 @@
+import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import { perPageCourse } from "../../../config";
+import { Container, CoursesList, Title } from "../../styles/Home";
 import CourseItem from "./CourseItem";
 import Pagination from "./Pagination";
-import { perPageCourse } from "../../../config";
-import { Title, Container, CoursesList } from "../../styles/Home";
 
 const ALL_COURSES_QUERY = gql`
   query ALL_COURSES_QUERY($skip: Int = 0, $first: Int = ${perPageCourse}) {
@@ -60,24 +60,24 @@ const ALL_COURSES_ORDERED = gql`
 export class Courses extends Component {
   componentWillMount() {
     switch (this.props.query) {
-      case "ALL_COURSES_QUERY": {
+      case "ALL_COURSE_INTERESTS": {
         this.setState({
-          query: ALL_COURSES_QUERY,
-          title: "All Courses List"
+          query: ALL_COURSE_INTERESTS,
+          title: "Interests List",
         });
         break;
       }
       case "ALL_COURSES_ORDERED": {
         this.setState({
           query: ALL_COURSES_ORDERED,
-          title: "By Creation List"
+          title: "By Creation List",
         });
         break;
       }
-      case "ALL_COURSE_INTERESTS": {
+      case "ALL_COURSES_QUERY": {
         this.setState({
-          query: ALL_COURSE_INTERESTS,
-          title: "Interests List"
+          query: ALL_COURSES_QUERY,
+          title: "All Courses List",
         });
         break;
       }
@@ -89,10 +89,10 @@ export class Courses extends Component {
     }
   }
   state = {
+    classe: "",
     page: 1,
     query: ALL_COURSES_QUERY,
     title: "",
-    classe: ""
   };
   saveState = () => {
     this.setState({ classe: "animation" });
@@ -122,7 +122,7 @@ export class Courses extends Component {
         <Query
           query={this.state.query}
           variables={{
-            skip: this.state.page * perPageCourse - perPageCourse
+            skip: this.state.page * perPageCourse - perPageCourse,
           }}
         >
           {({ data, error, loading }) => {
