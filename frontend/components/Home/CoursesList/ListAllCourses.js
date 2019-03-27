@@ -8,25 +8,9 @@ import CourseItem from "./CourseItem";
 import Pagination from "./Pagination";
 
 const ALL_COURSES_QUERY = gql`
-  query ALL_COURSES_QUERY($skip: Int = 0, $first: Int = ${perPageCourse}) {
-    courses(first: $first, skip: $skip) {
-      id
-      title
-      description
-      thumbnail
-      createdAt
-      price
-      user {
-        name
-      }
-    }
-  }
-`;
-
-//interests query
-const ALL_COURSE_INTERESTS = gql`
-  query ALL_COURSE_INTERESTS($skip: Int = 0, $first: Int = ${perPageCourse} ) {
-    coursesUserInterestList(first: $first, skip: $skip ) {
+  query ALL_COURSES_QUERY(
+          $published: State,$skip: Int = 0, $first: Int = ${perPageCourse}) {
+    courses(where:{state:$published},first: $first, skip: $skip) {
       id
       title
       description
@@ -43,8 +27,8 @@ const ALL_COURSE_INTERESTS = gql`
 //orderby query
 
 const ALL_COURSES_ORDERED = gql`
-  query ALL_COURSES($skip: Int = 0, $first: Int = ${perPageCourse} ) {
-    courses(first: $first, skip: $skip ,orderBy: createdAt_DESC) {
+  query ALL_COURSES($published: State,$skip: Int = 0, $first: Int = ${perPageCourse} ) {
+    courses(where:{state:$published},first: $first, skip: $skip ,orderBy: createdAt_DESC) {
       id
       title
       description
@@ -57,28 +41,45 @@ const ALL_COURSES_ORDERED = gql`
     }
   }
 `;
+//interests query
+const ALL_COURSE_INTERESTS = gql`
+  query ALL_COURSE_INTERESTS($skip: Int = 0, $first: Int = ${perPageCourse} ) {
+    coursesUserInterestList(first: $first, skip: $skip ) {
+      id
+      title
+      description
+      thumbnail
+      createdAt
+      price
+      user {
+        name
+      }
+      count
+    }
+  }
+`;
 
 export class Courses extends Component {
   componentWillMount() {
     switch (this.props.query) {
-      case "ALL_COURSE_INTERESTS": {
-        this.setState({
-          query: ALL_COURSE_INTERESTS,
-          title: "Interests List",
-        });
-        break;
-      }
       case "ALL_COURSES_ORDERED": {
         this.setState({
           query: ALL_COURSES_ORDERED,
-          title: "By Creation List",
+          title: "By Creation List"
         });
         break;
       }
       case "ALL_COURSES_QUERY": {
         this.setState({
           query: ALL_COURSES_QUERY,
-          title: "All Courses List",
+          title: "All Courses List"
+        });
+        break;
+      }
+      case "ALL_COURSE_INTERESTS": {
+        this.setState({
+          query: ALL_COURSE_INTERESTS,
+          title: "Interests List"
         });
         break;
       }
@@ -93,9 +94,10 @@ export class Courses extends Component {
     classe: "",
     page: 1,
     query: ALL_COURSES_QUERY,
-    title: "",
+    title: ""
   };
-  saveState = () => {
+
+  animationSliderControlForward = () => {
     this.setState({ classe: "animation" });
     setTimeout(() => {
       this.setState({ page: this.state.page + 1 });
@@ -106,7 +108,7 @@ export class Courses extends Component {
     }, 1000);
   };
 
-  saveState1 = () => {
+  animationSliderControlBackward = () => {
     this.setState({ classe: "animation" });
     setTimeout(() => {
       this.setState({ page: this.state.page - 1 });
@@ -123,7 +125,8 @@ export class Courses extends Component {
         <Query
           query={this.state.query}
           variables={{
-            skip: this.state.page * perPageCourse - perPageCourse,
+            published: "PUBLISHED",
+            skip: this.state.page * perPageCourse - perPageCourse
           }}
         >
           {({ data, error, loading }) => {
@@ -137,7 +140,12 @@ export class Courses extends Component {
             return (
               <>
                 <Container>
-                  <Title>{this.state.title}</Title>
+                  {data.courses && <Title>{this.state.title}</Title>}
+                  {data.coursesUserInterestList &&
+                    (data.coursesUserInterestList[0] !== undefined && (
+                      <Title>{this.state.title}</Title>
+                    ))}
+
                   {/* Filtering the data to show the correct list */}
                   <CoursesList className={this.state.classe}>
                     {data.courses &&
@@ -151,11 +159,38 @@ export class Courses extends Component {
                       ))}
                   </CoursesList>
 
-                  <Pagination
-                    page={this.state.page}
-                    saveState={this.saveState}
-                    saveState1={this.saveState1}
-                  />
+                  {/* Check what pagination to render ( count gives the total of items of the interest list) */}
+                  {data.courses && (
+                    <Pagination
+                      page={this.state.page}
+                      animationSliderControlForward={
+                        this.animationSliderControlForward
+                      }
+                      animationSliderControlBackward={
+                        this.animationSliderControlBackward
+                      }
+                      isInterest={false}
+                    />
+                  )}
+
+                  {data.coursesUserInterestList &&
+                    (data.coursesUserInterestList[0] !== undefined && (
+                      <Pagination
+                        page={this.state.page}
+                        animationSliderControlForward={
+                          this.animationSliderControlForward
+                        }
+                        animationSliderControlBackward={
+                          this.animationSliderControlBackward
+                        }
+                        isInterest={true}
+                        count={
+                          data.coursesUserInterestList
+                            ? data.coursesUserInterestList[0].count
+                            : 0
+                        }
+                      />
+                    ))}
                 </Container>
               </>
             );

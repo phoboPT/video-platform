@@ -59,7 +59,7 @@ type Course {
   createdAt: DateTime!
   updatedAt: DateTime!
   # target: [Target]! @default(value: "JavaScript")
-  state: State @default(value: "UNPUBLISHED")
+  state: State
   price: Float!
   category: Category!
   interest: [CourseInterest!]!

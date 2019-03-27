@@ -5,9 +5,8 @@ const Query = {
   category: forwardTo("db"),
   comCourse: forwardTo("db"),
   course: forwardTo("db"),
-  courseInterests: forwardTo("db"),
   courses: forwardTo("db"),
-  coursesConnection: forwardTo("db"),
+  courseInterests: forwardTo("db"),
   interests: forwardTo("db"),
   user: forwardTo("db"),
   userInterests: forwardTo("db"),
@@ -25,10 +24,10 @@ const Query = {
     return ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
-      info,
+      info
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -43,11 +42,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -64,11 +63,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -78,11 +77,11 @@ const Query = {
         orderBy: "createdAt_DESC",
         where: {
           course: {
-            id: args.id,
-          },
-        },
+            id: args.id
+          }
+        }
       },
-      info,
+      info
     );
   },
   coursesUser(parent, args, ctx, info) {
@@ -96,12 +95,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
+            id: userId
+          }
         },
-        ...args,
+        ...args
       },
-      info,
+      info
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -119,16 +118,16 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId,
-              },
+                id: userId
+              }
             },
             {
-              title_contains: args.title_contains,
-            },
-          ],
-        },
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
   async coursesUserInterestList(parent, args, ctx, info) {
@@ -137,8 +136,8 @@ const Query = {
     const user = await ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
       `
         {
@@ -152,24 +151,34 @@ const Query = {
             }
           }
         }
-        `,
+        `
     );
+
+    //mapear os interesses do user
     const interestsIds = [];
     //foreach de cada elemento e fazer a query e guardar num array
     user.interests.map(interest => {
       interestsIds.push(interest.interest.id);
     });
-
     //Search all the courses that have the interests match wiith user
     const result = await Promise.all(
       interestsIds.map(async id => {
         const res = await ctx.db.query.courseInterests(
           {
             where: {
-              interest: {
-                id: id,
-              },
-            },
+              AND: [
+                {
+                  interest: {
+                    id: id
+                  }
+                },
+                {
+                  course: {
+                    state: "PUBLISHED"
+                  }
+                }
+              ]
+            }
           },
           `{
            course{
@@ -179,17 +188,17 @@ const Query = {
              thumbnail
              createdAt
              price
+             state
              user {
                name
              }
            }
-         }`,
-          info,
+         }`
         );
         return res;
-      }),
+      })
     );
-
+    //remove the layers of an array putting all in one flat function
     let res = result.flat();
     //this remove the header on the array to clean it before send it to frontend
     const courses = res.map(item => {
@@ -204,12 +213,36 @@ const Query = {
     });
 
     //Filter the array to remove duplicates
-    const final = Object.values(
-      courses.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {}),
+    let final = Object.values(
+      courses.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {})
     );
 
-    return final;
+    //Add count to array
+    let final1 = final.map(item => {
+      item.count = final.length;
+      return item;
+    });
+
+    return final1;
   },
+
+  coursesConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    //Ver se esta logado
+    if (!userId) {
+      throw new Error("you must be signed in!");
+    }
+    //query o video atual com comparaçao de ids de user
+    return ctx.db.query.coursesConnection(
+      {
+        where: {
+          state: "PUBLISHED"
+        }
+      },
+      info
+    );
+  }
 };
 
 module.exports = Query;

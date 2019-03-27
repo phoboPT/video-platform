@@ -8,6 +8,8 @@ import Error from "../../../Static/ErrorMessage";
 import Form from "../../../styles/Form";
 import Editor from "../../Editor";
 import RemoveVideoButton from "./RemoveVideoButton";
+import Unpublished from "../../CourseState/Unpublished";
+import Published from "../../CourseState/Published";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -34,14 +36,14 @@ const UPDATE_COURSE_MUTATION = gql`
   mutation UPDATE_COURSE_MUTATION(
     $id: ID!
     $title: String
-    # $target: String!
+    $state: String
     $thumbnail: String
     $description: String
   ) {
     updateCourse(
       id: $id
       title: $title
-      # target: $target
+      state: $state
       thumbnail: $thumbnail
       description: $description
     ) {
@@ -76,6 +78,28 @@ const CourseContainer = styled.div`
       text-align: center !important;
     }
   }
+  #courseState {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    button {
+      color: #3d3d3d;
+      font-size: 17px;
+      font-weight: 400;
+      border: 1px solid #cccccc;
+      background: #f7f7f7;
+      cursor: pointer;
+      position: relative;
+    }
+    button:hover {
+      outline: none;
+      background: #e5e5e5;
+    }
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
 
   img {
     max-height: 200px;
@@ -97,7 +121,38 @@ const VideoListStyle = styled.h3`
 `;
 
 class UpdateCourse extends Component {
-  state = { changeThumbnail: false };
+  state = {
+    changeThumbnail: false,
+    published: "",
+    unpublished: "",
+    state: "",
+    alreadyExecuted: false
+  };
+
+  changePublished = e => {
+    this.setState({
+      state: "PUBLISHED",
+      published: !this.state.published,
+      unpublished: !this.state.unpublished
+    });
+  };
+
+  changeUnpublished = e => {
+    this.setState({
+      state: "UNPUBLISHED",
+      published: !this.state.published,
+      unpublished: !this.state.unpublished
+    });
+  };
+
+  courseState = actualState => {
+    this.setState({
+      state: actualState,
+      alreadyExecuted: true,
+      published: actualState === "PUBLISHED" ? true : false,
+      unpublished: actualState === "UNPUBLISHED" ? true : false
+    });
+  };
 
   handleChange = e => {
     const { name, type, value } = e.target;
@@ -111,8 +166,8 @@ class UpdateCourse extends Component {
     const res = await updateCourseMutation({
       variables: {
         id: this.props.id,
-        ...this.state,
-      },
+        ...this.state
+      }
     });
   };
   changeQuill = e => {
@@ -128,7 +183,7 @@ class UpdateCourse extends Component {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data },
+      { method: "POST", body: data }
     );
 
     const file = await res.json();
@@ -140,6 +195,11 @@ class UpdateCourse extends Component {
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
+
+          if (!this.state.alreadyExecuted) {
+            this.courseState(data.course.state);
+          }
+
           return (
             <>
               <Mutation
@@ -184,13 +244,16 @@ class UpdateCourse extends Component {
                             </label>
                             <label htmlFor="state">
                               State
-                              <input
-                                type="text"
-                                name="state"
-                                placeholder="state"
-                                defaultValue={data.course.state}
-                                onChange={this.handleChange}
-                              />
+                              <div id="courseState">
+                                <Published
+                                  published={this.state.published}
+                                  changePublished={this.changePublished}
+                                />
+                                <Unpublished
+                                  unpublished={this.state.unpublished}
+                                  changeUnpublished={this.changeUnpublished}
+                                />
+                              </div>
                             </label>
 
                             <label htmlFor="thumbnail">

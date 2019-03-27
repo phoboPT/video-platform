@@ -24,7 +24,10 @@ const Pagination = props => (
       if (loading) return null;
       if (error) return <p>Error...</p>;
       const count = data.coursesConnection.aggregate.count;
-      const pages = Math.ceil(count / perPageCourse);
+
+      const pages = Math.ceil(
+        (props.isInterest ? props.count : count) / perPageCourse
+      );
       const page = props.page;
 
       const fetchNext = () => {
@@ -41,23 +44,24 @@ const Pagination = props => (
           }
         });
       };
+      console.log(pages);
       return (
         <>
           <button
             disabled={page <= 1}
             className="Left"
             id="arrowbutton"
-            onClick={() => props.saveState1()}
+            onClick={() => props.animationSliderControlBackward()}
           >
             <img id="arrow" src="../../../static/arrowleft.png" />
           </button>
 
           <button
-            disabled={page > 1}
+            disabled={props.isInterest ? page >= pages : page >= pages}
             className="Right"
             id="arrowbutton"
             onLoad={fetchNext()}
-            onClick={() => props.saveState()}
+            onClick={() => props.animationSliderControlForward()}
           >
             <img id="arrow" src="../../../static/arrowright.png" />
           </button>

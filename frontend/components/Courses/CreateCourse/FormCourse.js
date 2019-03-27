@@ -9,6 +9,8 @@ import styled from "styled-components";
 import Error from "../../Static/ErrorMessage";
 import Form from "../../styles/Form";
 import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
+import Unpublished from "../CourseState/Unpublished";
+import Published from "../CourseState/Published";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -16,6 +18,7 @@ const CREATE_COURSE_MUTATION = gql`
     $thumbnail: String!
     $description: String!
     $price: Float!
+    $state: String!
     $category: ID!
   ) {
     createCourse(
@@ -24,6 +27,7 @@ const CREATE_COURSE_MUTATION = gql`
       description: $description
       price: $price
       category: $category
+      state: $state
     ) {
       id
     }
@@ -56,11 +60,32 @@ const Container = styled.div`
     padding: 0.5rem 1.2rem;
     text-align: center;
   }
-  span {
-  }
 
   .description {
     background-color: lightgray;
+  }
+
+  #courseState {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    button {
+      color: #3d3d3d;
+      font-size: 17px;
+      font-weight: 400;
+      border: 1px solid #cccccc;
+      background: #f7f7f7;
+      cursor: pointer;
+      position: relative;
+    }
+    button:hover {
+      outline: none;
+      background: #e5e5e5;
+    }
+    img {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;
 
@@ -68,16 +93,33 @@ class FormCourse extends Component {
   state = {
     category: "",
     description: "",
-    editorState: EditorState.createEmpty(),
-    price: 0,
-    state_: "",
+    state: "UNPUBLISHED",
     target: "",
     thumbnail: "",
     title: "",
+    editorState: EditorState.createEmpty(),
+    price: 0,
+    published: false,
+    unpublished: true
   };
 
   saveState = e => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+  changePublished = e => {
+    this.setState({
+      state: "PUBLISHED",
+      published: !this.state.published,
+      unpublished: !this.state.unpublished
+    });
+  };
+
+  changeUnpublished = e => {
+    this.setState({
+      state: "UNPUBLISHED",
+      published: !this.state.published,
+      unpublished: !this.state.unpublished
+    });
   };
 
   uploadThumbnail = async e => {
@@ -89,7 +131,7 @@ class FormCourse extends Component {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data },
+      { method: "POST", body: data }
     );
 
     const file = await res.json();
@@ -98,10 +140,10 @@ class FormCourse extends Component {
 
   onEditorStateChange = editorState => {
     this.setState({
-      editorState,
+      editorState
     });
     this.setState({
-      description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+      description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
     });
   };
 
@@ -159,15 +201,17 @@ class FormCourse extends Component {
                           </div>
                         </label>
                         <label htmlFor="state">
-                          State
-                          <input
-                            type="text"
-                            name="state"
-                            placeholder="state"
-                            value={this.state_}
-                            onChange={this.saveState}
-                            required
-                          />
+                          Course Status
+                          <div id="courseState">
+                            <Published
+                              published={this.state.published}
+                              changePublished={this.changePublished}
+                            />
+                            <Unpublished
+                              unpublished={this.state.unpublished}
+                              changeUnpublished={this.changeUnpublished}
+                            />
+                          </div>
                         </label>
                         <label htmlFor="thumbnail">
                           Thumbnail

@@ -15,6 +15,22 @@ type User {
   wishlist: [Wishlist!]!
 }
 
+type Course {
+  id: ID!
+  videos: [CourseVideos!]!
+  title: String
+  description: String!
+  thumbnail: String!
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  state: State
+  price: Float!
+  category: Category!
+  interest: [CourseInterest!]!
+  count: Int
+}
+
 type Mutation {
   createVideo(
     title: String!
@@ -46,11 +62,11 @@ type Mutation {
   ): User!
   createCourse(
     title: String!
-    # target: [String]!
     thumbnail: String!
     description: String!
     price: Float!
     category: ID!
+    state: String!
   ): Course!
   addTargetCourse(courseId: ID!, interestId: ID!): Course!
   removeFromCourse(id: ID!, courseId: ID!): Course
