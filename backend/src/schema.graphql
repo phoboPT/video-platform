@@ -75,6 +75,7 @@ type Mutation {
     title: String
     thumbnail: String
     description: String
+    state: String
   ): Course!
   deleteCourse(id: ID!): CourseVideos
   createComCourse(courseId: ID!, comment: String!): ComCourse!
