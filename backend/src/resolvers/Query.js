@@ -25,10 +25,10 @@ const Query = {
     return ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
-      info,
+      info
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -43,11 +43,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -64,11 +64,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -78,11 +78,11 @@ const Query = {
         orderBy: "createdAt_DESC",
         where: {
           course: {
-            id: args.id,
-          },
-        },
+            id: args.id
+          }
+        }
       },
-      info,
+      info
     );
   },
   coursesUser(parent, args, ctx, info) {
@@ -96,12 +96,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
+            id: userId
+          }
         },
-        ...args,
+        ...args
       },
-      info,
+      info
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -119,16 +119,16 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId,
-              },
+                id: userId
+              }
             },
             {
-              title_contains: args.title_contains,
-            },
-          ],
-        },
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
   async coursesUserInterestList(parent, args, ctx, info) {
@@ -137,8 +137,8 @@ const Query = {
     const user = await ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
       `
         {
@@ -152,8 +152,10 @@ const Query = {
             }
           }
         }
-        `,
+        `
     );
+
+    //mapear os interesses do user
     const interestsIds = [];
     //foreach de cada elemento e fazer a query e guardar num array
     user.interests.map(interest => {
@@ -167,9 +169,9 @@ const Query = {
           {
             where: {
               interest: {
-                id: id,
-              },
-            },
+                id: id
+              }
+            }
           },
           `{
            course{
@@ -183,13 +185,12 @@ const Query = {
                name
              }
            }
-         }`,
-          info,
+         }`
         );
         return res;
-      }),
+      })
     );
-
+    //remove the layers of an array putting all in one flat function
     let res = result.flat();
     //this remove the header on the array to clean it before send it to frontend
     const courses = res.map(item => {
@@ -204,12 +205,19 @@ const Query = {
     });
 
     //Filter the array to remove duplicates
-    const final = Object.values(
-      courses.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {}),
+    let final = Object.values(
+      courses.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {})
     );
 
-    return final;
-  },
+    //Add count to array
+    let final1 = final.map(item => {
+      item.count = final.length;
+      return item;
+    });
+
+    console.log(final1);
+    return final1;
+  }
 };
 
 module.exports = Query;

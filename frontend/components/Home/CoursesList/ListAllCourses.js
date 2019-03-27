@@ -35,6 +35,7 @@ const ALL_COURSE_INTERESTS = gql`
       user {
         name
       }
+      count
     }
   }
 `;
@@ -63,21 +64,21 @@ export class Courses extends Component {
       case "ALL_COURSE_INTERESTS": {
         this.setState({
           query: ALL_COURSE_INTERESTS,
-          title: "Interests List",
+          title: "Interests List"
         });
         break;
       }
       case "ALL_COURSES_ORDERED": {
         this.setState({
           query: ALL_COURSES_ORDERED,
-          title: "By Creation List",
+          title: "By Creation List"
         });
         break;
       }
       case "ALL_COURSES_QUERY": {
         this.setState({
           query: ALL_COURSES_QUERY,
-          title: "All Courses List",
+          title: "All Courses List"
         });
         break;
       }
@@ -92,9 +93,10 @@ export class Courses extends Component {
     classe: "",
     page: 1,
     query: ALL_COURSES_QUERY,
-    title: "",
+    title: ""
   };
-  saveState = () => {
+
+  animationSliderControlForward = () => {
     this.setState({ classe: "animation" });
     setTimeout(() => {
       this.setState({ page: this.state.page + 1 });
@@ -105,7 +107,7 @@ export class Courses extends Component {
     }, 1000);
   };
 
-  saveState1 = () => {
+  animationSliderControlBackward = () => {
     this.setState({ classe: "animation" });
     setTimeout(() => {
       this.setState({ page: this.state.page - 1 });
@@ -122,7 +124,7 @@ export class Courses extends Component {
         <Query
           query={this.state.query}
           variables={{
-            skip: this.state.page * perPageCourse - perPageCourse,
+            skip: this.state.page * perPageCourse - perPageCourse
           }}
         >
           {({ data, error, loading }) => {
@@ -132,7 +134,9 @@ export class Courses extends Component {
             if (error) {
               return <p>Error:{error.message}</p>;
             }
-
+            // if (data.coursesUserInterestList) {
+            //   console.log("aqui", data.coursesUserInterestList[0].count);
+            // }
             return (
               <>
                 <Container>
@@ -148,11 +152,36 @@ export class Courses extends Component {
                       ))}
                   </CoursesList>
 
-                  <Pagination
-                    page={this.state.page}
-                    saveState={this.saveState}
-                    saveState1={this.saveState1}
-                  />
+                  {/* Check what pagination to render ( count gives the total of items of the interest list) */}
+                  {data.courses && (
+                    <Pagination
+                      page={this.state.page}
+                      animationSliderControlForward={
+                        this.animationSliderControlForward
+                      }
+                      animationSliderControlBackward={
+                        this.animationSliderControlBackward
+                      }
+                      isInterest={false}
+                    />
+                  )}
+                  {data.coursesUserInterestList && (
+                    <Pagination
+                      page={this.state.page}
+                      animationSliderControlForward={
+                        this.animationSliderControlForward
+                      }
+                      animationSliderControlBackward={
+                        this.animationSliderControlBackward
+                      }
+                      isInterest={true}
+                      count={
+                        data.coursesUserInterestList
+                          ? data.coursesUserInterestList[0].count
+                          : 0
+                      }
+                    />
+                  )}
                 </Container>
               </>
             );

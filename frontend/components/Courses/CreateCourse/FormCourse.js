@@ -9,6 +9,8 @@ import styled from "styled-components";
 import Error from "../../Static/ErrorMessage";
 import Form from "../../styles/Form";
 import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
+import Unpublished from "./State/Unpublished";
+import Published from "./State/Published";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -56,11 +58,24 @@ const Container = styled.div`
     padding: 0.5rem 1.2rem;
     text-align: center;
   }
-  span {
-  }
 
   .description {
     background-color: lightgray;
+  }
+
+  #courseState {
+    padding-top: 10px;
+    button {
+      color: #3d3d3d;
+      font-size: 2rem;
+      font-weight: 500;
+      border: 1px solid #cccccc;
+      background: #a8a8a8;
+    }
+    img {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;
 
@@ -70,14 +85,31 @@ class FormCourse extends Component {
     description: "",
     editorState: EditorState.createEmpty(),
     price: 0,
+    published: false,
+    unpublished: true,
     state_: "",
     target: "",
     thumbnail: "",
-    title: "",
+    title: ""
   };
 
   saveState = e => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+  changePublished = e => {
+    this.setState({
+      state_: "published",
+      published: !this.state.published,
+      unpublished: !this.state.unpublished
+    });
+  };
+
+  changeUnpublished = e => {
+    this.setState({
+      state_: "unpublished",
+      published: !this.state.published,
+      unpublished: !this.state.unpublished
+    });
   };
 
   uploadThumbnail = async e => {
@@ -89,7 +121,7 @@ class FormCourse extends Component {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data },
+      { method: "POST", body: data }
     );
 
     const file = await res.json();
@@ -98,10 +130,10 @@ class FormCourse extends Component {
 
   onEditorStateChange = editorState => {
     this.setState({
-      editorState,
+      editorState
     });
     this.setState({
-      description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+      description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
     });
   };
 
@@ -155,15 +187,17 @@ class FormCourse extends Component {
                           </div>
                         </label>
                         <label htmlFor="state">
-                          State
-                          <input
-                            type="text"
-                            name="state"
-                            placeholder="state"
-                            value={this.state_}
-                            onChange={this.saveState}
-                            required
-                          />
+                          Course Status
+                          <div id="courseState">
+                            <Published
+                              published={this.state.published}
+                              changePublished={this.changePublished}
+                            />
+                            <Unpublished
+                              unpublished={this.state.unpublished}
+                              changeUnpublished={this.changeUnpublished}
+                            />
+                          </div>
                         </label>
                         <label htmlFor="thumbnail">
                           Thumbnail
