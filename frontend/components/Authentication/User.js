@@ -14,7 +14,9 @@ const CURRENT_USER_QUERY = gql`
         }
       }
       interests {
-        id
+        course {
+          id
+        }
       }
       permission
       courses {
