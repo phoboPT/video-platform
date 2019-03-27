@@ -1,9 +1,5 @@
 # source: https://eu1.prisma.sh/hugobrancoc-5773e9/picus/dev
-<<<<<<< HEAD
 # timestamp: Wed Mar 27 2019 17:33:10 GMT+0000 (Hora padrão da Europa Ocidental)
-=======
-# timestamp: Wed Mar 27 2019 17:36:05 GMT+0000 (GMT)
->>>>>>> 635def51b07b239f489cfc96254440ac4410f157
 
 type AggregateCartItem {
   count: Int!
@@ -1996,7 +1992,6 @@ type Mutation {
   createInterest(data: InterestCreateInput!): Interest!
   createCategory(data: CategoryCreateInput!): Category!
   createCourse(data: CourseCreateInput!): Course!
-<<<<<<< HEAD
   updateCourseInterest(
     data: CourseInterestUpdateInput!
     where: CourseInterestWhereUniqueInput!
@@ -2025,20 +2020,10 @@ type Mutation {
     data: CartItemUpdateInput!
     where: CartItemWhereUniqueInput!
   ): CartItem
-=======
-  updateCourseInterest(data: CourseInterestUpdateInput!, where: CourseInterestWhereUniqueInput!): CourseInterest
-  updateUserInterest(data: UserInterestUpdateInput!, where: UserInterestWhereUniqueInput!): UserInterest
-  updateWishlist(data: WishlistUpdateInput!, where: WishlistWhereUniqueInput!): Wishlist
-  updateCourseVideos(data: CourseVideosUpdateInput!, where: CourseVideosWhereUniqueInput!): CourseVideos
-  updateComCourse(data: ComCourseUpdateInput!, where: ComCourseWhereUniqueInput!): ComCourse
-  updateUserCourse(data: UserCourseUpdateInput!, where: UserCourseWhereUniqueInput!): UserCourse
-  updateCartItem(data: CartItemUpdateInput!, where: CartItemWhereUniqueInput!): CartItem
->>>>>>> 635def51b07b239f489cfc96254440ac4410f157
   updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
   updateVideo(data: VideoUpdateInput!, where: VideoWhereUniqueInput!): Video
   updateOrderItem(data: OrderItemUpdateInput!, where: OrderItemWhereUniqueInput!): OrderItem
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-<<<<<<< HEAD
   updateInterest(
     data: InterestUpdateInput!
     where: InterestWhereUniqueInput!
@@ -2047,10 +2032,6 @@ type Mutation {
     data: CategoryUpdateInput!
     where: CategoryWhereUniqueInput!
   ): Category
-=======
-  updateInterest(data: InterestUpdateInput!, where: InterestWhereUniqueInput!): Interest
-  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
->>>>>>> 635def51b07b239f489cfc96254440ac4410f157
   updateCourse(data: CourseUpdateInput!, where: CourseWhereUniqueInput!): Course
   deleteCourseInterest(where: CourseInterestWhereUniqueInput!): CourseInterest
   deleteUserInterest(where: UserInterestWhereUniqueInput!): UserInterest
@@ -2066,7 +2047,6 @@ type Mutation {
   deleteInterest(where: InterestWhereUniqueInput!): Interest
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteCourse(where: CourseWhereUniqueInput!): Course
-<<<<<<< HEAD
   upsertCourseInterest(
     where: CourseInterestWhereUniqueInput!
     create: CourseInterestCreateInput!
@@ -2173,31 +2153,6 @@ type Mutation {
     data: CourseUpdateManyMutationInput!
     where: CourseWhereInput
   ): BatchPayload!
-=======
-  upsertCourseInterest(where: CourseInterestWhereUniqueInput!, create: CourseInterestCreateInput!, update: CourseInterestUpdateInput!): CourseInterest!
-  upsertUserInterest(where: UserInterestWhereUniqueInput!, create: UserInterestCreateInput!, update: UserInterestUpdateInput!): UserInterest!
-  upsertWishlist(where: WishlistWhereUniqueInput!, create: WishlistCreateInput!, update: WishlistUpdateInput!): Wishlist!
-  upsertCourseVideos(where: CourseVideosWhereUniqueInput!, create: CourseVideosCreateInput!, update: CourseVideosUpdateInput!): CourseVideos!
-  upsertComCourse(where: ComCourseWhereUniqueInput!, create: ComCourseCreateInput!, update: ComCourseUpdateInput!): ComCourse!
-  upsertUserCourse(where: UserCourseWhereUniqueInput!, create: UserCourseCreateInput!, update: UserCourseUpdateInput!): UserCourse!
-  upsertCartItem(where: CartItemWhereUniqueInput!, create: CartItemCreateInput!, update: CartItemUpdateInput!): CartItem!
-  upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
-  upsertVideo(where: VideoWhereUniqueInput!, create: VideoCreateInput!, update: VideoUpdateInput!): Video!
-  upsertOrderItem(where: OrderItemWhereUniqueInput!, create: OrderItemCreateInput!, update: OrderItemUpdateInput!): OrderItem!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertInterest(where: InterestWhereUniqueInput!, create: InterestCreateInput!, update: InterestUpdateInput!): Interest!
-  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
-  upsertCourse(where: CourseWhereUniqueInput!, create: CourseCreateInput!, update: CourseUpdateInput!): Course!
-  updateManyComCourses(data: ComCourseUpdateManyMutationInput!, where: ComCourseWhereInput): BatchPayload!
-  updateManyUserCourses(data: UserCourseUpdateManyMutationInput!, where: UserCourseWhereInput): BatchPayload!
-  updateManyOrders(data: OrderUpdateManyMutationInput!, where: OrderWhereInput): BatchPayload!
-  updateManyVideos(data: VideoUpdateManyMutationInput!, where: VideoWhereInput): BatchPayload!
-  updateManyOrderItems(data: OrderItemUpdateManyMutationInput!, where: OrderItemWhereInput): BatchPayload!
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  updateManyInterests(data: InterestUpdateManyMutationInput!, where: InterestWhereInput): BatchPayload!
-  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
-  updateManyCourses(data: CourseUpdateManyMutationInput!, where: CourseWhereInput): BatchPayload!
->>>>>>> 635def51b07b239f489cfc96254440ac4410f157
   deleteManyCourseInterests(where: CourseInterestWhereInput): BatchPayload!
   deleteManyUserInterests(where: UserInterestWhereInput): BatchPayload!
   deleteManyWishlists(where: WishlistWhereInput): BatchPayload!
@@ -3037,7 +2992,6 @@ enum Permission {
 }
 
 type Query {
-<<<<<<< HEAD
   courseInterests(
     where: CourseInterestWhereInput
     orderBy: CourseInterestOrderByInput
@@ -3164,22 +3118,6 @@ type Query {
     first: Int
     last: Int
   ): [Course]!
-=======
-  courseInterests(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseInterest]!
-  userInterests(where: UserInterestWhereInput, orderBy: UserInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserInterest]!
-  wishlists(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Wishlist]!
-  courseVideoses(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseVideos]!
-  comCourses(where: ComCourseWhereInput, orderBy: ComCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComCourse]!
-  userCourses(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserCourse]!
-  cartItems(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CartItem]!
-  orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
-  videos(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Video]!
-  orderItems(where: OrderItemWhereInput, orderBy: OrderItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OrderItem]!
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  interests(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest]!
-  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
-  courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course]!
->>>>>>> 635def51b07b239f489cfc96254440ac4410f157
   courseInterest(where: CourseInterestWhereUniqueInput!): CourseInterest
   userInterest(where: UserInterestWhereUniqueInput!): UserInterest
   wishlist(where: WishlistWhereUniqueInput!): Wishlist
@@ -3194,7 +3132,6 @@ type Query {
   interest(where: InterestWhereUniqueInput!): Interest
   category(where: CategoryWhereUniqueInput!): Category
   course(where: CourseWhereUniqueInput!): Course
-<<<<<<< HEAD
   courseInterestsConnection(
     where: CourseInterestWhereInput
     orderBy: CourseInterestOrderByInput
@@ -3325,24 +3262,6 @@ type Query {
   """
   Fetches an object given its ID
   """
-=======
-  courseInterestsConnection(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseInterestConnection!
-  userInterestsConnection(where: UserInterestWhereInput, orderBy: UserInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserInterestConnection!
-  wishlistsConnection(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WishlistConnection!
-  courseVideosesConnection(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseVideosConnection!
-  comCoursesConnection(where: ComCourseWhereInput, orderBy: ComCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComCourseConnection!
-  userCoursesConnection(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserCourseConnection!
-  cartItemsConnection(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CartItemConnection!
-  ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
-  videosConnection(where: VideoWhereInput, orderBy: VideoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VideoConnection!
-  orderItemsConnection(where: OrderItemWhereInput, orderBy: OrderItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderItemConnection!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  interestsConnection(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InterestConnection!
-  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
-  coursesConnection(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseConnection!
-
-  """Fetches an object given its ID"""
->>>>>>> 635def51b07b239f489cfc96254440ac4410f157
   node(
     """The ID of an object"""
     id: ID!
@@ -3399,7 +3318,6 @@ type User implements Node {
   resetToken: String
   resetTokenExpiry: Float
   permission: [Permission!]!
-<<<<<<< HEAD
   courses(
     where: UserCourseWhereInput
     orderBy: UserCourseOrderByInput
@@ -3427,11 +3345,6 @@ type User implements Node {
     first: Int
     last: Int
   ): [Wishlist!]
-=======
-  courses(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserCourse!]
-  cart(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CartItem!]
-  wishlist(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Wishlist!]
->>>>>>> 635def51b07b239f489cfc96254440ac4410f157
 }
 
 """A connection to a list of items."""

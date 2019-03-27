@@ -1,7 +1,3 @@
 node_modules/
 variables.env
-<<<<<<< HEAD
 src/generated/
-=======
-src/generated/
->>>>>>> 635def51b07b239f489cfc96254440ac4410f157
