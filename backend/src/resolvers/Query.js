@@ -24,10 +24,10 @@ const Query = {
     return ctx.db.query.user(
       {
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
-      info
+      info,
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -42,11 +42,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
-      info
+      info,
     );
   },
 
@@ -63,11 +63,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
-      info
+      info,
     );
   },
 
@@ -77,11 +77,11 @@ const Query = {
         orderBy: "createdAt_DESC",
         where: {
           course: {
-            id: args.id
-          }
-        }
+            id: args.id,
+          },
+        },
       },
-      info
+      info,
     );
   },
   coursesUser(parent, args, ctx, info) {
@@ -95,12 +95,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId
-          }
+            id: userId,
+          },
         },
-        ...args
+        ...args,
       },
-      info
+      info,
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -118,16 +118,16 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId
-              }
+                id: userId,
+              },
             },
             {
-              title_contains: args.title_contains
-            }
-          ]
-        }
+              title_contains: args.title_contains,
+            },
+          ],
+        },
       },
-      info
+      info,
     );
   },
   async coursesUserInterestList(parent, args, ctx, info) {
@@ -136,8 +136,8 @@ const Query = {
     const user = await ctx.db.query.user(
       {
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
       `
         {
@@ -151,7 +151,7 @@ const Query = {
             }
           }
         }
-        `
+        `,
     );
 
     //mapear os interesses do user
@@ -169,16 +169,16 @@ const Query = {
               AND: [
                 {
                   interest: {
-                    id: id
-                  }
+                    id: id,
+                  },
                 },
                 {
                   course: {
-                    state: "PUBLISHED"
-                  }
-                }
-              ]
-            }
+                    state: "PUBLISHED",
+                  },
+                },
+              ],
+            },
           },
           `{
            course{
@@ -193,10 +193,10 @@ const Query = {
                name
              }
            }
-         }`
+         }`,
         );
         return res;
-      })
+      }),
     );
     //remove the layers of an array putting all in one flat function
     let res = result.flat();
@@ -214,7 +214,7 @@ const Query = {
 
     //Filter the array to remove duplicates
     let final = Object.values(
-      courses.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {})
+      courses.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {}),
     );
 
     //Add count to array
@@ -237,12 +237,12 @@ const Query = {
     return ctx.db.query.coursesConnection(
       {
         where: {
-          state: "PUBLISHED"
-        }
+          state: "PUBLISHED",
+        },
       },
-      info
+      info,
     );
-  }
+  },
 };
 
 module.exports = Query;

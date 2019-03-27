@@ -12,7 +12,7 @@ type User {
   interests: [UserInterest!]!
   cart: [CartItem!]!
   courses: [UserCourse!]!
-  wishlist: [Wishlist!]!
+  wishlist: [Wishlist!]
 }
 
 type Course {

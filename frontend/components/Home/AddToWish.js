@@ -76,11 +76,13 @@ export class AddToWish extends Component {
           if (!me) return null;
 
           if (!this.state.hasUpdated) {
-            me.wishlist.map(e => {
-              if (e.course.id == id) {
-                this.setState({ classButton: "added", hasUpdated: true });
-              }
-            });
+            if (me.wishlist) {
+              me.wishlist.map(e => {
+                if (e.course.id == id) {
+                  this.setState({ classButton: "added", hasUpdated: true });
+                }
+              });
+            }
           }
 
           return (
