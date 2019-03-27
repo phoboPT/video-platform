@@ -41,7 +41,7 @@ const Border = styled.div`
     float: right;
   }
   button:hover {
-    background: none;
+    background: none !important;
   }
   button:focus {
     outline: none;
@@ -53,11 +53,11 @@ class InterestItem extends Component {
     idToDelete: "",
     interestId: this.props.interest.id,
     isActive: false,
-    userInterest: [this.props.userInterest],
+    userInterest: [this.props.userInterest]
   };
 
   static propTypes = {
-    interest: PropTypes.object.isRequired,
+    interest: PropTypes.object.isRequired
   };
 
   changeFalse = e => {

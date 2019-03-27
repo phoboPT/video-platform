@@ -9,8 +9,8 @@ import styled from "styled-components";
 import Error from "../../Static/ErrorMessage";
 import Form from "../../styles/Form";
 import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
-import Unpublished from "./State/Unpublished";
-import Published from "./State/Published";
+import Unpublished from "../CourseState/Unpublished";
+import Published from "../CourseState/Published";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -18,6 +18,7 @@ const CREATE_COURSE_MUTATION = gql`
     $thumbnail: String!
     $description: String!
     $price: Float!
+    $state: String!
     $category: ID!
   ) {
     createCourse(
@@ -26,6 +27,7 @@ const CREATE_COURSE_MUTATION = gql`
       description: $description
       price: $price
       category: $category
+      state: $state
     ) {
       id
     }
@@ -65,12 +67,20 @@ const Container = styled.div`
 
   #courseState {
     padding-top: 10px;
+    padding-bottom: 10px;
+
     button {
       color: #3d3d3d;
-      font-size: 2rem;
-      font-weight: 500;
+      font-size: 17px;
+      font-weight: 400;
       border: 1px solid #cccccc;
-      background: #a8a8a8;
+      background: #f7f7f7;
+      cursor: pointer;
+      position: relative;
+    }
+    button:hover {
+      outline: none;
+      background: #e5e5e5;
     }
     img {
       width: 20px;
@@ -83,14 +93,14 @@ class FormCourse extends Component {
   state = {
     category: "",
     description: "",
+    state: "UNPUBLISHED",
+    target: "",
+    thumbnail: "",
+    title: "",
     editorState: EditorState.createEmpty(),
     price: 0,
     published: false,
-    unpublished: true,
-    state_: "",
-    target: "",
-    thumbnail: "",
-    title: ""
+    unpublished: true
   };
 
   saveState = e => {
@@ -98,7 +108,7 @@ class FormCourse extends Component {
   };
   changePublished = e => {
     this.setState({
-      state_: "published",
+      state: "PUBLISHED",
       published: !this.state.published,
       unpublished: !this.state.unpublished
     });
@@ -106,7 +116,7 @@ class FormCourse extends Component {
 
   changeUnpublished = e => {
     this.setState({
-      state_: "unpublished",
+      state: "UNPUBLISHED",
       published: !this.state.published,
       unpublished: !this.state.unpublished
     });

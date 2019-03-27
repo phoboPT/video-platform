@@ -8,8 +8,9 @@ import CourseItem from "./CourseItem";
 import Pagination from "./Pagination";
 
 const ALL_COURSES_QUERY = gql`
-  query ALL_COURSES_QUERY($skip: Int = 0, $first: Int = ${perPageCourse}) {
-    courses(first: $first, skip: $skip) {
+  query ALL_COURSES_QUERY(
+          $published: State,$skip: Int = 0, $first: Int = ${perPageCourse}) {
+    courses(where:{state:$published},first: $first, skip: $skip) {
       id
       title
       description
@@ -23,6 +24,23 @@ const ALL_COURSES_QUERY = gql`
   }
 `;
 
+//orderby query
+
+const ALL_COURSES_ORDERED = gql`
+  query ALL_COURSES($published: State,$skip: Int = 0, $first: Int = ${perPageCourse} ) {
+    courses(where:{state:$published},first: $first, skip: $skip ,orderBy: createdAt_DESC) {
+      id
+      title
+      description
+      thumbnail
+      createdAt
+      price
+      user {
+        name
+      }
+    }
+  }
+`;
 //interests query
 const ALL_COURSE_INTERESTS = gql`
   query ALL_COURSE_INTERESTS($skip: Int = 0, $first: Int = ${perPageCourse} ) {
@@ -41,34 +59,9 @@ const ALL_COURSE_INTERESTS = gql`
   }
 `;
 
-//orderby query
-
-const ALL_COURSES_ORDERED = gql`
-  query ALL_COURSES($skip: Int = 0, $first: Int = ${perPageCourse} ) {
-    courses(first: $first, skip: $skip ,orderBy: createdAt_DESC) {
-      id
-      title
-      description
-      thumbnail
-      createdAt
-      price
-      user {
-        name
-      }
-    }
-  }
-`;
-
 export class Courses extends Component {
   componentWillMount() {
     switch (this.props.query) {
-      case "ALL_COURSE_INTERESTS": {
-        this.setState({
-          query: ALL_COURSE_INTERESTS,
-          title: "Interests List"
-        });
-        break;
-      }
       case "ALL_COURSES_ORDERED": {
         this.setState({
           query: ALL_COURSES_ORDERED,
@@ -80,6 +73,13 @@ export class Courses extends Component {
         this.setState({
           query: ALL_COURSES_QUERY,
           title: "All Courses List"
+        });
+        break;
+      }
+      case "ALL_COURSE_INTERESTS": {
+        this.setState({
+          query: ALL_COURSE_INTERESTS,
+          title: "Interests List"
         });
         break;
       }
@@ -125,6 +125,7 @@ export class Courses extends Component {
         <Query
           query={this.state.query}
           variables={{
+            published: "PUBLISHED",
             skip: this.state.page * perPageCourse - perPageCourse
           }}
         >
@@ -135,13 +136,16 @@ export class Courses extends Component {
             if (error) {
               return <p>Error:{error.message}</p>;
             }
-            // if (data.coursesUserInterestList) {
-            //   console.log("aqui", data.coursesUserInterestList[0].count);
-            // }
+
             return (
               <>
                 <Container>
-                  <Title>{this.state.title}</Title>
+                  {data.courses && <Title>{this.state.title}</Title>}
+                  {data.coursesUserInterestList &&
+                    (data.coursesUserInterestList[0] !== undefined && (
+                      <Title>{this.state.title}</Title>
+                    ))}
+
                   {/* Filtering the data to show the correct list */}
                   <CoursesList className={this.state.classe}>
                     {data.courses &&
@@ -168,23 +172,25 @@ export class Courses extends Component {
                       isInterest={false}
                     />
                   )}
-                  {data.coursesUserInterestList && (
-                    <Pagination
-                      page={this.state.page}
-                      animationSliderControlForward={
-                        this.animationSliderControlForward
-                      }
-                      animationSliderControlBackward={
-                        this.animationSliderControlBackward
-                      }
-                      isInterest={true}
-                      count={
-                        data.coursesUserInterestList
-                          ? data.coursesUserInterestList[0].count
-                          : 0
-                      }
-                    />
-                  )}
+
+                  {data.coursesUserInterestList &&
+                    (data.coursesUserInterestList[0] !== undefined && (
+                      <Pagination
+                        page={this.state.page}
+                        animationSliderControlForward={
+                          this.animationSliderControlForward
+                        }
+                        animationSliderControlBackward={
+                          this.animationSliderControlBackward
+                        }
+                        isInterest={true}
+                        count={
+                          data.coursesUserInterestList
+                            ? data.coursesUserInterestList[0].count
+                            : 0
+                        }
+                      />
+                    ))}
                 </Container>
               </>
             );

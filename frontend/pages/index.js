@@ -11,14 +11,13 @@ export class Home extends Component {
       <div>
         <User>
           {({ data: { me } }) => {
-            console.log(me);
             if (!me) return null;
             return (
               <>
                 <Search />
                 <ListAllCourses query="ALL_COURSES_QUERY" />
                 <ListAllCourses query="ALL_COURSES_ORDERED" />
-                {me.interests.length > 1 && (
+                {me.interests.length > 0 && (
                   <ListAllCourses query="ALL_COURSE_INTERESTS" />
                 )}
               </>

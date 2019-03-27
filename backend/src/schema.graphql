@@ -61,11 +61,11 @@ type Mutation {
   ): User!
   createCourse(
     title: String!
-    # target: [String]!
     thumbnail: String!
     description: String!
     price: Float!
     category: ID!
+    state: String!
   ): Course!
   addTargetCourse(courseId: ID!, interestId: ID!): Course!
   removeFromCourse(id: ID!, courseId: ID!): Course

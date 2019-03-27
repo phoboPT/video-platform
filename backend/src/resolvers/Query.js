@@ -5,9 +5,8 @@ const Query = {
   category: forwardTo("db"),
   comCourse: forwardTo("db"),
   course: forwardTo("db"),
-  courseInterests: forwardTo("db"),
   courses: forwardTo("db"),
-  coursesConnection: forwardTo("db"),
+  courseInterests: forwardTo("db"),
   interests: forwardTo("db"),
   user: forwardTo("db"),
   userInterests: forwardTo("db"),
@@ -161,16 +160,24 @@ const Query = {
     user.interests.map(interest => {
       interestsIds.push(interest.interest.id);
     });
-
     //Search all the courses that have the interests match wiith user
     const result = await Promise.all(
       interestsIds.map(async id => {
         const res = await ctx.db.query.courseInterests(
           {
             where: {
-              interest: {
-                id: id
-              }
+              AND: [
+                {
+                  interest: {
+                    id: id
+                  }
+                },
+                {
+                  course: {
+                    state: "PUBLISHED"
+                  }
+                }
+              ]
             }
           },
           `{
@@ -181,6 +188,7 @@ const Query = {
              thumbnail
              createdAt
              price
+             state
              user {
                name
              }
@@ -215,8 +223,25 @@ const Query = {
       return item;
     });
 
-    console.log(final1);
     return final1;
+  },
+
+  coursesConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    //Ver se esta logado
+    if (!userId) {
+      throw new Error("you must be signed in!");
+    }
+    //query o video atual com comparaçao de ids de user
+    return ctx.db.query.coursesConnection(
+      {
+        where: {
+          state: "PUBLISHED"
+        }
+      },
+      info
+    );
   }
 };
 

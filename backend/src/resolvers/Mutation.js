@@ -162,93 +162,6 @@ const Mutations = {
     );
   },
 
-  // async createComVideo(parent, args, ctx, info) {
-  //   //  Check if they are logged in
-  //   if (!ctx.request.userId) {
-  //     throw new Error("You must be logged in to do that!");
-  //   }
-
-  //   const comvideo = await ctx.db.mutation.createComVideo(
-  //     {
-  //       data: {
-  //         user: {
-  //           connect: {
-  //             id: ctx.request.userId
-  //           }
-  //         },
-  //         videos: {
-  //           connect: {
-  //             id: args.video
-  //           }
-  //         },
-  //         ...args
-  //       }
-  //     },
-  //     info
-  //   );
-
-  //   return comvideo;
-  // },
-  // async updateComVideo(parent, args, ctx, info) {
-  //   if (!ctx.request.userId) {
-  //     throw new Error("You must be logged in to do that!");
-  //   }
-  //   //1.encontrar o video
-  //   const comVideo = await ctx.db.query.comVideo(
-  //     {
-  //       where
-  //     },
-  //     `{id}`
-  //   );
-  //   //2.checkar se tem permissoes para o apagar
-  //   const ownsComVideo = comVideo.user.id === ctx.request.userId;
-  //   //falta verificar se é admin ou user (hasPermissions)
-  //   if (!ownsComVideo) {
-  //     throw new Error("You don't have permission to do that!");
-  //   }
-  //   //faz uma copia dos updates para guardar o id nos args
-  //   const updates = {
-  //     ...args
-  //   };
-  //   //elimina o id dos updates para nao dar update no id(unico)
-  //   delete updates.id;
-
-  //   //da run no update method
-  //   return ctx.db.mutation.updateComVideo(
-  //     {
-  //       data: updates,
-  //       where: {
-  //         id: args.id
-  //       }
-  //     },
-  //     info
-  //   );
-  // },
-  // async deleteComVideo(parent, args, ctx, info) {
-  //   const where = {
-  //     id: args.id
-  //   };
-  //   //1.encontrar o video
-  //   const ComVideo = await ctx.db.query.comVideo(
-  //     {
-  //       where
-  //     },
-  //     `{id comment}`
-  //   );
-  //   //2.checkar se tem permissoes para o apagar
-  //   const ownsComVideo = ComVideo.user.id === ctx.request.userId;
-  //   //falta verificar se é admin ou user (hasPermissions)
-  //   if (!ownsComVideo) {
-  //     throw new Error("You don't have permission to do that!");
-  //   }
-  //   //3.dar delete
-  //   return ctx.db.mutation.deleteCom(
-  //     {
-  //       where
-  //     },
-  //     info
-  //   );
-  // },
   async signup(parent, args, ctx, info) {
     //lowercase the email
     args.email = args.email.toLowerCase();
@@ -441,7 +354,7 @@ const Mutations = {
 
     //elimina o id dos updates
     delete data.category;
-
+    console.log(data);
     // 4. If its not, create a fresh CourseVideo for that Course!
     return ctx.db.mutation.createCourse(
       {

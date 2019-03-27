@@ -44,6 +44,7 @@ const Pagination = props => (
           }
         });
       };
+      console.log(pages);
       return (
         <>
           <button
