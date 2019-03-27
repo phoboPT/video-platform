@@ -25,14 +25,17 @@ const CREATE_ORDER_MUTATION = gql`
 
 export class Checkout extends Component {
   onToken = async (res, createOrder) => {
-    console.log(res);
-
+    NProgress.start();
     const order = await createOrder({
       variables: {
         token: res.id,
       },
     }).catch(err => {
       alert(err.message);
+    });
+
+    Router.push({
+      pathname: "/courses",
     });
   };
   render() {

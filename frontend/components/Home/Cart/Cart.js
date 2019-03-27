@@ -55,9 +55,11 @@ const Cart = () => (
               </ul>
               <footer>
                 <p>{formatMoney(calcTotalPrice(me.cart))} </p>
-                <Link href="/chekout">
-                  <SickButton onClick={toggleCart}>Checkout</SickButton>
-                </Link>
+                {me.cart.length && (
+                  <Link href="/chekout">
+                    <SickButton onClick={toggleCart}>Checkout</SickButton>
+                  </Link>
+                )}
               </footer>
             </CartStyles>
           )}

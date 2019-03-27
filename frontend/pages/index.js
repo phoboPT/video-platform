@@ -9,10 +9,22 @@ export class Home extends Component {
   render() {
     return (
       <div>
-        <Search />
-        <ListAllCourses query="ALL_COURSES_QUERY" />
-        <ListAllCourses query="ALL_COURSES_ORDERED" />
-        <ListAllCourses query="ALL_COURSE_INTERESTS" />
+        <User>
+          {({ data: { me } }) => {
+            console.log(me);
+            if (!me) return null;
+            return (
+              <>
+                <Search />
+                <ListAllCourses query="ALL_COURSES_QUERY" />
+                <ListAllCourses query="ALL_COURSES_ORDERED" />
+                {me.interests.length > 1 && (
+                  <ListAllCourses query="ALL_COURSE_INTERESTS" />
+                )}
+              </>
+            );
+          }}
+        </User>
       </div>
     );
   }
