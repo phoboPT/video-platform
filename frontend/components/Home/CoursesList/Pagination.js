@@ -54,9 +54,7 @@ const Pagination = props => (
           >
             <img id="arrow" src="../../../static/arrowleft.png" />
           </button>
-          {count}
 
-          {pages}
           <button
             disabled={props.isInterest ? page >= pages : page >= pages}
             className="Right"
