@@ -4,7 +4,9 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Item from "../../styles/ItemStyles";
 import ItemStyles from "../../styles/ItemStyles";
+import AddToWish from "../AddToWish";
 import AddToCart from "../Cart/AddToCart";
+
 const InfoStyle = styled.p`
   text-align: left;
   padding: none;
@@ -34,6 +36,7 @@ export class Course extends Component {
 
           <div className="buttonList">
             <AddToCart id={course.id} />
+            <AddToWish id={course.id} />
             <p>5</p>
           </div>
         </ItemStyles>

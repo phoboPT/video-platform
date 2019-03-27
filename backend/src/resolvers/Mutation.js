@@ -14,7 +14,7 @@ const Mutations = {
     }
 
     const video = {
-      ...args
+      ...args,
     };
     const { course } = video;
     //elimina o id dos updates
@@ -25,28 +25,28 @@ const Mutations = {
         data: {
           user: {
             connect: {
-              id: userId
-            }
+              id: userId,
+            },
           },
 
-          ...video
-        }
+          ...video,
+        },
       },
-      info
+      info,
     );
 
     ctx.db.mutation.createCourseVideos(
       {
         data: {
           course: {
-            connect: { id: course }
+            connect: { id: course },
           },
           video: {
-            connect: { id: videos.id }
-          }
-        }
+            connect: { id: videos.id },
+          },
+        },
       },
-      info
+      info,
     );
 
     //para dar debug console.log(video);
@@ -57,14 +57,14 @@ const Mutations = {
       throw new Error("You must be logged in to do that!");
     }
     const where = {
-      id: args.id
+      id: args.id,
     };
     //1.encontrar o video
     const video = await ctx.db.query.video(
       {
-        where
+        where,
       },
-      `{id}`
+      `{id}`,
     );
     //2.checkar se tem permissoes para o apagar
     //const ownsVideo = video.user.id === ctx.request.userId;
@@ -75,9 +75,9 @@ const Mutations = {
     //3.dar delete
     return ctx.db.mutation.deleteVideo(
       {
-        where
+        where,
       },
-      info
+      info,
     );
   },
   updateVideo(parent, args, ctx, info) {
@@ -88,7 +88,7 @@ const Mutations = {
     }
     //faz uma copia dos updates
     const updates = {
-      ...args
+      ...args,
     };
     //elimina o id dos updates
     delete updates.id;
@@ -97,10 +97,10 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
-      info
+      info,
     );
   },
   async createCategory(parent, args, ctx, info) {
@@ -112,10 +112,10 @@ const Mutations = {
     const category = await ctx.db.mutation.createCategory(
       {
         data: {
-          ...args
-        }
+          ...args,
+        },
       },
-      info
+      info,
     );
     //para dar debug console.log(category);
     return category;
@@ -126,7 +126,7 @@ const Mutations = {
     }
     //faz uma copia dos updates para guardar o id nos args
     const updates = {
-      ...args
+      ...args,
     };
     //elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
@@ -135,10 +135,10 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
-      info
+      info,
     );
   },
 
@@ -147,7 +147,7 @@ const Mutations = {
       throw new Error("You must be logged in to do that!");
     }
     const where = {
-      id: args.id
+      id: args.id,
     };
     // //1.encontrar o video
     // const video = await ctx.db.query.category({ where }, `{id name}`);
@@ -156,9 +156,9 @@ const Mutations = {
     //3.dar delete
     return ctx.db.mutation.deleteCategory(
       {
-        where
+        where,
       },
-      info
+      info,
     );
   },
 
@@ -261,23 +261,23 @@ const Mutations = {
           ...args,
           password,
           permission: {
-            set: ["USER"]
-          }
-        }
+            set: ["USER"],
+          },
+        },
       },
-      info
+      info,
     );
     //create jwt token for them
     const token = jwt.sign(
       {
-        userId: user.id
+        userId: user.id,
       },
-      process.env.APP_SECRET
+      process.env.APP_SECRET,
     );
     //we set the jwt as a cookie on the ctx
     ctx.response.cookie("token", token, {
       httpOnly: true,
-      maxAge: 1000 * 24 * 365 * 60 * 60 //1 year cookie
+      maxAge: 1000 * 24 * 365 * 60 * 60, //1 year cookie
     });
     //finally we return the user to the browser
     return user;
@@ -285,7 +285,7 @@ const Mutations = {
   async signin(parent, { email, password }, ctx, info) {
     //check if there is a user
     const user = await ctx.db.query.user({
-      where: { email }
+      where: { email },
     });
     if (!user) {
       throw new Error(`No such user found for email ${email}`);
@@ -301,7 +301,7 @@ const Mutations = {
     //Set the cookie with the token
     ctx.response.cookie("token", token, {
       httpOnly: true,
-      maxAge: 1000 * 24 * 365 * 60 * 60 //1 year cookie
+      maxAge: 1000 * 24 * 365 * 60 * 60, //1 year cookie
     });
     //return the user
     return user;
@@ -313,7 +313,7 @@ const Mutations = {
     }
     //faz uma copia dos updates para guardar o id nos args
     const updates = {
-      ...args
+      ...args,
     };
     //elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
@@ -322,10 +322,10 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
-      info
+      info,
     );
   },
   signout(parent, args, ctx, info) {
@@ -343,7 +343,7 @@ const Mutations = {
     }
     //faz uma copia dos updates para guardar o id nos args
     const updates = {
-      password: args.password
+      password: args.password,
     };
 
     //volta a encriptar a pass nova
@@ -357,10 +357,10 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
-      info
+      info,
     );
   },
   async requestReset(parents, args, ctx, info) {
@@ -377,7 +377,7 @@ const Mutations = {
 
     const res = await ctx.db.mutation.updateUser({
       where: { email: args.email },
-      data: { resetToken, resetTokenExpiry }
+      data: { resetToken, resetTokenExpiry },
     });
 
     //3. Email them that reset tokenaaa
@@ -388,7 +388,7 @@ const Mutations = {
       html: makeANiceEmail(`Your  Password Reset Token is here!
       \n\n 
       <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">
-      Click Here to reset</a> `)
+      Click Here to reset</a> `),
     });
     return { message: "Thanks" };
   },
@@ -402,8 +402,8 @@ const Mutations = {
     const [user] = await ctx.db.query.users({
       where: {
         resetToken: args.resetToken,
-        resetTokenExpiry_gte: Datenow() - 3600000
-      }
+        resetTokenExpiry_gte: Datenow() - 3600000,
+      },
     });
     if (!user) {
       throw new Error("This token is either invalid or expired!");
@@ -416,15 +416,15 @@ const Mutations = {
       data: {
         password,
         resetToken: null,
-        resetTokenExpiry: null
-      }
+        resetTokenExpiry: null,
+      },
     });
     //generate jwt
     const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
     //set jwt cookie
     ctx.response.cookie("token", token, {
       httpOnly: true,
-      magAge: 1000 * 25 * 365 * 60 * 60
+      magAge: 1000 * 25 * 365 * 60 * 60,
     });
     //return new user
     return updatedUser;
@@ -436,7 +436,7 @@ const Mutations = {
       throw new Error("You must be signed in soooon");
     }
     const data = {
-      ...args
+      ...args,
     };
 
     //elimina o id dos updates
@@ -448,18 +448,18 @@ const Mutations = {
         data: {
           category: {
             connect: {
-              id: args.category
-            }
+              id: args.category,
+            },
           },
           user: {
             connect: {
-              id: userId
-            }
+              id: userId,
+            },
           },
-          ...data
-        }
+          ...data,
+        },
       },
-      info
+      info,
     );
   },
 
@@ -468,14 +468,14 @@ const Mutations = {
       throw new Error("You must be logged in to do that!");
     }
     const where = {
-      id: args.id
+      id: args.id,
     };
     //1.encontrar o video
     const course = await ctx.db.query.course(
       {
-        where
+        where,
       },
-      `{id}`
+      `{id}`,
     );
     //2.checkar se tem permissoes para o apagar
     const ownsCourse = course.user.id === ctx.request.userId;
@@ -486,9 +486,9 @@ const Mutations = {
     //3.dar delete
     return ctx.db.mutation.deleteCourse(
       {
-        where
+        where,
       },
-      info
+      info,
     );
   },
   updateCourse(parent, args, ctx, info) {
@@ -499,7 +499,7 @@ const Mutations = {
     }
 
     const updates = {
-      ...args
+      ...args,
     };
     //elimina o id dos updates
     delete updates.id;
@@ -508,10 +508,10 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
-      info
+      info,
     );
   },
   async createComCourse(parent, args, ctx, info) {
@@ -525,19 +525,19 @@ const Mutations = {
         data: {
           user: {
             connect: {
-              id: ctx.request.userId
-            }
+              id: ctx.request.userId,
+            },
           },
           course: {
             connect: {
-              id: args.courseId
-            }
+              id: args.courseId,
+            },
           },
-          comment: args.comment
-        }
+          comment: args.comment,
+        },
       },
 
-      info
+      info,
     );
 
     return comvideo;
@@ -547,14 +547,14 @@ const Mutations = {
       throw new Error("You must be logged in to do that!");
     }
     const where = {
-      id: args.id
+      id: args.id,
     };
     //1.encontrar o video
     const comCourse = await ctx.db.query.comCourse(
       {
-        where
+        where,
       },
-      `{id user{id}}`
+      `{id user{id}}`,
     );
     //2.checkar se tem permissoes para o apagar
     const ownsComCourse = comCourse.user.id === ctx.request.userId;
@@ -565,9 +565,9 @@ const Mutations = {
     //3.dar delete
     return ctx.db.mutation.deleteComCourse(
       {
-        where
+        where,
       },
-      info
+      info,
     );
   },
   updateComCourse(parent, args, ctx, info) {
@@ -578,7 +578,7 @@ const Mutations = {
     }
 
     const updates = {
-      ...args
+      ...args,
     };
     //elimina o id dos updates
     delete updates.id;
@@ -587,10 +587,10 @@ const Mutations = {
       {
         data: updates,
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
-      info
+      info,
     );
   },
   async removeFromCourse(parent, args, ctx, info) {
@@ -604,17 +604,17 @@ const Mutations = {
     const [existingVideo] = await ctx.db.query.courseVideoses({
       where: {
         course: { id: args.courseId },
-        video: { id: args.id }
-      }
+        video: { id: args.id },
+      },
     });
     //check if that item is already in their cart
     if (existingVideo) {
       console.log("Already added");
       return ctx.db.mutation.deleteCourseVideos(
         {
-          where: { id: existingVideo.id }
+          where: { id: existingVideo.id },
         },
-        info
+        info,
       );
     } else {
       throw "Video already removed";
@@ -633,14 +633,14 @@ const Mutations = {
       {
         data: {
           course: {
-            connect: { id: args.courseId }
+            connect: { id: args.courseId },
           },
           interest: {
-            connect: { id: args.interestId }
-          }
-        }
+            connect: { id: args.interestId },
+          },
+        },
       },
-      info
+      info,
     );
   },
   async addTargetUser(parent, args, ctx, info) {
@@ -655,14 +655,14 @@ const Mutations = {
       {
         data: {
           interest: {
-            connect: { id: args.interestId }
+            connect: { id: args.interestId },
           },
           user: {
-            connect: { id: userId }
-          }
-        }
+            connect: { id: userId },
+          },
+        },
       },
-      info
+      info,
     );
   },
   async addToCart(parent, args, ctx, info) {
@@ -672,8 +672,8 @@ const Mutations = {
     const [existingCartItem] = await ctx.db.query.cartItems({
       where: {
         user: { id: userId },
-        course: { id: args.id }
-      }
+        course: { id: args.id },
+      },
     });
 
     //Check if that item is already in their cart and increment by 1 id it is
@@ -685,14 +685,14 @@ const Mutations = {
       data: {
         course: {
           connect: {
-            id: args.id
-          }
+            id: args.id,
+          },
         },
         user: {
-          connect: { id: userId }
-        }
+          connect: { id: userId },
+        },
       },
-      info
+      info,
     });
   },
   async removeFromCart(parent, args, ctx, info) {
@@ -700,10 +700,10 @@ const Mutations = {
     const cartItem = await ctx.db.query.cartItem(
       {
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
-      `{id,user{id}}`
+      `{id,user{id}}`,
     );
     //Make sure we found an item
     if (!cartItem) throw new Error("No Item found");
@@ -717,10 +717,10 @@ const Mutations = {
     return ctx.db.mutation.deleteCartItem(
       {
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
-      info
+      info,
     );
   },
   async removeTargetUser(parent, args, ctx, info) {
@@ -732,12 +732,11 @@ const Mutations = {
 
     return ctx.db.mutation.deleteUserInterest(
       {
-        where: { id: args.interestId }
+        where: { id: args.interestId },
       },
-      info
+      info,
     );
   },
-
   async createOrder(parent, args, ctx, info) {
     //query current user and make sure they are signin
     const { userId } = ctx.request;
@@ -764,26 +763,26 @@ const Mutations = {
             }
           }
         }
-        `
+        `,
     );
     //recalculate the total for the price
     const amount = user.cart.reduce(
       (tally, cartItem) => tally + cartItem.course.price,
-      0
+      0,
     );
 
     // create the stripe charge(turn token into €€€€€€)
     const charge = await stripe.charges.create({
       amount: amount * 100,
       currency: "EUR",
-      source: args.token
+      source: args.token,
     });
     //convert the cartitems in orderitems
     const orderItems = user.cart.map(cartItem => {
       const orderItem = {
         ...cartItem.course,
         category: { connect: { id: cartItem.course.category.id } },
-        user: { connect: { id: userId } }
+        user: { connect: { id: userId } },
       };
       delete orderItem.id;
       return orderItem;
@@ -795,8 +794,8 @@ const Mutations = {
         total: charge.amount,
         charge: charge.id,
         items: { create: orderItems },
-        user: { connect: { id: userId } }
-      }
+        user: { connect: { id: userId } },
+      },
     });
 
     const courseIds = user.cart.map(cartItem => cartItem.course.id);
@@ -805,18 +804,48 @@ const Mutations = {
       await ctx.db.mutation.createUserCourse({
         data: {
           course: { connect: { id: id } },
-          user: { connect: { id: userId } }
-        }
+          user: { connect: { id: userId } },
+        },
       });
     });
     //clean up - clear the users cart, delete cartitems
     const cartItemIds = user.cart.map(cartItem => cartItem.id);
     await ctx.db.mutation.deleteManyCartItems({
-      where: { id_in: cartItemIds }
+      where: { id_in: cartItemIds },
     });
     //return the Order to the client
     return order;
-  }
+  },
+  async addToWish(parent, args, ctx, info) {
+    //Make sure they are signin
+    const { userId } = ctx.request;
+    //Query the users current cart
+    const [existingWhishItem] = await ctx.db.query.wishlists({
+      where: {
+        user: { id: userId },
+        course: { id: args.id },
+      },
+    });
+
+    //Check if that item is already in their cart and increment by 1 id it is
+    if (existingWhishItem) {
+      throw new Error("Arleady added to cart");
+    }
+    //If its not, create a fresh new item
+    return ctx.db.mutation.createWishlist({
+      data: {
+        course: {
+          connect: {
+            id: args.id,
+          },
+        },
+        user: {
+          connect: { id: userId },
+        },
+      },
+      info,
+    });
+  },
 };
 
 module.exports = Mutations;

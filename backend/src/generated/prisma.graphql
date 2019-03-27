@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/hugobrancoc-5773e9/picus/dev
-# timestamp: Fri Mar 22 2019 11:01:46 GMT+0000 (Hora padrão da Europa Ocidental)
+# timestamp: Wed Mar 27 2019 15:43:23 GMT+0000 (Hora padrão da Europa Ocidental)
 
 type AggregateCartItem {
   count: Int!
@@ -50,6 +50,10 @@ type AggregateUserInterest {
 }
 
 type AggregateVideo {
+  count: Int!
+}
+
+type AggregateWishlist {
   count: Int!
 }
 
@@ -1976,6 +1980,7 @@ scalar Long
 type Mutation {
   createCourseInterest(data: CourseInterestCreateInput!): CourseInterest!
   createUserInterest(data: UserInterestCreateInput!): UserInterest!
+  createWishlist(data: WishlistCreateInput!): Wishlist!
   createCourseVideos(data: CourseVideosCreateInput!): CourseVideos!
   createComCourse(data: ComCourseCreateInput!): ComCourse!
   createUserCourse(data: UserCourseCreateInput!): UserCourse!
@@ -1985,10 +1990,11 @@ type Mutation {
   createOrderItem(data: OrderItemCreateInput!): OrderItem!
   createUser(data: UserCreateInput!): User!
   createInterest(data: InterestCreateInput!): Interest!
-  createCourse(data: CourseCreateInput!): Course!
   createCategory(data: CategoryCreateInput!): Category!
+  createCourse(data: CourseCreateInput!): Course!
   updateCourseInterest(data: CourseInterestUpdateInput!, where: CourseInterestWhereUniqueInput!): CourseInterest
   updateUserInterest(data: UserInterestUpdateInput!, where: UserInterestWhereUniqueInput!): UserInterest
+  updateWishlist(data: WishlistUpdateInput!, where: WishlistWhereUniqueInput!): Wishlist
   updateCourseVideos(data: CourseVideosUpdateInput!, where: CourseVideosWhereUniqueInput!): CourseVideos
   updateComCourse(data: ComCourseUpdateInput!, where: ComCourseWhereUniqueInput!): ComCourse
   updateUserCourse(data: UserCourseUpdateInput!, where: UserCourseWhereUniqueInput!): UserCourse
@@ -1998,10 +2004,11 @@ type Mutation {
   updateOrderItem(data: OrderItemUpdateInput!, where: OrderItemWhereUniqueInput!): OrderItem
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateInterest(data: InterestUpdateInput!, where: InterestWhereUniqueInput!): Interest
-  updateCourse(data: CourseUpdateInput!, where: CourseWhereUniqueInput!): Course
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateCourse(data: CourseUpdateInput!, where: CourseWhereUniqueInput!): Course
   deleteCourseInterest(where: CourseInterestWhereUniqueInput!): CourseInterest
   deleteUserInterest(where: UserInterestWhereUniqueInput!): UserInterest
+  deleteWishlist(where: WishlistWhereUniqueInput!): Wishlist
   deleteCourseVideos(where: CourseVideosWhereUniqueInput!): CourseVideos
   deleteComCourse(where: ComCourseWhereUniqueInput!): ComCourse
   deleteUserCourse(where: UserCourseWhereUniqueInput!): UserCourse
@@ -2011,10 +2018,11 @@ type Mutation {
   deleteOrderItem(where: OrderItemWhereUniqueInput!): OrderItem
   deleteUser(where: UserWhereUniqueInput!): User
   deleteInterest(where: InterestWhereUniqueInput!): Interest
-  deleteCourse(where: CourseWhereUniqueInput!): Course
   deleteCategory(where: CategoryWhereUniqueInput!): Category
+  deleteCourse(where: CourseWhereUniqueInput!): Course
   upsertCourseInterest(where: CourseInterestWhereUniqueInput!, create: CourseInterestCreateInput!, update: CourseInterestUpdateInput!): CourseInterest!
   upsertUserInterest(where: UserInterestWhereUniqueInput!, create: UserInterestCreateInput!, update: UserInterestUpdateInput!): UserInterest!
+  upsertWishlist(where: WishlistWhereUniqueInput!, create: WishlistCreateInput!, update: WishlistUpdateInput!): Wishlist!
   upsertCourseVideos(where: CourseVideosWhereUniqueInput!, create: CourseVideosCreateInput!, update: CourseVideosUpdateInput!): CourseVideos!
   upsertComCourse(where: ComCourseWhereUniqueInput!, create: ComCourseCreateInput!, update: ComCourseUpdateInput!): ComCourse!
   upsertUserCourse(where: UserCourseWhereUniqueInput!, create: UserCourseCreateInput!, update: UserCourseUpdateInput!): UserCourse!
@@ -2024,8 +2032,8 @@ type Mutation {
   upsertOrderItem(where: OrderItemWhereUniqueInput!, create: OrderItemCreateInput!, update: OrderItemUpdateInput!): OrderItem!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertInterest(where: InterestWhereUniqueInput!, create: InterestCreateInput!, update: InterestUpdateInput!): Interest!
-  upsertCourse(where: CourseWhereUniqueInput!, create: CourseCreateInput!, update: CourseUpdateInput!): Course!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
+  upsertCourse(where: CourseWhereUniqueInput!, create: CourseCreateInput!, update: CourseUpdateInput!): Course!
   updateManyComCourses(data: ComCourseUpdateManyMutationInput!, where: ComCourseWhereInput): BatchPayload!
   updateManyUserCourses(data: UserCourseUpdateManyMutationInput!, where: UserCourseWhereInput): BatchPayload!
   updateManyOrders(data: OrderUpdateManyMutationInput!, where: OrderWhereInput): BatchPayload!
@@ -2033,10 +2041,11 @@ type Mutation {
   updateManyOrderItems(data: OrderItemUpdateManyMutationInput!, where: OrderItemWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyInterests(data: InterestUpdateManyMutationInput!, where: InterestWhereInput): BatchPayload!
-  updateManyCourses(data: CourseUpdateManyMutationInput!, where: CourseWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
+  updateManyCourses(data: CourseUpdateManyMutationInput!, where: CourseWhereInput): BatchPayload!
   deleteManyCourseInterests(where: CourseInterestWhereInput): BatchPayload!
   deleteManyUserInterests(where: UserInterestWhereInput): BatchPayload!
+  deleteManyWishlists(where: WishlistWhereInput): BatchPayload!
   deleteManyCourseVideoses(where: CourseVideosWhereInput): BatchPayload!
   deleteManyComCourses(where: ComCourseWhereInput): BatchPayload!
   deleteManyUserCourses(where: UserCourseWhereInput): BatchPayload!
@@ -2046,8 +2055,8 @@ type Mutation {
   deleteManyOrderItems(where: OrderItemWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyInterests(where: InterestWhereInput): BatchPayload!
-  deleteManyCourses(where: CourseWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
+  deleteManyCourses(where: CourseWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -2875,6 +2884,7 @@ enum Permission {
 type Query {
   courseInterests(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseInterest]!
   userInterests(where: UserInterestWhereInput, orderBy: UserInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserInterest]!
+  wishlists(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Wishlist]!
   courseVideoses(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CourseVideos]!
   comCourses(where: ComCourseWhereInput, orderBy: ComCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ComCourse]!
   userCourses(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserCourse]!
@@ -2884,10 +2894,11 @@ type Query {
   orderItems(where: OrderItemWhereInput, orderBy: OrderItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OrderItem]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   interests(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Interest]!
-  courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  courses(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Course]!
   courseInterest(where: CourseInterestWhereUniqueInput!): CourseInterest
   userInterest(where: UserInterestWhereUniqueInput!): UserInterest
+  wishlist(where: WishlistWhereUniqueInput!): Wishlist
   courseVideos(where: CourseVideosWhereUniqueInput!): CourseVideos
   comCourse(where: ComCourseWhereUniqueInput!): ComCourse
   userCourse(where: UserCourseWhereUniqueInput!): UserCourse
@@ -2897,10 +2908,11 @@ type Query {
   orderItem(where: OrderItemWhereUniqueInput!): OrderItem
   user(where: UserWhereUniqueInput!): User
   interest(where: InterestWhereUniqueInput!): Interest
-  course(where: CourseWhereUniqueInput!): Course
   category(where: CategoryWhereUniqueInput!): Category
+  course(where: CourseWhereUniqueInput!): Course
   courseInterestsConnection(where: CourseInterestWhereInput, orderBy: CourseInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseInterestConnection!
   userInterestsConnection(where: UserInterestWhereInput, orderBy: UserInterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserInterestConnection!
+  wishlistsConnection(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WishlistConnection!
   courseVideosesConnection(where: CourseVideosWhereInput, orderBy: CourseVideosOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseVideosConnection!
   comCoursesConnection(where: ComCourseWhereInput, orderBy: ComCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ComCourseConnection!
   userCoursesConnection(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserCourseConnection!
@@ -2910,8 +2922,8 @@ type Query {
   orderItemsConnection(where: OrderItemWhereInput, orderBy: OrderItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderItemConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   interestsConnection(where: InterestWhereInput, orderBy: InterestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InterestConnection!
-  coursesConnection(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  coursesConnection(where: CourseWhereInput, orderBy: CourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CourseConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -2928,6 +2940,7 @@ enum State {
 type Subscription {
   courseInterest(where: CourseInterestSubscriptionWhereInput): CourseInterestSubscriptionPayload
   userInterest(where: UserInterestSubscriptionWhereInput): UserInterestSubscriptionPayload
+  wishlist(where: WishlistSubscriptionWhereInput): WishlistSubscriptionPayload
   courseVideos(where: CourseVideosSubscriptionWhereInput): CourseVideosSubscriptionPayload
   comCourse(where: ComCourseSubscriptionWhereInput): ComCourseSubscriptionPayload
   userCourse(where: UserCourseSubscriptionWhereInput): UserCourseSubscriptionPayload
@@ -2937,8 +2950,8 @@ type Subscription {
   orderItem(where: OrderItemSubscriptionWhereInput): OrderItemSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   interest(where: InterestSubscriptionWhereInput): InterestSubscriptionPayload
-  course(where: CourseSubscriptionWhereInput): CourseSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  course(where: CourseSubscriptionWhereInput): CourseSubscriptionPayload
 }
 
 type User implements Node {
@@ -2952,6 +2965,7 @@ type User implements Node {
   permission: [Permission!]!
   courses(where: UserCourseWhereInput, orderBy: UserCourseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserCourse!]
   cart(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CartItem!]
+  wishlist(where: WishlistWhereInput, orderBy: WishlistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Wishlist!]
 }
 
 """A connection to a list of items."""
@@ -3237,6 +3251,7 @@ input UserCreateInput {
   interests: UserInterestCreateManyWithoutUserInput
   courses: UserCourseCreateManyWithoutUserInput
   cart: CartItemCreateManyWithoutUserInput
+  wishlist: WishlistCreateManyWithoutUserInput
 }
 
 input UserCreateOneInput {
@@ -3259,6 +3274,11 @@ input UserCreateOneWithoutInterestsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutWishlistInput {
+  create: UserCreateWithoutWishlistInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreatepermissionInput {
   set: [Permission!]
 }
@@ -3273,6 +3293,7 @@ input UserCreateWithoutCartInput {
   permission: UserCreatepermissionInput
   interests: UserInterestCreateManyWithoutUserInput
   courses: UserCourseCreateManyWithoutUserInput
+  wishlist: WishlistCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutCoursesInput {
@@ -3285,6 +3306,7 @@ input UserCreateWithoutCoursesInput {
   permission: UserCreatepermissionInput
   interests: UserInterestCreateManyWithoutUserInput
   cart: CartItemCreateManyWithoutUserInput
+  wishlist: WishlistCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutInterestsInput {
@@ -3295,6 +3317,20 @@ input UserCreateWithoutInterestsInput {
   resetToken: String
   resetTokenExpiry: Float
   permission: UserCreatepermissionInput
+  courses: UserCourseCreateManyWithoutUserInput
+  cart: CartItemCreateManyWithoutUserInput
+  wishlist: WishlistCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutWishlistInput {
+  id: ID
+  name: String!
+  email: String!
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permission: UserCreatepermissionInput
+  interests: UserInterestCreateManyWithoutUserInput
   courses: UserCourseCreateManyWithoutUserInput
   cart: CartItemCreateManyWithoutUserInput
 }
@@ -3618,6 +3654,7 @@ input UserUpdateDataInput {
   interests: UserInterestUpdateManyWithoutUserInput
   courses: UserCourseUpdateManyWithoutUserInput
   cart: CartItemUpdateManyWithoutUserInput
+  wishlist: WishlistUpdateManyWithoutUserInput
 }
 
 input UserUpdateInput {
@@ -3630,6 +3667,7 @@ input UserUpdateInput {
   interests: UserInterestUpdateManyWithoutUserInput
   courses: UserCourseUpdateManyWithoutUserInput
   cart: CartItemUpdateManyWithoutUserInput
+  wishlist: WishlistUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -3678,6 +3716,13 @@ input UserUpdateOneRequiredWithoutInterestsInput {
   upsert: UserUpsertWithoutInterestsInput
 }
 
+input UserUpdateOneRequiredWithoutWishlistInput {
+  create: UserCreateWithoutWishlistInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutWishlistDataInput
+  upsert: UserUpsertWithoutWishlistInput
+}
+
 input UserUpdatepermissionInput {
   set: [Permission!]
 }
@@ -3691,6 +3736,7 @@ input UserUpdateWithoutCartDataInput {
   permission: UserUpdatepermissionInput
   interests: UserInterestUpdateManyWithoutUserInput
   courses: UserCourseUpdateManyWithoutUserInput
+  wishlist: WishlistUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutCoursesDataInput {
@@ -3702,6 +3748,7 @@ input UserUpdateWithoutCoursesDataInput {
   permission: UserUpdatepermissionInput
   interests: UserInterestUpdateManyWithoutUserInput
   cart: CartItemUpdateManyWithoutUserInput
+  wishlist: WishlistUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutInterestsDataInput {
@@ -3711,6 +3758,19 @@ input UserUpdateWithoutInterestsDataInput {
   resetToken: String
   resetTokenExpiry: Float
   permission: UserUpdatepermissionInput
+  courses: UserCourseUpdateManyWithoutUserInput
+  cart: CartItemUpdateManyWithoutUserInput
+  wishlist: WishlistUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutWishlistDataInput {
+  name: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permission: UserUpdatepermissionInput
+  interests: UserInterestUpdateManyWithoutUserInput
   courses: UserCourseUpdateManyWithoutUserInput
   cart: CartItemUpdateManyWithoutUserInput
 }
@@ -3733,6 +3793,11 @@ input UserUpsertWithoutCoursesInput {
 input UserUpsertWithoutInterestsInput {
   update: UserUpdateWithoutInterestsDataInput!
   create: UserCreateWithoutInterestsInput!
+}
+
+input UserUpsertWithoutWishlistInput {
+  update: UserUpdateWithoutWishlistDataInput!
+  create: UserCreateWithoutWishlistInput!
 }
 
 input UserWhereInput {
@@ -3975,6 +4040,9 @@ input UserWhereInput {
   cart_every: CartItemWhereInput
   cart_some: CartItemWhereInput
   cart_none: CartItemWhereInput
+  wishlist_every: WishlistWhereInput
+  wishlist_some: WishlistWhereInput
+  wishlist_none: WishlistWhereInput
 }
 
 input UserWhereUniqueInput {
@@ -4404,5 +4472,237 @@ input VideoWhereInput {
 }
 
 input VideoWhereUniqueInput {
+  id: ID
+}
+
+type Wishlist implements Node {
+  id: ID!
+  user: User!
+  course: Course!
+}
+
+"""A connection to a list of items."""
+type WishlistConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [WishlistEdge]!
+  aggregate: AggregateWishlist!
+}
+
+input WishlistCreateInput {
+  id: ID
+  user: UserCreateOneWithoutWishlistInput!
+  course: CourseCreateOneInput!
+}
+
+input WishlistCreateManyWithoutUserInput {
+  create: [WishlistCreateWithoutUserInput!]
+  connect: [WishlistWhereUniqueInput!]
+}
+
+input WishlistCreateWithoutUserInput {
+  id: ID
+  course: CourseCreateOneInput!
+}
+
+"""An edge in a connection."""
+type WishlistEdge {
+  """The item at the end of the edge."""
+  node: Wishlist!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum WishlistOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type WishlistPreviousValues {
+  id: ID!
+}
+
+input WishlistScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WishlistScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WishlistScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WishlistScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+}
+
+type WishlistSubscriptionPayload {
+  mutation: MutationType!
+  node: Wishlist
+  updatedFields: [String!]
+  previousValues: WishlistPreviousValues
+}
+
+input WishlistSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WishlistSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WishlistSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WishlistSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: WishlistWhereInput
+}
+
+input WishlistUpdateInput {
+  user: UserUpdateOneRequiredWithoutWishlistInput
+  course: CourseUpdateOneRequiredInput
+}
+
+input WishlistUpdateManyWithoutUserInput {
+  create: [WishlistCreateWithoutUserInput!]
+  connect: [WishlistWhereUniqueInput!]
+  set: [WishlistWhereUniqueInput!]
+  disconnect: [WishlistWhereUniqueInput!]
+  delete: [WishlistWhereUniqueInput!]
+  update: [WishlistUpdateWithWhereUniqueWithoutUserInput!]
+  deleteMany: [WishlistScalarWhereInput!]
+  upsert: [WishlistUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input WishlistUpdateWithoutUserDataInput {
+  course: CourseUpdateOneRequiredInput
+}
+
+input WishlistUpdateWithWhereUniqueWithoutUserInput {
+  where: WishlistWhereUniqueInput!
+  data: WishlistUpdateWithoutUserDataInput!
+}
+
+input WishlistUpsertWithWhereUniqueWithoutUserInput {
+  where: WishlistWhereUniqueInput!
+  update: WishlistUpdateWithoutUserDataInput!
+  create: WishlistCreateWithoutUserInput!
+}
+
+input WishlistWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WishlistWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WishlistWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WishlistWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  user: UserWhereInput
+  course: CourseWhereInput
+}
+
+input WishlistWhereUniqueInput {
   id: ID
 }

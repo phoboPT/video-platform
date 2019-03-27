@@ -5,51 +5,6 @@ import User from "../../Authentication/User";
 import ItemList from "../../styles/ItemList";
 import CourseItem from "./CourseItem";
 
-const Container = styled.div`
-  display: grid;
-  color: white;
-  display: flex;
-  background: #333350;
-  padding: 20px 0px;
-  border: 1px solid red;
-
-  .info-bar {
-    border: 1px solid black;
-    min-height: 50px;
-    flex: 2;
-    order: 2;
-    padding-left: 25px;
-  }
-  img {
-    max-height: 200px;
-  }
-
-  a {
-    margin-top: 25px;
-    margin-left: 20px;
-    color: black;
-  }
-
-  .video-bar {
-    padding-right: 25px;
-    text-align: right;
-    flex: 1;
-    order: 1;
-    float: left;
-  }
-  button {
-    width: auto;
-    background: red;
-    color: white;
-    border: 0;
-    cursor: pointer;
-    font-size: 2rem;
-    font-weight: 600;
-    padding: 0.5rem 1.2rem;
-    text-align: center;
-  }
-`;
-
 const Bar = styled.div`
   text-align: center;
   padding: 8px 0px;
@@ -76,6 +31,11 @@ const Bar = styled.div`
 `;
 
 class UserCourses extends Component {
+  state = { view: 1 };
+
+  changeView = e => {
+    this.setState({ view: parseInt(e.target.id) });
+  };
   render() {
     return (
       <User>
@@ -87,22 +47,30 @@ class UserCourses extends Component {
               <>
                 <Bar>
                   <div className="info-bar">
-                    <button>My Courses</button>
-                    <button>Whish List </button>
+                    <button id={1} onClick={this.changeView}>
+                      My Courses
+                    </button>
+                    <button id={2} onClick={this.changeView}>
+                      Whish List
+                    </button>
                   </div>
                 </Bar>
-
-                <ItemList>
-                  {courses.map(course => {
-                    return (
-                      <CourseItem
-                        course={course.course}
-                        key={course.course.id}
-                        update={false}
-                      />
-                    );
-                  })}
-                </ItemList>
+                {this.state.view === 1 && (
+                  <ItemList>
+                    {courses.map(course => {
+                      return (
+                        <>
+                          <CourseItem
+                            course={course.course}
+                            key={course.course.id}
+                            update={false}
+                          />
+                        </>
+                      );
+                    })}
+                  </ItemList>
+                )}
+                {this.state.view === 2 && <p>Wishlist</p>}
               </>
             );
           }

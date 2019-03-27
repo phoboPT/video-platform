@@ -167,5 +167,4 @@ export class Courses extends Component {
 }
 
 export default Courses;
-export { ALL_COURSES_QUERY };
-export { ALL_COURSES_ORDERED };
+export { ALL_COURSE_INTERESTS, ALL_COURSES_ORDERED, ALL_COURSES_QUERY };

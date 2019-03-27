@@ -39,8 +39,14 @@ type User {
   permission: [Permission]
   courses: [UserCourse!]!
   cart: [CartItem!]!
+  wishlist: [Wishlist!]!
 }
 
+type Wishlist {
+  id: ID! @unique
+  user: User!
+  course: Course!
+}
 # user
 type Course {
   id: ID! @unique

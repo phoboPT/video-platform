@@ -71,21 +71,25 @@ class ListCourses extends Component {
           <span>
             Category: <State>{course.category.name} </State>
           </span>
-          <span>
-            State:
-            <State
-              background={course.state === "Published" ? "green" : "red"}
-              color="white"
-            >
-              {course.state}
-            </State>
-          </span>
+          {this.props.update && (
+            <span>
+              State:
+              <State
+                background={course.state === "Published" ? "green" : "red"}
+                color="white"
+              >
+                {course.state}
+              </State>
+            </span>
+          )}
           <span>
             Created at: <State>{formatDate(course.createdAt)}</State>
           </span>
-          <span>
-            Price: <State>{course.price} €</State>
-          </span>
+          {this.props.update && (
+            <span>
+              Price: <State>{course.price} €</State>
+            </span>
+          )}
         </Div>
       </ItemStyles>
     );

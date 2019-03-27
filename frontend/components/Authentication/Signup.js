@@ -1,8 +1,9 @@
+import gql from "graphql-tag";
+import Router from "next/router";
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import Form from "../styles/Form";
 import Error from "../Static/ErrorMessage";
+import Form from "../styles/Form";
 import { CURRENT_USER_QUERY } from "./User";
 
 const SIGNUP_MUTATION = gql`
@@ -21,9 +22,9 @@ const SIGNUP_MUTATION = gql`
 
 class Signup extends Component {
   state = {
-    name: "",
     email: "",
-    password: ""
+    name: "",
+    password: "",
   };
   saveToState = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -32,8 +33,8 @@ class Signup extends Component {
     return (
       <Mutation
         mutation={SIGNUP_MUTATION}
-        variables={this.state}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+        variables={this.state}
       >
         {(signup, { error, loading }) => (
           <Form
@@ -42,42 +43,45 @@ class Signup extends Component {
               e.preventDefault();
               await signup();
               this.setState({ name: "", email: "", password: "" });
+              Router.push({
+                pathname: "/choose-interests",
+              });
             }}
           >
-            <fieldset disabled={loading} aria-busy={loading}>
+            <fieldset aria-busy={loading} disabled={loading}>
               <h2>Sign Up for An Account</h2>
               <Error error={error} />
               <label htmlFor="email">
                 Email
                 <input
+                  name="email"
+                  onChange={this.saveToState}
+                  placeholder="email"
                   required
                   type="email"
-                  name="email"
-                  placeholder="email"
                   value={this.state.email}
-                  onChange={this.saveToState}
                 />
               </label>
               <label htmlFor="name">
                 Name
                 <input
+                  name="name"
+                  onChange={this.saveToState}
+                  placeholder="name"
                   required
                   type="text"
-                  name="name"
-                  placeholder="name"
                   value={this.state.name}
-                  onChange={this.saveToState}
                 />
               </label>
               <label htmlFor="password">
                 Password
                 <input
+                  name="password"
+                  onChange={this.saveToState}
+                  placeholder="password"
                   required
                   type="password"
-                  name="password"
-                  placeholder="password"
                   value={this.state.password}
-                  onChange={this.saveToState}
                 />
               </label>
               <button type="submit">Sign Up!</button>

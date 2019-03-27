@@ -31,7 +31,6 @@ const Animation = keyframes`
         transform: rotate(0) translateY(0);
         opacity: 1;
         }
-}
 
 `;
 const animationReady = css`
@@ -81,4 +80,4 @@ const Container = styled.div`
     position: relative;
   }
 `;
-export { Title, Container, CoursesList };
+export { Container, CoursesList, Title };

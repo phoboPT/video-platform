@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React, { Component } from "react";
 import styled from "styled-components";
 import User from "../Authentication/User";
@@ -7,7 +6,6 @@ import CreateCourse from "./CreateCourse/CreateCourse";
 import FormCourse from "./CreateCourse/FormCourse";
 import MyCourses from "./MyCourses/MyCourses";
 import UserCourses from "./MyCourses/UserCourses";
-import Videos from "./MyVideos/Videos";
 import CreateVideo from "./UploadVideo/CreateVideo";
 
 const Button = styled.button`
@@ -106,10 +104,6 @@ class Courses extends Component {
                       <button id="4" onClick={this.changeView}>
                         Upload Video
                       </button>
-
-                      <button id="5" onClick={this.changeView}>
-                        My Videos
-                      </button>
                     </section>
                     <aside id="sidebar" className="main-bar">
                       {this.state.view === 1 && <MyCourses />}
@@ -120,12 +114,6 @@ class Courses extends Component {
                         <CreateCourse state={this.state} />
                       )}
                       {this.state.view === 4 && <CreateVideo />}
-                      {this.state.view === 5 && (
-                        <Videos
-                          page={this.props.page}
-                          courseId={this.courseId}
-                        />
-                      )}
                     </aside>
                   </div>
                 </Style>
