@@ -119,6 +119,7 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput!): Course!
   comCourse(where: ComCourseWhereUniqueInput!): ComCourse
+  categoryFilter(where: CategoryWhereUniqueInput!): Category
 
   # querys selecionar tudo com argumentos
   videosUser(

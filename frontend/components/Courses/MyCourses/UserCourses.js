@@ -4,7 +4,7 @@ import orderCourse from "../../../lib/orderCourses";
 import User from "../../Authentication/User";
 import ItemList from "../../styles/ItemList";
 import CourseItem from "./CourseItem";
-
+import FilterCategory from "./Filters/FilterCategory";
 const Bar = styled.div`
   text-align: center;
   padding: 8px 0px;
@@ -29,6 +29,7 @@ const Bar = styled.div`
     }
   }
 `;
+const Container = styled.div``;
 
 class UserCourses extends Component {
   state = { view: 1 };
@@ -56,19 +57,20 @@ class UserCourses extends Component {
                   </div>
                 </Bar>
                 {this.state.view === 1 && (
-                  <ItemList>
-                    {courses.map(course => {
-                      return (
-                        <>
+                  <Container>
+                    <FilterCategory />
+                    <ItemList>
+                      {courses.map(course => {
+                        return (
                           <CourseItem
                             course={course.course}
                             key={course.course.id}
                             update={false}
                           />
-                        </>
-                      );
-                    })}
-                  </ItemList>
+                        );
+                      })}
+                    </ItemList>
+                  </Container>
                 )}
                 {this.state.view === 2 && <p>Wishlist</p>}
               </>

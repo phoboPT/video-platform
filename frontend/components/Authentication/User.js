@@ -13,6 +13,7 @@ const CURRENT_USER_QUERY = gql`
           id
         }
       }
+
       interests {
         id
       }
@@ -25,6 +26,7 @@ const CURRENT_USER_QUERY = gql`
           state
           createdAt
           category {
+            id
             name
           }
         }
@@ -55,7 +57,7 @@ const User = props => (
 );
 
 User.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.func.isRequired
 };
 
 export default User;

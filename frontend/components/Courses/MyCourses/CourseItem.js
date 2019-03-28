@@ -16,9 +16,10 @@ const Div = styled.div`
     margin-left: 0.5rem;
     text-align: left;
   }
-  strong {
-  }
+
   img {
+    margin: none;
+    cursor: pointer;
   }
 `;
 
@@ -47,9 +48,7 @@ class ListCourses extends Component {
                 query: { id: course.id }
               }}
             >
-              <a>
-                <img src={course.thumbnail} />
-              </a>
+              <img src={course.thumbnail} />
             </Link>
           ) : (
             <Link
@@ -58,9 +57,7 @@ class ListCourses extends Component {
                 query: { id: course.id }
               }}
             >
-              <a>
-                <img src={course.thumbnail} />
-              </a>
+              <img src={course.thumbnail} />
             </Link>
           )}
           <br />
