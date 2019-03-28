@@ -1,6 +1,8 @@
+import Interests from "../components/Authentication/Interests";
+
 const ChooseInterest = props => (
   <div>
-    <p>Interest</p>
+    <Interests />
   </div>
 );
 

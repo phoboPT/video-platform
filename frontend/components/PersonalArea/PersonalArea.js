@@ -38,7 +38,7 @@ const Style = styled.div`
 
 class PersonalArea extends Component {
   state = {
-    view: 1,
+    view: 1
   };
 
   // This method will be sent to the child component
@@ -73,7 +73,7 @@ class PersonalArea extends Component {
                     {this.state.view === 1 && <Information />}
                     {this.state.view === 2 && <FormUser />}
                     {this.state.view === 3 && <FormPassword />}
-                    {this.state.view === 4 && <Interest />}
+                    {this.state.view === 4 && <Interest view={0} />}
                   </aside>
                 </Style>
               </LinkStyle>
