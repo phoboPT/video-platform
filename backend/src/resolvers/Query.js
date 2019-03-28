@@ -137,11 +137,20 @@ const Query = {
     if (!userId) {
       throw new Error("you must be ssigned in!");
     }
-
+    console.log(args);
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
-        ...args
+        where: {
+          AND: [
+            {
+              state: "PUBLISHED"
+            },
+            {
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
       info
     );
