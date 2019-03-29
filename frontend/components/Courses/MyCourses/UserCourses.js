@@ -4,12 +4,13 @@ import orderCourse from "../../../lib/orderCourses";
 import ItemList from "../../styles/ItemList";
 import CourseItem from "./CourseItem";
 import FilterCategory from "./Filters/FilterCategory";
+import FilterAuthor from "./Filters/FilterAuthor";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const COURSES_QUERY = gql`
-  query COURSES_QUERY($category: ID) {
-    categoryFilter(category: $category) {
+  query COURSES_QUERY($category: ID, $author: ID) {
+    categoryFilter(category: $category, author: $author) {
       course {
         id
         title
@@ -62,6 +63,15 @@ const Container = styled.div`
       cursor: not-allowed;
     }
   }
+  .filter {
+    color: #303030;
+    font-size: 15px;
+    font-weight: 100 !important;
+    word-spacing: 2px;
+    margin-left: 5rem;
+    margin-top: 3rem;
+    margin-bottom: 0;
+  }
 `;
 
 class UserCourses extends Component {
@@ -79,10 +89,16 @@ class UserCourses extends Component {
   changeCategory = categoryId => {
     this.setState({ category: categoryId, isDisabled: false });
   };
+  changeAuthor = authorId => {
+    this.setState({ author: authorId, isDisabled: false });
+  };
 
   reset = e => {
-    let selectBox = document.getElementById("category");
-    selectBox.value = "a";
+    let selectBoxcategory = document.getElementById("category");
+    selectBoxcategory.value = "a";
+
+    let selectBoxauthor = document.getElementById("author");
+    selectBoxauthor.value = "a";
     this.setState({ category: "a", isDisabled: true });
   };
 
@@ -111,8 +127,13 @@ class UserCourses extends Component {
                 </Bar>
                 {this.state.view === 1 && (
                   <Container>
+                    <p className="filter">Filtrar Por</p>
                     <FilterCategory
                       changeCategory={this.changeCategory}
+                      state={"a"}
+                    />
+                    <FilterAuthor
+                      changeAuthor={this.changeAuthor}
                       state={"a"}
                     />
                     <button

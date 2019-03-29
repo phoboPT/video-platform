@@ -272,7 +272,7 @@ const Query = {
   categoryFilter(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
-    if (args.category === "a") {
+    if (args.category === "a" || args.author === "a") {
       console.log("entrei");
       return ctx.db.query.userCourses(
         {
@@ -285,28 +285,83 @@ const Query = {
         info
       );
     }
-
-    return ctx.db.query.userCourses(
-      {
-        where: {
-          AND: [
-            {
-              user: {
-                id: userId
-              }
-            },
-            {
-              course: {
-                category: {
-                  id: args.category
+    if (args.author === "a" && args.author !== "a") {
+      return ctx.db.query.userCourses(
+        {
+          where: {
+            AND: [
+              {
+                user: {
+                  id: userId
+                }
+              },
+              {
+                course: {
+                  category: {
+                    id: args.category
+                  }
                 }
               }
-            }
-          ]
-        }
-      },
-      info
-    );
+            ]
+          }
+        },
+        info
+      );
+    }
+    if (args.author !== "a" && args.category === "a") {
+      return ctx.db.query.userCourses(
+        {
+          where: {
+            AND: [
+              {
+                user: {
+                  id: userId
+                }
+              },
+              {
+                course: {
+                  user: {
+                    id: args.user
+                  }
+                }
+              }
+            ]
+          }
+        },
+        info
+      );
+    }
+
+    if (args.author !== "a" && args.category !== "a") {
+      return ctx.db.query.userCourses(
+        {
+          where: {
+            AND: [
+              {
+                user: {
+                  id: userId
+                }
+              },
+              {
+                course: {
+                  user: {
+                    id: args.user
+                  }
+                }
+              },
+              {
+                course: {
+                  category: {
+                    id: args.category
+                  }
+                }
+              }
+            ]
+          }
+        },
+        info
+      );
+    }
   }
 };
 

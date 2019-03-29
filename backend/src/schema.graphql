@@ -119,7 +119,7 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput!): Course!
   comCourse(where: ComCourseWhereUniqueInput!): ComCourse
-  categoryFilter(category: ID): [UserCourse]
+  categoryFilter(category: ID, author: ID): [UserCourse]
   # querys selecionar tudo com argumentos
   videosUser(
     where: VideoWhereInput

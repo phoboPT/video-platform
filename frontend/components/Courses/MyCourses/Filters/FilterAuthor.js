@@ -3,9 +3,13 @@ import User from "../../../Authentication/User";
 import styled from "styled-components";
 
 const Style = styled.div`
-  margin-left: 5rem;
-  margin-top: 2rem;
-
+  margin: 5rem;
+  p {
+    color: #303030;
+    font-size: 15px;
+    font-weight: 100 !important;
+    word-spacing: 2px;
+  }
   select {
     font-size: 2.2rem;
     color: #212121;
@@ -19,14 +23,14 @@ const Style = styled.div`
     }
   }
 `;
-export class FilterCategory extends Component {
+export class FilterAuthor extends Component {
   state = {
-    categoryId: this.props.state
+    authorId: this.props.state
   };
 
   handleChange = e => {
-    this.setState({ categoryId: e.target.value });
-    this.props.changeCategory(e.target.value);
+    this.setState({ authorId: e.target.value });
+    this.props.changeAuthor(e.target.value);
   };
 
   render() {
@@ -39,16 +43,16 @@ export class FilterCategory extends Component {
 
           return (
             <Style>
-              <select id="category" onChange={this.handleChange}>
+              <select id="author" onChange={this.handleChange}>
                 <option value="a" selected disabled hidden>
-                  Categories
+                  Author
                 </option>
                 {me.courses.map(course => (
                   <option
-                    key={course.course.category.id}
-                    value={course.course.category.id}
+                    key={course.course.user.id}
+                    value={course.course.user.id}
                   >
-                    {course.course.category.name}
+                    {course.course.user.name}
                   </option>
                 ))}
               </select>
@@ -60,4 +64,4 @@ export class FilterCategory extends Component {
   }
 }
 
-export default FilterCategory;
+export default FilterAuthor;

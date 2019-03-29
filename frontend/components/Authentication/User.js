@@ -29,6 +29,10 @@ const CURRENT_USER_QUERY = gql`
             id
             name
           }
+          user {
+            id
+            name
+          }
         }
       }
       cart {
