@@ -268,6 +268,45 @@ const Query = {
       },
       info
     );
+  },
+  categoryFilter(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    if (args.category === "a") {
+      console.log("entrei");
+      return ctx.db.query.userCourses(
+        {
+          where: {
+            user: {
+              id: userId
+            }
+          }
+        },
+        info
+      );
+    }
+
+    return ctx.db.query.userCourses(
+      {
+        where: {
+          AND: [
+            {
+              user: {
+                id: userId
+              }
+            },
+            {
+              course: {
+                category: {
+                  id: args.category
+                }
+              }
+            }
+          ]
+        }
+      },
+      info
+    );
   }
 };
 

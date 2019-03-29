@@ -1,10 +1,30 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import orderCourse from "../../../lib/orderCourses";
-import User from "../../Authentication/User";
 import ItemList from "../../styles/ItemList";
 import CourseItem from "./CourseItem";
 import FilterCategory from "./Filters/FilterCategory";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
+const COURSES_QUERY = gql`
+  query COURSES_QUERY($category: ID) {
+    categoryFilter(category: $category) {
+      course {
+        id
+        title
+        thumbnail
+        state
+        createdAt
+        category {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 const Bar = styled.div`
   text-align: center;
   padding: 8px 0px;
@@ -29,21 +49,54 @@ const Bar = styled.div`
     }
   }
 `;
-const Container = styled.div``;
+const Container = styled.div`
+  .teste {
+    color: #515151;
+    &:hover {
+      cursor: pointer;
+      color: #2d2d2d;
+    }
+
+    &:disabled {
+      color: #d1d1d1;
+      cursor: not-allowed;
+    }
+  }
+`;
 
 class UserCourses extends Component {
-  state = { view: 1 };
+  state = {
+    view: 1,
+    category: "a",
+    author: "a",
+    isDisabled: true
+  };
 
   changeView = e => {
     this.setState({ view: parseInt(e.target.id) });
   };
+
+  changeCategory = categoryId => {
+    this.setState({ category: categoryId, isDisabled: false });
+  };
+
+  reset = e => {
+    let selectBox = document.getElementById("category");
+    selectBox.value = "a";
+    this.setState({ category: "a", isDisabled: true });
+  };
+
   render() {
     return (
-      <User>
-        {({ data: { me } }) => {
-          let courses = [];
-          courses = orderCourse(me.courses);
-          if (me && courses) {
+      <Query
+        query={COURSES_QUERY}
+        variables={{ category: this.state.category }}
+      >
+        {({ data, loading }) => {
+          if (data) {
+            let courses = [];
+            courses = orderCourse(data.categoryFilter);
+
             return (
               <>
                 <Bar>
@@ -58,7 +111,17 @@ class UserCourses extends Component {
                 </Bar>
                 {this.state.view === 1 && (
                   <Container>
-                    <FilterCategory />
+                    <FilterCategory
+                      changeCategory={this.changeCategory}
+                      state={"a"}
+                    />
+                    <button
+                      disabled={this.state.isDisabled}
+                      className="teste"
+                      onClick={this.reset}
+                    >
+                      Reset
+                    </button>
                     <ItemList>
                       {courses.map(course => {
                         return (
@@ -78,7 +141,7 @@ class UserCourses extends Component {
           }
           return null;
         }}
-      </User>
+      </Query>
     );
   }
 }
