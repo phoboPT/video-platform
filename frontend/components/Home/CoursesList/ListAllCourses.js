@@ -8,8 +8,7 @@ import CourseItem from "./CourseItem";
 import Pagination from "./Pagination";
 
 const ALL_COURSES_QUERY = gql`
-  query ALL_COURSES_QUERY(
-          $published: State,$skip: Int = 0, $first: Int = ${perPageCourse}) {
+  query ALL_COURSES_QUERY($published: State,$skip: Int = 0, $first: Int = ${perPageCourse}) {
     courses(where:{state:$published},first: $first, skip: $skip) {
       id
       title
@@ -18,6 +17,7 @@ const ALL_COURSES_QUERY = gql`
       createdAt
       price
       user {
+        id
         name
       }
     }
@@ -36,6 +36,7 @@ const ALL_COURSES_ORDERED = gql`
       createdAt
       price
       user {
+        id
         name
       }
     }
@@ -52,6 +53,7 @@ const ALL_COURSE_INTERESTS = gql`
       createdAt
       price
       user {
+        id
         name
       }
       count
@@ -136,7 +138,7 @@ export class Courses extends Component {
             if (error) {
               return <p>Error:{error.message}</p>;
             }
-
+            console.log(data);
             return (
               <>
                 <Container>
