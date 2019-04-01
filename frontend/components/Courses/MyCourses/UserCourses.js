@@ -51,17 +51,26 @@ const Bar = styled.div`
   }
 `;
 const Container = styled.div`
-  .teste {
+  .reset {
     color: #515151;
+    font-size: 12px;
+    font-weight: 100;
+    margin-top: 3rem;
+    margin-left: 3.5rem;
     &:hover {
       cursor: pointer;
       color: #2d2d2d;
     }
-
+    &:focus {
+      outline: none;
+    }
     &:disabled {
       color: #d1d1d1;
       cursor: not-allowed;
     }
+  }
+  #flex {
+    display: flex !important;
   }
   .filter {
     color: #303030;
@@ -99,14 +108,14 @@ class UserCourses extends Component {
 
     let selectBoxauthor = document.getElementById("author");
     selectBoxauthor.value = "a";
-    this.setState({ category: "a", isDisabled: true });
+    this.setState({ category: "a", isDisabled: true, author: "a" });
   };
 
   render() {
     return (
       <Query
         query={COURSES_QUERY}
-        variables={{ category: this.state.category }}
+        variables={{ category: this.state.category, author: this.state.author }}
       >
         {({ data, loading }) => {
           if (data) {
@@ -128,21 +137,23 @@ class UserCourses extends Component {
                 {this.state.view === 1 && (
                   <Container>
                     <p className="filter">Filtrar Por</p>
-                    <FilterCategory
-                      changeCategory={this.changeCategory}
-                      state={"a"}
-                    />
-                    <FilterAuthor
-                      changeAuthor={this.changeAuthor}
-                      state={"a"}
-                    />
-                    <button
-                      disabled={this.state.isDisabled}
-                      className="teste"
-                      onClick={this.reset}
-                    >
-                      Reset
-                    </button>
+                    <div id="flex">
+                      <FilterCategory
+                        changeCategory={this.changeCategory}
+                        state={"a"}
+                      />
+                      <FilterAuthor
+                        changeAuthor={this.changeAuthor}
+                        state={"a"}
+                      />
+                      <button
+                        disabled={this.state.isDisabled}
+                        className="reset"
+                        onClick={this.reset}
+                      >
+                        Reset
+                      </button>
+                    </div>
                     <ItemList>
                       {courses.map(course => {
                         return (

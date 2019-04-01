@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import User from "../../../Authentication/User";
 import styled from "styled-components";
+import reduceData from "../../../../lib/reduceData";
 
 const Style = styled.div`
-  margin: 5rem;
+  margin-top: 2rem;
+  margin-left: 2rem;
   p {
     color: #303030;
     font-size: 15px;
@@ -40,19 +42,20 @@ export class FilterAuthor extends Component {
           if (!me) {
             return null;
           }
-
+          //filtering results to remove categorys with the same id
+          const courses = me.courses.map(course => {
+            return course.course.user;
+          });
+          const resFinal = reduceData(courses);
           return (
             <Style>
-              <select id="author" onChange={this.handleChange}>
-                <option value="a" selected disabled hidden>
+              <select id="author" defaultValue="a" onChange={this.handleChange}>
+                <option value="a" disabled hidden>
                   Author
                 </option>
-                {me.courses.map(course => (
-                  <option
-                    key={course.course.user.id}
-                    value={course.course.user.id}
-                  >
-                    {course.course.user.name}
+                {resFinal.map(course => (
+                  <option key={course.id} value={course.id}>
+                    {course.name}
                   </option>
                 ))}
               </select>

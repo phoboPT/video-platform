@@ -137,7 +137,6 @@ const Query = {
     if (!userId) {
       throw new Error("you must be ssigned in!");
     }
-    console.log(args);
     //query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
@@ -271,97 +270,45 @@ const Query = {
   },
   categoryFilter(parent, args, ctx, info) {
     const { userId } = ctx.request;
+    console.log(args.author);
+    let categoryId = args.category;
+    let authorId = args.author;
+    if (args.category === "a") {
+      categoryId = undefined;
+    }
 
-    if (args.category === "a" || args.author === "a") {
-      console.log("entrei");
-      return ctx.db.query.userCourses(
-        {
-          where: {
-            user: {
-              id: userId
+    if (args.author === "a") {
+      authorId = undefined;
+    }
+
+    return ctx.db.query.userCourses(
+      {
+        where: {
+          AND: [
+            {
+              user: {
+                id: userId
+              }
+            },
+            {
+              course: {
+                category: {
+                  id: categoryId
+                }
+              }
+            },
+            {
+              course: {
+                user: {
+                  id: authorId
+                }
+              }
             }
-          }
-        },
-        info
-      );
-    }
-    if (args.author === "a" && args.author !== "a") {
-      return ctx.db.query.userCourses(
-        {
-          where: {
-            AND: [
-              {
-                user: {
-                  id: userId
-                }
-              },
-              {
-                course: {
-                  category: {
-                    id: args.category
-                  }
-                }
-              }
-            ]
-          }
-        },
-        info
-      );
-    }
-    if (args.author !== "a" && args.category === "a") {
-      return ctx.db.query.userCourses(
-        {
-          where: {
-            AND: [
-              {
-                user: {
-                  id: userId
-                }
-              },
-              {
-                course: {
-                  user: {
-                    id: args.user
-                  }
-                }
-              }
-            ]
-          }
-        },
-        info
-      );
-    }
-
-    if (args.author !== "a" && args.category !== "a") {
-      return ctx.db.query.userCourses(
-        {
-          where: {
-            AND: [
-              {
-                user: {
-                  id: userId
-                }
-              },
-              {
-                course: {
-                  user: {
-                    id: args.user
-                  }
-                }
-              },
-              {
-                course: {
-                  category: {
-                    id: args.category
-                  }
-                }
-              }
-            ]
-          }
-        },
-        info
-      );
-    }
+          ]
+        }
+      },
+      info
+    );
   }
 };
 
