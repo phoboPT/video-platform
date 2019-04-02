@@ -33,10 +33,10 @@ const Query = {
     return ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
-      info,
+      info
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -51,11 +51,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -72,11 +72,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -86,11 +86,11 @@ const Query = {
         orderBy: "createdAt_DESC",
         where: {
           course: {
-            id: args.id,
-          },
-        },
+            id: args.id
+          }
+        }
       },
-      info,
+      info
     );
   },
   coursesUser(parent, args, ctx, info) {
@@ -104,12 +104,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
+            id: userId
+          }
         },
-        ...args,
+        ...args
       },
-      info,
+      info
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -127,16 +127,16 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId,
-              },
+                id: userId
+              }
             },
             {
-              title_contains: args.title_contains,
-            },
-          ],
-        },
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
   coursesSearch(parent, args, ctx, info) {
@@ -152,15 +152,15 @@ const Query = {
         where: {
           AND: [
             {
-              state: "PUBLISHED",
+              state: "PUBLISHED"
             },
             {
-              title_contains: args.title_contains,
-            },
-          ],
-        },
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
 
@@ -170,8 +170,8 @@ const Query = {
     const user = await ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
       `
         {
@@ -185,7 +185,7 @@ const Query = {
             }
           }
         }
-        `,
+        `
     );
 
     //mapear os interesses do user
@@ -203,16 +203,16 @@ const Query = {
               AND: [
                 {
                   interest: {
-                    id: id,
-                  },
+                    id: id
+                  }
                 },
                 {
                   course: {
-                    state: "PUBLISHED",
-                  },
-                },
-              ],
-            },
+                    state: "PUBLISHED"
+                  }
+                }
+              ]
+            }
           },
           `{
            course{
@@ -228,10 +228,10 @@ const Query = {
                name
              }
            }
-         }`,
+         }`
         );
         return res;
-      }),
+      })
     );
     //remove the layers of an array putting all in one flat function
     let res = result.flat();
@@ -245,14 +245,14 @@ const Query = {
     const wishlist = await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId },
-        },
+          user: { id: userId }
+        }
       },
       `{
         course{
           id
         }
-      }`,
+      }`
     );
 
     //Wish ids to compare
@@ -275,7 +275,7 @@ const Query = {
 
     //Filter the array to remove duplicates
     let cleanResponse = Object.values(
-      clean.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {}),
+      clean.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {})
     );
 
     //Add count to array
@@ -302,10 +302,10 @@ const Query = {
     return ctx.db.query.coursesConnection(
       {
         where: {
-          state: "PUBLISHED",
-        },
+          state: "PUBLISHED"
+        }
       },
-      info,
+      info
     );
   },
   async coursesList(parent, args, ctx, info) {
@@ -315,9 +315,9 @@ const Query = {
     const res = await ctx.db.query.courses(
       {
         where: {
-          state: "PUBLISHED",
+          state: "PUBLISHED"
         },
-        orderBy: "createdAt_DESC",
+        orderBy: "createdAt_DESC"
       },
       `{
          id
@@ -333,18 +333,18 @@ const Query = {
            wishlist{course{id}}
          }
      }`,
-      info,
+      info
     );
     //Wishlist array
     const wishlist = await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId },
-        },
+          user: { id: userId }
+        }
       },
       `{
         course{id}
-     }`,
+     }`
     );
 
     //Wish ids to compare
@@ -365,6 +365,48 @@ const Query = {
 
     return finalRes;
   },
+  coursesFilter(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    console.log(args.author);
+    let categoryId = args.category;
+    let authorId = args.author;
+    if (args.category === "a") {
+      categoryId = undefined;
+    }
+
+    if (args.author === "a") {
+      authorId = undefined;
+    }
+
+    return ctx.db.query.userCourses(
+      {
+        where: {
+          AND: [
+            {
+              user: {
+                id: userId
+              }
+            },
+            {
+              course: {
+                category: {
+                  id: categoryId
+                }
+              }
+            },
+            {
+              course: {
+                user: {
+                  id: authorId
+                }
+              }
+            }
+          ]
+        }
+      },
+      info
+    );
+  }
 };
 
 module.exports = Query;

@@ -8,9 +8,9 @@ import CourseItem from "./CourseItem";
 import FilterAuthor from "./Filters/FilterAuthor";
 import FilterCategory from "./Filters/FilterCategory";
 
-const COURSES_QUERY = gql`
-  query COURSES_QUERY($category: ID, $author: ID) {
-    categoryFilter(category: $category, author: $author) {
+const COURSES_FILTER_QUERY = gql`
+  query COURSES_FILTER_QUERY($category: ID, $author: ID) {
+    coursesFilter(category: $category, author: $author) {
       course {
         id
         title
@@ -88,7 +88,7 @@ class UserCourses extends Component {
     author: "a",
     category: "a",
     isDisabled: true,
-    view: 1,
+    view: 1
   };
 
   changeView = e => {
@@ -114,13 +114,13 @@ class UserCourses extends Component {
   render() {
     return (
       <Query
-        query={COURSES_QUERY}
+        query={COURSES_FILTER_QUERY}
         variables={{ category: this.state.category, author: this.state.author }}
       >
         {({ data, loading }) => {
           if (data) {
             let courses = [];
-            courses = orderCourse(data.categoryFilter);
+            courses = orderCourse(data.coursesFilter);
 
             return (
               <>
@@ -134,39 +134,42 @@ class UserCourses extends Component {
                     </button>
                   </div>
                 </Bar>
-                {this.state.view === 1 && (
-                  <Container>
-                    <p className="filter">Filtrar Por</p>
-                    <div id="flex">
-                      <FilterCategory
-                        changeCategory={this.changeCategory}
-                        state={"a"}
-                      />
-                      <FilterAuthor
-                        changeAuthor={this.changeAuthor}
-                        state={"a"}
-                      />
-                      <button
-                        disabled={this.state.isDisabled}
-                        className="reset"
-                        onClick={this.reset}
-                      >
-                        Reset
-                      </button>
-                    </div>
-                    <ItemList>
-                      {courses.map(course => {
-                        return (
-                          <CourseItem
-                            course={course.course}
-                            key={course.course.id}
-                            update={false}
-                          />
-                        );
-                      })}
-                    </ItemList>
-                  </Container>
-                )}
+                {data.coursesFilter.length === 0 &&
+                  (this.state.view === 1 && <p>No Courses Found </p>)}
+                {data.coursesFilter.length > 0 &&
+                  (this.state.view === 1 && (
+                    <Container>
+                      <p className="filter">Filtrar Por</p>
+                      <div id="flex">
+                        <FilterCategory
+                          changeCategory={this.changeCategory}
+                          state={"a"}
+                        />
+                        <FilterAuthor
+                          changeAuthor={this.changeAuthor}
+                          state={"a"}
+                        />
+                        <button
+                          disabled={this.state.isDisabled}
+                          className="reset"
+                          onClick={this.reset}
+                        >
+                          Reset
+                        </button>
+                      </div>
+                      <ItemList>
+                        {courses.map(course => {
+                          return (
+                            <CourseItem
+                              course={course.course}
+                              key={course.course.id}
+                              update={false}
+                            />
+                          );
+                        })}
+                      </ItemList>
+                    </Container>
+                  ))}
                 {this.state.view === 2 && <p>Wishlist</p>}
               </>
             );
