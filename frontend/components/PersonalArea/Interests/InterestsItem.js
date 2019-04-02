@@ -28,10 +28,11 @@ const Border = styled.div`
     outline: none;
   }
   p {
+    opacity: 0.8;
     float: left;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     line-height: 4;
-    font-weight: 500;
+    font-weight: 300;
     flex-grow: 1;
     padding: 0 1rem;
     margin: 0.5rem;

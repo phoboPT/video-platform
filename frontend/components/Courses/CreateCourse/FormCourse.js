@@ -150,6 +150,9 @@ class FormCourse extends Component {
   changeQuill = value => {
     this.setState({ description: value, text: value });
   };
+  handleChange = e => {
+    this.setState({ category: e.target.value });
+  };
 
   render() {
     return (

@@ -1,9 +1,30 @@
+import gql from "graphql-tag";
 import React, { Component } from "react";
+import { Query } from "react-apollo";
 import styled from "styled-components";
 import orderCourse from "../../../lib/orderCourses";
-import User from "../../Authentication/User";
 import ItemList from "../../styles/ItemList";
 import CourseItem from "./CourseItem";
+import FilterAuthor from "./Filters/FilterAuthor";
+import FilterCategory from "./Filters/FilterCategory";
+
+const COURSES_QUERY = gql`
+  query COURSES_QUERY($category: ID, $author: ID) {
+    categoryFilter(category: $category, author: $author) {
+      course {
+        id
+        title
+        thumbnail
+        state
+        createdAt
+        category {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
 
 const Bar = styled.div`
   text-align: center;
@@ -29,22 +50,78 @@ const Bar = styled.div`
     }
   }
 `;
+const Container = styled.div`
+  .reset {
+    color: #515151;
+    font-size: 12px;
+    font-weight: 100;
+    margin-top: 3rem;
+    margin-left: 3.5rem;
+    &:hover {
+      cursor: pointer;
+      color: #2d2d2d;
+    }
+    &:focus {
+      outline: none;
+    }
+    &:disabled {
+      color: #d1d1d1;
+      cursor: not-allowed;
+    }
+  }
+  #flex {
+    display: flex !important;
+  }
+  .filter {
+    color: #303030;
+    font-size: 15px;
+    font-weight: 100 !important;
+    word-spacing: 2px;
+    margin-left: 5rem;
+    margin-top: 3rem;
+    margin-bottom: 0;
+  }
+`;
 
 class UserCourses extends Component {
-  state = { view: 1 };
+  state = {
+    author: "a",
+    category: "a",
+    isDisabled: true,
+    view: 1,
+  };
 
   changeView = e => {
     this.setState({ view: parseInt(e.target.id) });
   };
+
+  changeCategory = categoryId => {
+    this.setState({ category: categoryId, isDisabled: false });
+  };
+  changeAuthor = authorId => {
+    this.setState({ author: authorId, isDisabled: false });
+  };
+
+  reset = e => {
+    let selectBoxcategory = document.getElementById("category");
+    selectBoxcategory.value = "a";
+
+    let selectBoxauthor = document.getElementById("author");
+    selectBoxauthor.value = "a";
+    this.setState({ author: "a", category: "a", isDisabled: true });
+  };
+
   render() {
     return (
-      <User>
-        {({ data: { me } }) => {
-          let courses = [];
-          if (me) {
-            courses = orderCourse(me.courses);
-          }
-          if (me && courses) {
+      <Query
+        query={COURSES_QUERY}
+        variables={{ category: this.state.category, author: this.state.author }}
+      >
+        {({ data, loading }) => {
+          if (data) {
+            let courses = [];
+            courses = orderCourse(data.categoryFilter);
+
             return (
               <>
                 <Bar>
@@ -58,27 +135,44 @@ class UserCourses extends Component {
                   </div>
                 </Bar>
                 {this.state.view === 1 && (
-                  <ItemList>
-                    {courses.map(course => {
-                      return (
-                        <>
+                  <Container>
+                    <p className="filter">Filtrar Por</p>
+                    <div id="flex">
+                      <FilterCategory
+                        changeCategory={this.changeCategory}
+                        state={"a"}
+                      />
+                      <FilterAuthor
+                        changeAuthor={this.changeAuthor}
+                        state={"a"}
+                      />
+                      <button
+                        disabled={this.state.isDisabled}
+                        className="reset"
+                        onClick={this.reset}
+                      >
+                        Reset
+                      </button>
+                    </div>
+                    <ItemList>
+                      {courses.map(course => {
+                        return (
                           <CourseItem
                             course={course.course}
                             key={course.course.id}
                             update={false}
                           />
-                        </>
-                      );
-                    })}
-                  </ItemList>
+                        );
+                      })}
+                    </ItemList>
+                  </Container>
                 )}
                 {this.state.view === 2 && <p>Wishlist</p>}
               </>
             );
           }
-          return null;
         }}
-      </User>
+      </Query>
     );
   }
 }

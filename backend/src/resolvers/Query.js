@@ -139,6 +139,31 @@ const Query = {
       info,
     );
   },
+  coursesSearch(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // console.log(args);
+    //Ver se esta logado
+    if (!userId) {
+      throw new Error("you must be ssigned in!");
+    }
+    //query o video atual com comparaçao de ids de user
+    return ctx.db.query.courses(
+      {
+        where: {
+          AND: [
+            {
+              state: "PUBLISHED",
+            },
+            {
+              title_contains: args.title_contains,
+            },
+          ],
+        },
+      },
+      info,
+    );
+  },
+
   async coursesUserInterestList(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //Get user
