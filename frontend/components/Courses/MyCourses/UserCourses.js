@@ -88,7 +88,7 @@ class UserCourses extends Component {
     author: "a",
     category: "a",
     isDisabled: true,
-    view: 1
+    view: 1,
   };
 
   changeView = e => {
