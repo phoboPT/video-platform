@@ -283,13 +283,6 @@ const Query = {
     return finalRes;
   },
   coursesConnection(parent, args, ctx, info) {
-    const { userId } = ctx.request;
-
-    //Ver se esta logado
-    if (!userId) {
-      throw new Error("you must be signed in!");
-    }
-    //query o video atual com comparaçao de ids de user
     return ctx.db.query.coursesConnection(
       {
         where: {
@@ -331,6 +324,7 @@ const Query = {
      }`,
       info,
     );
+
     //Wishlist array
     const wishlist = await ctx.db.query.wishlists(
       {

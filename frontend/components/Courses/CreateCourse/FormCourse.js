@@ -64,6 +64,11 @@ const Container = styled.div`
   .description {
     background-color: lightgray;
   }
+  .button-next {
+    :disabled {
+      opacity: 0.5;
+    }
+  }
 
   #courseState {
     padding-top: 10px;
@@ -94,6 +99,7 @@ class FormCourse extends Component {
     category: "",
     description: "",
     editorState: EditorState.createEmpty(),
+    isDisabled: true,
     price: 0,
     published: false,
     state: "UNPUBLISHED",
@@ -123,6 +129,7 @@ class FormCourse extends Component {
   };
 
   uploadThumbnail = async e => {
+    this.setState({ isDisabled: true });
     const files = e.target.files;
 
     const data = new FormData();
@@ -135,7 +142,7 @@ class FormCourse extends Component {
     );
 
     const file = await res.json();
-    this.setState({ thumbnail: file.secure_url });
+    this.setState({ isDisabled: false, thumbnail: file.secure_url });
   };
 
   onEditorStateChange = editorState => {
@@ -266,7 +273,12 @@ class FormCourse extends Component {
                         </select>
                         <br />
                         <br />
-                        <button>Next</button>
+                        <button
+                          disabled={this.state.isDisabled}
+                          className="button-next"
+                        >
+                          Next
+                        </button>
                       </fieldset>
                     </Form>
                   </>
