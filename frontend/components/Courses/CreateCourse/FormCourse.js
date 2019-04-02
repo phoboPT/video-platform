@@ -106,7 +106,7 @@ class FormCourse extends Component {
     target: "",
     thumbnail: "",
     title: "",
-    unpublished: true,
+    unpublished: true
   };
 
   saveState = e => {
@@ -116,7 +116,7 @@ class FormCourse extends Component {
     this.setState({
       published: !this.state.published,
       state: "PUBLISHED",
-      unpublished: !this.state.unpublished,
+      unpublished: !this.state.unpublished
     });
   };
 
@@ -124,7 +124,7 @@ class FormCourse extends Component {
     this.setState({
       published: !this.state.published,
       state: "UNPUBLISHED",
-      unpublished: !this.state.unpublished,
+      unpublished: !this.state.unpublished
     });
   };
 
@@ -138,7 +138,7 @@ class FormCourse extends Component {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data },
+      { method: "POST", body: data }
     );
 
     const file = await res.json();
@@ -147,10 +147,10 @@ class FormCourse extends Component {
 
   onEditorStateChange = editorState => {
     this.setState({
-      editorState,
+      editorState
     });
     this.setState({
-      description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+      description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
     });
   };
 
@@ -248,7 +248,7 @@ class FormCourse extends Component {
                             min="1"
                             step="any"
                             name="price"
-                            placeholder="00,00"
+                            placeholder="00.00"
                             value={this.price}
                             onChange={this.saveState}
                             required

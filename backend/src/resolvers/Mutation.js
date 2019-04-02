@@ -770,10 +770,10 @@ const Mutations = {
 
     if (!userId)
       throw new Error("You must be signed in to complete this order.");
-
+    
     return ctx.db.mutation.createUserCourse({
       data: {
-        course: { connect: { id: id } },
+        course: { connect: { id: args.id } },
         user: { connect: { id: userId } }
       }
     });

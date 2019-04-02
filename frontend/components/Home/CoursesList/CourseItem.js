@@ -8,6 +8,7 @@ import ItemStyles from "../../styles/ItemStyles";
 import AddToCart from "../Cart/AddToCart";
 import WishButton from "../WishButton";
 import BuyFreeButton from "../BuyFreeButton";
+import formatMoney from "../../../lib/formatMoney";
 
 const InfoStyle = styled.p`
   text-align: left;
@@ -48,23 +49,23 @@ export class CourseItem extends Component {
                 {course.price === 0 ? (
                   <InfoStyle className="price">Free Course</InfoStyle>
                 ) : (
-                  <InfoStyle className="price">{course.price} €</InfoStyle>
+                  <InfoStyle className="price">
+                    {formatMoney(course.price)}
+                  </InfoStyle>
                 )}
 
                 <div className="buttonList">
-                  <AddToCart id={course.id} />
-
+                  {course.price === 0 ? (
+                    <BuyFreeButton id={course.id} skip={this.props.skip} />
+                  ) : (
+                    <AddToCart id={course.id} />
+                  )}
                   <WishButton
                     id={course.id}
                     data={course}
                     skip={this.props.skip}
                   />
-                  <BuyFreeButton
-                    id={course.id}
-                    data={course}
-                    skip={this.props.skip}
-                  />
-                  <p>5</p>
+                  <p>5*</p>
                 </div>
               </ItemStyles>
             </>

@@ -25,9 +25,9 @@ export class Home extends Component {
 
               <ListAllCourses query="ALL_COURSES_QUERY" me />
               <ListAllCourses query="ALL_COURSES_ORDERED" />
-              {me.interests.length > 0 && (
+              {/* {me.interests.length > 0 && (
                 <ListAllCourses query="ALL_COURSE_INTERESTS" />
-              )}
+              )} */}
             </>
           );
         }}

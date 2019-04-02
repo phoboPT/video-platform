@@ -47,7 +47,7 @@ type Wishlist {
   user: User!
   course: Course!
 }
-# user
+
 type Course {
   id: ID! @unique
   videos: [CourseVideos!]!
