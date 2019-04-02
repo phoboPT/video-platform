@@ -8,9 +8,9 @@ import Editor from "../Editor";
 import styled from "styled-components";
 import Error from "../../Static/ErrorMessage";
 import Form from "../../styles/Form";
-import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
-import Unpublished from "../CourseState/Unpublished";
 import Published from "../CourseState/Published";
+import Unpublished from "../CourseState/Unpublished";
+import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -93,14 +93,14 @@ class FormCourse extends Component {
   state = {
     category: "",
     description: "",
+    editorState: EditorState.createEmpty(),
+    price: 0,
+    published: false,
     state: "UNPUBLISHED",
     target: "",
     thumbnail: "",
     title: "",
-    editorState: EditorState.createEmpty(),
-    price: 0,
-    published: false,
-    unpublished: true
+    unpublished: true,
   };
 
   saveState = e => {
@@ -108,17 +108,17 @@ class FormCourse extends Component {
   };
   changePublished = e => {
     this.setState({
-      state: "PUBLISHED",
       published: !this.state.published,
-      unpublished: !this.state.unpublished
+      state: "PUBLISHED",
+      unpublished: !this.state.unpublished,
     });
   };
 
   changeUnpublished = e => {
     this.setState({
-      state: "UNPUBLISHED",
       published: !this.state.published,
-      unpublished: !this.state.unpublished
+      state: "UNPUBLISHED",
+      unpublished: !this.state.unpublished,
     });
   };
 
@@ -131,7 +131,7 @@ class FormCourse extends Component {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data }
+      { method: "POST", body: data },
     );
 
     const file = await res.json();
@@ -140,10 +140,10 @@ class FormCourse extends Component {
 
   onEditorStateChange = editorState => {
     this.setState({
-      editorState
+      editorState,
     });
     this.setState({
-      description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+      description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
     });
   };
 
@@ -175,7 +175,7 @@ class FormCourse extends Component {
                       onSubmit={async e => {
                         e.preventDefault();
                         const res = await createCourse();
-                        this.props.saveToState();
+                        this.props.saveToState(res);
                       }}
                     >
                       <Error error={error} />

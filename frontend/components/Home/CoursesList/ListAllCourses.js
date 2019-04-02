@@ -14,8 +14,8 @@ const RENDER_QUERY = gql`
 
 const ALL_COURSES_QUERY = gql`
   query ALL_COURSES_QUERY(
-          $skip: Int = 0, $first: Int = ${perPageCourse}) {
-           coursesList(first: $first, skip: $skip,orderBy:false) {
+          $skip: Int = 0, $first: Int = ${perPageCourse}, $orderBy: String = "title_ASC") {
+           coursesList(first: $first, skip: $skip,orderBy: $orderBy ,) {
       id
       title
       description
@@ -25,8 +25,7 @@ const ALL_COURSES_QUERY = gql`
       user {
         id
         name
-       
-      }
+             }
       wished
     }
   }
@@ -35,8 +34,8 @@ const ALL_COURSES_QUERY = gql`
 //orderby query
 
 const ALL_COURSES_ORDERED = gql`
-  query ALL_COURSES_ORDERED($skip: Int = 0, $first: Int = ${perPageCourse} ) {
-    coursesList(first: $first, skip: $skip ,orderBy: true) {
+  query ALL_COURSES_ORDERED($skip: Int = 0, $first: Int = ${perPageCourse} $orderBy: String = "createdAt_DESC") {
+    coursesList(first: $first, skip: $skip ,orderBy: $orderBy) {
       id
       title
       description
@@ -46,12 +45,10 @@ const ALL_COURSES_ORDERED = gql`
       user {
         id
         name
-        
         }
         wished
       }
     }
-  
 `;
 //interests query
 const ALL_COURSE_INTERESTS = gql`
@@ -66,7 +63,6 @@ const ALL_COURSE_INTERESTS = gql`
       user {
         id
         name
-        
       }
       count
       wished

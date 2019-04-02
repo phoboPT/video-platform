@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { Mutation } from "react-apollo";
+import styled from "styled-components";
 
 const ADD_TAGS_COURSE = gql`
   mutation ADD_TAGS_COURSE($courseId: ID!, $interestId: ID!) {
@@ -42,13 +42,13 @@ const ButtonStyle = styled.button`
 
 class InterestItem extends Component {
   state = {
-    interestId: this.props.interest.id,
     courseId: this.props.courseId,
+    interestId: this.props.interest.id,
     isActive: false,
   };
   static propTypes = {
-    interest: PropTypes.object.isRequired,
     courseId: PropTypes.string.isRequired,
+    interest: PropTypes.object.isRequired,
   };
 
   updateState = e => {
@@ -58,7 +58,13 @@ class InterestItem extends Component {
   render() {
     const { interest } = this.props;
     return (
-      <Mutation mutation={ADD_TAGS_COURSE} variables={this.state}>
+      <Mutation
+        mutation={ADD_TAGS_COURSE}
+        variables={{
+          courseId: this.state.courseId,
+          interestId: this.state.interestId,
+        }}
+      >
         {(addTargetCourse, { loading }) => {
           if (loading) return <p>loading</p>;
           return (
@@ -69,6 +75,7 @@ class InterestItem extends Component {
                 this.updateState();
               }}
             >
+              <p>hello</p>
               {interest.name}
             </ButtonStyle>
           );

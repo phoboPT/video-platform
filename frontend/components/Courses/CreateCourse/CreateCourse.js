@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Link from "next/link";
-import InterestItem from "./InterestItem";
+import React, { Component } from "react";
+import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
+import InterestItem from "./InterestItem";
 
 const ALL_INTEREST_QUERY = gql`
   query ALL_INTEREST_QUERY {
@@ -39,13 +39,14 @@ class CreateCourse extends Component {
             if (error) {
               return <p>Error:{error.message}</p>;
             }
+            console.log(this.props.state);
             return (
               <InterestStyle>
                 {data.interests.map((interest, index) => (
                   <InterestItem
                     key={interest.id}
                     interest={interest}
-                    courseId={this.props.state.courseId}
+                    courseId={this.props.courseId}
                     id={index}
                   />
                 ))}

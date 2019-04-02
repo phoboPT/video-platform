@@ -152,7 +152,8 @@ type Query {
     skip: Int
     first: Int
   ): [Course]
-  coursesList(orderBy: Boolean, skip: Int, first: Int): [Course]
+
+  coursesList(orderBy: String, skip: Int, first: Int): [Course]
 
   # listar todos os comentarios de um curso
   comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]

@@ -75,7 +75,8 @@ class Courses extends Component {
 
   // This method will be sent to the child component
   saveToState = e => {
-    this.setState({ view: 3 });
+    console.log(e);
+    this.setState({ courseId: e.data.createCourse.id, view: 3 });
   };
 
   changeView = e => {
@@ -111,7 +112,7 @@ class Courses extends Component {
                         <FormCourse saveToState={this.saveToState} />
                       )}
                       {this.state.view === 3 && (
-                        <CreateCourse state={this.state} />
+                        <CreateCourse courseId={this.state.courseId} />
                       )}
                       {this.state.view === 4 && <CreateVideo />}
                     </aside>

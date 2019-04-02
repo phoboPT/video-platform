@@ -742,7 +742,6 @@ const Mutations = {
 
     //Check if that item is already in their cart and increment by 1 id it is
     if (existingWhishItem) {
-      console.log("remove");
       return ctx.db.mutation.deleteWishlist(
         {
           where: { id: existingWhishItem.id },
