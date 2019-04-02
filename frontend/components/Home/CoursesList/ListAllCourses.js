@@ -76,21 +76,21 @@ export class ListAllCourses extends Component {
       case "ALL_COURSE_INTERESTS": {
         this.setState({
           query: ALL_COURSE_INTERESTS,
-          title: "Interests List",
+          title: "Interests List"
         });
         break;
       }
       case "ALL_COURSES_ORDERED": {
         this.setState({
           query: ALL_COURSES_ORDERED,
-          title: "By Creation List",
+          title: "By Creation List"
         });
         break;
       }
       case "ALL_COURSES_QUERY": {
         this.setState({
           query: ALL_COURSES_QUERY,
-          title: "All Courses List",
+          title: "All Courses List"
         });
         break;
       }
@@ -106,7 +106,7 @@ export class ListAllCourses extends Component {
     count: 0,
     page: 1,
     query: ALL_COURSES_QUERY,
-    title: "",
+    title: ""
   };
 
   animationSliderControlForward = () => {
@@ -138,7 +138,7 @@ export class ListAllCourses extends Component {
           query={this.state.query}
           variables={{
             published: "PUBLISHED",
-            skip: this.state.page * perPageCourse - perPageCourse,
+            skip: this.state.page * perPageCourse - perPageCourse
           }}
         >
           {({ data, error, loading }) => {
@@ -227,5 +227,5 @@ export {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
-  RENDER_QUERY,
+  RENDER_QUERY
 };
