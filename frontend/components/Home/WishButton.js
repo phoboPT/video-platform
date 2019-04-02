@@ -81,23 +81,22 @@ export class AddToWish extends Component {
 
   render() {
     const { data } = this.props;
-
     return (
       <Mutation
         mutation={ADD_TO_WISHLIST_MUTATION}
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
-            variables: { published: "PUBLISHED", skip: this.props.skip },
+            variables: { published: "PUBLISHED", skip: data.skip },
           },
 
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: "PUBLISHED", skip: this.props.skip },
+            variables: { published: "PUBLISHED", skip: data.skip },
           },
           {
             query: ALL_COURSE_INTERESTS,
-            variables: { published: "PUBLISHED", skip: this.props.skip },
+            variables: { published: "PUBLISHED", skip: data.skip },
           },
         ]}
         variables={{
