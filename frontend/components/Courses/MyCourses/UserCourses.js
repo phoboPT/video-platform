@@ -30,7 +30,6 @@ const Bar = styled.div`
   text-align: center;
   padding: 8px 0px;
   background: #333350;
-
   button {
     width: auto;
     color: white;
