@@ -41,8 +41,9 @@ export class CourseItem extends Component {
           <InfoStyle className="price">{course.price} €</InfoStyle>
 
           <div className="buttonList">
-            {/* <AddToCart id={course.id} /> */}
-
+            <Link href="/signup">
+              <a>Add to Cart</a>
+            </Link>
             {/* <WishButton id={course.id} data={course} skip={this.props.skip} /> */}
             <p>5</p>
           </div>

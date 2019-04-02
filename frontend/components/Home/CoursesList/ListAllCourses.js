@@ -34,7 +34,7 @@ const ALL_COURSES_QUERY = gql`
 
 const ALL_COURSES_NOUSER = gql`
   query ALL_COURSES_NOUSER($skip: Int = 0, $first: Int = ${perPageCourse} ) {
-           courses(first: $first, skip: $skip ,) {
+           courses(first: $first, skip: $skip ,orderBy: title_ASC) {
       id
       title
       description
@@ -49,6 +49,23 @@ const ALL_COURSES_NOUSER = gql`
   }
 `;
 
+const ALL_COURSES_ORDERED_NOUSER = gql`
+  query ALL_COURSES_ORDERED_NOUSER($skip: Int = 0, $first: Int = ${perPageCourse}  ) {
+    courses(first: $first, skip: $skip ,orderBy: createdAt_DESC) {
+      id
+      title
+      description
+      thumbnail
+      createdAt
+      price
+      user {
+        id
+        name
+        }
+        wished
+      }
+    }
+`;
 //orderby query
 
 const ALL_COURSES_ORDERED = gql`
@@ -102,6 +119,13 @@ export class ListAllCourses extends Component {
         this.setState({
           query: ALL_COURSES_NOUSER,
           title: "All Courses List",
+        });
+        break;
+      }
+      case "ALL_COURSES_ORDERED_NOUSER": {
+        this.setState({
+          query: ALL_COURSES_ORDERED_NOUSER,
+          title: "By Creation List",
         });
         break;
       }
@@ -168,7 +192,7 @@ export class ListAllCourses extends Component {
         >
           {({ data, error, loading }) => {
             if (loading) {
-              return null;
+              return <p>Loading...</p>;
             }
             if (error) {
               return <p>Error:{error.message}</p>;
@@ -285,7 +309,9 @@ export class ListAllCourses extends Component {
 export default ListAllCourses;
 export {
   ALL_COURSE_INTERESTS,
+  ALL_COURSES_NOUSER,
   ALL_COURSES_ORDERED,
+  ALL_COURSES_ORDERED_NOUSER,
   ALL_COURSES_QUERY,
   RENDER_QUERY
 };

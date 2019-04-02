@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 import Link from "next/link";
 import { Mutation } from "react-apollo";
+import { ALL_COURSES_NOUSER } from "../Home/CoursesList/ListAllCourses";
 import { CURRENT_USER_QUERY } from "./User";
 
 const SIGN_OUT_MUTATION = gql`
@@ -14,7 +15,13 @@ const SIGN_OUT_MUTATION = gql`
 const Signout = props => (
   <Mutation
     mutation={SIGN_OUT_MUTATION}
-    refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+    refetchQueries={[
+      { query: CURRENT_USER_QUERY },
+      {
+        query: ALL_COURSES_NOUSER,
+        variables: { published: "PUBLISHED", skip: 0, first: 5 },
+      },
+    ]}
   >
     {signout => (
       <Link href="/">

@@ -35,7 +35,6 @@ export class CourseItem extends Component {
           return (
             <>
               <ItemStyles>
-                {course.wished ? "wished" : "not wished"}
                 <Link
                   href={{
                     pathname: "/course",

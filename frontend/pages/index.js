@@ -20,15 +20,15 @@ export class Home extends Component {
               </>
             );
           return (
-            <>
+            <div key={me.id}>
               <Search />
 
-              <ListAllCourses query="ALL_COURSES_QUERY" me />
+              <ListAllCourses me query="ALL_COURSES_QUERY" />
               <ListAllCourses query="ALL_COURSES_ORDERED" />
               {/* {me.interests.length > 0 && (
                 <ListAllCourses query="ALL_COURSE_INTERESTS" />
-              )} */}
-            </>
+              )}*/}
+            </div>
           );
         }}
       </User>

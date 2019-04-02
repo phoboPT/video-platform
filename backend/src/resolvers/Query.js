@@ -297,6 +297,7 @@ const Query = {
 
     const { orderBy } = args;
     delete args.orderBy;
+    console.log("hi");
 
     //query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
