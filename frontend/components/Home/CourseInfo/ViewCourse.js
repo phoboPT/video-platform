@@ -1,12 +1,12 @@
+import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
-import styled from "styled-components";
-import Overview from "./Overview";
-import VideoItem from "./VideoItem";
 import Markdown from "react-markdown";
+import styled from "styled-components";
 import CommentForm from "./Comments/CommentForm";
 import ListComments from "./Comments/ListComments";
+import Overview from "./Overview";
+import VideoItem from "./VideoItem";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -18,6 +18,7 @@ const SINGLE_COURSE_QUERY = gql`
       state
       createdAt
       user {
+        id
         name
       }
       videos {

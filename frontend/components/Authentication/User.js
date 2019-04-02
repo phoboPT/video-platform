@@ -40,6 +40,7 @@ const CURRENT_USER_QUERY = gql`
             name
           }
           user {
+            id
             name
           }
         }

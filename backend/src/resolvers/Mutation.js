@@ -742,7 +742,13 @@ const Mutations = {
 
     //Check if that item is already in their cart and increment by 1 id it is
     if (existingWhishItem) {
-      throw new Error("Arleady added to cart");
+      console.log("remove");
+      return ctx.db.mutation.deleteWishlist(
+        {
+          where: { id: existingWhishItem.id },
+        },
+        info,
+      );
     }
     //If its not, create a fresh new item
     return ctx.db.mutation.createWishlist({
@@ -759,6 +765,28 @@ const Mutations = {
       info,
     });
   },
+  // async removeFromWish(parent, args, ctx, info) {
+  //   //Make sure they are signin
+  //   const { userId } = ctx.request;
+  //   if (!userId) {
+  //     throw new Error("You must be signed in soooon");
+  //   }
+  //   const [existingWhishItem] = await ctx.db.query.wishlists({
+  //     where: {
+  //       user: { id: userId },
+  //       course: { id: args.id },
+  //     },
+  //   });
+  //   if (existingWhishItem) {
+  //     console.log("remove");
+  //     return ctx.db.mutation.deleteWishlist(
+  //       {
+  //         where: { id: existingWhishItem.id },
+  //       },
+  //       info,
+  //     );
+  //   }
+  // },
 };
 
 module.exports = Mutations;

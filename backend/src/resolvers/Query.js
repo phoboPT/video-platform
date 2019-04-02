@@ -1,5 +1,14 @@
 const { forwardTo } = require("prisma-binding");
 
+const sortArray = array => {
+  //Sort the array by id
+  return array.sort(function(a, b) {
+    if (a.id.toLowerCase() < b.id.toLowerCase()) return -1;
+    if (a.id.toLowerCase() > b.id.toLowerCase()) return 1;
+    return 0;
+  });
+};
+
 const Query = {
   categories: forwardTo("db"),
   category: forwardTo("db"),
@@ -190,6 +199,7 @@ const Query = {
              price
              state
              user {
+               id
                name
              }
            }
@@ -200,32 +210,62 @@ const Query = {
     );
     //remove the layers of an array putting all in one flat function
     let res = result.flat();
+
     //this remove the header on the array to clean it before send it to frontend
     const courses = res.map(item => {
       return item.course;
     });
 
-    //Sort the array by id
-    courses.sort(function(a, b) {
-      if (a.id.toLowerCase() < b.id.toLowerCase()) return -1;
-      if (a.id.toLowerCase() > b.id.toLowerCase()) return 1;
-      return 0;
-    });
-
-    //Filter the array to remove duplicates
-    let final = Object.values(
-      courses.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {}),
+    //Wishlist array
+    const wishlist = await ctx.db.query.wishlists(
+      {
+        where: {
+          user: { id: userId },
+        },
+      },
+      `{
+        course{
+          id
+        }
+      }`,
     );
 
-    //Add count to array
-    let final1 = final.map(item => {
-      item.count = final.length;
+    //Wish ids to compare
+    let wishIds = wishlist.map(item => {
+      return item.course.id;
+    });
+    //add the wished property to the final array
+    let clean = courses.map(item => {
+      item.wished = false;
+
+      if (wishIds.length > 0) {
+        wishIds.map(wish => {
+          if (wish === item.id) {
+            item.wished = true;
+          }
+        });
+      }
       return item;
     });
 
-    return final1;
-  },
+    //Filter the array to remove duplicates
+    let cleanResponse = Object.values(
+      clean.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {}),
+    );
 
+    //Add count to array
+    let finalRes = cleanResponse.map(item => {
+      item.count = cleanResponse.length;
+
+      return item;
+    });
+
+    finalRes.map(item => {
+      return item;
+    });
+
+    return finalRes;
+  },
   coursesConnection(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
@@ -242,6 +282,63 @@ const Query = {
       },
       info,
     );
+  },
+  async coursesList(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    //query o video atual com comparaçao de ids de user
+    const res = await ctx.db.query.courses(
+      {
+        where: {
+          state: "PUBLISHED",
+        },
+        orderBy: "createdAt_DESC",
+      },
+      `{
+         id
+         title
+         description
+         thumbnail
+         createdAt
+         price
+         state
+         user {
+           id
+           name
+           wishlist{course{id}}
+         }
+     }`,
+      info,
+    );
+    //Wishlist array
+    const wishlist = await ctx.db.query.wishlists(
+      {
+        where: {
+          user: { id: userId },
+        },
+      },
+      `{
+        course{id}
+     }`,
+    );
+
+    //Wish ids to compare
+    let wishIds = wishlist.map(item => {
+      return item.course.id;
+    });
+
+    //add the wished property to the final array
+    let finalRes = res.map(item => {
+      item.wished = false;
+      wishIds.map(wish => {
+        if (wish === item.id) {
+          item.wished = true;
+        }
+      });
+      return item;
+    });
+
+    return finalRes;
   },
 };
 

@@ -29,6 +29,7 @@ type Course {
   category: Category!
   interest: [CourseInterest!]!
   count: Int
+  wished: Boolean
 }
 
 type Mutation {
@@ -87,6 +88,7 @@ type Mutation {
   removeTargetUser(interestId: ID!): User!
   createOrder(token: String!): Order
   addToWish(id: ID!): Wishlist!
+  removeFromWish(id: ID!): Wishlist!
 }
 
 type Query {
@@ -150,6 +152,8 @@ type Query {
     skip: Int
     first: Int
   ): [Course]
+  coursesList(orderBy: Boolean, skip: Int, first: Int): [Course]
+
   # listar todos os comentarios de um curso
   comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
   # Listar todos os cursos de um User

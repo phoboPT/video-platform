@@ -1,16 +1,21 @@
-import { timingSafeEqual } from "crypto";
 import gql from "graphql-tag";
 import React, { Component } from "react";
-import { Query } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import { perPageCourse } from "../../../config";
 import { Container, CoursesList, Title } from "../../styles/Home";
 import CourseItem from "./CourseItem";
 import Pagination from "./Pagination";
 
+const RENDER_QUERY = gql`
+  query RENDER_QUERY {
+    render @client
+  }
+`;
+
 const ALL_COURSES_QUERY = gql`
   query ALL_COURSES_QUERY(
-          $published: State,$skip: Int = 0, $first: Int = ${perPageCourse}) {
-    courses(where:{state:$published},first: $first, skip: $skip) {
+          $skip: Int = 0, $first: Int = ${perPageCourse}) {
+           coursesList(first: $first, skip: $skip,orderBy:false) {
       id
       title
       description
@@ -18,8 +23,11 @@ const ALL_COURSES_QUERY = gql`
       createdAt
       price
       user {
+        id
         name
+       
       }
+      wished
     }
   }
 `;
@@ -27,8 +35,8 @@ const ALL_COURSES_QUERY = gql`
 //orderby query
 
 const ALL_COURSES_ORDERED = gql`
-  query ALL_COURSES($published: State,$skip: Int = 0, $first: Int = ${perPageCourse} ) {
-    courses(where:{state:$published},first: $first, skip: $skip ,orderBy: createdAt_DESC) {
+  query ALL_COURSES_ORDERED($skip: Int = 0, $first: Int = ${perPageCourse} ) {
+    coursesList(first: $first, skip: $skip ,orderBy: true) {
       id
       title
       description
@@ -36,10 +44,14 @@ const ALL_COURSES_ORDERED = gql`
       createdAt
       price
       user {
+        id
         name
+        
+        }
+        wished
       }
     }
-  }
+  
 `;
 //interests query
 const ALL_COURSE_INTERESTS = gql`
@@ -52,34 +64,37 @@ const ALL_COURSE_INTERESTS = gql`
       createdAt
       price
       user {
+        id
         name
+        
       }
       count
+      wished
     }
   }
 `;
 
-export class Courses extends Component {
+export class ListAllCourses extends Component {
   componentWillMount() {
     switch (this.props.query) {
+      case "ALL_COURSE_INTERESTS": {
+        this.setState({
+          query: ALL_COURSE_INTERESTS,
+          title: "Interests List",
+        });
+        break;
+      }
       case "ALL_COURSES_ORDERED": {
         this.setState({
           query: ALL_COURSES_ORDERED,
-          title: "By Creation List"
+          title: "By Creation List",
         });
         break;
       }
       case "ALL_COURSES_QUERY": {
         this.setState({
           query: ALL_COURSES_QUERY,
-          title: "All Courses List"
-        });
-        break;
-      }
-      case "ALL_COURSE_INTERESTS": {
-        this.setState({
-          query: ALL_COURSE_INTERESTS,
-          title: "Interests List"
+          title: "All Courses List",
         });
         break;
       }
@@ -92,9 +107,10 @@ export class Courses extends Component {
   }
   state = {
     classe: "",
+    count: 0,
     page: 1,
     query: ALL_COURSES_QUERY,
-    title: ""
+    title: "",
   };
 
   animationSliderControlForward = () => {
@@ -126,7 +142,7 @@ export class Courses extends Component {
           query={this.state.query}
           variables={{
             published: "PUBLISHED",
-            skip: this.state.page * perPageCourse - perPageCourse
+            skip: this.state.page * perPageCourse - perPageCourse,
           }}
         >
           {({ data, error, loading }) => {
@@ -136,11 +152,11 @@ export class Courses extends Component {
             if (error) {
               return <p>Error:{error.message}</p>;
             }
-
             return (
               <>
                 <Container>
-                  {data.courses && <Title>{this.state.title}</Title>}
+                  {data.coursesList && <Title>{this.state.title}</Title>}
+
                   {data.coursesUserInterestList &&
                     (data.coursesUserInterestList[0] !== undefined && (
                       <Title>{this.state.title}</Title>
@@ -148,19 +164,28 @@ export class Courses extends Component {
 
                   {/* Filtering the data to show the correct list */}
                   <CoursesList className={this.state.classe}>
-                    {data.courses &&
-                      data.courses.map(course => (
-                        <CourseItem course={course} key={course.id} />
+                    {data.coursesList &&
+                      data.coursesList.map(course => (
+                        <CourseItem
+                          order={this.props.order}
+                          course={course}
+                          key={course.id}
+                          skip={this.state.page * perPageCourse - perPageCourse}
+                        />
                       ))}
 
                     {data.coursesUserInterestList &&
                       data.coursesUserInterestList.map(course => (
-                        <CourseItem course={course} key={course.id} />
+                        <CourseItem
+                          course={course}
+                          key={course.id}
+                          skip={this.state.page * perPageCourse - perPageCourse}
+                        />
                       ))}
                   </CoursesList>
 
                   {/* Check what pagination to render ( count gives the total of items of the interest list) */}
-                  {data.courses && (
+                  {data.coursesList && (
                     <Pagination
                       page={this.state.page}
                       animationSliderControlForward={
@@ -201,5 +226,10 @@ export class Courses extends Component {
   }
 }
 
-export default Courses;
-export { ALL_COURSE_INTERESTS, ALL_COURSES_ORDERED, ALL_COURSES_QUERY };
+export default ListAllCourses;
+export {
+  ALL_COURSE_INTERESTS,
+  ALL_COURSES_ORDERED,
+  ALL_COURSES_QUERY,
+  RENDER_QUERY,
+};

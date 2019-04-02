@@ -41,7 +41,9 @@ class UserCourses extends Component {
       <User>
         {({ data: { me } }) => {
           let courses = [];
-          courses = orderCourse(me.courses);
+          if (me) {
+            courses = orderCourse(me.courses);
+          }
           if (me && courses) {
             return (
               <>

@@ -5,7 +5,7 @@ import { Query, graphql, compose } from "react-apollo";
 import { perPageCourse } from "../../../config";
 import {
   ALL_COURSES_QUERY,
-  ALL_COURSES_ORDERED
+  ALL_COURSES_ORDERED,
 } from "../CoursesList/ListAllCourses";
 
 const PAGINATION_QUERY = gql`
@@ -26,7 +26,7 @@ const Pagination = props => (
       const count = data.coursesConnection.aggregate.count;
 
       const pages = Math.ceil(
-        (props.isInterest ? props.count : count) / perPageCourse
+        (props.isInterest ? props.count : count) / perPageCourse,
       );
       const page = props.page;
 
@@ -34,17 +34,16 @@ const Pagination = props => (
         client.query({
           query: ALL_COURSES_QUERY,
           variables: {
-            skip: (page + 1) * perPageCourse - perPageCourse
-          }
+            skip: (page + 1) * perPageCourse - perPageCourse,
+          },
         });
         client.query({
           query: ALL_COURSES_ORDERED,
           variables: {
-            skip: (page + 1) * perPageCourse - perPageCourse
-          }
+            skip: (page + 1) * perPageCourse - perPageCourse,
+          },
         });
       };
-      console.log(pages);
       return (
         <>
           <button
