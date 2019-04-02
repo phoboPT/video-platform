@@ -7,6 +7,7 @@ import User from "../../Authentication/User";
 import ItemStyles from "../../styles/ItemStyles";
 import AddToCart from "../Cart/AddToCart";
 import WishButton from "../WishButton";
+import BuyFreeButton from "../BuyFreeButton";
 
 const InfoStyle = styled.p`
   text-align: left;
@@ -15,12 +16,12 @@ const InfoStyle = styled.p`
 
 export class CourseItem extends Component {
   static propTypes = {
-    course: PropTypes.object.isRequired,
+    course: PropTypes.object.isRequired
   };
   state = {
     ...this.props.course.user,
     buttonToShow: 0,
-    courseId: this.props.course.id,
+    courseId: this.props.course.id
   };
 
   render() {
@@ -36,19 +37,28 @@ export class CourseItem extends Component {
                 <Link
                   href={{
                     pathname: "/course",
-                    query: { id: course.id },
+                    query: { id: course.id }
                   }}
                 >
                   <img className="Thumbnail" src={course.thumbnail} />
                 </Link>
                 <InfoStyle>{course.title}</InfoStyle>
                 <span>{course.user.name}</span>
-                <InfoStyle className="price">{course.price} €</InfoStyle>
+                {course.price === 0 ? (
+                  <InfoStyle className="price">Free Course</InfoStyle>
+                ) : (
+                  <InfoStyle className="price">{course.price} €</InfoStyle>
+                )}
 
                 <div className="buttonList">
                   <AddToCart id={course.id} />
 
                   <WishButton
+                    id={course.id}
+                    data={course}
+                    skip={this.props.skip}
+                  />
+                  <BuyFreeButton
                     id={course.id}
                     data={course}
                     skip={this.props.skip}

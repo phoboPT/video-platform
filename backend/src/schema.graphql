@@ -89,6 +89,7 @@ type Mutation {
   createOrder(token: String!): Order
   addToWish(id: ID!): Wishlist!
   removeFromWish(id: ID!): Wishlist!
+  buyCourseFree(id: ID!): UserCourse
 }
 
 type Query {
