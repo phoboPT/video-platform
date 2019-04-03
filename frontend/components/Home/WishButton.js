@@ -5,7 +5,7 @@ import styled from "styled-components";
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
-  ALL_COURSES_QUERY,
+  ALL_COURSES_QUERY
 } from "./CoursesList/ListAllCourses";
 
 const ADD_TO_WISHLIST_MUTATION = gql`
@@ -68,7 +68,7 @@ const Img = styled.div`
 export class AddToWish extends Component {
   state = {
     ...this.props.data.user,
-    courseId: this.props.id,
+    courseId: this.props.id
   };
 
   changeClass = async mutation => {
@@ -87,22 +87,22 @@ export class AddToWish extends Component {
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
-            variables: { published: "PUBLISHED", skip: data.skip },
+            variables: { published: "PUBLISHED", skip: data.skip }
           },
 
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: "PUBLISHED", skip: data.skip },
+            variables: { published: "PUBLISHED", skip: data.skip }
           },
           {
             query: ALL_COURSE_INTERESTS,
-            variables: { published: "PUBLISHED", skip: data.skip },
-          },
+            variables: { published: "PUBLISHED", skip: data.skip }
+          }
         ]}
         variables={{
           id: data.id,
           published: "PUBLISHED",
-          skip: this.props.skip,
+          skip: this.props.skip
         }}
       >
         {(addToWish, { loading }) => {

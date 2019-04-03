@@ -297,7 +297,6 @@ const Query = {
 
     const { orderBy } = args;
     delete args.orderBy;
-    console.log("hi");
 
     //query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
@@ -352,17 +351,45 @@ const Query = {
       return item;
     });
 
-    console.log("aqui");
-    console.log(userId);
+    let user;
+    if (userId) {
+      user = await ctx.db.query.user(
+        {
+          where: {
+            id: userId
+          }
+        },
+        `        {
+          id
+          name
+          email
+          courses{
+            id
+            course{
+              id
+            }
+          }
+        }
+        `
+      );
+    }
+
     // console.log("user", user);
     //mapear os interesses do user
     const userCoursesIds = [];
     //foreach de cada elemento e fazer a query e guardar num array
-    // user.courses.map(interest => {
-    //   console.log(interest);
-    //   // interestsIds.push(interest.interest.id);
-    // });
+    if (user.courses) {
+      user.courses.map(course => {
+        finalRes.map((item, index) => {
+          if (course.course.id === item.id) {
+            finalRes.splice(1, index);
+          }
+        });
+      });
+    }
     //remover os cursos que o User já comprou
+    console.log(finalRes.length);
+
     return finalRes;
   },
   coursesFilter(parent, args, ctx, info) {
