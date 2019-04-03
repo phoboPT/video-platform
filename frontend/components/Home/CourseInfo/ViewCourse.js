@@ -5,6 +5,7 @@ import Markdown from "react-markdown";
 import styled from "styled-components";
 import CommentForm from "./Comments/CommentForm";
 import ListComments from "./Comments/ListComments";
+import Rating from "./Comments/Rating";
 import Overview from "./Overview";
 import VideoItem from "./VideoItem";
 
@@ -101,7 +102,7 @@ const Bar = styled.div`
 
 class ViewCourse extends Component {
   state = {
-    view: 1,
+    view: 1
   };
 
   changeView = e => {
@@ -154,6 +155,7 @@ class ViewCourse extends Component {
                 <>
                   <CommentForm data={course} />
                   <ListComments data={course} />
+                  <Rating />
                 </>
               )}
             </>

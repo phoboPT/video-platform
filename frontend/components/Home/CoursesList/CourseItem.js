@@ -59,12 +59,13 @@ export class CourseItem extends Component {
                   ) : (
                     <AddToCart id={course.id} />
                   )}
+
                   <WishButton
                     id={course.id}
                     data={course}
                     skip={this.props.skip}
                   />
-                  <p>5*</p>
+                  <p> 5</p>
                 </div>
               </ItemStyles>
             </>
