@@ -2,13 +2,13 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
+import formatMoney from "../../../lib/formatMoney";
 import orderCourses from "../../../lib/orderCourses";
 import User from "../../Authentication/User";
 import ItemStyles from "../../styles/ItemStyles";
+import BuyFreeButton from "../BuyFreeButton";
 import AddToCart from "../Cart/AddToCart";
 import WishButton from "../WishButton";
-import BuyFreeButton from "../BuyFreeButton";
-import formatMoney from "../../../lib/formatMoney";
 
 const InfoStyle = styled.p`
   text-align: left;
@@ -17,12 +17,12 @@ const InfoStyle = styled.p`
 
 export class CourseItem extends Component {
   static propTypes = {
-    course: PropTypes.object.isRequired
+    course: PropTypes.object.isRequired,
   };
   state = {
     ...this.props.course.user,
     buttonToShow: 0,
-    courseId: this.props.course.id
+    courseId: this.props.course.id,
   };
 
   render() {
@@ -30,6 +30,7 @@ export class CourseItem extends Component {
     return (
       <User>
         {({ data: { me } }) => {
+          //Check if user has logged in or not
           if (!me) return null;
 
           return (
@@ -38,7 +39,7 @@ export class CourseItem extends Component {
                 <Link
                   href={{
                     pathname: "/course",
-                    query: { id: course.id }
+                    query: { id: course.id },
                   }}
                 >
                   <img className="Thumbnail" src={course.thumbnail} />

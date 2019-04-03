@@ -7,7 +7,7 @@ export default function orderCourses(course) {
 
   final.sort(function(a, b) {
     if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
-    if (a.course.id.toLowerCase() > b.course.title.toLowerCase()) return 1;
+    if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
     return 0;
   });
 

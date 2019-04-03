@@ -7,6 +7,7 @@ import ItemList from "../../styles/ItemList";
 import CourseItem from "./CourseItem";
 import FilterAuthor from "./Filters/FilterAuthor";
 import FilterCategory from "./Filters/FilterCategory";
+import Wishlist from "./Wishlist";
 
 const COURSES_FILTER_QUERY = gql`
   query COURSES_FILTER_QUERY($category: ID, $author: ID) {
@@ -118,8 +119,7 @@ class UserCourses extends Component {
       >
         {({ data, loading }) => {
           if (data) {
-            let courses = [];
-            courses = orderCourse(data.coursesFilter);
+            const courses = orderCourse(data.coursesFilter);
 
             return (
               <>
@@ -169,7 +169,11 @@ class UserCourses extends Component {
                       </ItemList>
                     </Container>
                   ))}
-                {this.state.view === 2 && <p>Wishlist</p>}
+                {this.state.view === 2 && (
+                  <>
+                    <Wishlist />
+                  </>
+                )}
               </>
             );
           }

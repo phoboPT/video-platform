@@ -167,4 +167,5 @@ type Query {
   videosConnection(where: VideoWhereInput): VideoConnection!
 
   coursesConnection(data: String): CourseConnection!
+  wishlists(where: WishlistWhereInput): [Wishlist]
 }
