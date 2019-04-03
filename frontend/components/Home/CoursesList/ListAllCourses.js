@@ -71,7 +71,7 @@ const ALL_COURSES_ORDERED_NOUSER = gql`
 const ALL_COURSES_ORDERED = gql`
   query ALL_COURSES_ORDERED($skip: Int = 0, $first: Int = ${perPageCourse} $orderBy: String = "createdAt_DESC") {
     coursesList(first: $first, skip: $skip ,orderBy: $orderBy) {
-      id
+             id
       title
       description
       thumbnail
@@ -118,14 +118,14 @@ export class ListAllCourses extends Component {
       case "ALL_COURSES_NOUSER": {
         this.setState({
           query: ALL_COURSES_NOUSER,
-          title: "All Courses List",
+          title: "All Courses List"
         });
         break;
       }
       case "ALL_COURSES_ORDERED_NOUSER": {
         this.setState({
           query: ALL_COURSES_ORDERED_NOUSER,
-          title: "By Creation List",
+          title: "By Creation List"
         });
         break;
       }

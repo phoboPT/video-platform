@@ -44,9 +44,9 @@ const Pagination = props => (
           }
         });
       };
+
       return (
         <>
-          {count}
           <button
             disabled={page <= 1}
             className="Left"

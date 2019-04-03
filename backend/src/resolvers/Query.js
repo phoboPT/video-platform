@@ -281,11 +281,47 @@ const Query = {
 
     return finalRes;
   },
-  coursesConnection(parent, args, ctx, info) {
+  async coursesConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    let user;
+
+    if (userId) {
+      user = await ctx.db.query.user(
+        {
+          where: {
+            id: userId
+          }
+        },
+        `   {
+          courses{
+            course{
+              id
+            }
+          }
+        }
+        `
+      );
+    }
+
+    let coursesId = [];
+
+    //foreach de cada elemento e fazer a query e guardar num array
+    if (user) {
+      await user.courses.map(user => {
+        coursesId.push(user.course.id);
+      });
+    }
     return ctx.db.query.coursesConnection(
       {
         where: {
-          state: "PUBLISHED"
+          AND: [
+            {
+              state: "PUBLISHED"
+            },
+            {
+              id_not_in: coursesId
+            }
+          ]
         }
       },
       info
@@ -298,11 +334,46 @@ const Query = {
     const { orderBy } = args;
     delete args.orderBy;
 
+    let user;
+    if (userId) {
+      user = await ctx.db.query.user(
+        {
+          where: {
+            id: userId
+          }
+        },
+        `     
+           {
+            courses{
+            course{
+              id
+            }
+          }
+        }
+        `
+      );
+    }
+
+    let coursesId = [];
+
+    //foreach de cada elemento e fazer a query e guardar num array
+    if (user) {
+      await user.courses.map(user => {
+        coursesId.push(user.course.id);
+      });
+    }
     //query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
       {
         where: {
-          state: "PUBLISHED"
+          AND: [
+            {
+              state: "PUBLISHED"
+            },
+            {
+              id_not_in: coursesId
+            }
+          ]
         },
         orderBy: orderBy,
         ...args
@@ -341,7 +412,7 @@ const Query = {
     });
 
     //add the wished property to the final array
-    let finalRes = res.map(item => {
+    let finalRes = await res.map(item => {
       item.wished = false;
       wishIds.map(wish => {
         if (wish === item.id) {
@@ -351,45 +422,7 @@ const Query = {
       return item;
     });
 
-    let user;
-    if (userId) {
-      user = await ctx.db.query.user(
-        {
-          where: {
-            id: userId
-          }
-        },
-        `        {
-          id
-          name
-          email
-          courses{
-            id
-            course{
-              id
-            }
-          }
-        }
-        `
-      );
-    }
-
-    // console.log("user", user);
-    //mapear os interesses do user
-    const userCoursesIds = [];
-    //foreach de cada elemento e fazer a query e guardar num array
-    if (user.courses) {
-      user.courses.map(course => {
-        finalRes.map((item, index) => {
-          if (course.course.id === item.id) {
-            finalRes.splice(1, index);
-          }
-        });
-      });
-    }
     //remover os cursos que o User já comprou
-    console.log(finalRes.length);
-
     return finalRes;
   },
   coursesFilter(parent, args, ctx, info) {
