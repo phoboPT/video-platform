@@ -79,9 +79,9 @@ type Mutation {
     state: String
   ): Course!
   deleteCourse(id: ID!): CourseVideos
-  createComCourse(courseId: ID!, comment: String!): ComCourse!
-  updateComCourse(id: ID!, comment: String): ComCourse!
-  deleteComCourse(id: ID!): ComCourse
+  # createComCourse(courseId: ID!, comment: String!): ComCourse!
+  # updateComCourse(id: ID!, comment: String): ComCourse!
+  # deleteComCourse(id: ID!): ComCourse
   addToCart(id: ID!): CartItem!
   removeFromCart(id: ID!): CartItem!
   addTargetUser(interestId: ID!): User!
@@ -121,7 +121,7 @@ type Query {
   category(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput!): Course!
-  comCourse(where: ComCourseWhereUniqueInput!): ComCourse
+  # comCourse(where: ComCourseWhereUniqueInput!): ComCourse
   coursesFilter(category: ID, author: ID): [UserCourse]
   # querys selecionar tudo com argumentos
   videosUser(
@@ -157,7 +157,7 @@ type Query {
   coursesList(orderBy: String, skip: Int, first: Int): [Course]
 
   # listar todos os comentarios de um curso
-  comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
+  # comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
   # Listar todos os cursos de um User
   coursesUser: [Course]
   # Information about actual user

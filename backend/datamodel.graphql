@@ -54,7 +54,6 @@ type Course {
   title: String
   description: String!
   thumbnail: String!
-  #user com permissao para poder criar um curso
   user: User!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -63,6 +62,8 @@ type Course {
   price: Float!
   category: Category!
   interest: [CourseInterest!]!
+  rate: [RateCourse]
+  totalRate: Float
 }
 
 # item
@@ -78,7 +79,6 @@ type Video {
   updatedAt: DateTime!
 }
 
-# CartItem
 type CourseVideos {
   id: ID! @unique
   course: Course!
@@ -90,20 +90,12 @@ type Category {
   name: String!
 }
 
-# type Rate {
-#   id: ID! @unique
-#   rate: Float!
-#   user: User!
-#   course: Course!
-#   createdAt: DateTime!
-#   updatedAt: DateTime!
-# }
-
-type ComCourse {
+type RateCourse {
   id: ID! @unique
   comment: String!
   user: User!
   course: Course!
+  rate: Float!
   createdAt: DateTime!
   updatedAt: DateTime!
 }

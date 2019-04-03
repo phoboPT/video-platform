@@ -155,7 +155,6 @@ class ViewCourse extends Component {
                 <>
                   <CommentForm data={course} />
                   <ListComments data={course} />
-                  <Rating />
                 </>
               )}
             </>

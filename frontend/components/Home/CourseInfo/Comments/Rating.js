@@ -7,6 +7,7 @@ class RatingPage extends Component {
   };
   change = e => {
     this.setState({ value: e });
+    this.props.getRating(e);
   };
   render() {
     return (
@@ -17,7 +18,6 @@ class RatingPage extends Component {
         placeholderRating={this.state.value}
         fractions={2}
         onClick={this.change}
-        // readonly
       />
     );
   }

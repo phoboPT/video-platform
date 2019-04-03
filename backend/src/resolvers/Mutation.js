@@ -427,85 +427,85 @@ const Mutations = {
       info
     );
   },
-  async createComCourse(parent, args, ctx, info) {
-    //  Check if they are logged in
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
+  // async createComCourse(parent, args, ctx, info) {
+  //   //  Check if they are logged in
+  //   if (!ctx.request.userId) {
+  //     throw new Error("You must be logged in to do that!");
+  //   }
 
-    const comvideo = await ctx.db.mutation.createComCourse(
-      {
-        data: {
-          user: {
-            connect: {
-              id: ctx.request.userId
-            }
-          },
-          course: {
-            connect: {
-              id: args.courseId
-            }
-          },
-          comment: args.comment
-        }
-      },
+  //   const comvideo = await ctx.db.mutation.createComCourse(
+  //     {
+  //       data: {
+  //         user: {
+  //           connect: {
+  //             id: ctx.request.userId
+  //           }
+  //         },
+  //         course: {
+  //           connect: {
+  //             id: args.courseId
+  //           }
+  //         },
+  //         comment: args.comment
+  //       }
+  //     },
 
-      info
-    );
+  //     info
+  //   );
 
-    return comvideo;
-  },
-  async deleteComCourse(parent, args, ctx, info) {
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
-    }
-    const where = {
-      id: args.id
-    };
-    //1.encontrar o video
-    const comCourse = await ctx.db.query.comCourse(
-      {
-        where
-      },
-      `{id user{id}}`
-    );
-    //2.checkar se tem permissoes para o apagar
-    const ownsComCourse = comCourse.user.id === ctx.request.userId;
+  //   return comvideo;
+  // },
+  // async deleteComCourse(parent, args, ctx, info) {
+  //   if (!ctx.request.userId) {
+  //     throw new Error("You must be logged in to do that!");
+  //   }
+  //   const where = {
+  //     id: args.id
+  //   };
+  //   //1.encontrar o video
+  //   const comCourse = await ctx.db.query.comCourse(
+  //     {
+  //       where
+  //     },
+  //     `{id user{id}}`
+  //   );
+  //   //2.checkar se tem permissoes para o apagar
+  //   const ownsComCourse = comCourse.user.id === ctx.request.userId;
 
-    if (!ownsComCourse) {
-      throw new Error("You don't have permission to do that!");
-    }
-    //3.dar delete
-    return ctx.db.mutation.deleteComCourse(
-      {
-        where
-      },
-      info
-    );
-  },
-  updateComCourse(parent, args, ctx, info) {
-    //faz uma copia dos updates
-    const { userId } = ctx.request;
-    if (!userId) {
-      throw new Error("You must be signed in");
-    }
+  //   if (!ownsComCourse) {
+  //     throw new Error("You don't have permission to do that!");
+  //   }
+  //   //3.dar delete
+  //   return ctx.db.mutation.deleteComCourse(
+  //     {
+  //       where
+  //     },
+  //     info
+  //   );
+  // },
+  // updateComCourse(parent, args, ctx, info) {
+  //   //faz uma copia dos updates
+  //   const { userId } = ctx.request;
+  //   if (!userId) {
+  //     throw new Error("You must be signed in");
+  //   }
 
-    const updates = {
-      ...args
-    };
-    //elimina o id dos updates
-    delete updates.id;
-    //da run no update method
-    return ctx.db.mutation.updateComCourse(
-      {
-        data: updates,
-        where: {
-          id: args.id
-        }
-      },
-      info
-    );
-  },
+  //   const updates = {
+  //     ...args
+  //   };
+  //   //elimina o id dos updates
+  //   delete updates.id;
+  //   //da run no update method
+  //   return ctx.db.mutation.updateComCourse(
+  //     {
+  //       data: updates,
+  //       where: {
+  //         id: args.id
+  //       }
+  //     },
+  //     info
+  //   );
+  // },
   async removeFromCourse(parent, args, ctx, info) {
     //Make sure they are signin
     const { userId } = ctx.request;
@@ -770,7 +770,7 @@ const Mutations = {
 
     if (!userId)
       throw new Error("You must be signed in to complete this order.");
-    
+
     return ctx.db.mutation.createUserCourse({
       data: {
         course: { connect: { id: args.id } },
