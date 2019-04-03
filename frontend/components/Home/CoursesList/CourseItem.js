@@ -53,7 +53,7 @@ export class CourseItem extends Component {
                     {formatMoney(course.price)}
                   </InfoStyle>
                 )}
-
+                <p>5 *****</p>
                 <div className="buttonList">
                   {course.price === 0 ? (
                     <BuyFreeButton id={course.id} skip={this.props.skip} />
@@ -66,7 +66,6 @@ export class CourseItem extends Component {
                     data={course}
                     skip={this.props.skip}
                   />
-                  <p> 5</p>
                 </div>
               </ItemStyles>
             </>
