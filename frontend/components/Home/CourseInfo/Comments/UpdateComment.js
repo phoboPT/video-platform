@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
 import Error from "../../../Static/ErrorMessage";
+import Rating from "./Rating";
+import { ALL_COMMENTS_QUERY } from "./ListComments";
 
 const Style = styled.div`
   button {
@@ -43,25 +45,30 @@ const Style = styled.div`
 `;
 
 const UPDATE_COMMENT_MUTATION = gql`
-  mutation UPDATE_COMMENT_MUTATION($id: ID!, $comment: String) {
-    updateComCourse(id: $id, comment: $comment) {
+  mutation UPDATE_COMMENT_MUTATION($id: ID!, $comment: String, $rate: Float) {
+    updateRateCourse(id: $id, comment: $comment, rate: $rate) {
       id
       comment
+      rate
     }
   }
 `;
 
 const SINGLE_COMMENT_QUERY = gql`
   query SINGLE_COMMENT_QUERY($id: ID!) {
-    comCourse(where: { id: $id }) {
+    rateCourse(where: { id: $id }) {
       id
       comment
+      rate
+      course {
+        id
+      }
     }
   }
 `;
 
 export class UpdateComment extends Component {
-  state = {};
+  state = { rate: this.props.children.props.initialValue };
 
   handleChange = e => {
     const { name, type, value } = e.target;
@@ -75,12 +82,15 @@ export class UpdateComment extends Component {
     const res = await updateCommentMutation({
       variables: {
         id: this.props.data.id,
-        ...this.state,
-      },
+        ...this.state
+      }
     });
   };
 
   render() {
+    if (this.state.rate !== this.props.children.props.initialValue) {
+      this.setState({ rate: this.props.children.props.initialValue });
+    }
     return (
       <Query
         query={SINGLE_COMMENT_QUERY}
@@ -88,9 +98,18 @@ export class UpdateComment extends Component {
       >
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
+          console.log(data.rateCourse.course.id);
           return (
             <Style>
-              <Mutation mutation={UPDATE_COMMENT_MUTATION}>
+              <Mutation
+                mutation={UPDATE_COMMENT_MUTATION}
+                refetchQueries={[
+                  {
+                    query: ALL_COMMENTS_QUERY,
+                    variables: { id: data.rateCourse.course.id }
+                  }
+                ]}
+              >
                 {(updateCommentMutation, { error, loading }) => (
                   <form
                     onSubmit={e => {
@@ -99,10 +118,12 @@ export class UpdateComment extends Component {
                     }}
                   >
                     <Error error={error} />
+
+                    {this.props.children}
                     <fieldset aria-busy={loading} disabled={loading}>
                       <label htmlFor="comment">
                         <input
-                          defaultValue={data.comCourse.comment}
+                          defaultValue={data.rateCourse.comment}
                           name="comment"
                           onChange={this.handleChange}
                           placeholder="comment"

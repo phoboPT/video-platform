@@ -33,7 +33,6 @@ class RatingPage extends Component {
     this.props.getRating(e);
   };
   render() {
-    console.log(this.props.readOnly);
     return (
       <Container>
         <div className="left">

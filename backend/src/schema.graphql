@@ -80,8 +80,8 @@ type Mutation {
   ): Course!
   deleteCourse(id: ID!): CourseVideos
   createRateCourse(courseId: ID!, comment: String!, rating: Float!): RateCourse!
-  # updateComCourse(id: ID!, comment: String): ComCourse!
-  # deleteComCourse(id: ID!): ComCourse
+  updateRateCourse(id: ID!, comment: String, rate: Float): RateCourse!
+  deleteRateCourse(id: ID!): RateCourse
   addToCart(id: ID!): CartItem!
   removeFromCart(id: ID!): CartItem!
   addTargetUser(interestId: ID!): User!
@@ -121,7 +121,7 @@ type Query {
   category(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput!): Course!
-  # comCourse(where: ComCourseWhereUniqueInput!): ComCourse
+  rateCourse(where: RateCourseWhereUniqueInput!): RateCourse
   coursesFilter(category: ID, author: ID): [UserCourse]
   # querys selecionar tudo com argumentos
   videosUser(

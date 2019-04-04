@@ -5,7 +5,7 @@ import { ALL_COMMENTS_QUERY } from "./ListComments";
 
 const DELETE_COMMENT_MUTATION = gql`
   mutation DELETE_COMMENT_MUTATION($id: ID!) {
-    deleteComCourse(id: $id) {
+    deleteRateCourse(id: $id) {
       id
     }
   }
@@ -21,8 +21,8 @@ export class DeleteComment extends Component {
 
     // console.log(data.comCourse, " ", payload.data.deleteComCourse.id);
     // 2. Filter the deleted itemout of the page
-    data.comCourseList = data.comCourseList.filter(
-      comment => comment.id !== payload.data.deleteComCourse.id
+    data.rateCourseList = data.rateCourseList.filter(
+      comment => comment.id !== payload.data.deleteRateCourse.id
     );
     // 3. Put the items back!
     cache.writeQuery({
@@ -38,11 +38,11 @@ export class DeleteComment extends Component {
         variables={{ id: this.props.data.id }}
         update={this.update}
       >
-        {(deleteComCourse, { error }) => (
+        {(deleteRateCourse, { error }) => (
           <button
             onClick={() => {
               if (confirm("Are you sure you want to delete your comment?")) {
-                deleteComCourse();
+                deleteRateCourse();
               }
             }}
           >

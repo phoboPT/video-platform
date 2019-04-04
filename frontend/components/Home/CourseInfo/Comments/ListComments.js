@@ -75,7 +75,13 @@ export class ListComments extends Component {
           return (
             <>
               {data.rateCourseList.map(comments => (
-                <CommentItem comments={comments} key={comments.id} />
+                <>
+                  <CommentItem
+                    comments={comments}
+                    rating={comments.rate}
+                    key={comments.id}
+                  />
+                </>
               ))}
               <Button>
                 <button id="myBtn" onClick={() => topFunction()}>
