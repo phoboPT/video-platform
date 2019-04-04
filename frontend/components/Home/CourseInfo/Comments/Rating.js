@@ -30,7 +30,7 @@ const Container = styled.div`
 
 class RatingPage extends Component {
   state = {
-    value: 0,
+    value: 0
   };
   change = e => {
     this.setState({ value: e });

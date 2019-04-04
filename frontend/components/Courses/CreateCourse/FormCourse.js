@@ -245,7 +245,7 @@ class FormCourse extends Component {
                           Price
                           <input
                             type="number"
-                            min="1"
+                            min="0"
                             step="any"
                             name="price"
                             placeholder="00.00"
