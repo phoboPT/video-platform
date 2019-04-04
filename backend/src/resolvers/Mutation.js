@@ -427,34 +427,35 @@ const Mutations = {
       info
     );
   },
-  // async createComCourse(parent, args, ctx, info) {
-  //   //  Check if they are logged in
-  //   if (!ctx.request.userId) {
-  //     throw new Error("You must be logged in to do that!");
-  //   }
+  async createRateCourse(parent, args, ctx, info) {
+    //  Check if they are logged in
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+    console.log(args);
+    const rateCourse = await ctx.db.mutation.createRateCourse(
+      {
+        data: {
+          user: {
+            connect: {
+              id: ctx.request.userId
+            }
+          },
+          course: {
+            connect: {
+              id: args.courseId
+            }
+          },
+          comment: args.comment,
+          rate: args.rating
+        }
+      },
 
-  //   const comvideo = await ctx.db.mutation.createComCourse(
-  //     {
-  //       data: {
-  //         user: {
-  //           connect: {
-  //             id: ctx.request.userId
-  //           }
-  //         },
-  //         course: {
-  //           connect: {
-  //             id: args.courseId
-  //           }
-  //         },
-  //         comment: args.comment
-  //       }
-  //     },
+      info
+    );
 
-  //     info
-  //   );
-
-  //   return comvideo;
-  // },
+    return rateCourse;
+  },
   // async deleteComCourse(parent, args, ctx, info) {
   //   if (!ctx.request.userId) {
   //     throw new Error("You must be logged in to do that!");

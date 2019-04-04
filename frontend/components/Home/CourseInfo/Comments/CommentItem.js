@@ -7,6 +7,7 @@ import { MenuDots, List } from "../../../styles/CommentItemStyle";
 import styled from "styled-components";
 import DeleteComment from "./DeleteComment";
 import UpdateComment from "./UpdateComment";
+import Rating from "./Rating";
 
 const Style = styled.p`
   min-width: 150px;
@@ -44,7 +45,10 @@ export class Video extends Component {
               {this.state.edit === true ? (
                 <UpdateComment data={comments} changeState={this.changeState} />
               ) : (
-                <span id="comment">{comments.comment}</span>
+                <>
+                  <span id="comment">{comments.comment}</span>
+                  <Rating />
+                </>
               )}
             </div>
             <div className="right-side">

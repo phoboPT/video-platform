@@ -33,9 +33,9 @@ const Style = styled.div`
   }
 `;
 
-const ADD_COMMENT = gql`
-  mutation ADD_COMMENT($courseId: ID!, $comment: String!) {
-    createComCourse(courseId: $courseId, comment: $comment) {
+const ADD_RATING = gql`
+  mutation ADD_RATING($courseId: ID!, $comment: String!, $rating: Float!) {
+    createRateCourse(courseId: $courseId, comment: $comment, rating: $rating) {
       id
     }
   }
@@ -44,7 +44,7 @@ const ADD_COMMENT = gql`
 export class CommentForm extends Component {
   state = {
     comment: "",
-    courseId: this.props.data.id,
+    courseId: this.props.data.id
   };
 
   saveState = e => {
@@ -64,16 +64,16 @@ export class CommentForm extends Component {
       alert("Please Add a Rating to Submit");
     }
   };
-
   render() {
     return (
       <Mutation
-        mutation={ADD_COMMENT}
+        mutation={ADD_RATING}
+        variables={this.state}
         refetchQueries={[
           {
-            query: ALL_COMMENTS_QUERY,
-            variables: { id: this.state.courseId },
-          },
+            query: ADD_RATING,
+            variables: { id: this.state.courseId, rating: this.state.rating }
+          }
         ]}
         variables={this.state}
       >
