@@ -33,6 +33,12 @@ const Item = styled.div`
     font-size: 11px;
     color: #6e6e79;
   }
+  .rating {
+    span {
+      padding: 0rem 0rem 0.6rem 0.6rem;
+      font-size: 5px;
+    }
+  }
   .buttonList {
     display: grid;
     width: 100%;

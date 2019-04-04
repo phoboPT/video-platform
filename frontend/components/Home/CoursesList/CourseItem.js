@@ -8,6 +8,7 @@ import User from "../../Authentication/User";
 import ItemStyles from "../../styles/ItemStyles";
 import BuyFreeButton from "../BuyFreeButton";
 import AddToCart from "../Cart/AddToCart";
+import Rating from "../CourseInfo/Comments/Rating";
 import WishButton from "../WishButton";
 
 const InfoStyle = styled.p`
@@ -53,7 +54,9 @@ export class CourseItem extends Component {
                     {formatMoney(course.price)}
                   </InfoStyle>
                 )}
-                <p>5 *****</p>
+                <div className="rating">
+                  <Rating readOnly={true} initialValue="4" />
+                </div>
                 <div className="buttonList">
                   {course.price === 0 ? (
                     <BuyFreeButton id={course.id} skip={this.props.skip} />
