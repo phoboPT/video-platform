@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
 import Error from "../../../Static/ErrorMessage";
-import Rating from "./Rating";
 import { ALL_COMMENTS_QUERY } from "./ListComments";
+import Rating from "./Rating";
 
 const Style = styled.div`
   button {
@@ -82,8 +82,8 @@ export class UpdateComment extends Component {
     const res = await updateCommentMutation({
       variables: {
         id: this.props.data.id,
-        ...this.state
-      }
+        ...this.state,
+      },
     });
   };
 
@@ -106,8 +106,8 @@ export class UpdateComment extends Component {
                 refetchQueries={[
                   {
                     query: ALL_COMMENTS_QUERY,
-                    variables: { id: data.rateCourse.course.id }
-                  }
+                    variables: { id: data.rateCourse.course.id },
+                  },
                 ]}
               >
                 {(updateCommentMutation, { error, loading }) => (

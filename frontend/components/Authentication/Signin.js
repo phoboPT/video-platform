@@ -8,7 +8,7 @@ import { CURRENT_COURSES_QUERY } from "../Courses/MyCourses/MyCourses";
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
-  ALL_COURSES_QUERY
+  ALL_COURSES_QUERY,
 } from "../Home/CoursesList/ListAllCourses";
 import Error from "../Static/ErrorMessage";
 import Form from "../styles/Form";
@@ -28,7 +28,7 @@ class Signin extends Component {
     first: 5,
     password: "",
     published: "PUBLISHED",
-    skip: 0
+    skip: 0,
   };
   saveToState = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -39,22 +39,22 @@ class Signin extends Component {
         mutation={SIGNIN_MUTATION}
         refetchQueries={[
           {
-            query: CURRENT_USER_QUERY
+            query: CURRENT_USER_QUERY,
           },
           { query: CURRENT_COURSES_QUERY },
           {
-            query: ALL_VIDEOS_USER
+            query: ALL_VIDEOS_USER,
           },
           {
-            query: ALL_COURSE_INTERESTS
+            query: ALL_COURSE_INTERESTS,
           },
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: "PUBLISHED", skip: 0, first: 5 }
+            variables: { published: "PUBLISHED", skip: 0, first: 5 },
           },
           {
-            query: ALL_COURSES_QUERY
-          }
+            query: ALL_COURSES_QUERY,
+          },
         ]}
         variables={this.state}
       >
@@ -66,7 +66,7 @@ class Signin extends Component {
               await signin();
               this.setState({ name: "", email: "", password: "" });
               Router.push({
-                pathname: "/"
+                pathname: "/",
               });
             }}
           >
@@ -106,4 +106,4 @@ class Signin extends Component {
 }
 
 export default Signin;
-export { SIGNUP_MUTATION };
+export { SIGNIN_MUTATION };
