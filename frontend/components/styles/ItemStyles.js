@@ -35,8 +35,9 @@ const Item = styled.div`
   }
   .rating {
     span {
+      color: red;
+      font-size: 0.8rem;
       padding: 0rem 0rem 0.6rem 0.6rem;
-      font-size: 5px;
     }
   }
   .buttonList {

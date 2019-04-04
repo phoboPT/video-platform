@@ -9,6 +9,8 @@ const Container = styled.div`
   .left {
     display: inline-block;
     margin: auto;
+    font-size: 1.5rem;
+    color: #e8dd0d;
   }
   .rigth {
     display: inline-block;
@@ -27,13 +29,21 @@ const Container = styled.div`
 `;
 
 class RatingPage extends Component {
-  state = { value: this.props.initialValue };
+  state = {
+    value: 0,
+  };
   change = e => {
     this.setState({ value: e });
     this.props.getRating(e);
   };
+
+  componentDidMount = () => {
+    console.log("props", this.props.initialValue);
+    this.setState({ value: parseInt(this.props.initialValue) });
+  };
+
   render() {
-    console.log(this.props.readOnly);
+    console.log("value", this.state.value);
     return (
       <Container>
         <div className="left">
@@ -42,8 +52,8 @@ class RatingPage extends Component {
             emptySymbol="far fa-star fa-2x"
             fractions={2}
             fullSymbol="fa fa-star fa-2x"
+            initialRating={this.state.value}
             onClick={this.change}
-            placeholderRating={this.state.value}
             placeholderSymbol="fa fa-star fa-2x"
             readonly={this.props.readOnly}
           />
