@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const ALL_COMMENTS_QUERY = gql`
   query ALL_COMMENTS_QUERY($id: ID!) {
-    comCourseList(id: $id) {
+    rateCourseList(id: $id) {
       id
       comment
       user {
@@ -16,6 +16,7 @@ const ALL_COMMENTS_QUERY = gql`
       course {
         id
       }
+      rate
       createdAt
     }
   }
@@ -69,11 +70,11 @@ export class ListComments extends Component {
         {({ error, loading, data }) => {
           if (error) return <p>Error!</p>;
           if (loading) return <p>Loading...</p>;
-          if (!data.comCourseList) return <p>No Comments</p>;
 
+          if (!data.rateCourseList) return <p>No Avaliations</p>;
           return (
             <>
-              {data.comCourseList.map(comments => (
+              {data.rateCourseList.map(comments => (
                 <CommentItem comments={comments} key={comments.id} />
               ))}
               <Button>

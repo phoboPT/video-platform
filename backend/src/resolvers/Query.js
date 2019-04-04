@@ -71,19 +71,19 @@ const Query = {
     );
   },
 
-  // comCourseList(parent, args, ctx, info) {
-  //   return ctx.db.query.comCourses(
-  //     {
-  //       orderBy: "createdAt_DESC",
-  //       where: {
-  //         course: {
-  //           id: args.id,
-  //         },
-  //       },
-  //     },
-  //     info,
-  //   );
-  // },
+  rateCourseList(parent, args, ctx, info) {
+    return ctx.db.query.rateCourses(
+      {
+        orderBy: "createdAt_DESC",
+        where: {
+          course: {
+            id: args.id
+          }
+        }
+      },
+      info
+    );
+  },
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     //Ve se esta logado

@@ -79,7 +79,7 @@ type Mutation {
     state: String
   ): Course!
   deleteCourse(id: ID!): CourseVideos
-  # createComCourse(courseId: ID!, comment: String!): ComCourse!
+  createRateCourse(courseId: ID!, comment: String!, rating: Float!): RateCourse!
   # updateComCourse(id: ID!, comment: String): ComCourse!
   # deleteComCourse(id: ID!): ComCourse
   addToCart(id: ID!): CartItem!
@@ -157,7 +157,7 @@ type Query {
   coursesList(orderBy: String, skip: Int, first: Int): [Course]
 
   # listar todos os comentarios de um curso
-  # comCourseList(id: ID!, orderBy: ComCourseOrderByInput): [ComCourse]
+  rateCourseList(id: ID!, orderBy: RateCourseOrderByInput): [RateCourse]
   # Listar todos os cursos de um User
   coursesUser: [Course]
   # Information about actual user
