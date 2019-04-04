@@ -3,7 +3,7 @@ const { forwardTo } = require("prisma-binding");
 const Query = {
   categories: forwardTo("db"),
   category: forwardTo("db"),
-  // comCourse: forwardTo("db"),
+  rateCourse: forwardTo("db"),
   course: forwardTo("db"),
   courses: forwardTo("db"),
   courseInterests: forwardTo("db"),
@@ -72,6 +72,7 @@ const Query = {
   },
 
   rateCourseList(parent, args, ctx, info) {
+    console.log("estou aqui");
     return ctx.db.query.rateCourses(
       {
         orderBy: "createdAt_DESC",

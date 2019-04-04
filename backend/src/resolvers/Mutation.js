@@ -456,57 +456,57 @@ const Mutations = {
 
     return rateCourse;
   },
-  // async deleteComCourse(parent, args, ctx, info) {
-  //   if (!ctx.request.userId) {
-  //     throw new Error("You must be logged in to do that!");
-  //   }
-  //   const where = {
-  //     id: args.id
-  //   };
-  //   //1.encontrar o video
-  //   const comCourse = await ctx.db.query.comCourse(
-  //     {
-  //       where
-  //     },
-  //     `{id user{id}}`
-  //   );
-  //   //2.checkar se tem permissoes para o apagar
-  //   const ownsComCourse = comCourse.user.id === ctx.request.userId;
+  async deleteRateCourse(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that!");
+    }
+    const where = {
+      id: args.id
+    };
+    //1.encontrar o video
+    const rateCourse = await ctx.db.query.rateCourse(
+      {
+        where
+      },
+      `{id user{id}}`
+    );
+    //2.checkar se tem permissoes para o apagar
+    const ownsRateCourse = rateCourse.user.id === ctx.request.userId;
 
-  //   if (!ownsComCourse) {
-  //     throw new Error("You don't have permission to do that!");
-  //   }
-  //   //3.dar delete
-  //   return ctx.db.mutation.deleteComCourse(
-  //     {
-  //       where
-  //     },
-  //     info
-  //   );
-  // },
-  // updateComCourse(parent, args, ctx, info) {
-  //   //faz uma copia dos updates
-  //   const { userId } = ctx.request;
-  //   if (!userId) {
-  //     throw new Error("You must be signed in");
-  //   }
+    if (!ownsRateCourse) {
+      throw new Error("You don't have permission to do that!");
+    }
+    //3.dar delete
+    return ctx.db.mutation.deleteRateCourse(
+      {
+        where
+      },
+      info
+    );
+  },
+  updateRateCourse(parent, args, ctx, info) {
+    //faz uma copia dos updates
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("You must be signed in");
+    }
 
-  //   const updates = {
-  //     ...args
-  //   };
-  //   //elimina o id dos updates
-  //   delete updates.id;
-  //   //da run no update method
-  //   return ctx.db.mutation.updateComCourse(
-  //     {
-  //       data: updates,
-  //       where: {
-  //         id: args.id
-  //       }
-  //     },
-  //     info
-  //   );
-  // },
+    const updates = {
+      ...args
+    };
+    //elimina o id dos updates
+    delete updates.id;
+    //da run no update method
+    return ctx.db.mutation.updateRateCourse(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
+      },
+      info
+    );
+  },
   async removeFromCourse(parent, args, ctx, info) {
     //Make sure they are signin
     const { userId } = ctx.request;
@@ -540,7 +540,6 @@ const Mutations = {
     if (!userId) {
       throw new Error("You must be signed in soooon");
     }
-    console.log(args);
 
     // 4. If its not, create a fresh CartItem for that user!
     return ctx.db.mutation.createCourseInterest(

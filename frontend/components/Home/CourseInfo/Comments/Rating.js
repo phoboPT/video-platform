@@ -43,7 +43,6 @@ class RatingPage extends Component {
   };
 
   render() {
-    console.log("value", this.state.value);
     return (
       <Container>
         <div className="left">

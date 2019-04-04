@@ -18,7 +18,8 @@ export class Video extends Component {
     comments: PropTypes.object.isRequired
   };
   state = {
-    edit: false
+    edit: false,
+    rating: this.props.rating
   };
   changeEdit = e => {
     this.setState({ edit: true });
@@ -26,6 +27,9 @@ export class Video extends Component {
 
   changeState = e => {
     this.setState({ edit: false });
+  };
+  getRating = rating => {
+    this.setState({ rating: rating });
   };
   render() {
     const { comments } = this.props;
@@ -43,11 +47,16 @@ export class Video extends Component {
             </div>
             <div className="middle">
               {this.state.edit === true ? (
-                <UpdateComment data={comments} changeState={this.changeState} />
+                <UpdateComment data={comments} changeState={this.changeState}>
+                  <Rating
+                    initialValue={this.state.rating}
+                    getRating={this.getRating}
+                  />
+                </UpdateComment>
               ) : (
                 <>
                   <span id="comment">{comments.comment}</span>
-                  <Rating />
+                  <Rating readOnly={true} initialValue={this.state.rating} />
                 </>
               )}
             </div>

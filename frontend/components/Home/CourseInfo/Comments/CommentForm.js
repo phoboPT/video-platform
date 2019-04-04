@@ -71,8 +71,8 @@ export class CommentForm extends Component {
         variables={this.state}
         refetchQueries={[
           {
-            query: ADD_RATING,
-            variables: { id: this.state.courseId, rating: this.state.rating }
+            query: ALL_COMMENTS_QUERY,
+            variables: { id: this.state.courseId }
           }
         ]}
         variables={this.state}
@@ -85,8 +85,6 @@ export class CommentForm extends Component {
                   e.preventDefault();
 
                   this.saveData(createComCourse, e);
-                  // const res = await createComCourse();
-                  //
                 }}
               >
                 <Error error={error} />
