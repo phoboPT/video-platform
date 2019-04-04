@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import PropTypes from "prop-types";
 import gql from "graphql-tag";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { Mutation } from "react-apollo";
+import styled from "styled-components";
 import Error from "../../../Static/ErrorMessage";
 import { ALL_COMMENTS_QUERY } from "./ListComments";
 import Rating from "./Rating";
@@ -29,6 +29,8 @@ const Style = styled.div`
     text-decoration: none;
     cursor: pointer;
   }
+  span {
+  }
 `;
 
 const ADD_RATING = gql`
@@ -41,8 +43,8 @@ const ADD_RATING = gql`
 
 export class CommentForm extends Component {
   state = {
-    courseId: this.props.data.id,
-    comment: ""
+    comment: "",
+    courseId: this.props.data.id
   };
 
   saveState = e => {
@@ -73,8 +75,9 @@ export class CommentForm extends Component {
             variables: { id: this.state.courseId, rating: this.state.rating }
           }
         ]}
+        variables={this.state}
       >
-        {(createComCourse, { loading, error }) => {
+        {(createComCourse, { error, loading }) => {
           return (
             <Style>
               <form
@@ -88,17 +91,23 @@ export class CommentForm extends Component {
               >
                 <Error error={error} />
 
-                <Rating getRating={this.getRating} />
+                <div className="rating">
+                  <Rating
+                    getRating={this.getRating}
+                    initialValue="0"
+                    readOnly={false}
+                  />
+                </div>
 
-                <fieldset disabled={loading} aria-busy={loading}>
+                <fieldset aria-busy={loading} disabled={loading}>
                   <textarea
                     id="comment"
                     name="comment"
+                    onChange={this.saveState}
                     placeholder="Write your comment"
                     required
                     rows="6"
                     value={this.state.comment}
-                    onChange={this.saveState}
                   />
                   <button>Comment</button>
                 </fieldset>

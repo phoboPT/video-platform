@@ -14,7 +14,7 @@ const Border = styled.div`
   img {
     border-radius: ${props => props.theme.borderRadius};
     width: 100%;
-    height: 300px;
+    height: 100%;
     object-fit: cover;
   }
   border: 2px solid #dddddd;
@@ -54,11 +54,11 @@ class InterestItem extends Component {
     idToDelete: "",
     interestId: this.props.interest.id,
     isActive: false,
-    userInterest: [this.props.userInterest]
+    userInterest: [this.props.userInterest],
   };
 
   static propTypes = {
-    interest: PropTypes.object.isRequired
+    interest: PropTypes.object.isRequired,
   };
 
   changeFalse = e => {
