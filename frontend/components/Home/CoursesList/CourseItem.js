@@ -18,12 +18,12 @@ const InfoStyle = styled.p`
 
 export class CourseItem extends Component {
   static propTypes = {
-    course: PropTypes.object.isRequired,
+    course: PropTypes.object.isRequired
   };
   state = {
     ...this.props.course.user,
     buttonToShow: 0,
-    courseId: this.props.course.id,
+    courseId: this.props.course.id
   };
 
   render() {
@@ -40,7 +40,7 @@ export class CourseItem extends Component {
                 <Link
                   href={{
                     pathname: "/course",
-                    query: { id: course.id },
+                    query: { id: course.id }
                   }}
                 >
                   <img className="Thumbnail" src={course.thumbnail} />
