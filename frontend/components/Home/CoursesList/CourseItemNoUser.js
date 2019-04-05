@@ -26,7 +26,6 @@ export class CourseItem extends Component {
 
   render() {
     const { course } = this.props;
-    console.log(course);
     return (
       <>
         <ItemStyles>
@@ -44,8 +43,9 @@ export class CourseItem extends Component {
           <div className="rating">
             <Rating
               readOnly={true}
-              initialValue={course.rate}
-              totalComments={course.totalRate / course.totalComments}
+              initialValue={course.totalRate / course.totalComments}
+              totalComments={course.totalComments}
+              showTotal={true}
             />
           </div>
           <div className="buttonList">

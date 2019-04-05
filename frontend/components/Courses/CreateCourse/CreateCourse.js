@@ -39,7 +39,6 @@ class CreateCourse extends Component {
             if (error) {
               return <p>Error:{error.message}</p>;
             }
-            console.log(this.props.state);
             return (
               <InterestStyle>
                 {data.interests.map((interest, index) => (

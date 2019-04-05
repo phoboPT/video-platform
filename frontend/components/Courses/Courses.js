@@ -75,7 +75,6 @@ class Courses extends Component {
 
   // This method will be sent to the child component
   saveToState = e => {
-    console.log(e);
     this.setState({ courseId: e.data.createCourse.id, view: 3 });
   };
 

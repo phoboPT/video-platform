@@ -110,6 +110,7 @@ const List = styled.div`
       word-spacing: 0px;
       line-height: 20px;
       white-space: pre-wrap;
+      margin-right: 1rem;
     }
   }
 

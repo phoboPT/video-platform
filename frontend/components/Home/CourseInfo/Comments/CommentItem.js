@@ -1,13 +1,13 @@
-import React, { Component } from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
+import React, { Component } from "react";
+import styled from "styled-components";
 import formatDate from "../../../../lib/formatDate";
 import User from "../../../Authentication/User";
-import { MenuDots, List } from "../../../styles/CommentItemStyle";
-import styled from "styled-components";
+import { List, MenuDots } from "../../../styles/CommentItemStyle";
 import DeleteComment from "./DeleteComment";
-import UpdateComment from "./UpdateComment";
 import Rating from "./Rating";
+import UpdateComment from "./UpdateComment";
 
 const Style = styled.p`
   min-width: 150px;
@@ -15,11 +15,11 @@ const Style = styled.p`
 
 export class Video extends Component {
   static propTypes = {
-    comments: PropTypes.object.isRequired
+    comments: PropTypes.object.isRequired,
   };
   state = {
     edit: false,
-    rating: this.props.rating
+    rating: this.props.rating,
   };
   changeEdit = e => {
     this.setState({ edit: true });
@@ -47,10 +47,10 @@ export class Video extends Component {
             </div>
             <div className="middle">
               {this.state.edit === true ? (
-                <UpdateComment data={comments} changeState={this.changeState}>
+                <UpdateComment changeState={this.changeState} data={comments}>
                   <Rating
-                    initialValue={this.state.rating}
                     getRating={this.getRating}
+                    initialValue={this.state.rating}
                   />
                 </UpdateComment>
               ) : (

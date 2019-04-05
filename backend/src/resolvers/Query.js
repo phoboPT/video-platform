@@ -497,7 +497,7 @@ const Query = {
 }}`,
     );
 
-    return finalRes;
+    return res;
   },
 };
 

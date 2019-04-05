@@ -45,9 +45,9 @@
   function _defineProperty(obj, key, value) {
     if (key in obj) {
       Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
         configurable: true,
+        enumerable: true,
+        value: value,
         writable: true
       });
     } else {
@@ -596,9 +596,9 @@
   function _defineProperty(obj, key, value) {
     if (key in obj) {
       Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
         configurable: true,
+        enumerable: true,
+        value: value,
         writable: true
       });
     } else {
@@ -872,9 +872,9 @@
   function _defineProperty(obj, key, value) {
     if (key in obj) {
       Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
         configurable: true,
+        enumerable: true,
+        value: value,
         writable: true
       });
     } else {
@@ -1932,9 +1932,9 @@
   function _defineProperty(obj, key, value) {
     if (key in obj) {
       Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
         configurable: true,
+        enumerable: true,
+        value: value,
         writable: true
       });
     } else {
@@ -2070,25 +2070,25 @@
     }
   }();
   var PREFIX_TO_STYLE = {
-    'fas': 'solid',
-    'far': 'regular',
-    'fal': 'light',
+    'fa': 'solid',
     'fab': 'brands',
-    'fa': 'solid'
+    'fal': 'light',
+    'far': 'regular',
+    'fas': 'solid'
   };
   var STYLE_TO_PREFIX = {
-    'solid': 'fas',
-    'regular': 'far',
+    'brands': 'fab',
     'light': 'fal',
-    'brands': 'fab'
+    'regular': 'far',
+    'solid': 'fas'
   };
   var LAYERS_TEXT_CLASSNAME = 'fa-layers-text';
   var FONT_FAMILY_PATTERN = /Font Awesome 5 (Solid|Regular|Light|Brands|Free|Pro)/;
   var FONT_WEIGHT_TO_PREFIX = {
-    '900': 'fas',
+    '300': 'fal',
     '400': 'far',
-    'normal': 'far',
-    '300': 'fal'
+    '900': 'fas',
+    'normal': 'far'
   };
   var oneToTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   var oneToTwenty = oneToTen.concat([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
@@ -2135,16 +2135,16 @@
   }
 
   var _default = {
-    familyPrefix: DEFAULT_FAMILY_PREFIX,
-    replacementClass: DEFAULT_REPLACEMENT_CLASS,
-    autoReplaceSvg: true,
-    autoAddCss: true,
     autoA11y: true,
-    searchPseudoElements: false,
-    observeMutations: true,
-    mutateApproach: 'async',
+    autoAddCss: true,
+    autoReplaceSvg: true,
+    familyPrefix: DEFAULT_FAMILY_PREFIX,
     keepOriginalSource: true,
     measurePerformance: false,
+    mutateApproach: 'async',
+    observeMutations: true,
+    replacementClass: DEFAULT_REPLACEMENT_CLASS,
+    searchPseudoElements: false,
     showMissingIcons: true
   };
 
@@ -2366,17 +2366,20 @@
   }
 
   P.prototype = {
-    constructor: P,
-    _state: PENDING,
-    _then: null,
     _data: undefined,
     _handled: false,
+    _state: PENDING,
+    _then: null,
+    catch: function _catch(onRejection) {
+      return this.then(null, onRejection);
+    },
+    constructor: P,
     then: function then(onFulfillment, onRejection) {
       var subscriber = {
-        owner: this,
-        then: new this.constructor(NOOP),
         fulfilled: onFulfillment,
-        rejected: onRejection
+        owner: this,
+        rejected: onRejection,
+        then: new this.constructor(NOOP)
       };
 
       if ((onRejection || onFulfillment) && !this._handled) {
@@ -2396,9 +2399,6 @@
       }
 
       return subscriber.then;
-    },
-    catch: function _catch(onRejection) {
-      return this.then(null, onRejection);
     }
   };
 
@@ -2476,12 +2476,12 @@
 
   var d = UNITS_IN_GRID;
   var meaninglessTransform = {
+    flipX: false,
+    flipY: false,
+    rotate: 0,
     size: 16,
     x: 0,
-    y: 0,
-    rotate: 0,
-    flipX: false,
-    flipY: false
+    y: 0
   };
 
   function isReserved(name) {
@@ -2583,7 +2583,7 @@
     var outer = {
       transform: "translate(".concat(containerWidth / 2, " 256)")
     };
-    var innerTranslate = "translate(".concat(transform.x * 32, ", ").concat(transform.y * 32, ") ");
+    var innerTranslate = "translate(".concat(32 * transform.x, ", ").concat(32 * transform.y, ") ");
     var innerScale = "scale(".concat(transform.size / 16 * (transform.flipX ? -1 : 1), ", ").concat(transform.size / 16 * (transform.flipY ? -1 : 1), ") ");
     var innerRotate = "rotate(".concat(transform.rotate, " 0 0)");
     var inner = {
@@ -2593,8 +2593,8 @@
       transform: "translate(".concat(iconWidth / 2 * -1, " -256)")
     };
     return {
-      outer: outer,
       inner: inner,
+      outer: outer,
       path: path
     };
   }
@@ -2622,10 +2622,10 @@
   }
 
   var ALL_SPACE = {
-    x: 0,
-    y: 0,
+    height: '100%',
     width: '100%',
-    height: '100%'
+    x: 0,
+    y: 0
   };
   function makeIconMasking (_ref) {
     var children = _ref.children,
@@ -2638,63 +2638,63 @@
     var maskWidth = mask.width,
         maskPath = mask.icon;
     var trans = transformForSvg({
-      transform: transform,
       containerWidth: maskWidth,
-      iconWidth: mainWidth
+      iconWidth: mainWidth,
+      transform: transform
     });
     var maskRect = {
-      tag: 'rect',
       attributes: _objectSpread({}, ALL_SPACE, {
         fill: 'white'
-      })
+      }),
+      tag: 'rect'
     };
     var maskInnerGroup = {
-      tag: 'g',
       attributes: _objectSpread({}, trans.inner),
       children: [{
-        tag: 'path',
         attributes: _objectSpread({}, mainPath.attributes, trans.path, {
           fill: 'black'
-        })
-      }]
+        }),
+        tag: 'path'
+      }],
+      tag: 'g'
     };
     var maskOuterGroup = {
-      tag: 'g',
       attributes: _objectSpread({}, trans.outer),
-      children: [maskInnerGroup]
+      children: [maskInnerGroup],
+      tag: 'g'
     };
     var maskId = "mask-".concat(nextUniqueId());
     var clipId = "clip-".concat(nextUniqueId());
     var maskTag = {
-      tag: 'mask',
       attributes: _objectSpread({}, ALL_SPACE, {
         id: maskId,
-        maskUnits: 'userSpaceOnUse',
-        maskContentUnits: 'userSpaceOnUse'
+        maskContentUnits: 'userSpaceOnUse',
+        maskUnits: 'userSpaceOnUse'
       }),
-      children: [maskRect, maskOuterGroup]
+      children: [maskRect, maskOuterGroup],
+      tag: 'mask'
     };
     var defs = {
-      tag: 'defs',
       children: [{
-        tag: 'clipPath',
         attributes: {
           id: clipId
         },
-        children: [maskPath]
-      }, maskTag]
+        children: [maskPath],
+        tag: 'clipPath'
+      }, maskTag],
+      tag: 'defs'
     };
     children.push(defs, {
-      tag: 'rect',
       attributes: _objectSpread({
-        fill: 'currentColor',
         'clip-path': "url(#".concat(clipId, ")"),
+        fill: 'currentColor',
         mask: "url(#".concat(maskId, ")")
-      }, ALL_SPACE)
+      }, ALL_SPACE),
+      tag: 'rect'
     });
     return {
-      children: children,
-      attributes: attributes
+      attributes: attributes,
+      children: children
     };
   }
 
@@ -2712,30 +2712,30 @@
 
     if (transformIsMeaningful(transform)) {
       var trans = transformForSvg({
-        transform: transform,
         containerWidth: main.width,
-        iconWidth: main.width
+        iconWidth: main.width,
+        transform: transform
       });
       children.push({
-        tag: 'g',
         attributes: _objectSpread({}, trans.outer),
         children: [{
-          tag: 'g',
           attributes: _objectSpread({}, trans.inner),
           children: [{
-            tag: main.icon.tag,
+            attributes: _objectSpread({}, main.icon.attributes, trans.path),
             children: main.icon.children,
-            attributes: _objectSpread({}, main.icon.attributes, trans.path)
-          }]
-        }]
+            tag: main.icon.tag
+          }],
+          tag: 'g'
+        }],
+        tag: 'g'
       });
     } else {
       children.push(main.icon);
     }
 
     return {
-      children: children,
-      attributes: attributes
+      attributes: attributes,
+      children: children
     };
   }
 
@@ -2760,9 +2760,9 @@
     }
 
     return [{
-      tag: 'svg',
       attributes: attributes,
-      children: children
+      children: children,
+      tag: 'svg'
     }];
   }
 
@@ -2774,17 +2774,17 @@
         symbol = _ref.symbol;
     var id = symbol === true ? "".concat(prefix, "-").concat(config.familyPrefix, "-").concat(iconName) : symbol;
     return [{
-      tag: 'svg',
       attributes: {
         style: 'display: none;'
       },
       children: [{
-        tag: 'symbol',
         attributes: _objectSpread({}, attributes, {
           id: id
         }),
-        children: children
-      }]
+        children: children,
+        tag: 'symbol'
+      }],
+      tag: 'svg'
     }];
   }
 
@@ -2810,15 +2810,15 @@
       return extra.classes.indexOf(c) === -1;
     }).concat(extra.classes).join(' ');
     var content = {
-      children: [],
       attributes: _objectSpread({}, extra.attributes, {
-        'data-prefix': prefix,
-        'data-icon': iconName,
         'class': attrClass,
+        'data-icon': iconName,
+        'data-prefix': prefix,
         'role': 'img',
-        'xmlns': 'http://www.w3.org/2000/svg',
-        'viewBox': "0 0 ".concat(width, " ").concat(height)
-      })
+        'viewBox': "0 0 ".concat(width, " ").concat(height),
+        'xmlns': 'http://www.w3.org/2000/svg'
+      }),
+      children: []
     };
 
     if (watchable) {
@@ -2826,21 +2826,21 @@
     }
 
     if (title) content.children.push({
-      tag: 'title',
       attributes: {
         id: content.attributes['aria-labelledby'] || "title-".concat(nextUniqueId())
       },
-      children: [title]
+      children: [title],
+      tag: 'title'
     });
 
     var args = _objectSpread({}, content, {
-      prefix: prefix,
       iconName: iconName,
       main: main,
       mask: mask,
-      transform: transform,
+      prefix: prefix,
+      styles: extra.styles,
       symbol: symbol,
-      styles: extra.styles
+      transform: transform
     });
 
     var _ref2 = mask.found && main.found ? makeIconMasking(args) : makeIconStandard(args),
@@ -2880,10 +2880,10 @@
 
     if (transformIsMeaningful(transform)) {
       styles['transform'] = transformForCss({
-        transform: transform,
+        height: height,
         startCentered: true,
-        width: width,
-        height: height
+        transform: transform,
+        width: width
       });
       styles['-webkit-transform'] = styles['transform'];
     }
@@ -2896,18 +2896,18 @@
 
     var val = [];
     val.push({
-      tag: 'span',
       attributes: attributes,
-      children: [content]
+      children: [content],
+      tag: 'span'
     });
 
     if (title) {
       val.push({
-        tag: 'span',
         attributes: {
           class: 'sr-only'
         },
-        children: [title]
+        children: [title],
+        tag: 'span'
       });
     }
 
@@ -2932,18 +2932,18 @@
 
     var val = [];
     val.push({
-      tag: 'span',
       attributes: attributes,
-      children: [content]
+      children: [content],
+      tag: 'span'
     });
 
     if (title) {
       val.push({
-        tag: 'span',
         attributes: {
           class: 'sr-only'
         },
-        children: [title]
+        children: [title],
+        tag: 'span'
       });
     }
 
@@ -3097,8 +3097,8 @@
       }
 
       acc[oldName] = {
-        prefix: prefix,
-        iconName: iconName
+        iconName: iconName,
+        prefix: prefix
       };
       return acc;
     }, {});
@@ -3112,16 +3112,16 @@
   }
   function byOldName(name) {
     return _byOldName[name] || {
-      prefix: null,
-      iconName: null
+      iconName: null,
+      prefix: null
     };
   }
 
   var styles$1 = namespace.styles;
   var emptyCanonicalIcon = function emptyCanonicalIcon() {
     return {
-      prefix: null,
       iconName: null,
+      prefix: null,
       rest: []
     };
   };
@@ -3147,9 +3147,9 @@
   function iconFromMapping(mapping, prefix, iconName) {
     if (mapping && mapping[prefix] && mapping[prefix][iconName]) {
       return {
-        prefix: prefix,
+        icon: mapping[prefix][iconName],
         iconName: iconName,
-        icon: mapping[prefix][iconName]
+        prefix: prefix
       };
     }
   }
@@ -3185,21 +3185,6 @@
   }
 
   var mutators = {
-    replace: function replace(mutation) {
-      var node = mutation[0];
-      var abstract = mutation[1];
-      var newOuterHTML = abstract.map(function (a) {
-        return toHtml(a);
-      }).join('\n');
-
-      if (node.parentNode && node.outerHTML) {
-        node.outerHTML = newOuterHTML + (config.keepOriginalSource && node.tagName.toLowerCase() !== 'svg' ? "<!-- ".concat(node.outerHTML, " -->") : '');
-      } else if (node.parentNode) {
-        var newNode = document.createElement('span');
-        node.parentNode.replaceChild(newNode, node);
-        newNode.outerHTML = newOuterHTML;
-      }
-    },
     nest: function nest(mutation) {
       var node = mutation[0];
       var abstract = mutation[1]; // If we already have a replaced node we do not want to continue nesting within it.
@@ -3230,6 +3215,21 @@
       node.setAttribute('class', splitClasses.toNode.join(' '));
       node.setAttribute(DATA_FA_I2SVG, '');
       node.innerHTML = newInnerHTML;
+    },
+    replace: function replace(mutation) {
+      var node = mutation[0];
+      var abstract = mutation[1];
+      var newOuterHTML = abstract.map(function (a) {
+        return toHtml(a);
+      }).join('\n');
+
+      if (node.parentNode && node.outerHTML) {
+        node.outerHTML = newOuterHTML + (config.keepOriginalSource && node.tagName.toLowerCase() !== 'svg' ? "<!-- ".concat(node.outerHTML, " -->") : '');
+      } else if (node.parentNode) {
+        var newNode = document.createElement('span');
+        node.parentNode.replaceChild(newNode, node);
+        newNode.outerHTML = newOuterHTML;
+      }
     }
   };
 
@@ -3311,9 +3311,9 @@
     });
     if (!IS_DOM) return;
     mo.observe(observeMutationsRoot, {
-      childList: true,
       attributes: true,
       characterData: true,
+      childList: true,
       subtree: true
     });
   }
@@ -3376,12 +3376,12 @@
 
   var parseTransformString = function parseTransformString(transformString) {
     var transform = {
-      size: 16,
-      x: 0,
-      y: 0,
       flipX: false,
       flipY: false,
-      rotate: 0
+      rotate: 0,
+      size: 16,
+      x: 0,
+      y: 0
     };
 
     if (!transformString) {
@@ -3487,17 +3487,17 @@
 
   function blankMeta() {
     return {
-      iconName: null,
-      title: null,
-      prefix: null,
-      transform: meaninglessTransform,
-      symbol: false,
-      mask: null,
       extra: {
+        attributes: {},
         classes: [],
-        styles: {},
-        attributes: {}
-      }
+        styles: {}
+      },
+      iconName: null,
+      mask: null,
+      prefix: null,
+      symbol: false,
+      title: null,
+      transform: meaninglessTransform
     };
   }
   function parseMeta(node) {
@@ -3512,17 +3512,17 @@
     var extraAttributes = attributesParser(node);
     var mask = maskParser(node);
     return {
-      iconName: iconName,
-      title: node.getAttribute('title'),
-      prefix: prefix,
-      transform: transform,
-      symbol: symbol,
-      mask: mask,
       extra: {
+        attributes: extraAttributes,
         classes: extraClasses,
-        styles: extraStyles,
-        attributes: extraAttributes
-      }
+        styles: extraStyles
+      },
+      iconName: iconName,
+      mask: mask,
+      prefix: prefix,
+      symbol: symbol,
+      title: node.getAttribute('title'),
+      transform: transform
     };
   }
 
@@ -3539,14 +3539,14 @@
   };
   var ANIMATION_BASE = {
     attributeType: 'XML',
-    repeatCount: 'indefinite',
-    dur: '2s'
+    dur: '2s',
+    repeatCount: 'indefinite'
   };
   var RING = {
-    tag: 'path',
     attributes: _objectSpread({}, FILL, {
       d: 'M156.5,447.7l-12.6,29.5c-18.7-9.5-35.9-21.2-51.5-34.9l22.7-22.7C127.6,430.5,141.5,440,156.5,447.7z M40.6,272H8.5 c1.4,21.2,5.4,41.7,11.7,61.1L50,321.2C45.1,305.5,41.8,289,40.6,272z M40.6,240c1.4-18.8,5.2-37,11.1-54.1l-29.5-12.6 C14.7,194.3,10,216.7,8.5,240H40.6z M64.3,156.5c7.8-14.9,17.2-28.8,28.1-41.5L69.7,92.3c-13.7,15.6-25.5,32.8-34.9,51.5 L64.3,156.5z M397,419.6c-13.9,12-29.4,22.3-46.1,30.4l11.9,29.8c20.7-9.9,39.8-22.6,56.9-37.6L397,419.6z M115,92.4 c13.9-12,29.4-22.3,46.1-30.4l-11.9-29.8c-20.7,9.9-39.8,22.6-56.8,37.6L115,92.4z M447.7,355.5c-7.8,14.9-17.2,28.8-28.1,41.5 l22.7,22.7c13.7-15.6,25.5-32.9,34.9-51.5L447.7,355.5z M471.4,272c-1.4,18.8-5.2,37-11.1,54.1l29.5,12.6 c7.5-21.1,12.2-43.5,13.6-66.8H471.4z M321.2,462c-15.7,5-32.2,8.2-49.2,9.4v32.1c21.2-1.4,41.7-5.4,61.1-11.7L321.2,462z M240,471.4c-18.8-1.4-37-5.2-54.1-11.1l-12.6,29.5c21.1,7.5,43.5,12.2,66.8,13.6V471.4z M462,190.8c5,15.7,8.2,32.2,9.4,49.2h32.1 c-1.4-21.2-5.4-41.7-11.7-61.1L462,190.8z M92.4,397c-12-13.9-22.3-29.4-30.4-46.1l-29.8,11.9c9.9,20.7,22.6,39.8,37.6,56.9 L92.4,397z M272,40.6c18.8,1.4,36.9,5.2,54.1,11.1l12.6-29.5C317.7,14.7,295.3,10,272,8.5V40.6z M190.8,50 c15.7-5,32.2-8.2,49.2-9.4V8.5c-21.2,1.4-41.7,5.4-61.1,11.7L190.8,50z M442.3,92.3L419.6,115c12,13.9,22.3,29.4,30.5,46.1 l29.8-11.9C470,128.5,457.3,109.4,442.3,92.3z M397,92.4l22.7-22.7c-15.6-13.7-32.8-25.5-51.5-34.9l-12.6,29.5 C370.4,72.1,384.4,81.5,397,92.4z'
-    })
+    }),
+    tag: 'path'
   };
 
   var OPACITY_ANIMATE = _objectSpread({}, ANIMATION_BASE, {
@@ -3554,54 +3554,54 @@
   });
 
   var DOT = {
-    tag: 'circle',
     attributes: _objectSpread({}, FILL, {
       cx: '256',
       cy: '364',
       r: '28'
     }),
     children: [{
-      tag: 'animate',
       attributes: _objectSpread({}, ANIMATION_BASE, {
         attributeName: 'r',
         values: '28;14;28;28;14;28;'
-      })
+      }),
+      tag: 'animate'
     }, {
-      tag: 'animate',
       attributes: _objectSpread({}, OPACITY_ANIMATE, {
         values: '1;0;1;1;0;1;'
-      })
-    }]
+      }),
+      tag: 'animate'
+    }],
+    tag: 'circle'
   };
   var QUESTION = {
-    tag: 'path',
     attributes: _objectSpread({}, FILL, {
-      opacity: '1',
-      d: 'M263.7,312h-16c-6.6,0-12-5.4-12-12c0-71,77.4-63.9,77.4-107.8c0-20-17.8-40.2-57.4-40.2c-29.1,0-44.3,9.6-59.2,28.7 c-3.9,5-11.1,6-16.2,2.4l-13.1-9.2c-5.6-3.9-6.9-11.8-2.6-17.2c21.2-27.2,46.4-44.7,91.2-44.7c52.3,0,97.4,29.8,97.4,80.2 c0,67.6-77.4,63.5-77.4,107.8C275.7,306.6,270.3,312,263.7,312z'
+      d: 'M263.7,312h-16c-6.6,0-12-5.4-12-12c0-71,77.4-63.9,77.4-107.8c0-20-17.8-40.2-57.4-40.2c-29.1,0-44.3,9.6-59.2,28.7 c-3.9,5-11.1,6-16.2,2.4l-13.1-9.2c-5.6-3.9-6.9-11.8-2.6-17.2c21.2-27.2,46.4-44.7,91.2-44.7c52.3,0,97.4,29.8,97.4,80.2 c0,67.6-77.4,63.5-77.4,107.8C275.7,306.6,270.3,312,263.7,312z',
+      opacity: '1'
     }),
     children: [{
-      tag: 'animate',
       attributes: _objectSpread({}, OPACITY_ANIMATE, {
         values: '1;0;0;0;0;1;'
-      })
-    }]
+      }),
+      tag: 'animate'
+    }],
+    tag: 'path'
   };
   var EXCLAMATION = {
-    tag: 'path',
     attributes: _objectSpread({}, FILL, {
-      opacity: '0',
-      d: 'M232.5,134.5l7,168c0.3,6.4,5.6,11.5,12,11.5h9c6.4,0,11.7-5.1,12-11.5l7-168c0.3-6.8-5.2-12.5-12-12.5h-23 C237.7,122,232.2,127.7,232.5,134.5z'
+      d: 'M232.5,134.5l7,168c0.3,6.4,5.6,11.5,12,11.5h9c6.4,0,11.7-5.1,12-11.5l7-168c0.3-6.8-5.2-12.5-12-12.5h-23 C237.7,122,232.2,127.7,232.5,134.5z',
+      opacity: '0'
     }),
     children: [{
-      tag: 'animate',
       attributes: _objectSpread({}, OPACITY_ANIMATE, {
         values: '0;0;1;1;0;0;'
-      })
-    }]
+      }),
+      tag: 'animate'
+    }],
+    tag: 'path'
   };
   var missing = {
-    tag: 'g',
-    children: [RING, DOT, QUESTION, EXCLAMATION]
+    children: [RING, DOT, QUESTION, EXCLAMATION],
+    tag: 'g'
   };
 
   var styles$2 = namespace.styles;
@@ -3609,9 +3609,9 @@
     return new picked(function (resolve, reject) {
       var val = {
         found: false,
-        width: 512,
         height: 512,
-        icon: missing
+        icon: missing,
+        width: 512
       };
 
       if (iconName && prefix && styles$2[prefix] && styles$2[prefix][iconName]) {
@@ -3621,15 +3621,15 @@
         var vectorData = icon.slice(4);
         val = {
           found: true,
-          width: width,
           height: height,
           icon: {
-            tag: 'path',
             attributes: {
-              fill: 'currentColor',
-              d: vectorData[0]
-            }
-          }
+              d: vectorData[0],
+              fill: 'currentColor'
+            },
+            tag: 'path'
+          },
+          width: width
         };
         return resolve(val);
       }
@@ -3659,17 +3659,17 @@
             mask = _ref2[1];
 
         resolve([node, makeInlineSvgAbstract({
+          extra: extra,
+          iconName: iconName,
           icons: {
             main: main,
             mask: mask
           },
-          prefix: prefix,
-          iconName: iconName,
-          transform: transform,
-          symbol: symbol,
           mask: mask,
+          prefix: prefix,
+          symbol: symbol,
           title: title,
-          extra: extra,
+          transform: transform,
           watchable: true
         })]);
       });
@@ -3696,12 +3696,12 @@
 
     return picked.resolve([node, makeLayersTextAbstract({
       content: node.innerHTML,
-      width: width,
-      height: height,
-      transform: transform,
-      title: title,
       extra: extra,
-      watchable: true
+      height: height,
+      title: title,
+      transform: transform,
+      watchable: true,
+      width: width
     })]);
   }
 
@@ -3757,7 +3757,6 @@
       } catch (e) {
         if (!PRODUCTION) {
           if (e instanceof MissingIcon) {
-            console.error(e);
           }
         }
       }
@@ -3830,13 +3829,13 @@
           extra.attributes[DATA_FA_PSEUDO_ELEMENT] = position;
           findIcon(iconName, prefix).then(function (main) {
             var abstract = makeInlineSvgAbstract(_objectSpread({}, meta, {
+              extra: extra,
+              iconName: iconName,
               icons: {
                 main: main,
                 mask: emptyCanonicalIcon()
               },
               prefix: prefix,
-              iconName: iconName,
-              extra: extra,
               watchable: true
             }));
             var element = DOCUMENT.createElement('svg');
@@ -3963,15 +3962,15 @@
     var vectorData = icon.slice(4);
     return {
       found: true,
-      width: width,
       height: height,
       icon: {
-        tag: 'path',
         attributes: {
-          fill: 'currentColor',
-          d: vectorData[0]
-        }
-      }
+          d: vectorData[0],
+          fill: 'currentColor'
+        },
+        tag: 'path'
+      },
+      width: width
     };
   }
 
@@ -4037,6 +4036,7 @@
   };
   var _cssInserted = false;
   var dom = {
+    css: css,
     i2svg: function i2svg() {
       var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -4056,7 +4056,6 @@
         return picked.reject('Operation requires a DOM of some kind.');
       }
     },
-    css: css,
     insertCss: function insertCss$$1() {
       if (!_cssInserted) {
         insertCss(css());
@@ -4079,10 +4078,10 @@
           autoReplaceSvgRoot: autoReplaceSvgRoot
         });
         observe({
-          treeCallback: onTree,
           nodeCallback: onNode,
+          observeMutationsRoot: observeMutationsRoot,
           pseudoElementsCallback: searchPseudoElements,
-          observeMutationsRoot: observeMutationsRoot
+          treeCallback: onTree
         });
       });
     }
@@ -4127,25 +4126,25 @@
       }
 
       return makeInlineSvgAbstract({
+        extra: {
+          attributes: attributes,
+          classes: classes,
+          styles: styles
+        },
+        iconName: iconName,
         icons: {
           main: prepIcon(icon),
           mask: mask ? prepIcon(mask.icon) : {
             found: false,
-            width: null,
             height: null,
-            icon: {}
+            icon: {},
+            width: null
           }
         },
         prefix: prefix,
-        iconName: iconName,
-        transform: _objectSpread({}, meaninglessTransform, transform),
         symbol: symbol,
         title: title,
-        extra: {
-          attributes: attributes,
-          styles: styles,
-          classes: classes
-        }
+        transform: _objectSpread({}, meaninglessTransform, transform)
       });
     });
   });
@@ -4162,19 +4161,19 @@
         _params$styles2 = params.styles,
         styles = _params$styles2 === void 0 ? {} : _params$styles2;
     return apiObject({
-      type: 'text',
-      content: content
+      content: content,
+      type: 'text'
     }, function () {
       ensureCss();
       return makeLayersTextAbstract({
         content: content,
-        transform: _objectSpread({}, meaninglessTransform, transform),
-        title: title,
         extra: {
           attributes: attributes,
-          styles: styles,
-          classes: ["".concat(config.familyPrefix, "-layers-text")].concat(_toConsumableArray(classes))
-        }
+          classes: ["".concat(config.familyPrefix, "-layers-text")].concat(_toConsumableArray(classes)),
+          styles: styles
+        },
+        title: title,
+        transform: _objectSpread({}, meaninglessTransform, transform)
       });
     });
   };
@@ -4189,18 +4188,18 @@
         _params$styles3 = params.styles,
         styles = _params$styles3 === void 0 ? {} : _params$styles3;
     return apiObject({
-      type: 'counter',
-      content: content
+      content: content,
+      type: 'counter'
     }, function () {
       ensureCss();
       return makeLayersCounterAbstract({
         content: content.toString(),
-        title: title,
         extra: {
           attributes: attributes,
-          styles: styles,
-          classes: ["".concat(config.familyPrefix, "-layers-counter")].concat(_toConsumableArray(classes))
-        }
+          classes: ["".concat(config.familyPrefix, "-layers-counter")].concat(_toConsumableArray(classes)),
+          styles: styles
+        },
+        title: title
       });
     });
   };
@@ -4216,25 +4215,25 @@
         }) : children = children.concat(args.abstract);
       });
       return [{
-        tag: 'span',
         attributes: {
           class: "".concat(config.familyPrefix, "-layers")
         },
-        children: children
+        children: children,
+        tag: 'span'
       }];
     });
   };
   var api = {
-    noAuto: noAuto,
     config: config,
+    counter: counter,
     dom: dom,
-    library: library,
-    parse: parse,
     findIconDefinition: findIconDefinition,
     icon: icon,
-    text: text,
-    counter: counter,
     layer: layer,
+    library: library,
+    noAuto: noAuto,
+    parse: parse,
+    text: text,
     toHtml: toHtml
   };
 
@@ -4256,9 +4255,9 @@
       domready(function () {
         autoReplace();
         observe({
-          treeCallback: onTree,
           nodeCallback: onNode,
-          pseudoElementsCallback: searchPseudoElements
+          pseudoElementsCallback: searchPseudoElements,
+          treeCallback: onTree
         });
       });
     }

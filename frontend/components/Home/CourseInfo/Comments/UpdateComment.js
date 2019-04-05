@@ -98,7 +98,6 @@ export class UpdateComment extends Component {
       >
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
-          console.log(data.rateCourse.course.id);
           return (
             <Style>
               <Mutation
