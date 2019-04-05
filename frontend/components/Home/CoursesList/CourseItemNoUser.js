@@ -6,6 +6,7 @@ import orderCourses from "../../../lib/orderCourses";
 import User from "../../Authentication/User";
 import ItemStyles from "../../styles/ItemStyles";
 import AddToCart from "../Cart/AddToCart";
+import Rating from "../CourseInfo/Comments/Rating";
 import WishButton from "../WishButton";
 
 const InfoStyle = styled.p`
@@ -25,6 +26,7 @@ export class CourseItem extends Component {
 
   render() {
     const { course } = this.props;
+    console.log(course);
     return (
       <>
         <ItemStyles>
@@ -39,13 +41,18 @@ export class CourseItem extends Component {
           <InfoStyle>{course.title}</InfoStyle>
           <span>{course.user.name}</span>
           <InfoStyle className="price">{course.price} €</InfoStyle>
-
+          <div className="rating">
+            <Rating
+              readOnly={true}
+              initialValue={course.rate}
+              totalComments={course.totalRate / course.totalComments}
+            />
+          </div>
           <div className="buttonList">
             <Link href="/signup">
               <a>Add to Cart</a>
             </Link>
             {/* <WishButton id={course.id} data={course} skip={this.props.skip} /> */}
-            <p>5</p>
           </div>
         </ItemStyles>
       </>

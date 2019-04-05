@@ -24,7 +24,7 @@ class Signup extends Component {
   state = {
     email: "",
     name: "",
-    password: ""
+    password: "",
   };
   saveToState = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -44,7 +44,7 @@ class Signup extends Component {
               await signup();
               this.setState({ name: "", email: "", password: "" });
               Router.push({
-                pathname: "/choose-interests"
+                pathname: "/choose-interests",
               });
             }}
           >

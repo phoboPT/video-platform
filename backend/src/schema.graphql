@@ -30,6 +30,8 @@ type Course {
   interest: [CourseInterest!]!
   count: Int
   wished: Boolean
+  totalRate: Float
+  totalComments: Int
 }
 
 type Mutation {
@@ -117,6 +119,7 @@ type Query {
   interests: [Interest!]!
   userInterests: [UserInterest]!
   courseInterests(where: CourseInterestWhereInput): [CourseInterest]!
+  rateCourses: [RateCourse]
 
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video

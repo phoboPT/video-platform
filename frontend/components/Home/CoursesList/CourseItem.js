@@ -18,12 +18,12 @@ const InfoStyle = styled.p`
 
 export class CourseItem extends Component {
   static propTypes = {
-    course: PropTypes.object.isRequired
+    course: PropTypes.object.isRequired,
   };
   state = {
     ...this.props.course.user,
     buttonToShow: 0,
-    courseId: this.props.course.id
+    courseId: this.props.course.id,
   };
 
   render() {
@@ -40,7 +40,7 @@ export class CourseItem extends Component {
                 <Link
                   href={{
                     pathname: "/course",
-                    query: { id: course.id }
+                    query: { id: course.id },
                   }}
                 >
                   <img className="Thumbnail" src={course.thumbnail} />
@@ -55,7 +55,12 @@ export class CourseItem extends Component {
                   </InfoStyle>
                 )}
                 <div className="rating">
-                  <Rating readOnly={true} initialValue="4" />
+                  <Rating
+                    showTotal={true}
+                    readOnly={true}
+                    initialValue={course.totalRate / course.totalComments}
+                    totalComments={course.totalComments}
+                  />
                 </div>
                 <div className="buttonList">
                   {course.price === 0 ? (

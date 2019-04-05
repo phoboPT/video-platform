@@ -13,6 +13,7 @@ const Query = {
   users: forwardTo("db"),
   video: forwardTo("db"),
   videos: forwardTo("db"),
+  rateCourses: forwardTo("db"),
 
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
@@ -213,6 +214,8 @@ const Query = {
              createdAt
              price
              state
+             totalRate
+             totalComments
              user {
                id
                name
@@ -385,6 +388,8 @@ const Query = {
          createdAt
          price
          state
+         totalRate
+         totalComments
          user {
            id
            name
@@ -421,7 +426,6 @@ const Query = {
       return item;
     });
 
-    //remover os cursos que o User já comprou
     return finalRes;
   },
   coursesFilter(parent, args, ctx, info) {
@@ -469,14 +473,31 @@ const Query = {
   async wishlists(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
-    return await ctx.db.query.wishlists(
+    const res = await ctx.db.query.wishlists(
       {
         where: {
           user: { id: userId }
         }
       },
-      info
+      `{      course {
+  id
+  title
+  price
+  thumbnail
+  totalRate
+  totalComments
+  state
+  createdAt
+  category {
+    name
+  }
+  user {
+    name
+  }
+}}`
     );
+
+    return finalRes;
   },
   async checkUserRated(parent, args, ctx, info) {
     const { userId } = ctx.request;

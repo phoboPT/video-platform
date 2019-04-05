@@ -64,6 +64,7 @@ type Course {
   interest: [CourseInterest!]!
   rate: [RateCourse]
   totalRate: Float
+  totalComments: Int
 }
 
 # item
