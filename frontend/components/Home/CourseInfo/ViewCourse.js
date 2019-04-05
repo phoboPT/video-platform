@@ -5,9 +5,9 @@ import Markdown from "react-markdown";
 import styled from "styled-components";
 import CommentForm from "./Comments/CommentForm";
 import ListComments from "./Comments/ListComments";
-import Rating from "./Comments/Rating";
 import Overview from "./Overview";
 import VideoItem from "./VideoItem";
+import SimpleUser from "../../Authentication/SimpleUser";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -32,6 +32,13 @@ const SINGLE_COURSE_QUERY = gql`
           createdAt
         }
       }
+    }
+  }
+`;
+const CHECK_RATE_COURSE_QUERY = gql`
+  query CHECK_RATE_COURSE_QUERY($courseId: ID!) {
+    checkUserRated(courseId: $courseId) {
+      message
     }
   }
 `;
@@ -110,57 +117,89 @@ class ViewCourse extends Component {
   };
   render() {
     return (
-      <Query query={SINGLE_COURSE_QUERY} variables={{ id: this.props.id }}>
-        {({ data, loading }) => {
-          if (loading) return <p>Loading</p>;
-          if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
-          const { course } = data;
+      <SimpleUser>
+        {({ data: { me } }) => {
           return (
-            <>
-              <CourseContainer>
-                <div className="video-bar">
-                  <img src={course.thumbnail} />
-                </div>
-                <div className="info-bar">
-                  <h2>{course.title}</h2>
-                  <br />
-                  <button>Go to the Video 1</button>
-                </div>
-              </CourseContainer>
-              <Bar>
-                <button id="1" onClick={this.changeView}>
-                  Overview
-                </button>
-                <button id="2" onClick={this.changeView}>
-                  Course Content
-                </button>
-                <button id="3" onClick={this.changeView}>
-                  Comments
-                </button>
-              </Bar>
+            <Query
+              query={SINGLE_COURSE_QUERY}
+              variables={{ id: this.props.id }}
+            >
+              {({ data, loading, error }) => {
+                if (loading) return <p>Loading</p>;
+                if (error) return <p>Error</p>;
+                if (!data.course) {
+                  return <p>No Courses Found for {this.props.id}</p>;
+                }
+                const { course } = data;
+                if (course.id) {
+                  console.log(course.id);
+                  return (
+                    <Query
+                      query={CHECK_RATE_COURSE_QUERY}
+                      variables={{ courseId: course.id }}
+                    >
+                      {({ data, error, loading }) => {
+                        if (loading) return <p>Loading</p>;
+                        if (error) return <p>Error</p>;
+                        console.log("data da nova query", data);
 
-              {this.state.view === 1 && (
-                <Overview data={course} key={course.id} />
-              )}
-              {this.state.view === 2 &&
-                data.course.videos !== null &&
-                data.course.videos.map((video, index) => (
-                  <VideoItem
-                    videos={video}
-                    data={parseInt(index)}
-                    key={video.video.id}
-                  />
-                ))}
-              {this.state.view === 3 && (
-                <>
-                  <CommentForm data={course} />
-                  <ListComments data={course} />
-                </>
-              )}
-            </>
+                        const hasToShowForm =
+                          data.checkUserRated.message === "false" && me;
+                        return (
+                          <>
+                            <CourseContainer>
+                              <div className="video-bar">
+                                <img src={course.thumbnail} />
+                              </div>
+                              <div className="info-bar">
+                                <h2>{course.title}</h2>
+                                <br />
+                                <button>Go to the Video 1</button>
+                              </div>
+                            </CourseContainer>
+                            <Bar>
+                              <button id="1" onClick={this.changeView}>
+                                Overview
+                              </button>
+                              <button id="2" onClick={this.changeView}>
+                                Course Content
+                              </button>
+                              <button id="3" onClick={this.changeView}>
+                                Review
+                              </button>
+                            </Bar>
+
+                            {this.state.view === 1 && (
+                              <Overview data={course} key={course.id} />
+                            )}
+                            {this.state.view === 2 &&
+                              data.course.videos !== null &&
+                              data.course.videos.map((video, index) => (
+                                <VideoItem
+                                  videos={video}
+                                  data={parseInt(index)}
+                                  key={video.video.id}
+                                />
+                              ))}
+
+                            {this.state.view === 3 && (
+                              <>
+                                {hasToShowForm && <CommentForm data={course} />}
+
+                                <ListComments data={course} />
+                              </>
+                            )}
+                          </>
+                        );
+                      }}
+                    </Query>
+                  );
+                }
+              }}
+            </Query>
           );
         }}
-      </Query>
+      </SimpleUser>
     );
   }
 }

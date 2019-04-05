@@ -171,7 +171,6 @@ class UpdateCourse extends Component {
     });
   };
   changeQuill = e => {
-    // console.log("2", e);
     this.setState({ description: e });
   };
 

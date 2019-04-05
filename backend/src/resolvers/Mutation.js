@@ -538,7 +538,7 @@ const Mutations = {
     if (!userId) {
       throw new Error("You must be signed in");
     }
-
+    console.log(args.id);
     const updates = {
       ...args,
     };

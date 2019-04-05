@@ -8,7 +8,7 @@ var paypal = require("paypal-rest-sdk");
 paypal.configure({
   mode: "sandbox", //sandbox or live
   client_id: "YOUR_CLIENT_ID_HERE", // please provide your client id here
-  client_secret: "YOUR_CLIENT_SECRET_HERE", // provide your client secret here
+  client_secret: "YOUR_CLIENT_SECRET_HERE" // provide your client secret here
 });
 
 // set public directory to serve static html files
@@ -25,21 +25,21 @@ app.get("/buy", (req, res) => {
   var payment = {
     intent: "authorize",
     payer: {
-      payment_method: "paypal",
+      payment_method: "paypal"
     },
     redirect_urls: {
       return_url: "http://127.0.0.1:3000/success",
-      cancel_url: "http://127.0.0.1:3000/err",
+      cancel_url: "http://127.0.0.1:3000/err"
     },
     transactions: [
       {
         amount: {
           total: 39.0,
-          currency: "USD",
+          currency: "USD"
         },
-        description: " a book on mean stack ",
-      },
-    ],
+        description: " a book on mean stack "
+      }
+    ]
   };
 
   // call the create Pay method
@@ -56,7 +56,6 @@ app.get("/buy", (req, res) => {
       }
     })
     .catch(err => {
-      console.log(err);
       res.redirect("/err");
     });
 });
