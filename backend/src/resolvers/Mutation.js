@@ -24,8 +24,12 @@ updateRate = async (ctx, courseId, newRate, oldRate) => {
 }`,
   );
 
-  //
-  const updatedRate = savedRate["totalRate"] + (newRate - oldRate || 0);
+  let updatedRate;
+  if (newRate === null) {
+    updatedRate = savedRate["totalRate"] - oldRate;
+  } else {
+    updatedRate = savedRate["totalRate"] + (newRate - oldRate || 0);
+  }
 
   if (savedRate) {
     return await ctx.db.mutation.updateCourse({
@@ -501,7 +505,15 @@ const Mutations = {
       {
         where,
       },
-      `{id user{id}}`,
+      `{id 
+        rate
+         user{
+           id
+          } 
+         course{
+           id
+          }
+        }`,
     );
     //2.checkar se tem permissoes para o apagar
     const ownsRateCourse = rateCourse.user.id === ctx.request.userId;
@@ -509,6 +521,9 @@ const Mutations = {
     if (!ownsRateCourse) {
       throw new Error("You don't have permission to do that!");
     }
+
+    //ctx,courseId, newRate,oldRate
+    updateRate(ctx, rateCourse.course.id, null, rateCourse.rate);
     //3.dar delete
     return ctx.db.mutation.deleteRateCourse(
       {

@@ -9,8 +9,8 @@ const Container = styled.div`
   .left {
     display: inline-block;
     margin: auto;
-    font-size: 1.5rem;
-    color: #e8dd0d;
+    font-size: 1.3rem;
+    color: red;
   }
   .rigth {
     display: inline-block;
@@ -38,7 +38,6 @@ class RatingPage extends Component {
   };
 
   componentDidMount = () => {
-    console.log("props", this.props.initialValue);
     this.setState({ value: this.props.initialValue });
   };
 

@@ -36,7 +36,7 @@ const Item = styled.div`
   .rating {
     span {
       color: red;
-      font-size: 0.8rem;
+      font-size: 1.3rem;
       padding: 0rem 0rem 0.6rem 0.6rem;
     }
   }

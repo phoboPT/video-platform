@@ -497,7 +497,7 @@ const Query = {
 }}`
     );
 
-    return finalRes;
+    return res;
   },
   async checkUserRated(parent, args, ctx, info) {
     const { userId } = ctx.request;

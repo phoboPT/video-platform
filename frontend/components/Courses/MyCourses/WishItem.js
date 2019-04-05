@@ -49,11 +49,10 @@ export class WishItem extends Component {
           <div className="rating">
             <Rating
               readOnly={true}
-              initialValue={course.rate}
-              totalComments={course.totalRate / course.totalComments}
+              initialValue={course.totalRate / course.totalComments}
+              totalComments={course.totalComments}
               showTotal={true}
             />
-            {console.log(course)}
           </div>
           <div className="buttonList">
             {course.price === 0 ? (
