@@ -226,7 +226,7 @@ const Query = {
         return res;
       })
     );
-    //remove the layers of an array putting all in one flat function
+    //remove thCoursee layers of an array putting all in one flat function
     let res = result.flat();
 
     //this remove the header on the array to clean it before send it to frontend

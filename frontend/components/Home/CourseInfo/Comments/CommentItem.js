@@ -61,25 +61,28 @@ export class Video extends Component {
               )}
             </div>
             <div className="right-side">
-              {(me.id === comments.user.id && (
-                <MenuDots>
-                  <ul>
-                    <li>
-                      <a>
-                        <img src="../static/threedots.png" />
-                      </a>
-                      <ul className="dropdown">
-                        <li className="item">
-                          <button onClick={this.changeEdit}>Edit</button>
-                        </li>
-                        <li className="item">
-                          <DeleteComment data={comments}>Delete</DeleteComment>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </MenuDots>
-              )) || <Style />}
+              {(me &&
+                (me.id === comments.user.id && (
+                  <MenuDots>
+                    <ul>
+                      <li>
+                        <a>
+                          <img src="../static/threedots.png" />
+                        </a>
+                        <ul className="dropdown">
+                          <li className="item">
+                            <button onClick={this.changeEdit}>Edit</button>
+                          </li>
+                          <li className="item">
+                            <DeleteComment data={comments}>
+                              Delete
+                            </DeleteComment>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </MenuDots>
+                ))) || <Style />}
             </div>
           </List>
         )}
