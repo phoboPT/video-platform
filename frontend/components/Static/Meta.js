@@ -7,7 +7,6 @@ const Meta = () => (
     <link href="/static/favicon.png" rel="shortcut icon" />
     <link href="/static/nprogress.css" rel="stylesheet" type="text/css" />
     <link href="../static/video-react.css" rel="stylesheet" type="text/css" />
-    <link href="../static/all.css" rel="stylesheet" type="text/css" />
 
     <link
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"

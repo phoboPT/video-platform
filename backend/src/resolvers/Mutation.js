@@ -5,6 +5,27 @@ const { promisify } = require("util");
 const { makeANiceEmail, transport } = require("../mail");
 const stripe = require("../stripe");
 
+updateRate = async (ctx, courseId, newRate, oldRate) => {
+  const savedRate = await ctx.db.query.course(
+    {
+      where: {
+        id: courseId,
+      },
+    },
+    `{totalRate}`,
+  );
+
+  //
+  const updatedRate = savedRate["totalRate"] + (newRate - oldRate || 0);
+
+  if (savedRate) {
+    return await ctx.db.mutation.updateCourse({
+      where: { id: courseId },
+      data: { totalRate: updatedRate },
+    });
+  }
+};
+
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -354,7 +375,6 @@ const Mutations = {
 
     //elimina o id dos updates
     delete data.category;
-    console.log(data);
     // 4. If its not, create a fresh CourseVideo for that Course!
     return ctx.db.mutation.createCourse(
       {
@@ -428,16 +448,19 @@ const Mutations = {
     );
   },
   async createRateCourse(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
     //  Check if they are logged in
-    if (!ctx.request.userId) {
+    if (!userId) {
       throw new Error("You must be logged in to do that!");
     }
+
     const rateCourse = await ctx.db.mutation.createRateCourse(
       {
         data: {
           user: {
             connect: {
-              id: ctx.request.userId,
+              id: userId,
             },
           },
           course: {
@@ -452,6 +475,8 @@ const Mutations = {
 
       info,
     );
+
+    updateRate(ctx, args.courseId, args.rating, 0);
 
     return rateCourse;
   },
@@ -483,7 +508,7 @@ const Mutations = {
       info,
     );
   },
-  updateRateCourse(parent, args, ctx, info) {
+  async updateRateCourse(parent, args, ctx, info) {
     //faz uma copia dos updates
     const { userId } = ctx.request;
     if (!userId) {
@@ -493,8 +518,24 @@ const Mutations = {
     const updates = {
       ...args,
     };
+
     //elimina o id dos updates
     delete updates.id;
+
+    //get the courseId to update the rate
+    const courseId = await ctx.db.query.rateCourse(
+      {
+        where: { id: args.id },
+      },
+      `{
+        rate
+        course{
+        id
+      }}`,
+    );
+
+    updateRate(ctx, courseId.course.id, args.rate, courseId.rate);
+
     //da run no update method
     return ctx.db.mutation.updateRateCourse(
       {

@@ -23,6 +23,8 @@ const ALL_COURSES_QUERY = gql`
       thumbnail
       createdAt
       price
+      totalComments
+      rate
       user {
         id
         name
@@ -41,6 +43,8 @@ const ALL_COURSES_NOUSER = gql`
       thumbnail
       createdAt
       price
+      totalComments
+      rate
       user {
         id
         name
@@ -52,17 +56,19 @@ const ALL_COURSES_NOUSER = gql`
 const ALL_COURSES_ORDERED_NOUSER = gql`
   query ALL_COURSES_ORDERED_NOUSER($skip: Int = 0, $first: Int = ${perPageCourse}  ) {
     courses(first: $first, skip: $skip ,orderBy: createdAt_DESC) {
-      id
-      title
-      description
-      thumbnail
-      createdAt
-      price
-      user {
         id
-        name
+        title
+        description
+        thumbnail
+        createdAt
+        price
+        totalComments
+        user {
+          id
+          name
         }
         wished
+        rate
       }
     }
 `;
@@ -77,6 +83,8 @@ const ALL_COURSES_ORDERED = gql`
       thumbnail
       createdAt
       price
+totalComments
+      rate
       user {
         id
         name
@@ -94,7 +102,9 @@ const ALL_COURSE_INTERESTS = gql`
       description
       thumbnail
       createdAt
+      totalComments
       price
+      rate
       user {
         id
         name

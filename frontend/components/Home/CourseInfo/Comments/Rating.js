@@ -30,7 +30,7 @@ const Container = styled.div`
 
 class RatingPage extends Component {
   state = {
-    value: 0
+    value: 0,
   };
   change = e => {
     this.setState({ value: e });
@@ -39,7 +39,7 @@ class RatingPage extends Component {
 
   componentDidMount = () => {
     console.log("props", this.props.initialValue);
-    this.setState({ value: parseInt(this.props.initialValue) });
+    this.setState({ value: this.props.initialValue });
   };
 
   render() {
@@ -58,8 +58,8 @@ class RatingPage extends Component {
           />
         </div>
         <div className="rigth">
-          <strong>{this.state.value}</strong>
-          (2,000)
+          <strong>{Math.round(this.state.value * 10) / 10}</strong>{" "}
+          {this.props.showTotal && this.props.totalComments}
         </div>
       </Container>
     );

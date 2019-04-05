@@ -13,6 +13,7 @@ const Query = {
   users: forwardTo("db"),
   video: forwardTo("db"),
   videos: forwardTo("db"),
+  rateCourses: forwardTo("db"),
 
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
@@ -72,17 +73,16 @@ const Query = {
   },
 
   rateCourseList(parent, args, ctx, info) {
-    console.log("estou aqui");
     return ctx.db.query.rateCourses(
       {
         orderBy: "createdAt_DESC",
         where: {
           course: {
-            id: args.id
-          }
-        }
+            id: args.id,
+          },
+        },
       },
-      info
+      info,
     );
   },
   coursesUser(parent, args, ctx, info) {
@@ -214,6 +214,7 @@ const Query = {
              createdAt
              price
              state
+             totalRate
              user {
                id
                name
@@ -279,6 +280,26 @@ const Query = {
     finalRes.map(item => {
       return item;
     });
+
+    //Add the rate to the response
+    finalRes = await Promise.all(
+      finalRes.map(async item => {
+        //query all the rates of the course
+        const courseId = await ctx.db.query.rateCourses(
+          {
+            where: { course: { id: item.id } },
+          },
+          `{
+              rate
+            }`,
+        );
+
+        item.rate = item.totalRate / courseId.length;
+        item.totalComments = courseId.length;
+
+        return item;
+      }),
+    );
 
     return finalRes;
   },
@@ -386,6 +407,7 @@ const Query = {
          createdAt
          price
          state
+         totalRate
          user {
            id
            name
@@ -422,7 +444,25 @@ const Query = {
       return item;
     });
 
-    //remover os cursos que o User já comprou
+    //Add the rate to the response
+    finalRes = await Promise.all(
+      finalRes.map(async item => {
+        //query all the rates of the course
+        const courseId = await ctx.db.query.rateCourses(
+          {
+            where: { course: { id: item.id } },
+          },
+          `{
+            rate
+          }`,
+        );
+        item.rate = item.totalRate / courseId.length;
+        item.totalComments = courseId.length;
+
+        return item;
+      }),
+    );
+
     return finalRes;
   },
   coursesFilter(parent, args, ctx, info) {
@@ -470,14 +510,51 @@ const Query = {
   async wishlists(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
-    return await ctx.db.query.wishlists(
+    const res = await ctx.db.query.wishlists(
       {
         where: {
           user: { id: userId },
         },
       },
-      info,
+      `{      course {
+  id
+  title
+  price
+  thumbnail
+  totalRate
+  state
+  createdAt
+  category {
+    name
+  }
+  user {
+    name
+  }
+}}`,
     );
+
+    //Add the rate to the response
+    let finalRes = await Promise.all(
+      res.map(async item => {
+        //query all the rates of the course
+        const courseId = await ctx.db.query.rateCourses(
+          {
+            where: { course: { id: item.course.id } },
+          },
+          `{
+        rate
+      }`,
+        );
+
+        console.log("item", item.totalRate, "length", courseId.length);
+        item.course.rate = item.course.totalRate / courseId.length;
+        item.course.totalComments = courseId.length;
+        return item;
+      }),
+    );
+
+    console.log("res", res);
+    return finalRes;
   },
 };
 

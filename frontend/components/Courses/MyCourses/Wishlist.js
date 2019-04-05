@@ -14,6 +14,8 @@ const WISHLIST_QUERY = gql`
         thumbnail
         state
         createdAt
+        rate
+        totalComments
         category {
           name
         }
@@ -32,8 +34,9 @@ export class Wishlist extends Component {
         {({ data, error, loading }) => {
           if (loading) return <p>loading</p>;
 
-          if (!data) return null;
+          if (error) <Error error={error} />;
 
+          if (!data) return null;
           if (data) {
             return (
               <Container>

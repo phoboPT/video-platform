@@ -5,6 +5,7 @@ import styled from "styled-components";
 import formatMoney from "../../../lib/formatMoney";
 import BuyFreeButton from "../../Home/BuyFreeButton";
 import AddToCart from "../../Home/Cart/AddToCart";
+import Rating from "../../Home/CourseInfo/Comments/Rating";
 import ItemStyles from "../../styles/ItemStyles";
 
 const InfoStyle = styled.p`
@@ -45,14 +46,22 @@ export class WishItem extends Component {
             <InfoStyle className="price">{formatMoney(course.price)}</InfoStyle>
           )}
 
+          <div className="rating">
+            <Rating
+              readOnly={true}
+              initialValue={course.rate}
+              totalComments={course.totalComments}
+              showTotal={true}
+            />
+            {console.log(course)}
+          </div>
           <div className="buttonList">
             {course.price === 0 ? (
               <BuyFreeButton id={course.id} skip={this.props.skip} />
             ) : (
               <AddToCart id={course.id} />
             )}
-
-            <p>5*</p>
+            <p />
           </div>
         </ItemStyles>
       </>
