@@ -58,7 +58,7 @@ export class CourseItem extends Component {
                   <Rating
                     showTotal={true}
                     readOnly={true}
-                    initialValue={course.rate}
+                    initialValue={course.totalRate / course.totalComments}
                     totalComments={course.totalComments}
                   />
                 </div>

@@ -24,7 +24,7 @@ const ALL_COURSES_QUERY = gql`
       createdAt
       price
       totalComments
-      rate
+      totalRate
       user {
         id
         name
@@ -44,7 +44,7 @@ const ALL_COURSES_NOUSER = gql`
       createdAt
       price
       totalComments
-      rate
+      totalRate
       user {
         id
         name
@@ -68,7 +68,7 @@ const ALL_COURSES_ORDERED_NOUSER = gql`
           name
         }
         wished
-        rate
+        totalRate
       }
     }
 `;
@@ -84,7 +84,7 @@ const ALL_COURSES_ORDERED = gql`
       createdAt
       price
 totalComments
-      rate
+totalRate
       user {
         id
         name
@@ -104,7 +104,7 @@ const ALL_COURSE_INTERESTS = gql`
       createdAt
       totalComments
       price
-      rate
+      totalRate
       user {
         id
         name

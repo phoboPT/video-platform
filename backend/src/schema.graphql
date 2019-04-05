@@ -30,7 +30,7 @@ type Course {
   interest: [CourseInterest!]!
   count: Int
   wished: Boolean
-  rate: Float
+  totalRate: Float
   totalComments: Int
 }
 

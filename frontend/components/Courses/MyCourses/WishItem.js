@@ -50,7 +50,7 @@ export class WishItem extends Component {
             <Rating
               readOnly={true}
               initialValue={course.rate}
-              totalComments={course.totalComments}
+              totalComments={course.totalRate / course.totalComments}
               showTotal={true}
             />
             {console.log(course)}

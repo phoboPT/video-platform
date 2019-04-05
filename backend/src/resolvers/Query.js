@@ -215,6 +215,7 @@ const Query = {
              price
              state
              totalRate
+             totalComments
              user {
                id
                name
@@ -280,26 +281,6 @@ const Query = {
     finalRes.map(item => {
       return item;
     });
-
-    //Add the rate to the response
-    finalRes = await Promise.all(
-      finalRes.map(async item => {
-        //query all the rates of the course
-        const courseId = await ctx.db.query.rateCourses(
-          {
-            where: { course: { id: item.id } },
-          },
-          `{
-              rate
-            }`,
-        );
-
-        item.rate = item.totalRate / courseId.length;
-        item.totalComments = courseId.length;
-
-        return item;
-      }),
-    );
 
     return finalRes;
   },
@@ -408,6 +389,7 @@ const Query = {
          price
          state
          totalRate
+         totalComments
          user {
            id
            name
@@ -443,25 +425,6 @@ const Query = {
       });
       return item;
     });
-
-    //Add the rate to the response
-    finalRes = await Promise.all(
-      finalRes.map(async item => {
-        //query all the rates of the course
-        const courseId = await ctx.db.query.rateCourses(
-          {
-            where: { course: { id: item.id } },
-          },
-          `{
-            rate
-          }`,
-        );
-        item.rate = item.totalRate / courseId.length;
-        item.totalComments = courseId.length;
-
-        return item;
-      }),
-    );
 
     return finalRes;
   },
@@ -522,6 +485,7 @@ const Query = {
   price
   thumbnail
   totalRate
+  totalComments
   state
   createdAt
   category {
@@ -533,27 +497,6 @@ const Query = {
 }}`,
     );
 
-    //Add the rate to the response
-    let finalRes = await Promise.all(
-      res.map(async item => {
-        //query all the rates of the course
-        const courseId = await ctx.db.query.rateCourses(
-          {
-            where: { course: { id: item.course.id } },
-          },
-          `{
-        rate
-      }`,
-        );
-
-        console.log("item", item.totalRate, "length", courseId.length);
-        item.course.rate = item.course.totalRate / courseId.length;
-        item.course.totalComments = courseId.length;
-        return item;
-      }),
-    );
-
-    console.log("res", res);
     return finalRes;
   },
 };

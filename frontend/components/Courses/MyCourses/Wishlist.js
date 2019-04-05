@@ -14,8 +14,8 @@ const WISHLIST_QUERY = gql`
         thumbnail
         state
         createdAt
-        rate
         totalComments
+        totalRate
         category {
           name
         }

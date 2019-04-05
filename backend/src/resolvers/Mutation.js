@@ -15,13 +15,22 @@ updateRate = async (ctx, courseId, newRate, oldRate) => {
     `{totalRate}`,
   );
 
+  const allCoursesRate = await ctx.db.query.rateCourses(
+    {
+      where: { course: { id: courseId } },
+    },
+    `{
+  rate
+}`,
+  );
+
   //
   const updatedRate = savedRate["totalRate"] + (newRate - oldRate || 0);
 
   if (savedRate) {
     return await ctx.db.mutation.updateCourse({
       where: { id: courseId },
-      data: { totalRate: updatedRate },
+      data: { totalRate: updatedRate, totalComments: allCoursesRate.length },
     });
   }
 };
