@@ -70,12 +70,11 @@ const Style = styled.div`
 
 class Courses extends Component {
   state = {
-    view: 0,
+    view: 0
   };
 
   // This method will be sent to the child component
   saveToState = e => {
-    console.log(e);
     this.setState({ courseId: e.data.createCourse.id, view: 3 });
   };
 

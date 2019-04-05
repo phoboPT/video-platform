@@ -19,7 +19,6 @@ export class DeleteComment extends Component {
       variables: { id: this.props.data.course.id }
     });
 
-    // console.log(data.comCourse, " ", payload.data.deleteComCourse.id);
     // 2. Filter the deleted itemout of the page
     data.rateCourseList = data.rateCourseList.filter(
       comment => comment.id !== payload.data.deleteRateCourse.id

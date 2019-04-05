@@ -69,7 +69,6 @@ const SINGLE_COMMENT_QUERY = gql`
 
 export class UpdateComment extends Component {
   state = { rate: this.props.children.props.initialValue };
-
   handleChange = e => {
     const { name, type, value } = e.target;
     const val = type === "number" ? parseFloat(value) : value;
@@ -88,6 +87,7 @@ export class UpdateComment extends Component {
   };
 
   render() {
+    console.log("aqui teste", this.props.data.id);
     if (this.state.rate !== this.props.children.props.initialValue) {
       this.setState({ rate: this.props.children.props.initialValue });
     }
@@ -98,7 +98,6 @@ export class UpdateComment extends Component {
       >
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
-          console.log(data.rateCourse.course.id);
           return (
             <Style>
               <Mutation

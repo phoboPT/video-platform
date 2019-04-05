@@ -24,10 +24,10 @@ const Query = {
     return ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
-      info,
+      info
     );
   },
   videosConnection(parent, args, ctx, info) {
@@ -42,11 +42,11 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
@@ -63,16 +63,15 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
-        },
+            id: userId
+          }
+        }
       },
-      info,
+      info
     );
   },
 
   rateCourseList(parent, args, ctx, info) {
-    console.log("estou aqui");
     return ctx.db.query.rateCourses(
       {
         orderBy: "createdAt_DESC",
@@ -96,12 +95,12 @@ const Query = {
       {
         where: {
           user: {
-            id: userId,
-          },
+            id: userId
+          }
         },
-        ...args,
+        ...args
       },
-      info,
+      info
     );
   },
   videosUserSearch(parent, args, ctx, info) {
@@ -119,16 +118,16 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId,
-              },
+                id: userId
+              }
             },
             {
-              title_contains: args.title_contains,
-            },
-          ],
-        },
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
   coursesSearch(parent, args, ctx, info) {
@@ -143,15 +142,15 @@ const Query = {
         where: {
           AND: [
             {
-              state: "PUBLISHED",
+              state: "PUBLISHED"
             },
             {
-              title_contains: args.title_contains,
-            },
-          ],
-        },
+              title_contains: args.title_contains
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
   //Listagem Cursos Interests
@@ -161,8 +160,8 @@ const Query = {
     const user = await ctx.db.query.user(
       {
         where: {
-          id: userId,
-        },
+          id: userId
+        }
       },
       `
         {
@@ -176,7 +175,7 @@ const Query = {
             }
           }
         }
-        `,
+        `
     );
 
     //mapear os interesses do user
@@ -194,16 +193,16 @@ const Query = {
               AND: [
                 {
                   interest: {
-                    id: id,
-                  },
+                    id: id
+                  }
                 },
                 {
                   course: {
-                    state: "PUBLISHED",
-                  },
-                },
-              ],
-            },
+                    state: "PUBLISHED"
+                  }
+                }
+              ]
+            }
           },
           `{
            course{
@@ -219,10 +218,10 @@ const Query = {
                name
              }
            }
-         }`,
+         }`
         );
         return res;
-      }),
+      })
     );
     //remove the layers of an array putting all in one flat function
     let res = result.flat();
@@ -236,14 +235,14 @@ const Query = {
     const wishlist = await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId },
-        },
+          user: { id: userId }
+        }
       },
       `{
         course{
           id
         }
-      }`,
+      }`
     );
 
     //Wish ids to compare
@@ -266,7 +265,7 @@ const Query = {
 
     //Filter the array to remove duplicates
     let cleanResponse = Object.values(
-      clean.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {}),
+      clean.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {})
     );
 
     //Add count to array
@@ -290,8 +289,8 @@ const Query = {
       user = await ctx.db.query.user(
         {
           where: {
-            id: userId,
-          },
+            id: userId
+          }
         },
         `   {
           courses{
@@ -300,7 +299,7 @@ const Query = {
             }
           }
         }
-        `,
+        `
       );
     }
 
@@ -317,15 +316,15 @@ const Query = {
         where: {
           AND: [
             {
-              state: "PUBLISHED",
+              state: "PUBLISHED"
             },
             {
-              id_not_in: coursesId,
-            },
-          ],
-        },
+              id_not_in: coursesId
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
   //Listagem cursos
@@ -340,8 +339,8 @@ const Query = {
       user = await ctx.db.query.user(
         {
           where: {
-            id: userId,
-          },
+            id: userId
+          }
         },
         `{
             courses{
@@ -350,7 +349,7 @@ const Query = {
             }
           }
         }
-        `,
+        `
       );
     }
 
@@ -368,15 +367,15 @@ const Query = {
         where: {
           AND: [
             {
-              state: "PUBLISHED",
+              state: "PUBLISHED"
             },
             {
-              id_not_in: coursesId,
-            },
-          ],
+              id_not_in: coursesId
+            }
+          ]
         },
         orderBy: orderBy,
-        ...args,
+        ...args
       },
       `{
          id
@@ -391,19 +390,19 @@ const Query = {
            name
          }
      }`,
-      info,
+      info
     );
 
     //Wishlist array
     const wishlist = await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId },
-        },
+          user: { id: userId }
+        }
       },
       `{
         course{id}
-     }`,
+     }`
     );
 
     //Wish ids to compare
@@ -443,27 +442,27 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId,
-              },
+                id: userId
+              }
             },
             {
               course: {
                 category: {
-                  id: categoryId,
-                },
-              },
+                  id: categoryId
+                }
+              }
             },
             {
               course: {
                 user: {
-                  id: authorId,
-                },
-              },
-            },
-          ],
-        },
+                  id: authorId
+                }
+              }
+            }
+          ]
+        }
       },
-      info,
+      info
     );
   },
 
@@ -473,12 +472,41 @@ const Query = {
     return await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId },
-        },
+          user: { id: userId }
+        }
       },
-      info,
+      info
     );
   },
+  async checkUserRated(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    console.log("courseId", args.courseId);
+    const checked = await ctx.db.query.rateCourses(
+      {
+        where: {
+          AND: [
+            {
+              user: {
+                id: userId
+              }
+            },
+            {
+              course: {
+                id: args.courseId
+              }
+            }
+          ]
+        }
+      },
+      info
+    );
+
+    if (checked.length > 0) {
+      return { message: "true" };
+    }
+
+    return { message: "false" };
+  }
 };
 
 module.exports = Query;

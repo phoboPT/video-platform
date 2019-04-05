@@ -101,6 +101,8 @@ type Query {
     first: Int
   ): [Video]
 
+  checkUserRated(courseId: ID): SuccessMessage
+
   coursesSearch(
     where: CourseWhereInput
     orderBy: CourseOrderByInput

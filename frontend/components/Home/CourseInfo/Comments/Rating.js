@@ -38,7 +38,6 @@ class RatingPage extends Component {
   };
 
   componentDidMount = () => {
-    console.log("props", this.props.initialValue);
     this.setState({ value: parseInt(this.props.initialValue) });
   };
 
