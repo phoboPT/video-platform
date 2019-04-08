@@ -56,28 +56,27 @@ const UPDATE_COURSE_MUTATION = gql`
 `;
 
 const CourseContainer = styled.div`
-  display: grid;
   color: black;
   display: flex;
   background: #e3e3e5;
-  padding: 20px 0px;
 
-  .info-bar {
-    text-align: center;
-    min-height: 50px;
-    flex: 2;
-    order: 2;
-    padding-left: 25px;
+  .info-container {
+    display: flex;
+    width: 70%;
     label {
       text-align: left;
     }
     form {
-      border: none;
+      border: none !important;
     }
     img {
       text-align: center !important;
     }
   }
+  .actions-container {
+    width: 20%;
+  }
+
   #courseState {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -108,16 +107,24 @@ const CourseContainer = styled.div`
   .description {
     background-color: lightgray;
   }
-  .video-bar {
-    padding-right: 25px;
-    text-align: center;
-    flex: 1;
-    order: 1;
-    margin: auto;
-  }
 `;
+
 const VideoListStyle = styled.h3`
   text-align: center;
+`;
+
+const Marcador = styled.div`
+  button {
+    border: 2px solid red;
+    border-bottom: 0;
+    font-size: 22px;
+    font-weight: 400;
+    height: 50px;
+    cursor: pointer;
+  }
+  button:focus {
+    outline: none;
+  }
 `;
 
 class UpdateCourse extends Component {
@@ -207,17 +214,19 @@ class UpdateCourse extends Component {
               >
                 {(updateCourse, { loading, error }) => (
                   <>
+                    <Marcador>
+                      <button>Info</button>
+                      <button>Media</button>
+                    </Marcador>
                     <CourseContainer>
-                      <div className="video-bar">
-                        <img src={data.course.thumbnail} />
-                      </div>
-                      <div className="info-bar">
-                        <Form
-                          onSubmit={e => this.updateCourse(e, updateCourse)}
-                        >
-                          <Error error={error} />
-                          <fieldset disabled={loading} aria-busy={loading}>
+                      <Form onSubmit={e => this.updateCourse(e, updateCourse)}>
+                        <Error error={error} />
+                        <fieldset disabled={loading} aria-busy={loading}>
+                          <div id="info-container">
                             <h2>Information</h2>
+                            <label htmlFor="Image">
+                              <img src={data.course.thumbnail} />
+                            </label>
                             <label htmlFor="Title">
                               Title
                               <input
@@ -231,10 +240,6 @@ class UpdateCourse extends Component {
                             <label htmlFor="description">
                               Description
                               <div className="description">
-                                {/* <ReactQuill
-                                  defaultValue={data.course.description}
-                                  onChange={this.changeQuill}
-                                /> */}
                                 <Editor
                                   data={data.course.description}
                                   changeQuill={this.changeQuill}
@@ -276,12 +281,14 @@ class UpdateCourse extends Component {
                             <br />
                             <b />
                             <br />
+                          </div>
+                          <div className="actions-container">
                             <button type="submit">
                               Sav{loading ? "ing" : "e"} To Course
                             </button>
-                          </fieldset>
-                        </Form>
-                      </div>
+                          </div>
+                        </fieldset>
+                      </Form>
                     </CourseContainer>
                     <VideoListStyle>Videos</VideoListStyle>
                     {data.course.videos.map((video, index) => (

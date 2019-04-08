@@ -501,7 +501,26 @@ const Query = {
   },
   async checkUserRated(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    console.log(args);
+
+    const UserCourses = await ctx.db.query.userCourses(
+      {
+        where: {
+          AND: [
+            {
+              user: {
+                id: userId
+              }
+            },
+            {
+              course: {
+                id: args.courseId
+              }
+            }
+          ]
+        }
+      },
+      info
+    );
 
     const checked = await ctx.db.query.rateCourses(
       {
@@ -522,7 +541,9 @@ const Query = {
       },
       info
     );
-
+    if (UserCourses.length === 0) {
+      return { message: false };
+    }
     if (checked.length > 0) {
       return { message: false };
     }

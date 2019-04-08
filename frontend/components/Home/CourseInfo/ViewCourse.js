@@ -171,8 +171,6 @@ class ViewCourse extends Component {
                               </button>
                               <button id="3" onClick={this.changeView}>
                                 Review
-                                {this.state.key}
-                                {data.checkUserRated.message}
                               </button>
                             </Bar>
                             {this.state.view === 1 && (
