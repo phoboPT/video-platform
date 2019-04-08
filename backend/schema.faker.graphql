@@ -1,0 +1,25 @@
+
+enum State {
+  PUBLISHED
+  UNPUBLISHED
+}
+
+enum Permission {
+  ADMIN
+  USER
+  INSTRUTOR
+  VIDEOCREATE
+  COURSECREATE
+  PERMISSIONUPDATE
+}
+
+type Interest {
+  id: ID! @fake(type:uuid)
+  name: String! @fake(type:productName)
+  thumbnail: String! @fake(type:avatarUrl)
+}
+
+type Query {
+  interest(id: ID): Interest
+
+}

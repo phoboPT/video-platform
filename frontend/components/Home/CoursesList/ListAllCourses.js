@@ -216,7 +216,6 @@ export class ListAllCourses extends Component {
                     {data.courses &&
                       data.courses.map(course => (
                         <CourseItemNoUser
-                          order={this.props.order}
                           course={course}
                           key={course.id}
                           skip={this.state.page * perPageCourse - perPageCourse}
@@ -245,7 +244,6 @@ export class ListAllCourses extends Component {
                     {data.coursesList &&
                       data.coursesList.map(course => (
                         <CourseItem
-                          order={this.props.order}
                           course={course}
                           key={course.id}
                           skip={this.state.page * perPageCourse - perPageCourse}

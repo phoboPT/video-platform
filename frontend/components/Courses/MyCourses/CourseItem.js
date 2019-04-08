@@ -27,13 +27,13 @@ const Div = styled.div`
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  padding: "0 0,5rem"
+  padding: "0 0,5rem",
 }));
 
 class ListCourses extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
-    update: PropTypes.bool.isRequired
+    update: PropTypes.bool.isRequired,
   };
   render() {
     const { course } = this.props;
@@ -45,7 +45,7 @@ class ListCourses extends Component {
             <Link
               href={{
                 pathname: "/updateCourse",
-                query: { id: course.id }
+                query: { id: course.id },
               }}
             >
               <img src={course.thumbnail} />
@@ -54,7 +54,7 @@ class ListCourses extends Component {
             <Link
               href={{
                 pathname: "/course",
-                query: { id: course.id }
+                query: { id: course.id },
               }}
             >
               <img src={course.thumbnail} />
@@ -62,11 +62,11 @@ class ListCourses extends Component {
           )}
           <br />
           <span>
-            Title: <State>{formatString(course.title, 20)}</State>
+            Title: <State id="title">{formatString(course.title, 20)}</State>
           </span>
 
           <span>
-            Category: <State>{course.category.name} </State>
+            Category: <State id="category">{course.category.name} </State>
           </span>
           {this.props.update && (
             <span>
@@ -74,17 +74,19 @@ class ListCourses extends Component {
               <State
                 background={course.state === "Published" ? "green" : "red"}
                 color="white"
+                id="state"
               >
                 {course.state}
               </State>
             </span>
           )}
           <span>
-            Created at: <State>{formatDate(course.createdAt)}</State>
+            Created at:
+            <State id="createdAt">{formatDate(course.createdAt)}</State>
           </span>
           {this.props.update && (
             <span>
-              Price: <State>{course.price} €</State>
+              Price: <State id="price">{course.price} €</State>
             </span>
           )}
         </Div>
