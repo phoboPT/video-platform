@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
 import formatMoney from "../../../lib/formatMoney";
-import orderCourses from "../../../lib/orderCourses";
 import User from "../../Authentication/User";
 import ItemStyles from "../../styles/ItemStyles";
 import BuyFreeButton from "../BuyFreeButton";
@@ -45,16 +44,18 @@ export class CourseItem extends Component {
                 >
                   <img className="Thumbnail" src={course.thumbnail} />
                 </Link>
-                <InfoStyle>{course.title}</InfoStyle>
-                <span>{course.user.name}</span>
+                <InfoStyle id="title">{course.title}</InfoStyle>
+                <span id="user">{course.user.name}</span>
                 {course.price === 0 ? (
-                  <InfoStyle className="price">Free Course</InfoStyle>
+                  <InfoStyle className="price" id="price">
+                    Free Course
+                  </InfoStyle>
                 ) : (
-                  <InfoStyle className="price">
+                  <InfoStyle className="price" id="price">
                     {formatMoney(course.price)}
                   </InfoStyle>
                 )}
-                <div className="rating">
+                <div className="rating" id="rating">
                   <Rating
                     showTotal={true}
                     readOnly={true}
