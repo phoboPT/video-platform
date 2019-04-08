@@ -8,6 +8,7 @@ import ListComments from "./Comments/ListComments";
 import Overview from "./Overview";
 import VideoItem from "./VideoItem";
 import SimpleUser from "../../Authentication/SimpleUser";
+import { isFunction, validate } from "@babel/types";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -115,6 +116,7 @@ class ViewCourse extends Component {
   changeView = e => {
     this.setState({ view: parseInt(e.target.id) });
   };
+
   render() {
     return (
       <SimpleUser>
@@ -132,7 +134,6 @@ class ViewCourse extends Component {
                 }
                 const { course } = data;
                 if (course.id) {
-                  console.log(course.id);
                   return (
                     <Query
                       query={CHECK_RATE_COURSE_QUERY}
@@ -141,10 +142,14 @@ class ViewCourse extends Component {
                       {({ data, error, loading }) => {
                         if (loading) return <p>Loading</p>;
                         if (error) return <p>Error</p>;
-                        console.log("data da nova query", data);
+                        console.log(
+                          "data.checkUserRated.message",
+                          data.checkUserRated.message
+                        );
+                        let showForm = data.checkUserRated.message;
 
-                        const hasToShowForm =
-                          data.checkUserRated.message === "false" && me;
+                        console.log(showForm, "primeiro");
+
                         return (
                           <>
                             <CourseContainer>
@@ -166,9 +171,10 @@ class ViewCourse extends Component {
                               </button>
                               <button id="3" onClick={this.changeView}>
                                 Review
+                                {this.state.key}
+                                {data.checkUserRated.message}
                               </button>
                             </Bar>
-
                             {this.state.view === 1 && (
                               <Overview data={course} key={course.id} />
                             )}
@@ -181,10 +187,14 @@ class ViewCourse extends Component {
                                   key={video.video.id}
                                 />
                               ))}
-
+                            {console.log(showForm)}
                             {this.state.view === 3 && (
                               <>
-                                {hasToShowForm && <CommentForm data={course} />}
+                                {showForm === "true" && me ? (
+                                  <CommentForm data={course} />
+                                ) : (
+                                  <></>
+                                )}
 
                                 <ListComments data={course} />
                               </>
@@ -205,3 +215,4 @@ class ViewCourse extends Component {
 }
 
 export default ViewCourse;
+export { CHECK_RATE_COURSE_QUERY, SINGLE_COURSE_QUERY };

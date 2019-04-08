@@ -1,11 +1,16 @@
 import gql from "graphql-tag";
-import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import styled from "styled-components";
 import Error from "../../../Static/ErrorMessage";
 import { ALL_COMMENTS_QUERY } from "./ListComments";
 import Rating from "./Rating";
+import {
+  ALL_COURSE_INTERESTS,
+  ALL_COURSES_ORDERED,
+  ALL_COURSES_QUERY
+} from "../../CoursesList/ListAllCourses";
+import { CHECK_RATE_COURSE_QUERY } from "../ViewCourse";
 
 const Style = styled.div`
   text-align: right;
@@ -73,9 +78,24 @@ export class CommentForm extends Component {
           {
             query: ALL_COMMENTS_QUERY,
             variables: { id: this.state.courseId }
+          },
+          {
+            query: ALL_COURSES_QUERY,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: ALL_COURSES_ORDERED,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: ALL_COURSE_INTERESTS,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: CHECK_RATE_COURSE_QUERY,
+            variables: { courseId: this.state.courseId }
           }
         ]}
-        variables={this.state}
       >
         {(createComCourse, { error, loading }) => {
           return (
@@ -83,7 +103,6 @@ export class CommentForm extends Component {
               <form
                 onSubmit={async e => {
                   e.preventDefault();
-
                   this.saveData(createComCourse, e);
                 }}
               >

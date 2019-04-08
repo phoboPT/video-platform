@@ -4,7 +4,11 @@ import { Mutation, Query } from "react-apollo";
 import styled from "styled-components";
 import Error from "../../../Static/ErrorMessage";
 import { ALL_COMMENTS_QUERY } from "./ListComments";
-import Rating from "./Rating";
+import {
+  ALL_COURSE_INTERESTS,
+  ALL_COURSES_ORDERED,
+  ALL_COURSES_QUERY
+} from "../../CoursesList/ListAllCourses";
 
 const Style = styled.div`
   button {
@@ -81,13 +85,12 @@ export class UpdateComment extends Component {
     const res = await updateCommentMutation({
       variables: {
         id: this.props.data.id,
-        ...this.state,
-      },
+        ...this.state
+      }
     });
   };
 
   render() {
-    console.log("aqui teste", this.props.data.id);
     if (this.state.rate !== this.props.children.props.initialValue) {
       this.setState({ rate: this.props.children.props.initialValue });
     }
@@ -95,6 +98,20 @@ export class UpdateComment extends Component {
       <Query
         query={SINGLE_COMMENT_QUERY}
         variables={{ id: this.props.data.id }}
+        refetchQueries={[
+          {
+            query: ALL_COURSES_QUERY,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: ALL_COURSES_ORDERED,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: ALL_COURSE_INTERESTS,
+            variables: { published: "PUBLISHED", skip: 0 }
+          }
+        ]}
       >
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
@@ -105,8 +122,8 @@ export class UpdateComment extends Component {
                 refetchQueries={[
                   {
                     query: ALL_COMMENTS_QUERY,
-                    variables: { id: data.rateCourse.course.id },
-                  },
+                    variables: { id: data.rateCourse.course.id }
+                  }
                 ]}
               >
                 {(updateCommentMutation, { error, loading }) => (

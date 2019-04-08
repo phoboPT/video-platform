@@ -50,7 +50,7 @@ class RatingPage extends Component {
             emptySymbol="far fa-star fa-2x"
             fractions={2}
             fullSymbol="fa fa-star fa-2x"
-            initialRating={this.state.value}
+            initialRating={parseInt(this.state.value)}
             onClick={this.change}
             placeholderSymbol="fa fa-star fa-2x"
             readonly={this.props.readOnly}
