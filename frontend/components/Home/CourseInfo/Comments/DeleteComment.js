@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { ALL_COMMENTS_QUERY } from "./ListComments";
+import {
+  ALL_COURSE_INTERESTS,
+  ALL_COURSES_ORDERED,
+  ALL_COURSES_QUERY
+} from "../../CoursesList/ListAllCourses";
+import { CHECK_RATE_COURSE_QUERY } from "../ViewCourse";
 
 const DELETE_COMMENT_MUTATION = gql`
   mutation DELETE_COMMENT_MUTATION($id: ID!) {
@@ -31,11 +37,37 @@ export class DeleteComment extends Component {
     });
   };
   render() {
+    console.log(this.props.data.course.id);
     return (
       <Mutation
         mutation={DELETE_COMMENT_MUTATION}
         variables={{ id: this.props.data.id }}
         update={this.update}
+        optimisticResponse={{
+          __typename: "Mutation",
+          deleteRateCourse: {
+            __typename: "RateCourse",
+            id: this.props.data.id
+          }
+        }}
+        refetchQueries={[
+          {
+            query: ALL_COURSES_QUERY,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: ALL_COURSES_ORDERED,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: ALL_COURSE_INTERESTS,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: CHECK_RATE_COURSE_QUERY,
+            variables: { courseId: this.props.data.course.id }
+          }
+        ]}
       >
         {(deleteRateCourse, { error }) => (
           <button

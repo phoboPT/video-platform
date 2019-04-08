@@ -64,13 +64,13 @@ export class ListComments extends Component {
       scrollFunction();
     };
   };
+
   render() {
     return (
       <Query query={ALL_COMMENTS_QUERY} variables={{ id: this.props.data.id }}>
         {({ error, loading, data }) => {
           if (error) return <p>Error!</p>;
           if (loading) return <p>Loading...</p>;
-
           if (!data.rateCourseList) return <p>No Avaliations</p>;
           return (
             <>

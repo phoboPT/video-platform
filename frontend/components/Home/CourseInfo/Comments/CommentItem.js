@@ -15,11 +15,11 @@ const Style = styled.p`
 
 export class Video extends Component {
   static propTypes = {
-    comments: PropTypes.object.isRequired,
+    comments: PropTypes.object.isRequired
   };
   state = {
     edit: false,
-    rating: this.props.rating,
+    rating: this.props.rating
   };
   changeEdit = e => {
     this.setState({ edit: true });
@@ -33,7 +33,6 @@ export class Video extends Component {
   };
   render() {
     const { comments } = this.props;
-    const Date = formatDate(comments.createdAt);
     return (
       <User>
         {({ data: { me } }) => (
@@ -43,7 +42,7 @@ export class Video extends Component {
                 <img src="../static/commentuser.png" />
               </a>
               <span id="name">{comments.user.name}</span>
-              <p> Posted in: {Date}</p>
+              <p> Posted in: {formatDate(comments.createdAt)}</p>
             </div>
             <div className="middle">
               {this.state.edit === true ? (
