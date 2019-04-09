@@ -1,10 +1,10 @@
+import gql from "graphql-tag";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import { CURRENT_USER_QUERY } from "../../../Authentication/User";
-import PropTypes from "prop-types";
-import { SINGLE_COURSE_QUERY } from "./UpdateCourse";
 import styled from "styled-components";
+import { CURRENT_USER_QUERY } from "../../../Authentication/User";
+import { SINGLE_COURSE_QUERY } from "./Update";
 
 const REMOVE_VIDEO_COURSE = gql`
   mutation REMOVE_VIDEO_COURSE($id: ID!, $courseId: ID!) {
@@ -49,14 +49,14 @@ class RemoveVideoButton extends Component {
     return (
       <Mutation
         mutation={REMOVE_VIDEO_COURSE}
-        variables={{
-          id,
-          courseId,
-        }}
         refetchQueries={[
           { query: CURRENT_USER_QUERY },
           { query: SINGLE_COURSE_QUERY, variables: { id: courseId } },
         ]}
+        variables={{
+          id,
+          courseId,
+        }}
       >
         {(removeFromCourse, { loading }) => (
           <ButtonStyle disabled={loading} onClick={removeFromCourse}>

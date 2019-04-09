@@ -36,7 +36,6 @@ export class teste extends Component {
             <Item style={{ margin: "8px" }}>Section 2</Item>
           </Section>
         </Container>
-        <Container id="dr2" style={DroppabbleStyle} />
       </Wrapper>
     );
   }

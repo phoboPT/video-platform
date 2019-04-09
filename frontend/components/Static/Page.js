@@ -7,13 +7,13 @@ const theme = {
   black: "#2c2f33",
   blue: "#5bc0de",
   borderRadius: "10px",
-  borderRadius: "10px",
-  bs: "0 12px 24px 0 rgba(0,0,0,0.09)",
   bs: "0 12px 24px 0 rgba(0,0,0,0.09)",
   darkblue: "#428bca",
   green: "#5cb85c",
   lightGrey: "#99aab5",
   maxWidth: "1700px",
+  red: "#d9534f",
+  white: "#ffffff",
 };
 
 const StyledPage = styled.div`
