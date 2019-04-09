@@ -2,10 +2,9 @@ import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
 // import ReactQuill from "react-quill"; // ES6
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import VideoItem from "../../../Home/CourseInfo/VideoItem";
 import Error from "../../../Static/ErrorMessage";
-import Form from "../../../styles/Form";
 import Editor from "../../Editor";
 import RemoveVideoButton from "./RemoveVideoButton";
 import Unpublished from "../../CourseState/Unpublished";
@@ -54,27 +53,127 @@ const UPDATE_COURSE_MUTATION = gql`
     }
   }
 `;
+const loading = keyframes`
+  from {
+    background-position: 0 0;
+    /* rotate: 0; */
+  }
+
+  to {
+    background-position: 100% 100%;
+    /* rotate: 360deg; */
+  }
+`;
+
+const Form = styled.div`
+  padding: 20px;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 600;
+  label {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    &:focus {
+      outline: 0;
+      border-color: ${props => props.theme.red};
+    }
+  }
+  button,
+  input[type="submit"] {
+    width: auto;
+    background: red;
+    color: white;
+    border: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+    text-align: center;
+  }
+  fieldset {
+    border: 0;
+    padding: 0;
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+
+    &[aria-busy="true"]::before {
+      background-size: 50% auto;
+      animation: ${loading} 0.5s linear infinite;
+    }
+  }
+`;
 
 const CourseContainer = styled.div`
   color: black;
-  display: flex;
   background: #e3e3e5;
+  display: flex;
 
   .info-container {
-    display: flex;
-    width: 70%;
+    order: 1;
+    flex: 3;
     label {
       text-align: left;
     }
-    form {
-      border: none !important;
-    }
-    img {
-      text-align: center !important;
-    }
   }
   .actions-container {
-    width: 20%;
+    order: 2;
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    input {
+      margin: 10px;
+    }
+    label {
+      margin: 40px;
+      img {
+        margin-top: 10px;
+        width: 100%;
+        height: 80%;
+      }
+    }
+    #submit {
+      border-radius: 5px;
+      height: 50px;
+      width: 200px;
+      text-align: center;
+      margin-top: 40px;
+      margin: 0 auto;
+      font-size: 25px;
+      font-weight: 400;
+      border: none;
+      background: #27ad39;
+      margin-top: 40px;
+      cursor: pointer;
+      color: white;
+      :focus {
+        outline: none;
+      }
+    }
+
+    #submitLoading {
+      border-radius: 5px;
+      height: 50px;
+      width: 200px;
+      text-align: center;
+      margin-top: 40px;
+      margin: 0 auto;
+      font-size: 25px;
+      font-weight: 400;
+      border: 2px solid #727272;
+      background: white;
+      color: #727272;
+      margin-top: 40px;
+      cursor: pointer;
+    }
   }
 
   #courseState {
@@ -114,8 +213,9 @@ const VideoListStyle = styled.h3`
 `;
 
 const Marcador = styled.div`
+  margin-top: 100px;
   button {
-    border: 2px solid red;
+    border: 2px solid black;
     border-bottom: 0;
     font-size: 22px;
     font-weight: 400;
@@ -214,19 +314,26 @@ class UpdateCourse extends Component {
               >
                 {(updateCourse, { loading, error }) => (
                   <>
+                    <form>
+                      <input
+                        type="button"
+                        value="Go back!"
+                        onclick={() => history.back}
+                      />
+                    </form>
                     <Marcador>
                       <button>Info</button>
                       <button>Media</button>
                     </Marcador>
                     <CourseContainer>
-                      <Form onSubmit={e => this.updateCourse(e, updateCourse)}>
-                        <Error error={error} />
-                        <fieldset disabled={loading} aria-busy={loading}>
-                          <div id="info-container">
-                            <h2>Information</h2>
-                            <label htmlFor="Image">
+                      <div className="info-container">
+                        <Form>
+                          <Error error={error} />
+                          <fieldset disabled={loading} aria-busy={loading}>
+                            <h2>Edit Course</h2>
+                            {/* <label htmlFor="Image">
                               <img src={data.course.thumbnail} />
-                            </label>
+                            </label> */}
                             <label htmlFor="Title">
                               Title
                               <input
@@ -246,49 +353,53 @@ class UpdateCourse extends Component {
                                 />
                               </div>
                             </label>
-                            <label htmlFor="state">
-                              State
-                              <div id="courseState">
-                                <Published
-                                  published={this.state.published}
-                                  changePublished={this.changePublished}
-                                />
-                                <Unpublished
-                                  unpublished={this.state.unpublished}
-                                  changeUnpublished={this.changeUnpublished}
-                                />
-                              </div>
-                            </label>
-
-                            <label htmlFor="thumbnail">
-                              Thumbnail
-                              <br />
-                              <input
-                                type="file"
-                                name="thumbnail"
-                                placeholder="thumbnail"
-                                value={this.thumbnail}
-                                onChange={this.uploadThumbnail}
-                              />
-                            </label>
-                            {this.state.changeThumbnail ? (
-                              data.course.thumbnail && (
-                                <img src={this.state.thumbnail} />
-                              )
-                            ) : (
-                              <img src={data.course.thumbnail} />
-                            )}
-                            <br />
-                            <b />
-                            <br />
+                          </fieldset>
+                        </Form>
+                      </div>
+                      {/* divisao  */}
+                      <div className="actions-container">
+                        <form
+                          onSubmit={e => this.updateCourse(e, updateCourse)}
+                        >
+                          <button
+                            id={loading ? "submitLoading" : "submit"}
+                            type="submit"
+                            disabled={loading}
+                          >
+                            {loading ? "Saving..." : "Save Changes"}
+                          </button>
+                        </form>
+                        <label htmlFor="state">
+                          Course State
+                          <div id="courseState">
+                            <Published
+                              published={this.state.published}
+                              changePublished={this.changePublished}
+                            />
+                            <Unpublished
+                              unpublished={this.state.unpublished}
+                              changeUnpublished={this.changeUnpublished}
+                            />
                           </div>
-                          <div className="actions-container">
-                            <button type="submit">
-                              Sav{loading ? "ing" : "e"} To Course
-                            </button>
-                          </div>
-                        </fieldset>
-                      </Form>
+                        </label>
+                        <label htmlFor="thumbnail">
+                          Thumbnail Preview
+                          {this.state.changeThumbnail ? (
+                            data.course.thumbnail && (
+                              <img src={this.state.thumbnail} />
+                            )
+                          ) : (
+                            <img src={data.course.thumbnail} />
+                          )}
+                          <input
+                            type="file"
+                            name="thumbnail"
+                            placeholder="thumbnail"
+                            value={this.thumbnail}
+                            onChange={this.uploadThumbnail}
+                          />
+                        </label>
+                      </div>
                     </CourseContainer>
                     <VideoListStyle>Videos</VideoListStyle>
                     {data.course.videos.map((video, index) => (

@@ -25,34 +25,17 @@ const Style = styled.div`
   }
 
   .top-bar {
+    margin: 0 auto;
+    width: 60%;
     min-height: 50px;
-    background: lightgray;
-    order: 1;
-    padding-inline-start: 1fr;
+    background: #d8d8d8;
+    line-height: 50px;
     text-align: center;
-    align-items: center;
     border-radius: 25px;
-    button {
-      background-color: Transparent;
-      background-repeat: no-repeat;
-      border: none;
-      cursor: pointer;
-      overflow: hidden;
-      outline: none;
-      font-size: 17px;
-      padding: 16px 31px;
-      text-decoration: none;
-      text-shadow: 0px 1px 0px #000000;
-      &hover {
-        background-color: transparent;
-      }
-      &active {
-        position: relative;
-        top: 1px;
-      }
-    }
   }
+
   .main-bar {
+    padding-top: 30px;
     float: bottom;
     text-align: center;
     .create-course {
@@ -70,7 +53,7 @@ const Style = styled.div`
 
 class Courses extends Component {
   state = {
-    view: 0
+    view: 1
   };
 
   // This method will be sent to the child component
@@ -93,17 +76,15 @@ class Courses extends Component {
                 <Style>
                   <div className="container">
                     <section id="main" className="top-bar">
-                      <button id="1" onClick={this.changeView}>
-                        My Courses
-                      </button>
+                      <h2>My Courses</h2>
 
-                      <button id="2" onClick={this.changeView}>
+                      {/* <button id="2" onClick={this.changeView}>
                         Create Course
                       </button>
 
                       <button id="4" onClick={this.changeView}>
                         Upload Video
-                      </button>
+                      </button> */}
                     </section>
                     <aside id="sidebar" className="main-bar">
                       {this.state.view === 1 && <MyCourses />}
