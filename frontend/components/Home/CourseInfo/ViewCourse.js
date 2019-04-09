@@ -1,14 +1,14 @@
+import { isFunction, validate } from "@babel/types";
 import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import Markdown from "react-markdown";
 import styled from "styled-components";
+import SimpleUser from "../../Authentication/SimpleUser";
 import CommentForm from "./Comments/CommentForm";
 import ListComments from "./Comments/ListComments";
 import Overview from "./Overview";
 import VideoItem from "./VideoItem";
-import SimpleUser from "../../Authentication/SimpleUser";
-import { isFunction, validate } from "@babel/types";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -45,7 +45,6 @@ const CHECK_RATE_COURSE_QUERY = gql`
 `;
 
 const CourseContainer = styled.div`
-  display: grid;
   color: white;
   display: flex;
   background: #333350;
@@ -110,7 +109,7 @@ const Bar = styled.div`
 
 class ViewCourse extends Component {
   state = {
-    view: 1
+    view: 1,
   };
 
   changeView = e => {
@@ -126,7 +125,7 @@ class ViewCourse extends Component {
               query={SINGLE_COURSE_QUERY}
               variables={{ id: this.props.id }}
             >
-              {({ data, loading, error }) => {
+              {({ data, error, loading }) => {
                 if (loading) return <p>Loading</p>;
                 if (error) return <p>Error</p>;
                 if (!data.course) {
@@ -142,13 +141,8 @@ class ViewCourse extends Component {
                       {({ data, error, loading }) => {
                         if (loading) return <p>Loading</p>;
                         if (error) return <p>Error</p>;
-                        console.log(
-                          "data.checkUserRated.message",
-                          data.checkUserRated.message
-                        );
-                        let showForm = data.checkUserRated.message;
 
-                        console.log(showForm, "primeiro");
+                        let showForm = data.checkUserRated.message;
 
                         return (
                           <>
@@ -171,8 +165,6 @@ class ViewCourse extends Component {
                               </button>
                               <button id="3" onClick={this.changeView}>
                                 Review
-                                {this.state.key}
-                                {data.checkUserRated.message}
                               </button>
                             </Bar>
                             {this.state.view === 1 && (

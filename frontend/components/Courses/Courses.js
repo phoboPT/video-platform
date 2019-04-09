@@ -70,7 +70,7 @@ const Style = styled.div`
 
 class Courses extends Component {
   state = {
-    view: 0
+    view: 1,
   };
 
   // This method will be sent to the child component

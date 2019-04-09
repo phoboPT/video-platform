@@ -1,19 +1,19 @@
 import React, { Component } from "react";
-import styled, { ThemeProvider, injectGlobal } from "styled-components";
+import styled, { injectGlobal, ThemeProvider } from "styled-components";
 import Header from "./Header";
 import Meta from "./Meta";
 
 const theme = {
-  red: "#d9534f",
-  white: "#ffffff",
-  blue: "#5bc0de",
-  green: "#5cb85c",
-  darkblue: "#428bca",
   black: "#2c2f33",
+  blue: "#5bc0de",
+  borderRadius: "10px",
+  bs: "0 12px 24px 0 rgba(0,0,0,0.09)",
+  darkblue: "#428bca",
+  green: "#5cb85c",
   lightGrey: "#99aab5",
   maxWidth: "1500px",
-  bs: "0 12px 24px 0 rgba(0,0,0,0.09)",
-  borderRadius: "10px"
+  red: "#d9534f",
+  white: "#ffffff",
 };
 
 const StyledPage = styled.div`

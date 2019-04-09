@@ -4,6 +4,10 @@ import { Query } from "react-apollo";
 import ItemList from "../../styles/ItemList";
 import CourseItem from "./CourseItem";
 
+import Section from "../../DragNDrop/Draggable/Section";
+import Container from "../../DragNDrop/Droppable/Container";
+import Teste from "../../DragNDrop/teste";
+
 const CURRENT_COURSES_QUERY = gql`
   query CURRENT_COURSES_QUERY {
     coursesUser {
@@ -15,6 +19,7 @@ const CURRENT_COURSES_QUERY = gql`
       createdAt
       price
       category {
+        id
         name
       }
       videos {
@@ -41,11 +46,16 @@ class MyCourses extends Component {
           if (error) return <p>Error:{error.message}</p>;
           if (data.coursesUser) {
             return (
-              <ItemList>
-                {data.coursesUser.map(course => (
-                  <CourseItem course={course} key={course.id} update={true} />
-                ))}
-              </ItemList>
+              <>
+                <ItemList>
+                  {data.coursesUser.map(course => (
+                    <CourseItem course={course} key={course.id} update={true} />
+                  ))}
+                </ItemList>
+                <Container>
+                  <Teste />
+                </Container>
+              </>
             );
           }
           return null;
