@@ -116,7 +116,7 @@ const Marcador = styled.div`
   }
 `;
 export class UpdateCourse extends Component {
-  state = { view: 1 };
+  state = { view: 2 };
 
   changeView = e => {
     this.setState({ view: parseInt(e.target.id) });
