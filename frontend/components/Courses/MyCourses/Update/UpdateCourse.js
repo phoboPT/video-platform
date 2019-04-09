@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { Component } from "react";
 import styled, { keyframes } from "styled-components";
 import Media from "../../Media";
@@ -101,7 +102,7 @@ const CourseContainer = styled.div`
 `;
 
 const Marcador = styled.div`
-  margin-top: 100px;
+  margin-top: 4rem;
   button {
     border: 2px solid black;
     border-bottom: 0;
@@ -115,14 +116,25 @@ const Marcador = styled.div`
   }
 `;
 export class UpdateCourse extends Component {
-  state = { view: 2 };
+  state = { view: 1 };
+
+  changeView = e => {
+    this.setState({ view: parseInt(e.target.id) });
+  };
+
   render() {
     return (
       <>
-        <button>&lt;- Go Back</button>
+        <Link href="/courses">
+          <a>&lt;- Go Back</a>
+        </Link>
         <Marcador>
-          <button>Info</button>
-          <button>Media</button>
+          <button id="1" onClick={this.changeView}>
+            Info
+          </button>
+          <button id="2" onClick={this.changeView}>
+            Media
+          </button>
         </Marcador>
         <CourseContainer>
           {this.state.view === 1 && <Update id={this.props.id} />}

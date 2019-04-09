@@ -3,12 +3,10 @@ import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
 // import ReactQuill from "react-quill"; // ES6
 import styled, { keyframes } from "styled-components";
-import VideoItem from "../../../Home/CourseInfo/VideoItem";
 import Error from "../../../Static/ErrorMessage";
 import Published from "../../CourseState/Published";
 import Unpublished from "../../CourseState/Unpublished";
 import Editor from "../../Editor";
-import RemoveVideoButton from "./RemoveVideoButton";
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
