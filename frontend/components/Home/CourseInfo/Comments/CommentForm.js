@@ -8,7 +8,8 @@ import Rating from "./Rating";
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
-  ALL_COURSES_QUERY
+  ALL_COURSES_QUERY,
+  All_COURSES_RATING
 } from "../../CoursesList/ListAllCourses";
 import { CHECK_RATE_COURSE_QUERY } from "../ViewCourse";
 
@@ -94,6 +95,10 @@ export class CommentForm extends Component {
           {
             query: CHECK_RATE_COURSE_QUERY,
             variables: { courseId: this.state.courseId }
+          },
+          {
+            query: All_COURSES_RATING,
+            variables: { published: "PUBLISHED", skip: 0 }
           }
         ]}
       >

@@ -7,7 +7,8 @@ import { ALL_COMMENTS_QUERY } from "./ListComments";
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
-  ALL_COURSES_QUERY
+  ALL_COURSES_QUERY,
+  All_COURSES_RATING
 } from "../../CoursesList/ListAllCourses";
 
 const Style = styled.div`
@@ -109,6 +110,10 @@ export class UpdateComment extends Component {
           },
           {
             query: ALL_COURSE_INTERESTS,
+            variables: { published: "PUBLISHED", skip: 0 }
+          },
+          {
+            query: All_COURSES_RATING,
             variables: { published: "PUBLISHED", skip: 0 }
           }
         ]}

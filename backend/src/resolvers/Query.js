@@ -548,6 +548,114 @@ const Query = {
       return { message: false };
     }
     return { message: true };
+  },
+  async coursesRating(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    const { orderBy } = args;
+    delete args.orderBy;
+
+    let user;
+    if (userId) {
+      user = await ctx.db.query.user(
+        {
+          where: {
+            id: userId
+          }
+        },
+        `{
+            courses{
+            course{
+              id
+            }
+          }
+        }
+        `
+      );
+    }
+
+    let coursesId = [];
+
+    //foreach de cada elemento e fazer a query e guardar num array
+    if (user) {
+      await user.courses.map(user => {
+        coursesId.push(user.course.id);
+      });
+    }
+    console.log("aqui");
+    //query o video atual com comparaçao de ids de user
+    const res = await ctx.db.query.courses(
+      {
+        where: {
+          AND: [
+            {
+              state: "PUBLISHED"
+            },
+            {
+              id_not_in: coursesId
+            }
+          ]
+        },
+
+        ...args
+      },
+      `{
+         id
+         title
+         description
+         thumbnail
+         createdAt
+         price
+         state
+         totalRate
+         totalComments
+         user {
+           id
+           name
+         }
+     }`,
+      info
+    );
+
+    //fazer a media
+    coursesAverage = await res.map(item => {
+      item.average = item.totalRate / item.totalComments;
+      return item;
+    });
+
+    //Wishlist array
+    const wishlist = await ctx.db.query.wishlists(
+      {
+        where: {
+          user: { id: userId }
+        }
+      },
+      `{
+        course{id}
+     }`
+    );
+
+    //Wish ids to compare
+    let wishIds = wishlist.map(item => {
+      return item.course.id;
+    });
+
+    //add the wished property to the final array
+    let finalRes = await coursesAverage.map(item => {
+      item.wished = false;
+      wishIds.map(wish => {
+        if (wish === item.id) {
+          item.wished = true;
+        }
+      });
+      return item;
+    });
+    await finalRes.sort(function(a, b) {
+      if (a.average > b.average) return -1;
+      if (a.average < b.average) return 1;
+      return 0;
+    });
+    return finalRes;
   }
 };
 
