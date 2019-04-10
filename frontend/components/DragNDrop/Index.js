@@ -1,4 +1,4 @@
-import "@atlaskit/css-reset";
+// import "@atlaskit/css-reset";
 import React, { Component } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import ReactDOM from "react-dom";
@@ -56,7 +56,7 @@ class Index extends Component {
   render() {
     return (
       <Container>
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        <DragDropContext>
           {this.state.columnOrder.map(columnId => {
             const column = this.state.columns[columnId];
             const tasks = column.taskIds.map(

@@ -43,7 +43,6 @@ class MyCourses extends Component {
           if (data.coursesUser) {
             return (
               <>
-                <p>hi</p>
                 <ItemList>
                   {data.coursesUser.map(course => (
                     <CourseItem course={course} key={course.id} update={true} />
