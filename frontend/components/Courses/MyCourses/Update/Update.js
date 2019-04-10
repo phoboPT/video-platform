@@ -113,20 +113,20 @@ const VideoListStyle = styled.h3`
   text-align: center;
 `;
 
-class UpdateCourse extends Component {
+class Update extends Component {
   state = {
     alreadyExecuted: false,
     changeThumbnail: false,
     published: "",
     state: "",
-    unpublished: "",
+    unpublished: ""
   };
 
   changePublished = e => {
     this.setState({
       published: !this.state.published,
       state: "PUBLISHED",
-      unpublished: !this.state.unpublished,
+      unpublished: !this.state.unpublished
     });
   };
 
@@ -134,7 +134,7 @@ class UpdateCourse extends Component {
     this.setState({
       published: !this.state.published,
       state: "UNPUBLISHED",
-      unpublished: !this.state.unpublished,
+      unpublished: !this.state.unpublished
     });
   };
 
@@ -143,7 +143,7 @@ class UpdateCourse extends Component {
       alreadyExecuted: true,
       published: actualState === "PUBLISHED" ? true : false,
       state: actualState,
-      unpublished: actualState === "UNPUBLISHED" ? true : false,
+      unpublished: actualState === "UNPUBLISHED" ? true : false
     });
   };
 
@@ -159,8 +159,8 @@ class UpdateCourse extends Component {
     const res = await updateCourseMutation({
       variables: {
         id: this.props.id,
-        ...this.state,
-      },
+        ...this.state
+      }
     });
   };
   changeQuill = e => {
@@ -175,7 +175,7 @@ class UpdateCourse extends Component {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data },
+      { method: "POST", body: data }
     );
 
     const file = await res.json();
@@ -300,5 +300,5 @@ class UpdateCourse extends Component {
   }
 }
 
-export default UpdateCourse;
+export default Update;
 export { SINGLE_COURSE_QUERY };

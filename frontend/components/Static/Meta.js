@@ -12,6 +12,7 @@ const Meta = () => (
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
       rel="stylesheet"
     />
+
     <link
       crossOrigin="anonymous"
       href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"

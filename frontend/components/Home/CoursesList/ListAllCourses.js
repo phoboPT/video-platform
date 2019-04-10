@@ -115,41 +115,69 @@ const ALL_COURSE_INTERESTS = gql`
   }
 `;
 
+const All_COURSES_RATING = gql`
+  query All_COURSES_RATING($skip: Int = 0, $first: Int = ${perPageCourse} ) {
+    coursesRating(first: $first, skip: $skip ) {
+      id
+      title
+      description
+      thumbnail
+      createdAt
+      totalComments
+      price
+      totalRate
+      user {
+        id
+        name
+      }
+      count
+      wished
+    }
+  }
+`;
+
 export class ListAllCourses extends Component {
   componentWillMount() {
     switch (this.props.query) {
       case "ALL_COURSE_INTERESTS": {
         this.setState({
           query: ALL_COURSE_INTERESTS,
-          title: "Interests List",
+          title: "You May be Interested In..."
         });
         break;
       }
       case "ALL_COURSES_NOUSER": {
         this.setState({
           query: ALL_COURSES_NOUSER,
-          title: "All Courses List",
+          title: "All Courses"
         });
         break;
       }
       case "ALL_COURSES_ORDERED_NOUSER": {
         this.setState({
           query: ALL_COURSES_ORDERED_NOUSER,
-          title: "By Creation List",
+          title: "More Recent"
         });
         break;
       }
       case "ALL_COURSES_ORDERED": {
         this.setState({
           query: ALL_COURSES_ORDERED,
-          title: "By Creation List",
+          title: "More Recent"
         });
         break;
       }
       case "ALL_COURSES_QUERY": {
         this.setState({
           query: ALL_COURSES_QUERY,
-          title: "All Courses List",
+          title: "All Courses "
+        });
+        break;
+      }
+      case "All_COURSES_RATING": {
+        this.setState({
+          query: All_COURSES_RATING,
+          title: "Most Popular"
         });
         break;
       }
@@ -165,7 +193,7 @@ export class ListAllCourses extends Component {
     count: 0,
     page: 1,
     query: ALL_COURSES_QUERY,
-    title: "",
+    title: ""
   };
 
   animationSliderControlForward = () => {
@@ -197,7 +225,7 @@ export class ListAllCourses extends Component {
           query={this.state.query}
           variables={{
             published: "PUBLISHED",
-            skip: this.state.page * perPageCourse - perPageCourse,
+            skip: this.state.page * perPageCourse - perPageCourse
           }}
         >
           {({ data, error, loading }) => {
@@ -307,6 +335,33 @@ export class ListAllCourses extends Component {
                   </Container>
                 </>
               );
+            if (data.coursesRating) {
+              return (
+                <Container>
+                  {data.coursesRating && <Title>{this.state.title}</Title>}
+                  <CoursesList className={this.state.classe}>
+                    {data.coursesRating &&
+                      data.coursesRating.map(course => (
+                        <CourseItem
+                          course={course}
+                          key={course.id}
+                          skip={this.state.page * perPageCourse - perPageCourse}
+                        />
+                      ))}
+                  </CoursesList>
+                  <Pagination
+                    page={this.state.page}
+                    animationSliderControlForward={
+                      this.animationSliderControlForward
+                    }
+                    animationSliderControlBackward={
+                      this.animationSliderControlBackward
+                    }
+                    isInterest={false}
+                  />
+                </Container>
+              );
+            }
           }}
         </Query>
       </>
@@ -321,5 +376,6 @@ export {
   ALL_COURSES_ORDERED,
   ALL_COURSES_ORDERED_NOUSER,
   ALL_COURSES_QUERY,
-  RENDER_QUERY,
+  All_COURSES_RATING,
+  RENDER_QUERY
 };

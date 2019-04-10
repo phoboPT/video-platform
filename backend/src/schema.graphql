@@ -28,10 +28,11 @@ type Course {
   price: Float!
   category: Category!
   interest: [CourseInterest!]!
-  count: Int
   wished: Boolean
   totalRate: Float
   totalComments: Int
+  # Variaveis nao definidas em datamodel mas necessarias backend
+  count: Int
 }
 
 type Mutation {
@@ -152,7 +153,7 @@ type Query {
 
   videosSearch(where: VideoWhereInput!): [Video]
 
-  #Listar todos os cursos em que o user tenha o mesmo interest do curso
+  #LISTAS DA HOME PAGE
   coursesUserInterestList(
     orderBy: CourseOrderByInput
     skip: Int
@@ -160,6 +161,8 @@ type Query {
   ): [Course]
 
   coursesList(orderBy: String, skip: Int, first: Int): [Course]
+
+  coursesRating(orderBy: CourseOrderByInput, skip: Int, first: Int): [Course]
 
   # listar todos os comentarios de um curso
   rateCourseList(id: ID!, orderBy: RateCourseOrderByInput): [RateCourse]

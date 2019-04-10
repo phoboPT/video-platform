@@ -5,7 +5,8 @@ import styled from "styled-components";
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
-  ALL_COURSES_QUERY
+  ALL_COURSES_QUERY,
+  All_COURSES_RATING
 } from "./CoursesList/ListAllCourses";
 
 const ADD_TO_WISHLIST_MUTATION = gql`
@@ -95,6 +96,10 @@ export class AddToWish extends Component {
           },
           {
             query: ALL_COURSE_INTERESTS,
+            variables: { published: "PUBLISHED", skip: data.skip }
+          },
+          {
+            query: All_COURSES_RATING,
             variables: { published: "PUBLISHED", skip: data.skip }
           }
         ]}

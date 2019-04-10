@@ -4,3 +4,5 @@ datamodel: datamodel.graphql
 hooks:
   post-deploy:
     - graphql get-schema -p prisma
+seed:
+  run: node ./seed.js

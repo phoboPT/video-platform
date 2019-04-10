@@ -49,7 +49,13 @@ const CourseContainer = styled.div`
   display: flex;
   background: #333350;
   padding: 20px 0px;
-
+  h2 {
+    font-size: 24px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    line-height: 33px;
+  }
   .info-bar {
     min-height: 50px;
     flex: 2;
@@ -109,7 +115,7 @@ const Bar = styled.div`
 
 class ViewCourse extends Component {
   state = {
-    view: 1,
+    view: 1
   };
 
   changeView = e => {

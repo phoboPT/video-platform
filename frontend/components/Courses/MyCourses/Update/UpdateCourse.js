@@ -6,7 +6,7 @@ import Update from "../Update/Update";
 
 const CourseContainer = styled.div`
   color: black;
-  background: #e3e3e5;
+  background: rgba(242, 242, 242, 0.7);
   display: flex;
 
   .info-container {
@@ -97,7 +97,7 @@ const CourseContainer = styled.div`
   }
 
   .description {
-    background-color: lightgray;
+    background-color: white;
   }
 `;
 
