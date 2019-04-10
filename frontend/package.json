@@ -59,6 +59,7 @@
     }
   },
   "dependencies": {
+    "@atlaskit/css-reset": "^3.0.7",
     "@zeit/next-css": "^1.0.1",
     "apollo-boost": "^0.1.28",
     "apollo-client": "^2.5.1",
@@ -86,8 +87,7 @@
     "react": "^16.8.6",
     "react-adopt": "^0.6.0",
     "react-apollo": "^2.5.3",
-    "react-dnd": "^7.4.5",
-    "react-dnd-html5-backend": "^7.4.4",
+    "react-beautiful-dnd": "^11.0.0-beta.3",
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.13.2",
     "react-markdown": "^4.0.6",

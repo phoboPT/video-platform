@@ -137,8 +137,8 @@ export class UpdateCourse extends Component {
           </button>
         </Marcador>
         <CourseContainer>
-          {this.state.view === 1 && <Update id={this.props.id} />}
-          {this.state.view === 2 && <Media />}
+          {/* {this.state.view === 1 && <Update id={this.props.id} />}
+          {this.state.view === 2 && <Media />} */}
         </CourseContainer>
       </>
     );

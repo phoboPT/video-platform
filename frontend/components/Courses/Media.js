@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import Teste from "../DragNDrop/Teste";
+import Index from "../DragNDrop/Index";
 
 const Container = styled.div`
   margin: 1rem;
@@ -15,7 +15,7 @@ export class Media extends Component {
 
         <br />
         <p>Sections</p>
-        <Teste />
+        <Index />
       </Container>
     );
   }

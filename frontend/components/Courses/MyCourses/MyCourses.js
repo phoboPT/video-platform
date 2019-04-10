@@ -4,8 +4,6 @@ import { Query } from "react-apollo";
 import ItemList from "../../styles/ItemList";
 import CourseItem from "./CourseItem";
 
-import Container from "../../DragNDrop/Droppable/Container";
-
 const CURRENT_COURSES_QUERY = gql`
   query CURRENT_COURSES_QUERY {
     coursesUser {
@@ -45,12 +43,12 @@ class MyCourses extends Component {
           if (data.coursesUser) {
             return (
               <>
+                <p>hi</p>
                 <ItemList>
                   {data.coursesUser.map(course => (
                     <CourseItem course={course} key={course.id} update={true} />
                   ))}
                 </ItemList>
-                <Container />
               </>
             );
           }
