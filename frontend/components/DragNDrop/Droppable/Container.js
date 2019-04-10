@@ -2,14 +2,6 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
 
-const Square = styled.div`
-  border: 1px solid black;
-  background-color: #c4bfbe;
-  width: 500px;
-  height: 500px;
-  text-align: center;
-  line-height: 40px;
-`;
 export class Container extends Component {
   drop = e => {
     e.preventDefault;

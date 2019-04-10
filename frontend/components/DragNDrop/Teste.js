@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 
 const Item = styled.div`
   padding: 8px;
+  margin-bottom: 2rem !important;
   color: #555;
   background-color: white;
   border-radius: 3px;
@@ -24,21 +25,37 @@ const DroppabbleStyle = {
   width: "250px",
 };
 
-export class teste extends Component {
+export class Teste extends Component {
+  state = {
+    components: [],
+    section: 1,
+  };
+
+  add = e => {
+    let components = this.state.components;
+    components.push(
+      <Section id="item1">
+        <Item style={{ margin: "8px" }}>Section {this.state.section}</Item>
+      </Section>,
+    );
+
+    this.setState({
+      components: [components],
+      section: this.state.section + 1,
+    });
+  };
   render() {
     return (
       <Wrapper>
+        <div>
+          <button onClick={this.add}>+</button>
+        </div>
         <Container id="dr1" style={DroppabbleStyle}>
-          <Section id="item1">
-            <Item style={{ margin: "8px" }}>Section 1</Item>
-          </Section>
-          <Section id="item2">
-            <Item style={{ margin: "8px" }}>Section 2</Item>
-          </Section>
+          {this.state.components}
         </Container>
       </Wrapper>
     );
   }
 }
 
-export default teste;
+export default Teste;
