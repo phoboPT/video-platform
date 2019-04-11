@@ -74,12 +74,15 @@ const List = styled.div`
   margin: 30px auto 0 auto;
   padding-bottom: 25px;
 
+  border-bottom: 1px solid rgba(58, 58, 58, 0.6);
+
   img {
     height: 30px;
     width: 40px;
     padding-right: 10px;
   }
   .left-side {
+    padding-top: 2px;
     box-sizing: border-box;
     flex-basis: 25%;
     #name {
@@ -112,12 +115,15 @@ const List = styled.div`
       white-space: pre-wrap;
       margin-right: 1rem;
     }
+
+    #rating {
+      padding-bottom: 30px;
+    }
   }
 
   .right-side {
     box-sizing: border-box;
     flex-basis: 5%;
-    margin: auto;
     button {
       text-decoration: none;
       font-weight: 600;

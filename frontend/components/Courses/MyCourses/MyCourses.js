@@ -2,7 +2,8 @@ import gql from "graphql-tag";
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import ItemList from "../../styles/ItemList";
-import CourseItem from "./CourseItem";
+import CourseItemInstructor from "./CourseItemInstructor";
+import styled from "styled-components";
 
 const CURRENT_COURSES_QUERY = gql`
   query CURRENT_COURSES_QUERY {
@@ -31,7 +32,20 @@ const CURRENT_COURSES_QUERY = gql`
     }
   }
 `;
-
+const AddButon = styled.div`
+  padding-bottom: 25px;
+  button {
+    border: none !important;
+    background: none;
+    float: left;
+  }
+  button:focus {
+    outline: none;
+  }
+  input:focus {
+    outline: none;
+  }
+`;
 class MyCourses extends Component {
   render() {
     return (
@@ -43,9 +57,25 @@ class MyCourses extends Component {
           if (data.coursesUser) {
             return (
               <>
+                <AddButon>
+                  <button
+                    id="2"
+                    onClick={() => {
+                      this.props.changeView(2);
+                    }}
+                  >
+                    <input
+                      type="image"
+                      src="../../../static/addButton.png"
+                      alt="Submit"
+                      width="48"
+                      height="48"
+                    />
+                  </button>
+                </AddButon>
                 <ItemList>
                   {data.coursesUser.map(course => (
-                    <CourseItem course={course} key={course.id} update={true} />
+                    <CourseItemInstructor course={course} key={course.id} />
                   ))}
                 </ItemList>
               </>

@@ -13,7 +13,7 @@ const theme = {
   lightGrey: "#99aab5",
   maxWidth: "1700px",
   red: "#d9534f",
-  white: "#ffffff",
+  white: "#ffffff"
 };
 
 const StyledPage = styled.div`

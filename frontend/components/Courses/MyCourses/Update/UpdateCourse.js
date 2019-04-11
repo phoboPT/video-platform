@@ -126,7 +126,7 @@ export class UpdateCourse extends Component {
     return (
       <>
         <Link href="/courses">
-          <a>&lt;- Go Back</a>
+          <a>⬅ Go Back</a>
         </Link>
         <Marcador>
           <button id="1" onClick={this.changeView}>
