@@ -54,8 +54,12 @@ export class Video extends Component {
                 </UpdateComment>
               ) : (
                 <>
-                  <span id="comment">{comments.comment}</span>
-                  <Rating readOnly={true} initialValue={this.state.rating} />
+                  <div id="rating">
+                    <Rating readOnly={true} initialValue={this.state.rating} />
+                  </div>
+                  <div id="updateComment">
+                    <span id="comment">{comments.comment}</span>
+                  </div>
                 </>
               )}
             </div>

@@ -1,4 +1,3 @@
-import "@atlaskit/css-reset";
 import React, { Component } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import ReactDOM from "react-dom";
@@ -39,15 +38,15 @@ class Index extends Component {
 
     const newColumn = {
       ...column,
-      taskIds: newTaskIds,
+      taskIds: newTaskIds
     };
 
     const newState = {
       ...this.state,
       columns: {
         ...this.state.columns,
-        [newColumn.id]: newColumn,
-      },
+        [newColumn.id]: newColumn
+      }
     };
 
     this.setState(newState);
@@ -60,7 +59,7 @@ class Index extends Component {
           {this.state.columnOrder.map(columnId => {
             const column = this.state.columns[columnId];
             const tasks = column.taskIds.map(
-              taskId => this.state.tasks[taskId],
+              taskId => this.state.tasks[taskId]
             );
 
             return <Column column={column} key={column.id} tasks={tasks} />;

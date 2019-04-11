@@ -126,7 +126,7 @@ export class UpdateCourse extends Component {
     return (
       <>
         <Link href="/courses">
-          <a>&lt;- Go Back</a>
+          <a>⬅ Go Back</a>
         </Link>
         <Marcador>
           <button id="1" onClick={this.changeView}>
@@ -137,8 +137,8 @@ export class UpdateCourse extends Component {
           </button>
         </Marcador>
         <CourseContainer>
-          {/* {this.state.view === 1 && <Update id={this.props.id} />}
-          {this.state.view === 2 && <Media />} */}
+          {this.state.view === 1 && <Update id={this.props.id} />}
+          {this.state.view === 2 && <Media />}
         </CourseContainer>
       </>
     );

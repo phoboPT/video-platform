@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import CommentItem from "./CommentItem";
 import styled from "styled-components";
+import { Container } from "../../../styles/Home";
 
 const ALL_COMMENTS_QUERY = gql`
   query ALL_COMMENTS_QUERY($id: ID!) {
@@ -20,6 +21,14 @@ const ALL_COMMENTS_QUERY = gql`
       createdAt
     }
   }
+`;
+const Title = styled.div`
+  max-width: 1000px;
+  margin: 30px auto 0 auto;
+  font-size: 24px;
+  padding-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(58, 58, 58, 0.6);
 `;
 
 const Button = styled.div`
@@ -74,6 +83,9 @@ export class ListComments extends Component {
           if (!data.rateCourseList) return <p>No Avaliations</p>;
           return (
             <>
+              <Title>
+                <p>Reviews</p>
+              </Title>
               {data.rateCourseList.map(comments => (
                 <CommentItem
                   comments={comments}

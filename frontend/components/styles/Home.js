@@ -1,10 +1,10 @@
 import styled, { css, keyframes } from "styled-components";
 
 const Title = styled.p`
-  margin-top: 6rem;
   margin-left: 30px;
   color: #505763;
   border-bottom: 2px solid #ccc;
+  margin-top: 10rem;
   font-size: 20px;
   font-weight: 500;
   word-spacing: 0px;
@@ -48,7 +48,6 @@ const CoursesList = styled.div`
 `;
 
 const Container = styled.div`
-  margin-block-end: 14rem;
   .animation {
     ${animationReady}
   }

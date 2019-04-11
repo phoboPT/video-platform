@@ -61,8 +61,8 @@ class Courses extends Component {
     this.setState({ courseId: e.data.createCourse.id, view: 3 });
   };
 
-  changeView = e => {
-    this.setState({ view: parseInt(e.target.id) });
+  changeView = id => {
+    this.setState({ view: id });
   };
 
   render() {
@@ -78,18 +78,20 @@ class Courses extends Component {
                     <section id="main" className="top-bar">
                       <h2>My Courses</h2>
 
-                      {/* <button id="2" onClick={this.changeView}>
-                        Create Course
-                      </button>
-
-                      <button id="4" onClick={this.changeView}>
+                      {/* <button id="4" onClick={this.changeView}>
                         Upload Video
                       </button> */}
                     </section>
+
                     <aside id="sidebar" className="main-bar">
-                      {this.state.view === 1 && <MyCourses />}
+                      {this.state.view === 1 && (
+                        <MyCourses changeView={this.changeView} />
+                      )}
                       {this.state.view === 2 && (
-                        <FormCourse saveToState={this.saveToState} />
+                        <FormCourse
+                          changeView={this.changeView}
+                          saveToState={this.saveToState}
+                        />
                       )}
                       {this.state.view === 3 && (
                         <CreateCourse courseId={this.state.courseId} />

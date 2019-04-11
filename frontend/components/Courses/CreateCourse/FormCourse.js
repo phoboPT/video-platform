@@ -11,6 +11,7 @@ import Form from "../../styles/Form";
 import Published from "../CourseState/Published";
 import Unpublished from "../CourseState/Unpublished";
 import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
+import Link from "next/link";
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -93,6 +94,21 @@ const Container = styled.div`
     }
   }
 `;
+const Back = styled.div`
+  float: left;
+  text-align: center;
+  a {
+    font-size: 19px;
+  }
+  button {
+    border: none;
+    background: none;
+    &:hover {
+      outline: none;
+    }
+    cursor: pointer;
+  }
+`;
 
 class FormCourse extends Component {
   state = {
@@ -163,131 +179,138 @@ class FormCourse extends Component {
 
   render() {
     return (
-      <Container>
-        <Query query={ALL_CATEGORIES_QUERY}>
-          {({ data, loading }) => {
-            if (loading) return <p>Loading</p>;
+      <>
+        <Back>
+          <button onClick={() => this.props.changeView(1)}>
+            <a>⬅ Go Back</a>
+          </button>
+        </Back>
+        <Container>
+          <Query query={ALL_CATEGORIES_QUERY}>
+            {({ data, loading }) => {
+              if (loading) return <p>Loading</p>;
 
-            return (
-              <Mutation
-                mutation={CREATE_COURSE_MUTATION}
-                refetchQueries={[{ query: CURRENT_COURSES_QUERY }]}
-                variables={this.state}
-              >
-                {(createCourse, { error, loading }) => (
-                  <>
-                    <Form
-                      id="3"
-                      method="post"
-                      onSubmit={async e => {
-                        e.preventDefault();
-                        const res = await createCourse();
-                        this.props.saveToState(res);
-                      }}
-                    >
-                      <Error error={error} />
-                      <fieldset disabled={loading} aria-busy={loading}>
-                        <h2>Information</h2>
-                        <label htmlFor="Title">
-                          Title
-                          <input
-                            type="text"
-                            name="title"
-                            placeholder="Awsome "
-                            value={this.title}
-                            onChange={this.saveState}
-                            required
-                          />
-                        </label>
+              return (
+                <Mutation
+                  mutation={CREATE_COURSE_MUTATION}
+                  refetchQueries={[{ query: CURRENT_COURSES_QUERY }]}
+                  variables={this.state}
+                >
+                  {(createCourse, { error, loading }) => (
+                    <>
+                      <Form
+                        id="3"
+                        method="post"
+                        onSubmit={async e => {
+                          e.preventDefault();
+                          const res = await createCourse();
+                          this.props.saveToState(res);
+                        }}
+                      >
+                        <Error error={error} />
+                        <fieldset disabled={loading} aria-busy={loading}>
+                          <h2>Information</h2>
+                          <label htmlFor="Title">
+                            Title
+                            <input
+                              type="text"
+                              name="title"
+                              placeholder="Awsome "
+                              value={this.title}
+                              onChange={this.saveState}
+                              required
+                            />
+                          </label>
 
-                        <label htmlFor="description">
-                          Description
-                          <div className="description">
-                            <Editor
-                              data={this.state.description}
-                              changeQuill={this.changeQuill}
+                          <label htmlFor="description">
+                            Description
+                            <div className="description">
+                              <Editor
+                                data={this.state.description}
+                                changeQuill={this.changeQuill}
+                              />
+                              {/* <ReactQuill onChange={this.changeQuill} /> */}
+                            </div>
+                          </label>
+                          <label htmlFor="state">
+                            Course Status
+                            <div id="courseState">
+                              <Published
+                                published={this.state.published}
+                                changePublished={this.changePublished}
+                              />
+                              <Unpublished
+                                unpublished={this.state.unpublished}
+                                changeUnpublished={this.changeUnpublished}
+                              />
+                            </div>
+                          </label>
+                          <label htmlFor="thumbnail">
+                            Thumbnail
+                            <span> *20 mb max</span>
+                            <input
+                              type="file"
+                              name="thumbnail"
+                              placeholder="Upload an Image"
+                              onChange={this.uploadThumbnail}
+                              required
                             />
-                            {/* <ReactQuill onChange={this.changeQuill} /> */}
-                          </div>
-                        </label>
-                        <label htmlFor="state">
-                          Course Status
-                          <div id="courseState">
-                            <Published
-                              published={this.state.published}
-                              changePublished={this.changePublished}
+                          </label>
+                          {this.state.thumbnail && (
+                            <img
+                              src={this.state.thumbnail}
+                              alt="Upload Preview"
+                              width="200"
                             />
-                            <Unpublished
-                              unpublished={this.state.unpublished}
-                              changeUnpublished={this.changeUnpublished}
+                          )}
+                          <label htmlFor="price">
+                            Price
+                            <input
+                              type="number"
+                              min="0"
+                              step="any"
+                              name="price"
+                              placeholder="00.00"
+                              value={this.price}
+                              onChange={this.saveState}
+                              required
                             />
-                          </div>
-                        </label>
-                        <label htmlFor="thumbnail">
-                          Thumbnail
-                          <span> *20 mb max</span>
-                          <input
-                            type="file"
-                            name="thumbnail"
-                            placeholder="Upload an Image"
-                            onChange={this.uploadThumbnail}
-                            required
-                          />
-                        </label>
-                        {this.state.thumbnail && (
-                          <img
-                            src={this.state.thumbnail}
-                            alt="Upload Preview"
-                            width="200"
-                          />
-                        )}
-                        <label htmlFor="price">
-                          Price
-                          <input
-                            type="number"
-                            min="0"
-                            step="any"
-                            name="price"
-                            placeholder="00.00"
-                            value={this.price}
-                            onChange={this.saveState}
-                            required
-                          />
-                        </label>
-                        <label htmlFor="category">Category</label>
-                        {this.state.category === "" ? (
-                          this.setState({ category: data.categories[0].id })
-                        ) : (
-                          <></>
-                        )}
-                        <select
-                          id="dropdownlist"
-                          onChange={this.handleChange}
-                          name="category"
-                        >
-                          {data.categories.map(category => (
-                            <option key={category.id} value={category.id}>
-                              {category.name}
-                            </option>
-                          ))}
-                        </select>
-                        <br />
-                        <br />
-                        <button
-                          disabled={this.state.isDisabled}
-                          className="button-next"
-                        >
-                          Next
-                        </button>
-                      </fieldset>
-                    </Form>
-                  </>
-                )}
-              </Mutation>
-            );
-          }}
-        </Query>
-      </Container>
+                          </label>
+                          <label htmlFor="category">Category</label>
+                          {this.state.category === "" ? (
+                            this.setState({ category: data.categories[0].id })
+                          ) : (
+                            <></>
+                          )}
+                          <select
+                            id="dropdownlist"
+                            onChange={this.handleChange}
+                            name="category"
+                          >
+                            {data.categories.map(category => (
+                              <option key={category.id} value={category.id}>
+                                {category.name}
+                              </option>
+                            ))}
+                          </select>
+                          <br />
+                          <br />
+                          <button
+                            disabled={this.state.isDisabled}
+                            className="button-next"
+                          >
+                            Next
+                          </button>
+                        </fieldset>
+                      </Form>
+                    </>
+                  )}
+                </Mutation>
+              );
+            }}
+          </Query>
+        </Container>
+      </>
     );
   }
 }
