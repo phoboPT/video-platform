@@ -1,10 +1,11 @@
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import styled from "styled-components";
-import formatDate from "../../../lib/formatDate";
-import formatString from "../../../lib/formatString";
-import ItemStyles from "../../styles/ItemStyles";
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { formatDistance } from 'date-fns';
+import formatDate from '../../../lib/formatDate';
+import formatString from '../../../lib/formatString';
+import ItemStyles from '../../styles/ItemStyles';
 
 const Div = styled.div`
   padding: none;
@@ -51,21 +52,21 @@ const Div = styled.div`
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  padding: "0 0,5rem"
+  padding: '0 0,5rem',
 }));
 
 class CourseItemInstructor extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
-    
   };
+
   render() {
     const { course } = this.props;
 
     return (
       <ItemStyles>
         <Div>
-          <img src={course.thumbnail} />
+          <img alt={course.title} src={course.thumbnail} />
 
           <br />
           <span>
@@ -79,7 +80,7 @@ class CourseItemInstructor extends Component {
           <span>
             State:
             <State
-              background={course.state === "Published" ? "green" : "red"}
+              background={course.state === 'Published' ? 'green' : 'red'}
               color="white"
               id="state"
             >
@@ -89,7 +90,10 @@ class CourseItemInstructor extends Component {
 
           <span>
             Created at:
-            <State id="createdAt">{formatDate(course.createdAt)}</State>
+            <State id="createdAt">
+              {' '}
+              {formatDistance(new Date(course.createdAt), new Date())}
+            </State>
           </span>
 
           <span>
@@ -99,25 +103,25 @@ class CourseItemInstructor extends Component {
             <div id="preview">
               <Link
                 href={{
-                  pathname: "/course",
-                  query: { id: course.id }
+                  pathname: '/course',
+                  query: { id: course.id },
                 }}
               >
-                <img src="../../../static/previewIcon.png" />
+                <img alt={course.title} src="../../../static/previewIcon.png" />
               </Link>
             </div>
             <div id="edit">
               <Link
                 href={{
-                  pathname: "/updateCourse",
-                  query: { id: course.id }
+                  pathname: '/updateCourse',
+                  query: { id: course.id },
                 }}
               >
-                <img src="../../../static/editIcon.png" />
+                <img alt={course.title} src="../../../static/editIcon.png" />
               </Link>
             </div>
             <div id="delete">
-              <img src="../../../static/deleteIcon.png" />
+              <img alt={course.title} src="../../../static/deleteIcon.png" />
             </div>
           </div>
         </Div>

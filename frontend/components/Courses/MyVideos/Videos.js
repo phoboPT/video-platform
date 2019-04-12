@@ -1,12 +1,13 @@
-import React, { Component } from "react";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
-import VideoItem from "./VideoItem";
-import styled from "styled-components";
-import { perPage } from "../../../config";
-import Pagination from "./Pagination";
-import Search from "./SearchVideosUser";
-import ItemList from "../../styles/ItemList";
+import React, { Component } from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import styled from 'styled-components';
+import VideoItem from './VideoItem';
+import { perPage } from '../../../config';
+import Pagination from './Pagination';
+import Search from './SearchVideosUser';
+import ItemList from '../../styles/ItemList';
+
 const ALL_VIDEOS_USER = gql`
   query ALL_VIDEOS_USER ($skip: Int =0,$first:Int=${perPage}){
       videosUser(first:$first,skip:$skip,orderBy:createdAt_DESC)  {
@@ -29,7 +30,7 @@ class Videos extends Component {
         <Query
           query={ALL_VIDEOS_USER}
           variables={{
-            skip: this.props.page * perPage - perPage
+            skip: this.props.page * perPage - perPage,
           }}
         >
           {({ data, error, loading }) => {

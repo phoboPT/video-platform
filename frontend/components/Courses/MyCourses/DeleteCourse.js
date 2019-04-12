@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
 const DELETE_COMMENT_MUTATION = gql`
   mutation DELETE_COMMENT_MUTATION($id: ID!) {
@@ -30,30 +30,32 @@ export class DeleteComment extends Component {
   //     });
   //   };
   render() {
-    console.log(this.props.data.course.id);
+    const { data, children } = this.props;
     return (
       <Mutation
         mutation={DELETE_COMMENT_MUTATION}
-        variables={{ id: this.props.data.id }}
+        variables={{ id: data.id }}
         // update={this.update}
         optimisticResponse={{
-          __typename: "Mutation",
+          __typename: 'Mutation',
           deleteRateCourse: {
-            __typename: "RateCourse",
-            id: this.props.data.id
-          }
+            __typename: 'RateCourse',
+            id: data.id,
+          },
         }}
         refetchQueries={[]}
       >
         {(deleteRateCourse, { error }) => (
           <button
+            type="button"
             onClick={() => {
-              if (confirm("Are you sure you want to delete your comment?")) {
+              // eslint-disable-next-line no-restricted-globals
+              if (confirm('Are you sure you want to delete your comment?')) {
                 deleteRateCourse();
               }
             }}
           >
-            {this.props.children}
+            {children}
           </button>
         )}
       </Mutation>

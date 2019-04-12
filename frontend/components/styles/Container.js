@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+
 const Container = styled.div`
   margin: auto;
   label {
@@ -17,7 +18,7 @@ const Container = styled.div`
     width: 60%;
   }
   button,
-  input[type="submit"] {
+  input[type='submit'] {
     width: auto;
     background: red;
     color: white;

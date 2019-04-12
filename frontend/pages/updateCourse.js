@@ -1,4 +1,4 @@
-import UpdateCourse from "../components/Courses/MyCourses/Update/UpdateCourse";
+import UpdateCourse from '../components/Courses/MyCourses/Update/UpdateCourse';
 
 const Update = ({ query }) => (
   <div>

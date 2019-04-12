@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 const DropDown = styled.div`
   position: relative;
@@ -15,14 +15,14 @@ const DropDownItem = styled.div`
   position: relative;
   cursor: pointer;
   border-bottom: 1px solid ${props => props.theme.lightgrey};
-  background: ${props => (props.highlighted ? "#f7f7f7" : "white")};
+  background: ${props => (props.highlighted ? '#f7f7f7' : 'white')};
   padding: 1rem;
   transition: all 0.2s;
   z-index: 2;
-  ${props => (props.highlighted ? "padding-left: 2rem;" : null)};
+  ${props => (props.highlighted ? 'padding-left: 2rem;' : null)};
   align-items: center;
   border-left: 10px solid
-    ${props => (props.highlighted ? props.theme.lightgrey : "white")};
+    ${props => (props.highlighted ? props.theme.lightgrey : 'white')};
   img {
     margin-right: 10px;
   }

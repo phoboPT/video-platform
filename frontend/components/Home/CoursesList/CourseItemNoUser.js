@@ -1,13 +1,13 @@
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import styled from "styled-components";
-import orderCourses from "../../../lib/orderCourses";
-import User from "../../Authentication/User";
-import ItemStyles from "../../styles/ItemStyles";
-import AddToCart from "../Cart/AddToCart";
-import Rating from "../CourseInfo/Comments/Rating";
-import WishButton from "../WishButton";
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import orderCourses from '../../../lib/orderCourses';
+import User from '../../Authentication/User';
+import ItemStyles from '../../styles/ItemStyles';
+import AddToCart from '../Cart/AddToCart';
+import Rating from '../CourseInfo/Comments/Rating';
+import WishButton from '../WishButton';
 
 const InfoStyle = styled.p`
   text-align: left;
@@ -18,6 +18,7 @@ export class CourseItem extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
   };
+
   state = {
     ...this.props.course.user,
     buttonToShow: 0,
@@ -31,7 +32,7 @@ export class CourseItem extends Component {
         <ItemStyles>
           <Link
             href={{
-              pathname: "/course",
+              pathname: '/course',
               query: { id: course.id },
             }}
           >
@@ -42,10 +43,10 @@ export class CourseItem extends Component {
           <InfoStyle className="price">{course.price} €</InfoStyle>
           <div className="rating">
             <Rating
-              readOnly={true}
+              readOnly
               initialValue={course.totalRate / course.totalComments}
               totalComments={course.totalComments}
-              showTotal={true}
+              showTotal
             />
           </div>
           <div className="buttonList">

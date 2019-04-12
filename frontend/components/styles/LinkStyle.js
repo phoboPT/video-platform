@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const LinkStyle = styled.div`
   background-color: ${props => props.theme.white};

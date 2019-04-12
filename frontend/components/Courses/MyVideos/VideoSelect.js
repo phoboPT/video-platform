@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const List = styled.div`
   margin: 0 3rem;
@@ -30,7 +30,7 @@ const List = styled.div`
   }
   .grid-container {
     display: grid;
-    grid-template-areas: "menu main main main main main main button ";
+    grid-template-areas: 'menu main main main main main main button ';
     grid-gap: 2px;
   }
 
@@ -48,8 +48,9 @@ const List = styled.div`
 
 class VideoSelect extends Component {
   static propTypes = {
-    video: PropTypes.object.isRequired
+    video: PropTypes.object.isRequired,
   };
+
   render() {
     const { video } = this.props;
     return (

@@ -1,7 +1,7 @@
-import App, { Container } from "next/app";
-import Page from "../components/Static/Page";
-import { ApolloProvider } from "react-apollo";
-import withData from "../lib/withData";
+import App, { Container } from 'next/app';
+import { ApolloProvider } from 'react-apollo';
+import Page from '../components/Static/Page';
+import withData from '../lib/withData';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -13,6 +13,7 @@ class MyApp extends App {
     pageProps.query = ctx.query;
     return { pageProps };
   }
+
   render() {
     const { Component, apollo, pageProps } = this.props;
 

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import Form from "../../styles/Form";
-import gql from "graphql-tag";
-import Error from "../../Static/ErrorMessage";
-import { Mutation, Query } from "react-apollo";
-import { CourseContainer } from "../MyCourses/Update/UpdateCourse";
-import VideoPlayer from "../../VideoManager/VideoPlayer";
+import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { Mutation, Query } from 'react-apollo';
+import Form from '../../styles/Form';
+import Error from '../../Static/ErrorMessage';
+import { CourseContainer } from '../MyCourses/Update/UpdateCourse';
+import VideoPlayer from '../../VideoManager/VideoPlayer';
 
 const SINGLE_VIDEO_QUERY = gql`
   query SINGLE_VIDEO_QUERY($id: ID!) {
@@ -34,7 +34,7 @@ const UPDATE_VIDEO_MUTATION = gql`
 class UpdateVideo extends Component {
   handleChange = e => {
     const { name, type, value } = e.target;
-    const val = type === "number" ? parseFloat(value) : value;
+    const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
   };
 
@@ -48,6 +48,7 @@ class UpdateVideo extends Component {
       },
     });
   };
+
   render() {
     return (
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id: this.props.id }}>
@@ -88,7 +89,7 @@ class UpdateVideo extends Component {
                         </label>
 
                         <button type="submit">
-                          Sav{loading ? "ing" : "e"} To Course
+                          Sav{loading ? 'ing' : 'e'} To Course
                         </button>
                       </fieldset>
                     </Form>

@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import Link from "next/link";
-import LinkStyle from "../styles/LinkStyle";
-import User from "../Authentication/User";
-import Information from "./Information";
-import FormUser from "./FormUser";
-import FormPassword from "./FormPassword";
-import Interest from "./Interests/Interest";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import Link from 'next/link';
+import LinkStyle from '../styles/LinkStyle';
+import User from '../Authentication/User';
+import Information from './Information';
+import FormUser from './FormUser';
+import FormPassword from './FormPassword';
+import Interest from './Interests/Interest';
 
 const Style = styled.div`
   button {
@@ -38,7 +38,7 @@ const Style = styled.div`
 
 class PersonalArea extends Component {
   state = {
-    view: 1
+    view: 1,
   };
 
   // This method will be sent to the child component
@@ -52,7 +52,7 @@ class PersonalArea extends Component {
       <User>
         {({ data: { me } }) => (
           <>
-            {me.permission[0] !== "Instructor" && (
+            {me.permission[0] !== 'Instructor' && (
               <LinkStyle>
                 <Style>
                   <section id="main">

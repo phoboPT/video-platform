@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ItemStyles from "../../styles/ItemStyles";
-import Title from "../../styles/Title";
-import Link from "next/link";
-import styled from "styled-components";
-import formatDate from "../../../lib/formatDate";
-import DeleteVideo from "./DeleteVideo";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import styled from 'styled-components';
+import ItemStyles from '../../styles/ItemStyles';
+import Title from '../../styles/Title';
+import formatDate from '../../../lib/formatDate';
+import DeleteVideo from './DeleteVideo';
 
 // Adapting based on props
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  "word-wrap": "wrap"
+  'word-wrap': 'wrap',
 }));
 
 const Div = styled.div`
@@ -32,7 +32,7 @@ const Div = styled.div`
 
 class Video extends Component {
   static propTypes = {
-    video: PropTypes.object.isRequired
+    video: PropTypes.object.isRequired,
   };
 
   render() {
@@ -42,8 +42,8 @@ class Video extends Component {
       <ItemStyles>
         <Link
           href={{
-            pathname: "/video",
-            query: { id: video.id }
+            pathname: '/video',
+            query: { id: video.id },
           }}
         >
           <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
@@ -55,7 +55,7 @@ class Video extends Component {
           <span>{video.title}</span>
           <span>
             <State
-              background={video.state === "Published" ? "green" : "red"}
+              background={video.state === 'Published' ? 'green' : 'red'}
               color="white"
             >
               {video.state}
@@ -64,7 +64,7 @@ class Video extends Component {
           <span>{formatDate(video.createdAt)}</span>
         </Div>
         <div className="buttonList">
-          <Link href={{ pathname: "updateVideo", query: { id: video.id } }}>
+          <Link href={{ pathname: 'updateVideo', query: { id: video.id } }}>
             <a>Edit </a>
           </Link>
 

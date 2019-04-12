@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Rating from "react-rating";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import Rating from 'react-rating';
+import styled from 'styled-components';
 
 const Container = styled.div`
   grid: flex;
@@ -30,8 +30,9 @@ const Container = styled.div`
 
 class RatingPage extends Component {
   state = {
-    value: 0
+    value: 0,
   };
+
   change = e => {
     this.setState({ value: e });
     this.props.getRating(e);
@@ -57,7 +58,7 @@ class RatingPage extends Component {
           />
         </div>
         <div className="rigth">
-          <strong>{Math.round(this.state.value * 10) / 10}</strong>{" "}
+          <strong>{Math.round(this.state.value * 10) / 10}</strong>{' '}
           {this.props.showTotal && this.props.totalComments}
         </div>
       </Container>

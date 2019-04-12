@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Markdown from "react-markdown";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import Markdown from 'react-markdown';
+import styled from 'styled-components';
 
 const Container = styled.div`
   width: 1000px;

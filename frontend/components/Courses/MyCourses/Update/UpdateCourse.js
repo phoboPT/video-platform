@@ -1,8 +1,8 @@
-import Link from "next/link";
-import React, { Component } from "react";
-import styled, { keyframes } from "styled-components";
-import Media from "../../Media";
-import Update from "../Update/Update";
+import Link from 'next/link';
+import React, { Component } from 'react';
+import styled, { keyframes } from 'styled-components';
+import Media from '../../Media';
+import Update from './Update';
 
 const CourseContainer = styled.div`
   color: black;

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const MenuDots = styled.ul`
   ul {
@@ -131,7 +131,7 @@ const List = styled.div`
       color: #2c2f33 !important;
       padding: 0;
       line-height: 1;
-      font-family: "radnika_next";
+      font-family: 'radnika_next';
       border: none;
       background: none;
       cursor: pointer;

@@ -1,11 +1,11 @@
-import Link from "next/link";
-import NavStyle from "../styles/NavStyle";
-import styled from "styled-components";
-import User from "../Authentication/User";
-import Signout from "../Authentication/Signout";
-import { Mutation } from "react-apollo";
-import { TOGGLE_CART_MUTATION } from "../Home/Cart/Cart";
-import CartCount from "../Home/Cart/CartCount";
+import Link from 'next/link';
+import styled from 'styled-components';
+import { Mutation } from 'react-apollo';
+import NavStyle from '../styles/NavStyle';
+import User from '../Authentication/User';
+import Signout from '../Authentication/Signout';
+import { TOGGLE_CART_MUTATION } from '../Home/Cart/Cart';
+import CartCount from '../Home/Cart/CartCount';
 
 const Nav = () => (
   <User>

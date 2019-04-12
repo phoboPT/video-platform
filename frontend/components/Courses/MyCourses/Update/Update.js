@@ -1,12 +1,12 @@
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Mutation, Query } from "react-apollo";
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Mutation, Query } from 'react-apollo';
 // import ReactQuill from "react-quill"; // ES6
-import styled, { keyframes } from "styled-components";
-import Error from "../../../Static/ErrorMessage";
-import Published from "../../CourseState/Published";
-import Unpublished from "../../CourseState/Unpublished";
-import Editor from "../../Editor";
+import styled, { keyframes } from 'styled-components';
+import Error from '../../../Static/ErrorMessage';
+import Published from '../../CourseState/Published';
+import Unpublished from '../../CourseState/Unpublished';
+import Editor from '../../Editor';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -84,7 +84,7 @@ const Form = styled.div`
     }
   }
   button,
-  input[type="submit"] {
+  input[type='submit'] {
     width: auto;
     background: red;
     color: white;
@@ -102,7 +102,7 @@ const Form = styled.div`
       opacity: 0.5;
     }
 
-    &[aria-busy="true"]::before {
+    &[aria-busy='true']::before {
       background-size: 50% auto;
       animation: ${loading} 0.5s linear infinite;
     }
@@ -117,39 +117,39 @@ class Update extends Component {
   state = {
     alreadyExecuted: false,
     changeThumbnail: false,
-    published: "",
-    state: "",
-    unpublished: ""
+    published: '',
+    state: '',
+    unpublished: '',
   };
 
   changePublished = e => {
     this.setState({
       published: !this.state.published,
-      state: "PUBLISHED",
-      unpublished: !this.state.unpublished
+      state: 'PUBLISHED',
+      unpublished: !this.state.unpublished,
     });
   };
 
   changeUnpublished = e => {
     this.setState({
       published: !this.state.published,
-      state: "UNPUBLISHED",
-      unpublished: !this.state.unpublished
+      state: 'UNPUBLISHED',
+      unpublished: !this.state.unpublished,
     });
   };
 
   courseState = actualState => {
     this.setState({
       alreadyExecuted: true,
-      published: actualState === "PUBLISHED" ? true : false,
+      published: actualState === 'PUBLISHED',
       state: actualState,
-      unpublished: actualState === "UNPUBLISHED" ? true : false
+      unpublished: actualState === 'UNPUBLISHED',
     });
   };
 
   handleChange = e => {
     const { name, type, value } = e.target;
-    const val = type === "number" ? parseFloat(value) : value;
+    const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
   };
 
@@ -159,28 +159,30 @@ class Update extends Component {
     const res = await updateCourseMutation({
       variables: {
         id: this.props.id,
-        ...this.state
-      }
+        ...this.state,
+      },
     });
   };
+
   changeQuill = e => {
     this.setState({ description: e });
   };
 
   uploadThumbnail = async e => {
-    const files = e.target.files;
+    const { files } = e.target;
     const data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "thumbnail");
+    data.append('file', files[0]);
+    data.append('upload_preset', 'thumbnail');
 
     const res = await fetch(
-      "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data }
+      'https://api.cloudinary.com/v1_1/deky2cxlm/image/upload',
+      { method: 'POST', body: data }
     );
 
     const file = await res.json();
     this.setState({ changeThumbnail: true, thumbnail: file.secure_url });
   };
+
   render() {
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id: this.props.id }}>
@@ -237,11 +239,11 @@ class Update extends Component {
                           onSubmit={e => this.updateCourse(e, updateCourse)}
                         >
                           <button
-                            id={loading ? "submitLoading" : "submit"}
+                            id={loading ? 'submitLoading' : 'submit'}
                             type="submit"
                             disabled={loading}
                           >
-                            {loading ? "Saving..." : "Save Changes"}
+                            {loading ? 'Saving...' : 'Save Changes'}
                           </button>
                         </form>
                         <label htmlFor="state">

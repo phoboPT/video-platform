@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import User from "../Authentication/User";
-import LinkStyle from "../styles/LinkStyle";
-import CreateCourse from "./CreateCourse/CreateCourse";
-import FormCourse from "./CreateCourse/FormCourse";
-import MyCourses from "./MyCourses/MyCourses";
-import UserCourses from "./MyCourses/UserCourses";
-import CreateVideo from "./UploadVideo/CreateVideo";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import User from '../Authentication/User';
+import LinkStyle from '../styles/LinkStyle';
+import CreateCourse from './CreateCourse/CreateCourse';
+import FormCourse from './CreateCourse/FormCourse';
+import MyCourses from './MyCourses/MyCourses';
+import UserCourses from './MyCourses/UserCourses';
+import CreateVideo from './UploadVideo/CreateVideo';
 
 const Button = styled.button`
   width: auto !important;
@@ -53,7 +53,7 @@ const Style = styled.div`
 
 class Courses extends Component {
   state = {
-    view: 1
+    view: 1,
   };
 
   // This method will be sent to the child component
@@ -72,7 +72,7 @@ class Courses extends Component {
           if (!me) return <p>No Courses</p>;
           return (
             <>
-              {me.permission[0] === "INSTRUTOR" && (
+              {me.permission[0] === 'INSTRUTOR' && (
                 <Style>
                   <div className="container">
                     <section id="main" className="top-bar">
@@ -101,7 +101,7 @@ class Courses extends Component {
                   </div>
                 </Style>
               )}
-              {me.permission[0] === "USER" && (
+              {me.permission[0] === 'USER' && (
                 <LinkStyle>
                   <div className="grid-container">
                     <div className="left">

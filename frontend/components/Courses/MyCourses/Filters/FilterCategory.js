@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import User from "../../../Authentication/User";
-import styled from "styled-components";
-import reduceData from "../../../../lib/reduceData";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import User from '../../../Authentication/User';
+import reduceData from '../../../../lib/reduceData';
 
 const Style = styled.div`
   margin-left: 5rem;
@@ -21,9 +21,9 @@ const Style = styled.div`
   }
 `;
 
-export class FilterCategory extends Component {
+class FilterCategory extends Component {
   state = {
-    categoryId: this.props.state
+    categoryId: this.props.state,
   };
 
   handleChange = e => {
@@ -38,10 +38,8 @@ export class FilterCategory extends Component {
           if (!me) {
             return null;
           }
-          //filtering results to remove categorys with the same id
-          const courses = me.courses.map(course => {
-            return course.course.category;
-          });
+          // filtering results to remove categorys with the same id
+          const courses = me.courses.map(course => course.course.category);
           const resFinal = reduceData(courses);
           return (
             <Style>

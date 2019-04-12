@@ -1,13 +1,12 @@
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import styled from "styled-components";
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
-  All_COURSES_RATING
-} from "./CoursesList/ListAllCourses";
+  ALL_COURSES_RATING,
+} from './CoursesList/ListAllCourses';
 
 const ADD_FREE_COURSE_MUTATION = gql`
   mutation ADD_FREE_COUSE_MUTATION($id: ID!) {
@@ -17,7 +16,7 @@ const ADD_FREE_COURSE_MUTATION = gql`
   }
 `;
 
-export class AddToWish extends Component {
+class BuyFreeButton extends Component {
   render() {
     const { id } = this.props;
     return (
@@ -26,40 +25,39 @@ export class AddToWish extends Component {
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
-            variables: { published: "PUBLISHED", skip: this.props.skip }
+            variables: { published: 'PUBLISHED', skip: this.props.skip },
           },
 
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: "PUBLISHED", skip: this.props.skip }
+            variables: { published: 'PUBLISHED', skip: this.props.skip },
           },
           {
             query: ALL_COURSE_INTERESTS,
-            variables: { published: "PUBLISHED", skip: this.props.skip }
+            variables: { published: 'PUBLISHED', skip: this.props.skip },
           },
           {
-            query: All_COURSES_RATING,
-            variables: { published: "PUBLISHED", skip: this.props.skip }
-          }
+            query: ALL_COURSES_RATING,
+            variables: { published: 'PUBLISHED', skip: this.props.skip },
+          },
         ]}
         variables={{
-          id
+          id,
         }}
       >
-        {(buyCourseFree, { loading }) => {
-          return (
-            <button
-              disabled={loading}
-              id="search-button"
-              onClick={buyCourseFree}
-            >
-              Add To Your Courses
-            </button>
-          );
-        }}
+        {(buyCourseFree, { loading }) => (
+          <button
+            type="button"
+            disabled={loading}
+            id="search-button"
+            onClick={buyCourseFree}
+          >
+            Add To Your Courses
+          </button>
+        )}
       </Mutation>
     );
   }
 }
 
-export default AddToWish;
+export default BuyFreeButton;

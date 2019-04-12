@@ -8,7 +8,8 @@
     "test": "jest",
     "deploy": "prisma deploy  --env-file variables.env",
     "reset": "prisma reset --force --env-file variables.env",
-    "seed": "prisma seed --env-file variables.env"
+    "seed": "prisma seed --env-file variables.env",
+    "lint": "eslint --fix ./"
   },
   "dependencies": {
     "ajv": "^6.10.0",
@@ -16,6 +17,7 @@
     "bcryptjs": "2.4.3",
     "cookie-parser": "^1.4.4",
     "dotenv": "6.0.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "graphql": "^14.2.1",
     "graphql-cli": "^3.0.11",
     "graphql-yoga": "^1.17.4",
@@ -35,5 +37,19 @@
     "presets": [
       "env"
     ]
+  },
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-config-wesbos": "0.0.19",
+    "eslint-plugin-html": "^5.0.3",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^1.6.0",
+    "prettier": "^1.16.4"
   }
 }

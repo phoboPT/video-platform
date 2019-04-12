@@ -1,4 +1,4 @@
-import Interests from "../components/Authentication/Interests";
+import Interests from '../components/Authentication/Interests';
 
 const ChooseInterest = props => (
   <div>

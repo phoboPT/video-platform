@@ -1,16 +1,16 @@
-import gql from "graphql-tag";
-import Link from "next/link";
-import React, { Component } from "react";
-import { adopt } from "react-adopt";
-import { Mutation, Query } from "react-apollo";
-import calcTotalPrice from "../../../lib/calcTotalPrice";
-import formatMoney from "../../../lib/formatMoney";
-import User from "../../Authentication/User";
-import CartStyles from "../../styles/CartStyles";
-import CloseButton from "../../styles/CloseButton";
-import SickButton from "../../styles/SickButton";
-import Supreme from "../../styles/Supreme";
-import CartItem from "./CartItem";
+import gql from 'graphql-tag';
+import Link from 'next/link';
+import React, { Component } from 'react';
+import { adopt } from 'react-adopt';
+import { Mutation, Query } from 'react-apollo';
+import calcTotalPrice from '../../../lib/calcTotalPrice';
+import formatMoney from '../../../lib/formatMoney';
+import User from '../../Authentication/User';
+import CartStyles from '../../styles/CartStyles';
+import CloseButton from '../../styles/CloseButton';
+import SickButton from '../../styles/SickButton';
+import Supreme from '../../styles/Supreme';
+import CartItem from './CartItem';
 
 const LOCAL_STATE_QUERY = gql`
   query {
@@ -33,7 +33,7 @@ const Composed = adopt({
 const Cart = () => (
   <Composed>
     {({ localState, toggleCart, user }) => {
-      const me = user.data.me;
+      const { me } = user.data;
       if (!me) return null;
       return (
         <Query query={LOCAL_STATE_QUERY}>
@@ -46,7 +46,7 @@ const Cart = () => (
                 <Supreme>{me.name}'s Cart</Supreme>
                 <p>
                   You Have {me.cart.length} Item
-                  {me.cart.length === 1 ? "" : "s"} in your cart.
+                  {me.cart.length === 1 ? '' : 's'} in your cart.
                 </p>
               </header>
               <ul>

@@ -1,9 +1,9 @@
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Query } from "react-apollo";
-import ItemList from "../../styles/ItemList";
-import CourseItemInstructor from "./CourseItemInstructor";
-import styled from "styled-components";
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Query } from 'react-apollo';
+import styled from 'styled-components';
+import ItemList from '../../styles/ItemList';
+import CourseItemInstructor from './CourseItemInstructor';
 
 const CURRENT_COURSES_QUERY = gql`
   query CURRENT_COURSES_QUERY {
@@ -48,6 +48,7 @@ const AddButon = styled.div`
 `;
 class MyCourses extends Component {
   render() {
+    const { changeView } = this.props;
     return (
       <Query query={CURRENT_COURSES_QUERY}>
         {({ data, error, loading }) => {
@@ -59,9 +60,10 @@ class MyCourses extends Component {
               <>
                 <AddButon>
                   <button
+                    type="button"
                     id="2"
                     onClick={() => {
-                      this.props.changeView(2);
+                      changeView(2);
                     }}
                   >
                     <input

@@ -1,12 +1,9 @@
-import React from "react";
-import PaginationStyles from "../../styles/PaginationStyles";
-import gql from "graphql-tag";
-import { Query, graphql, compose } from "react-apollo";
-import { perPageCourse } from "../../../config";
-import {
-  ALL_COURSES_QUERY,
-  ALL_COURSES_ORDERED
-} from "../CoursesList/ListAllCourses";
+import React from 'react';
+import gql from 'graphql-tag';
+import { Query, graphql, compose } from 'react-apollo';
+import PaginationStyles from '../../styles/PaginationStyles';
+import { perPageCourse } from '../../../config';
+import { ALL_COURSES_QUERY, ALL_COURSES_ORDERED } from './ListAllCourses';
 
 const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY {
@@ -23,25 +20,25 @@ const Pagination = props => (
     {({ data, loading, error, client }) => {
       if (loading) return null;
       if (error) return <p>Error...</p>;
-      const count = data.coursesConnection.aggregate.count;
+      const { count } = data.coursesConnection.aggregate;
 
       const pages = Math.ceil(
         (props.isInterest ? props.count : count) / perPageCourse
       );
-      const page = props.page;
+      const { page } = props;
 
       const fetchNext = () => {
         client.query({
           query: ALL_COURSES_QUERY,
           variables: {
-            skip: (page + 1) * perPageCourse - perPageCourse
-          }
+            skip: (page + 1) * perPageCourse - perPageCourse,
+          },
         });
         client.query({
           query: ALL_COURSES_ORDERED,
           variables: {
-            skip: (page + 1) * perPageCourse - perPageCourse
-          }
+            skip: (page + 1) * perPageCourse - perPageCourse,
+          },
         });
       };
 

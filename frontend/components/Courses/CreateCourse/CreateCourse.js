@@ -1,9 +1,9 @@
-import gql from "graphql-tag";
-import Link from "next/link";
-import React, { Component } from "react";
-import { Mutation, Query } from "react-apollo";
-import styled from "styled-components";
-import InterestItem from "./InterestItem";
+import gql from 'graphql-tag';
+import Link from 'next/link';
+import React, { Component } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import styled from 'styled-components';
+import InterestItem from './InterestItem';
 
 const ALL_INTEREST_QUERY = gql`
   query ALL_INTEREST_QUERY {

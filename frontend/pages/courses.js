@@ -1,4 +1,4 @@
-import Courses from "../components/Courses/Courses";
+import Courses from '../components/Courses/Courses';
 
 const CoursesPage = props => (
   <div>

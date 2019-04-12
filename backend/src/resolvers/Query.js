@@ -1,32 +1,32 @@
-const { forwardTo } = require("prisma-binding");
+const { forwardTo } = require('prisma-binding');
 
 const Query = {
-  categories: forwardTo("db"),
-  category: forwardTo("db"),
-  rateCourse: forwardTo("db"),
-  course: forwardTo("db"),
-  courses: forwardTo("db"),
-  courseInterests: forwardTo("db"),
-  interests: forwardTo("db"),
-  user: forwardTo("db"),
-  userInterests: forwardTo("db"),
-  users: forwardTo("db"),
-  video: forwardTo("db"),
-  videos: forwardTo("db"),
-  rateCourses: forwardTo("db"),
+  categories: forwardTo('db'),
+  category: forwardTo('db'),
+  rateCourse: forwardTo('db'),
+  course: forwardTo('db'),
+  courses: forwardTo('db'),
+  courseInterests: forwardTo('db'),
+  interests: forwardTo('db'),
+  user: forwardTo('db'),
+  userInterests: forwardTo('db'),
+  users: forwardTo('db'),
+  video: forwardTo('db'),
+  videos: forwardTo('db'),
+  rateCourses: forwardTo('db'),
 
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    //checkar se tem um current ID
+    // checkar se tem um current ID
     if (!userId) {
       return null;
     }
     return ctx.db.query.user(
       {
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
       info
     );
@@ -34,18 +34,18 @@ const Query = {
   videosConnection(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
-    //Ver se esta logado
+    // Ver se esta logado
     if (!userId) {
-      throw new Error("you must be signed in!");
+      throw new Error('you must be signed in!');
     }
-    //query o video atual com comparaçao de ids de user
+    // query o video atual com comparaçao de ids de user
     return ctx.db.query.videosConnection(
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
       info
     );
@@ -54,19 +54,19 @@ const Query = {
   videosUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
-    //Ver se esta logado
+    // Ver se esta logado
     if (!userId) {
-      throw new Error("you must be signed in!");
+      throw new Error('you must be signed in!');
     }
 
-    //query o video atual com comparaçao de ids de user
+    // query o video atual com comparaçao de ids de user
     return ctx.db.query.videos(
       {
         where: {
           user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       },
       info
     );
@@ -75,31 +75,31 @@ const Query = {
   rateCourseList(parent, args, ctx, info) {
     return ctx.db.query.rateCourses(
       {
-        orderBy: "createdAt_DESC",
+        orderBy: 'createdAt_DESC',
         where: {
           course: {
-            id: args.id
-          }
-        }
+            id: args.id,
+          },
+        },
       },
       info
     );
   },
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    //Ve se esta logado
+    // Ve se esta logado
     if (!userId) {
-      throw new Error("you must be signed in!");
+      throw new Error('you must be signed in!');
     }
-    //query o video atual com comparaçao de ids de user
+    // query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
         where: {
           user: {
-            id: userId
-          }
+            id: userId,
+          },
         },
-        ...args
+        ...args,
       },
       info
     );
@@ -107,62 +107,62 @@ const Query = {
   videosUserSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
-    //Ver se esta logado
+    // Ver se esta logado
     if (!userId) {
-      throw new Error("you must be signed in!");
+      throw new Error('you must be signed in!');
     }
 
-    //query o video atual com comparaçao de ids de user
+    // query o video atual com comparaçao de ids de user
     return ctx.db.query.videos(
       {
         where: {
           AND: [
             {
               user: {
-                id: userId
-              }
+                id: userId,
+              },
             },
             {
-              title_contains: args.title_contains
-            }
-          ]
-        }
+              title_contains: args.title_contains,
+            },
+          ],
+        },
       },
       info
     );
   },
   coursesSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    //Ver se esta logado
+    // Ver se esta logado
     if (!userId) {
-      throw new Error("you must be ssigned in!");
+      throw new Error('you must be ssigned in!');
     }
-    //query o video atual com comparaçao de ids de user
+    // query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
         where: {
           AND: [
             {
-              state: "PUBLISHED"
+              state: 'PUBLISHED',
             },
             {
-              title_contains: args.title_contains
-            }
-          ]
-        }
+              title_contains: args.title_contains,
+            },
+          ],
+        },
       },
       info
     );
   },
-  //Listagem Cursos Interests
+  // Listagem Cursos Interests
   async coursesUserInterestList(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    //Get user
+    // Get user
     const user = await ctx.db.query.user(
       {
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
       `
         {
@@ -179,13 +179,13 @@ const Query = {
         `
     );
 
-    //mapear os interesses do user
+    // mapear os interesses do user
     const interestsIds = [];
-    //foreach de cada elemento e fazer a query e guardar num array
+    // foreach de cada elemento e fazer a query e guardar num array
     user.interests.map(interest => {
       interestsIds.push(interest.interest.id);
     });
-    //Search all the courses that have the interests match wiith user
+    // Search all the courses that have the interests match wiith user
     const result = await Promise.all(
       interestsIds.map(async id => {
         const res = await ctx.db.query.courseInterests(
@@ -194,16 +194,16 @@ const Query = {
               AND: [
                 {
                   interest: {
-                    id: id
-                  }
+                    id,
+                  },
                 },
                 {
                   course: {
-                    state: "PUBLISHED"
-                  }
-                }
-              ]
-            }
+                    state: 'PUBLISHED',
+                  },
+                },
+              ],
+            },
           },
           `{
            course{
@@ -226,20 +226,18 @@ const Query = {
         return res;
       })
     );
-    //remove thCoursee layers of an array putting all in one flat function
-    let res = result.flat();
+    // remove thCoursee layers of an array putting all in one flat function
+    const res = result.flat();
 
-    //this remove the header on the array to clean it before send it to frontend
-    const courses = res.map(item => {
-      return item.course;
-    });
+    // this remove the header on the array to clean it before send it to frontend
+    const courses = res.map(item => item.course);
 
-    //Wishlist array
+    // Wishlist array
     const wishlist = await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId }
-        }
+          user: { id: userId },
+        },
       },
       `{
         course{
@@ -248,12 +246,10 @@ const Query = {
       }`
     );
 
-    //Wish ids to compare
-    let wishIds = wishlist.map(item => {
-      return item.course.id;
-    });
-    //add the wished property to the final array
-    let clean = courses.map(item => {
+    // Wish ids to compare
+    const wishIds = wishlist.map(item => item.course.id);
+    // add the wished property to the final array
+    const clean = courses.map(item => {
       item.wished = false;
 
       if (wishIds.length > 0) {
@@ -266,21 +262,19 @@ const Query = {
       return item;
     });
 
-    //Filter the array to remove duplicates
-    let cleanResponse = Object.values(
+    // Filter the array to remove duplicates
+    const cleanResponse = Object.values(
       clean.reduce((acc, cur) => Object.assign(acc, { [cur.id]: cur }), {})
     );
 
-    //Add count to array
-    let finalRes = cleanResponse.map(item => {
+    // Add count to array
+    const finalRes = cleanResponse.map(item => {
       item.count = cleanResponse.length;
 
       return item;
     });
 
-    finalRes.map(item => {
-      return item;
-    });
+    finalRes.map(item => item);
 
     return finalRes;
   },
@@ -292,8 +286,8 @@ const Query = {
       user = await ctx.db.query.user(
         {
           where: {
-            id: userId
-          }
+            id: userId,
+          },
         },
         `   {
           courses{
@@ -306,9 +300,9 @@ const Query = {
       );
     }
 
-    let coursesId = [];
+    const coursesId = [];
 
-    //foreach de cada elemento e fazer a query e guardar num array
+    // foreach de cada elemento e fazer a query e guardar num array
     if (user) {
       await user.courses.map(user => {
         coursesId.push(user.course.id);
@@ -319,18 +313,18 @@ const Query = {
         where: {
           AND: [
             {
-              state: "PUBLISHED"
+              state: 'PUBLISHED',
             },
             {
-              id_not_in: coursesId
-            }
-          ]
-        }
+              id_not_in: coursesId,
+            },
+          ],
+        },
       },
       info
     );
   },
-  //Listagem cursos
+  // Listagem cursos
   async coursesList(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
@@ -342,8 +336,8 @@ const Query = {
       user = await ctx.db.query.user(
         {
           where: {
-            id: userId
-          }
+            id: userId,
+          },
         },
         `{
             courses{
@@ -356,29 +350,29 @@ const Query = {
       );
     }
 
-    let coursesId = [];
+    const coursesId = [];
 
-    //foreach de cada elemento e fazer a query e guardar num array
+    // foreach de cada elemento e fazer a query e guardar num array
     if (user) {
       await user.courses.map(user => {
         coursesId.push(user.course.id);
       });
     }
-    //query o video atual com comparaçao de ids de user
+    // query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
       {
         where: {
           AND: [
             {
-              state: "PUBLISHED"
+              state: 'PUBLISHED',
             },
             {
-              id_not_in: coursesId
-            }
-          ]
+              id_not_in: coursesId,
+            },
+          ],
         },
-        orderBy: orderBy,
-        ...args
+        orderBy,
+        ...args,
       },
       `{
          id
@@ -398,25 +392,23 @@ const Query = {
       info
     );
 
-    //Wishlist array
+    // Wishlist array
     const wishlist = await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId }
-        }
+          user: { id: userId },
+        },
       },
       `{
         course{id}
      }`
     );
 
-    //Wish ids to compare
-    let wishIds = wishlist.map(item => {
-      return item.course.id;
-    });
+    // Wish ids to compare
+    const wishIds = wishlist.map(item => item.course.id);
 
-    //add the wished property to the final array
-    let finalRes = await res.map(item => {
+    // add the wished property to the final array
+    const finalRes = await res.map(item => {
       item.wished = false;
       wishIds.map(wish => {
         if (wish === item.id) {
@@ -432,11 +424,11 @@ const Query = {
     const { userId } = ctx.request;
     let categoryId = args.category;
     let authorId = args.author;
-    if (args.category === "a") {
+    if (args.category === 'a') {
       categoryId = undefined;
     }
 
-    if (args.author === "a") {
+    if (args.author === 'a') {
       authorId = undefined;
     }
 
@@ -446,25 +438,25 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId
-              }
+                id: userId,
+              },
             },
             {
               course: {
                 category: {
-                  id: categoryId
-                }
-              }
+                  id: categoryId,
+                },
+              },
             },
             {
               course: {
                 user: {
-                  id: authorId
-                }
-              }
-            }
-          ]
-        }
+                  id: authorId,
+                },
+              },
+            },
+          ],
+        },
       },
       info
     );
@@ -476,8 +468,8 @@ const Query = {
     const res = await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId }
-        }
+          user: { id: userId },
+        },
       },
       `{      course {
   id
@@ -508,16 +500,16 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId
-              }
+                id: userId,
+              },
             },
             {
               course: {
-                id: args.courseId
-              }
-            }
-          ]
-        }
+                id: args.courseId,
+              },
+            },
+          ],
+        },
       },
       info
     );
@@ -528,16 +520,16 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId
-              }
+                id: userId,
+              },
             },
             {
               course: {
-                id: args.courseId
-              }
-            }
-          ]
-        }
+                id: args.courseId,
+              },
+            },
+          ],
+        },
       },
       info
     );
@@ -560,8 +552,8 @@ const Query = {
       user = await ctx.db.query.user(
         {
           where: {
-            id: userId
-          }
+            id: userId,
+          },
         },
         `{
             courses{
@@ -574,30 +566,30 @@ const Query = {
       );
     }
 
-    let coursesId = [];
+    const coursesId = [];
 
-    //foreach de cada elemento e fazer a query e guardar num array
+    // foreach de cada elemento e fazer a query e guardar num array
     if (user) {
       await user.courses.map(user => {
         coursesId.push(user.course.id);
       });
     }
-    console.log("aqui");
-    //query o video atual com comparaçao de ids de user
+    console.log('aqui');
+    // query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
       {
         where: {
           AND: [
             {
-              state: "PUBLISHED"
+              state: 'PUBLISHED',
             },
             {
-              id_not_in: coursesId
-            }
-          ]
+              id_not_in: coursesId,
+            },
+          ],
         },
 
-        ...args
+        ...args,
       },
       `{
          id
@@ -617,31 +609,29 @@ const Query = {
       info
     );
 
-    //fazer a media
+    // fazer a media
     coursesAverage = await res.map(item => {
       item.average = item.totalRate / item.totalComments;
       return item;
     });
 
-    //Wishlist array
+    // Wishlist array
     const wishlist = await ctx.db.query.wishlists(
       {
         where: {
-          user: { id: userId }
-        }
+          user: { id: userId },
+        },
       },
       `{
         course{id}
      }`
     );
 
-    //Wish ids to compare
-    let wishIds = wishlist.map(item => {
-      return item.course.id;
-    });
+    // Wish ids to compare
+    const wishIds = wishlist.map(item => item.course.id);
 
-    //add the wished property to the final array
-    let finalRes = await coursesAverage.map(item => {
+    // add the wished property to the final array
+    const finalRes = await coursesAverage.map(item => {
       item.wished = false;
       wishIds.map(wish => {
         if (wish === item.id) {
@@ -650,13 +640,13 @@ const Query = {
       });
       return item;
     });
-    await finalRes.sort(function(a, b) {
+    await finalRes.sort((a, b) => {
       if (a.average > b.average) return -1;
       if (a.average < b.average) return 1;
       return 0;
     });
     return finalRes;
-  }
+  },
 };
 
 module.exports = Query;

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const List = styled.div`
   .image {
@@ -62,7 +62,7 @@ export class Video extends Component {
         <div className="image">
           <Link
             href={{
-              pathname: "/video",
+              pathname: '/video',
               query: { id: videos.video.id },
             }}
           >

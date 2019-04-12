@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { Mutation, Query } from "react-apollo";
-import gql from "graphql-tag";
-import Form from "../../styles/Form";
-import styled from "styled-components";
-import Error from "../../Static/ErrorMessage.js";
-import { ALL_VIDEOS_USER } from "../MyVideos/Videos";
-import Router from "next/router";
-import { ALL_COURSES_QUERY } from "../../Home/CoursesList/ListAllCourses";
-import validateExtension from "../../../lib/validateFileExtensions";
+import React, { Component } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import styled from 'styled-components';
+import Router from 'next/router';
+import Form from '../../styles/Form';
+import Error from '../../Static/ErrorMessage.js';
+import { ALL_VIDEOS_USER } from '../MyVideos/Videos';
+import { ALL_COURSES_QUERY } from '../../Home/CoursesList/ListAllCourses';
+import validateExtension from '../../../lib/validateFileExtensions';
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
@@ -37,7 +37,7 @@ const Container = styled.div`
     text-align: left;
   }
   button,
-  input[type="submit"] {
+  input[type='submit'] {
     width: auto;
     background: red;
     color: white;
@@ -74,12 +74,12 @@ const COURSE_QUERY = gql`
 
 class CreateVideo extends Component {
   state = {
-    title: "",
-    description: "",
-    urlVideo: "",
-    category: "",
-    course: "",
-    file: "",
+    title: '',
+    description: '',
+    urlVideo: '',
+    category: '',
+    course: '',
+    file: '',
     hasVideo: false,
     isUploading: 0,
     isUploadingFile: 0,
@@ -87,7 +87,7 @@ class CreateVideo extends Component {
 
   handleChange = e => {
     const { name, type, value } = e.target;
-    const val = type === "number" ? parseFloat(value) : value;
+    const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
   };
 
@@ -96,13 +96,13 @@ class CreateVideo extends Component {
       isUploading: 1,
     });
 
-    const files = e.target.files;
+    const { files } = e.target;
     const data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "video-platform");
+    data.append('file', files[0]);
+    data.append('upload_preset', 'video-platform');
     const res = await fetch(
-      "https://api.cloudinary.com/v1_1/deky2cxlm/video/upload",
-      { method: "POST", body: data },
+      'https://api.cloudinary.com/v1_1/deky2cxlm/video/upload',
+      { method: 'POST', body: data }
     );
     const file = await res.json();
     if (file) {
@@ -121,17 +121,17 @@ class CreateVideo extends Component {
       isUploadingFile: 1,
     });
 
-    const files = e.target.files;
+    const { files } = e.target;
     const data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "fileUpload");
+    data.append('file', files[0]);
+    data.append('upload_preset', 'fileUpload');
     const fileName = files[0].name;
     const isValid = validateExtension(fileName);
 
     if (isValid) {
       const res = await fetch(
-        "https://api.cloudinary.com/v1_1/deky2cxlm/raw/upload",
-        { method: "POST", body: data },
+        'https://api.cloudinary.com/v1_1/deky2cxlm/raw/upload',
+        { method: 'POST', body: data }
       );
 
       const file = await res.json();
@@ -145,13 +145,14 @@ class CreateVideo extends Component {
         isUploadingFile: 2,
       });
     } else {
-      alert("File Format not supported");
+      alert('File Format not supported');
     }
   };
 
   saveCategory = e => {
     this.setState({ category: e.target.value });
   };
+
   saveCourse = e => {
     this.setState({ course: e.target.value });
   };
@@ -182,7 +183,7 @@ class CreateVideo extends Component {
                       e.preventDefault();
                       const res = await createVideo();
                       Router.push({
-                        pathname: "/video",
+                        pathname: '/video',
                         query: { id: res.data.createVideo.id },
                       });
                     }}
@@ -247,7 +248,7 @@ class CreateVideo extends Component {
                       </label>
                       <label htmlFor="course">
                         Course
-                        {this.state.course === "" &&
+                        {this.state.course === '' &&
                           this.setState({ course: data.courses[0].id })}
                         <select
                           id="dropdownlist"
@@ -266,7 +267,7 @@ class CreateVideo extends Component {
                         disabled={!this.state.hasVideo}
                         className={this.state.hasVideo.toString()}
                       >
-                        Sav{loading ? "ing" : "e"}
+                        Sav{loading ? 'ing' : 'e'}
                       </button>
                     </fieldset>
                   </Form>

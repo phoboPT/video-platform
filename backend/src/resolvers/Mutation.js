@@ -1,23 +1,23 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { randomBytes } = require("crypto");
-const { promisify } = require("util");
-const { makeANiceEmail, transport } = require("../mail");
-const stripe = require("../stripe");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { randomBytes } = require('crypto');
+const { promisify } = require('util');
+const { makeANiceEmail, transport } = require('../mail');
+const stripe = require('../stripe');
 
-updateRate = async (ctx, courseId, newRate, oldRate) => {
+const updateRate = async (ctx, courseId, newRate, oldRate) => {
   const savedRate = await ctx.db.query.course(
     {
       where: {
-        id: courseId
-      }
+        id: courseId,
+      },
     },
-    `{totalRate}`
+    '{totalRate}'
   );
 
   const allCoursesRate = await ctx.db.query.rateCourses(
     {
-      where: { course: { id: courseId } }
+      where: { course: { id: courseId } },
     },
     `{
   rate
@@ -26,15 +26,15 @@ updateRate = async (ctx, courseId, newRate, oldRate) => {
 
   let updatedRate;
   if (newRate === null) {
-    updatedRate = savedRate["totalRate"] - oldRate;
+    updatedRate = savedRate.totalRate - oldRate;
   } else {
-    updatedRate = savedRate["totalRate"] + (newRate - oldRate || 0);
+    updatedRate = savedRate.totalRate + (newRate - oldRate || 0);
   }
 
   if (savedRate) {
-    return await ctx.db.mutation.updateCourse({
+    return ctx.db.mutation.updateCourse({
       where: { id: courseId },
-      data: { totalRate: updatedRate, totalComments: allCoursesRate.length }
+      data: { totalRate: updatedRate, totalComments: allCoursesRate.length },
     });
   }
 };
@@ -42,16 +42,16 @@ updateRate = async (ctx, courseId, newRate, oldRate) => {
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    //Check if they are logged in
+    // Check if they are logged in
     if (!userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
 
     const video = {
-      ...args
+      ...args,
     };
     const { course } = video;
-    //elimina o id dos updates
+    // elimina o id dos updates
     delete video.course;
 
     const videos = await ctx.db.mutation.createVideo(
@@ -59,12 +59,12 @@ const Mutations = {
         data: {
           user: {
             connect: {
-              id: userId
-            }
+              id: userId,
+            },
           },
 
-          ...video
-        }
+          ...video,
+        },
       },
       info
     );
@@ -73,43 +73,43 @@ const Mutations = {
       {
         data: {
           course: {
-            connect: { id: course }
+            connect: { id: course },
           },
           video: {
-            connect: { id: videos.id }
-          }
-        }
+            connect: { id: videos.id },
+          },
+        },
       },
       info
     );
 
-    //para dar debug console.log(video);
+    // para dar debug console.log(video);
     return videos;
   },
   async deleteVideo(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
     const where = {
-      id: args.id
+      id: args.id,
     };
-    //1.encontrar o video
+    // 1.encontrar o video
     const video = await ctx.db.query.video(
       {
-        where
+        where,
       },
-      `{id}`
+      '{id}'
     );
-    //2.checkar se tem permissoes para o apagar
-    //const ownsVideo = video.user.id === ctx.request.userId;
-    //TODO falta verificar se é admin ou user (hasPermissions)
+    // 2.checkar se tem permissoes para o apagar
+    // const ownsVideo = video.user.id === ctx.request.userId;
+    // TODO falta verificar se é admin ou user (hasPermissions)
     // if (!ownsVideo) {
     //   throw new Error("You don't have permission to do that!");
     // }
-    //3.dar delete
+    // 3.dar delete
     return ctx.db.mutation.deleteVideo(
       {
-        where
+        where,
       },
       info
     );
@@ -118,27 +118,27 @@ const Mutations = {
     const { userId } = ctx.request;
 
     if (!userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
-    //faz uma copia dos updates
+    // faz uma copia dos updates
     const updates = {
-      ...args
+      ...args,
     };
-    //elimina o id dos updates
+    // elimina o id dos updates
     delete updates.id;
-    //da run no update method
+    // da run no update method
     return ctx.db.mutation.updateVideo(
       {
         data: updates,
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
       info
     );
   },
   async createCategory(parent, args, ctx, info) {
-    //Check if they are logged in
+    // Check if they are logged in
     // if (!ctx.request.userId) {
     //   throw new Error("You must be logged in to do that!");
     // }
@@ -146,31 +146,31 @@ const Mutations = {
     const category = await ctx.db.mutation.createCategory(
       {
         data: {
-          ...args
-        }
+          ...args,
+        },
       },
       info
     );
-    //para dar debug console.log(category);
+    // para dar debug console.log(category);
     return category;
   },
   updateCategory(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
-    //faz uma copia dos updates para guardar o id nos args
+    // faz uma copia dos updates para guardar o id nos args
     const updates = {
-      ...args
+      ...args,
     };
-    //elimina o id dos updates para nao dar update no id(unico)
+    // elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
-    //da run no update method
+    // da run no update method
     return ctx.db.mutation.updateCategory(
       {
         data: updates,
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
       info
     );
@@ -178,215 +178,215 @@ const Mutations = {
 
   async deleteCategory(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
     const where = {
-      id: args.id
+      id: args.id,
     };
     // //1.encontrar o video
     // const video = await ctx.db.query.category({ where }, `{id name}`);
     // //2.checkar se tem permissoes para o apagar
 
-    //3.dar delete
+    // 3.dar delete
     return ctx.db.mutation.deleteCategory(
       {
-        where
+        where,
       },
       info
     );
   },
 
   async signup(parent, args, ctx, info) {
-    //lowercase the email
+    // lowercase the email
     args.email = args.email.toLowerCase();
-    //hash password
+    // hash password
     const password = await bcrypt.hash(args.password, 10);
-    //create user
+    // create user
     const user = await ctx.db.mutation.createUser(
       {
         data: {
           ...args,
           password,
           permission: {
-            set: ["USER"]
-          }
-        }
+            set: ['USER'],
+          },
+        },
       },
       info
     );
-    //create jwt token for them
+    // create jwt token for them
     const token = jwt.sign(
       {
-        userId: user.id
+        userId: user.id,
       },
       process.env.APP_SECRET
     );
-    //we set the jwt as a cookie on the ctx
-    ctx.response.cookie("token", token, {
+    // we set the jwt as a cookie on the ctx
+    ctx.response.cookie('token', token, {
       httpOnly: true,
-      maxAge: 1000 * 24 * 365 * 60 * 60 //1 year cookie
+      maxAge: 1000 * 24 * 365 * 60 * 60, // 1 year cookie
     });
-    //finally we return the user to the browser
+    // finally we return the user to the browser
     return user;
   },
   async signin(parent, { email, password }, ctx, info) {
-    //check if there is a user
+    // check if there is a user
     const user = await ctx.db.query.user({
-      where: { email }
+      where: { email },
     });
     if (!user) {
       throw new Error(`No such user found for email ${email}`);
     }
-    //check passwords
+    // check passwords
     const valid = await bcrypt.compare(password, user.password);
 
     if (!valid) {
-      throw new Error(`Invalid Password`);
+      throw new Error('Invalid Password');
     }
-    //cgenerate jwt token
+    // cgenerate jwt token
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-    //Set the cookie with the token
-    ctx.response.cookie("token", token, {
+    // Set the cookie with the token
+    ctx.response.cookie('token', token, {
       httpOnly: true,
-      maxAge: 1000 * 24 * 365 * 60 * 60 //1 year cookie
+      maxAge: 1000 * 24 * 365 * 60 * 60, // 1 year cookie
     });
-    //return the user
+    // return the user
     return user;
   },
   async updateUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
-    //faz uma copia dos updates para guardar o id nos args
+    // faz uma copia dos updates para guardar o id nos args
     const updates = {
-      ...args
+      ...args,
     };
-    //elimina o id dos updates para nao dar update no id(unico)
+    // elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
-    //da run no update method
+    // da run no update method
     return ctx.db.mutation.updateUser(
       {
         data: updates,
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
       info
     );
   },
   signout(parent, args, ctx, info) {
-    ctx.response.clearCookie("token");
-    return { message: "Goodbye!" };
+    ctx.response.clearCookie('token');
+    return { message: 'Goodbye!' };
   },
   async updatePassword(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
     if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
     if (args.password !== args.confirmPassword) {
-      throw new Error("The Passwords are not equal!");
+      throw new Error('The Passwords are not equal!');
     }
-    //faz uma copia dos updates para guardar o id nos args
+    // faz uma copia dos updates para guardar o id nos args
     const updates = {
-      password: args.password
+      password: args.password,
     };
 
-    //volta a encriptar a pass nova
+    // volta a encriptar a pass nova
     if (updates.password) {
       updates.password = await bcrypt.hash(updates.password, 10);
     }
-    //elimina o id dos updates para nao dar update no id(unico)
+    // elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
-    //da run no update method
+    // da run no update method
     return ctx.db.mutation.updateUser(
       {
         data: updates,
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       },
       info
     );
   },
   async requestReset(parents, args, ctx, info) {
-    //1.check if the user is real
+    // 1.check if the user is real
     const user = await ctx.db.query.user({ where: { email: args.email } });
 
     if (!user) {
       throw new Error(`No such user found for email ${args.email}`);
     }
 
-    //2. set a reset token and expiry on that user
-    const resetToken = (await promisify(randomBytes)(20)).toString("hex");
-    const resetTokenExpiry = Date.now() + 3600000; //1 hour from now
+    // 2. set a reset token and expiry on that user
+    const resetToken = (await promisify(randomBytes)(20)).toString('hex');
+    const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
 
     const res = await ctx.db.mutation.updateUser({
       where: { email: args.email },
-      data: { resetToken, resetTokenExpiry }
+      data: { resetToken, resetTokenExpiry },
     });
 
-    //3. Email them that reset tokenaaa
+    // 3. Email them that reset tokenaaa
     const mailRes = await transport.sendMail({
-      from: "picus@gmail.com",
+      from: 'picus@gmail.com',
       to: user.email,
-      subject: "Your password reset",
+      subject: 'Your password reset',
       html: makeANiceEmail(`Your  Password Reset Token is here!
       \n\n 
       <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">
-      Click Here to reset</a> `)
+      Click Here to reset</a> `),
     });
-    return { message: "Thanks" };
+    return { message: 'Thanks' };
   },
   async resetPassword(parents, args, ctx, info) {
-    //checkar pwbb
+    // checkar pwbb
     if (args.password !== args.confirmPassword) {
-      throw new Error("Passwords don t match!");
+      throw new Error('Passwords don t match!');
     }
-    //check legit token
-    //check if expired
+    // check legit token
+    // check if expired
     const [user] = await ctx.db.query.users({
       where: {
         resetToken: args.resetToken,
-        resetTokenExpiry_gte: Datenow() - 3600000
-      }
+        resetTokenExpiry_gte: Date.now() - 3600000,
+      },
     });
     if (!user) {
-      throw new Error("This token is either invalid or expired!");
+      throw new Error('This token is either invalid or expired!');
     }
-    //hash new pw
+    // hash new pw
     const password = await bcrypt.hash(args.password, 10);
-    //save the new pw remove old token
+    // save the new pw remove old token
     const updatedUser = await ctx.db.mutation.updateUser({
       where: { email: user.email },
       data: {
         password,
         resetToken: null,
-        resetTokenExpiry: null
-      }
+        resetTokenExpiry: null,
+      },
     });
-    //generate jwt
+    // generate jwt
     const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
-    //set jwt cookie
-    ctx.response.cookie("token", token, {
+    // set jwt cookie
+    ctx.response.cookie('token', token, {
       httpOnly: true,
-      magAge: 1000 * 25 * 365 * 60 * 60
+      magAge: 1000 * 25 * 365 * 60 * 60,
     });
-    //return new user
+    // return new user
     return updatedUser;
   },
   async createCourse(parent, args, ctx, info) {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
     if (!userId) {
-      throw new Error("You must be signed in soooon");
+      throw new Error('You must be signed in soooon');
     }
     const data = {
-      ...args
+      ...args,
     };
 
-    //elimina o id dos updates
+    // elimina o id dos updates
     delete data.category;
     // 4. If its not, create a fresh CourseVideo for that Course!
     return ctx.db.mutation.createCourse(
@@ -394,16 +394,16 @@ const Mutations = {
         data: {
           category: {
             connect: {
-              id: args.category
-            }
+              id: args.category,
+            },
           },
           user: {
             connect: {
-              id: userId
-            }
+              id: userId,
+            },
           },
-          ...data
-        }
+          ...data,
+        },
       },
       info
     );
@@ -411,51 +411,51 @@ const Mutations = {
 
   async deleteCourse(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
     const where = {
-      id: args.id
+      id: args.id,
     };
-    //1.encontrar o video
+    // 1.encontrar o video
     const course = await ctx.db.query.course(
       {
-        where
+        where,
       },
-      `{id}`
+      '{id}'
     );
-    //2.checkar se tem permissoes para o apagar
+    // 2.checkar se tem permissoes para o apagar
     const ownsCourse = course.user.id === ctx.request.userId;
-    //falta verificar se é admin ou user (hasPermissions)
+    // falta verificar se é admin ou user (hasPermissions)
     if (!ownsCourse) {
       throw new Error("You don't have permission to do that!");
     }
-    //3.dar delete
+    // 3.dar delete
     return ctx.db.mutation.deleteCourse(
       {
-        where
+        where,
       },
       info
     );
   },
   updateCourse(parent, args, ctx, info) {
-    //faz uma copia dos updates
+    // faz uma copia dos updates
     const { userId } = ctx.request;
     if (!userId) {
-      throw new Error("You must be signed in soooon");
+      throw new Error('You must be signed in soooon');
     }
 
     const updates = {
-      ...args
+      ...args,
     };
-    //elimina o id dos updates
+    // elimina o id dos updates
     delete updates.id;
-    //da run no update method
+    // da run no update method
     return ctx.db.mutation.updateCourse(
       {
         data: updates,
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
       info
     );
@@ -465,7 +465,7 @@ const Mutations = {
 
     //  Check if they are logged in
     if (!userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
 
     const rateCourse = await ctx.db.mutation.createRateCourse(
@@ -473,17 +473,17 @@ const Mutations = {
         data: {
           user: {
             connect: {
-              id: userId
-            }
+              id: userId,
+            },
           },
           course: {
             connect: {
-              id: args.courseId
-            }
+              id: args.courseId,
+            },
           },
           comment: args.comment,
-          rate: args.rating
-        }
+          rate: args.rating,
+        },
       },
 
       info
@@ -495,15 +495,15 @@ const Mutations = {
   },
   async deleteRateCourse(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error("You must be logged in to do that!");
+      throw new Error('You must be logged in to do that!');
     }
     const where = {
-      id: args.id
+      id: args.id,
     };
-    //1.encontrar o video
+    // 1.encontrar o video
     const rateCourse = await ctx.db.query.rateCourse(
       {
-        where
+        where,
       },
       `{id 
         rate
@@ -515,40 +515,40 @@ const Mutations = {
           }
         }`
     );
-    //2.checkar se tem permissoes para o apagar
+    // 2.checkar se tem permissoes para o apagar
     const ownsRateCourse = rateCourse.user.id === ctx.request.userId;
 
     if (!ownsRateCourse) {
       throw new Error("You don't have permission to do that!");
     }
 
-    //ctx,courseId, newRate,oldRate
+    // ctx,courseId, newRate,oldRate
     updateRate(ctx, rateCourse.course.id, null, rateCourse.rate);
-    //3.dar delete
+    // 3.dar delete
     return ctx.db.mutation.deleteRateCourse(
       {
-        where
+        where,
       },
       info
     );
   },
   async updateRateCourse(parent, args, ctx, info) {
-    //faz uma copia dos updates
+    // faz uma copia dos updates
     const { userId } = ctx.request;
     if (!userId) {
-      throw new Error("You must be signed in");
+      throw new Error('You must be signed in');
     }
     const updates = {
-      ...args
+      ...args,
     };
 
-    //elimina o id dos updates
+    // elimina o id dos updates
     delete updates.id;
 
-    //get the courseId to update the rate
+    // get the courseId to update the rate
     const courseId = await ctx.db.query.rateCourse(
       {
-        where: { id: args.id }
+        where: { id: args.id },
       },
       `{
         rate
@@ -559,49 +559,48 @@ const Mutations = {
 
     updateRate(ctx, courseId.course.id, args.rate, courseId.rate);
 
-    //da run no update method
+    // da run no update method
     return ctx.db.mutation.updateRateCourse(
       {
         data: updates,
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
       info
     );
   },
   async removeFromCourse(parent, args, ctx, info) {
-    //Make sure they are signin
+    // Make sure they are signin
     const { userId } = ctx.request;
     if (!userId) {
-      throw new Error("You must be signed in soooon");
+      throw new Error('You must be signed in soooon');
     }
 
-    //query the users current cart
+    // query the users current cart
     const [existingVideo] = await ctx.db.query.courseVideoses({
       where: {
         course: { id: args.courseId },
-        video: { id: args.id }
-      }
+        video: { id: args.id },
+      },
     });
-    //check if that item is already in their cart
+    // check if that item is already in their cart
     if (existingVideo) {
-      console.log("Already added");
+      console.log('Already added');
       return ctx.db.mutation.deleteCourseVideos(
         {
-          where: { id: existingVideo.id }
+          where: { id: existingVideo.id },
         },
         info
       );
-    } else {
-      throw "Video already removed";
     }
+    throw new Error('Video already removed');
   },
   async addTargetCourse(parent, args, ctx, info) {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
     if (!userId) {
-      throw new Error("You must be signed in soooon");
+      throw new Error('You must be signed in soooon');
     }
 
     // 4. If its not, create a fresh CartItem for that user!
@@ -609,12 +608,12 @@ const Mutations = {
       {
         data: {
           course: {
-            connect: { id: args.courseId }
+            connect: { id: args.courseId },
           },
           interest: {
-            connect: { id: args.interestId }
-          }
-        }
+            connect: { id: args.interestId },
+          },
+        },
       },
       info
     );
@@ -623,7 +622,7 @@ const Mutations = {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
     if (!userId) {
-      throw new Error("You must be signed in ");
+      throw new Error('You must be signed in ');
     }
 
     // 4. If its not, create a fresh CartItem for that user!
@@ -631,93 +630,93 @@ const Mutations = {
       {
         data: {
           interest: {
-            connect: { id: args.interestId }
+            connect: { id: args.interestId },
           },
           user: {
-            connect: { id: userId }
-          }
-        }
+            connect: { id: userId },
+          },
+        },
       },
       info
     );
   },
   async addToCart(parent, args, ctx, info) {
-    //Make sure they are signin
+    // Make sure they are signin
     const { userId } = ctx.request;
-    //Query the users current cart
+    // Query the users current cart
     const [existingCartItem] = await ctx.db.query.cartItems({
       where: {
         user: { id: userId },
-        course: { id: args.id }
-      }
+        course: { id: args.id },
+      },
     });
 
-    //Check if that item is already in their cart and increment by 1 id it is
+    // Check if that item is already in their cart and increment by 1 id it is
     if (existingCartItem) {
-      throw new Error("Arleady added to cart");
+      throw new Error('Arleady added to cart');
     }
-    //If its not, create a fresh new item
+    // If its not, create a fresh new item
     return ctx.db.mutation.createCartItem({
       data: {
         course: {
           connect: {
-            id: args.id
-          }
+            id: args.id,
+          },
         },
         user: {
-          connect: { id: userId }
-        }
+          connect: { id: userId },
+        },
       },
-      info
+      info,
     });
   },
   async removeFromCart(parent, args, ctx, info) {
-    //find cartItem
+    // find cartItem
     const cartItem = await ctx.db.query.cartItem(
       {
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
-      `{id,user{id}}`
+      '{id,user{id}}'
     );
-    //Make sure we found an item
-    if (!cartItem) throw new Error("No Item found");
+    // Make sure we found an item
+    if (!cartItem) throw new Error('No Item found');
 
-    //Make sure they own the cart item
+    // Make sure they own the cart item
     if (cartItem.user.id !== ctx.request.userId) {
-      throw new Error("Cheatin huhh");
+      throw new Error('Cheatin huhh');
     }
 
-    //Delete cartItem
+    // Delete cartItem
     return ctx.db.mutation.deleteCartItem(
       {
         where: {
-          id: args.id
-        }
+          id: args.id,
+        },
       },
       info
     );
   },
   async removeTargetUser(parent, args, ctx, info) {
-    //Make sure they are signin
+    // Make sure they are signin
     const { userId } = ctx.request;
     if (!userId) {
-      throw new Error("You must be signed in soooon");
+      throw new Error('You must be signed in soooon');
     }
 
     return ctx.db.mutation.deleteUserInterest(
       {
-        where: { id: args.interestId }
+        where: { id: args.interestId },
       },
       info
     );
   },
   async createOrder(parent, args, ctx, info) {
-    //query current user and make sure they are signin
+    // query current user and make sure they are signin
     const { userId } = ctx.request;
     if (!userId)
-      throw new Error("You must be signed in to complete this order.");
+      throw new Error('You must be signed in to complete this order.');
     const user = await ctx.db.query.user(
       { where: { id: userId } },
       `
@@ -741,7 +740,7 @@ const Mutations = {
         }
         `
     );
-    //recalculate the total for the price
+    // recalculate the total for the price
     const amount = user.cart.reduce(
       (tally, cartItem) => tally + cartItem.course.price,
       0
@@ -750,28 +749,28 @@ const Mutations = {
     // create the stripe charge(turn token into €€€€€€)
     const charge = await stripe.charges.create({
       amount: amount * 100,
-      currency: "EUR",
-      source: args.token
+      currency: 'EUR',
+      source: args.token,
     });
-    //convert the cartitems in orderitems
+    // convert the cartitems in orderitems
     const orderItems = user.cart.map(cartItem => {
       const orderItem = {
         ...cartItem.course,
         category: { connect: { id: cartItem.course.category.id } },
-        user: { connect: { id: userId } }
+        user: { connect: { id: userId } },
       };
       delete orderItem.id;
       return orderItem;
     });
 
-    //create the order
+    // create the order
     const order = await ctx.db.mutation.createOrder({
       data: {
         total: charge.amount,
         charge: charge.id,
         items: { create: orderItems },
-        user: { connect: { id: userId } }
-      }
+        user: { connect: { id: userId } },
+      },
     });
 
     const courseIds = user.cart.map(cartItem => cartItem.course.id);
@@ -779,68 +778,68 @@ const Mutations = {
     courseIds.forEach(async id => {
       await ctx.db.mutation.createUserCourse({
         data: {
-          course: { connect: { id: id } },
-          user: { connect: { id: userId } }
-        }
+          course: { connect: { id } },
+          user: { connect: { id: userId } },
+        },
       });
     });
-    //clean up - clear the users cart, delete cartitems
+    // clean up - clear the users cart, delete cartitems
     const cartItemIds = user.cart.map(cartItem => cartItem.id);
     await ctx.db.mutation.deleteManyCartItems({
-      where: { id_in: cartItemIds }
+      where: { id_in: cartItemIds },
     });
-    //return the Order to the client
+    // return the Order to the client
     return order;
   },
 
   async addToWish(parent, args, ctx, info) {
-    //Make sure they are signin
+    // Make sure they are signin
     const { userId } = ctx.request;
-    //Query the users current cart
+    // Query the users current cart
     const [existingWhishItem] = await ctx.db.query.wishlists({
       where: {
         user: { id: userId },
-        course: { id: args.id }
-      }
+        course: { id: args.id },
+      },
     });
 
-    //Check if that item is already in their cart and increment by 1 id it is
+    // Check if that item is already in their cart and increment by 1 id it is
     if (existingWhishItem) {
       return ctx.db.mutation.deleteWishlist(
         {
-          where: { id: existingWhishItem.id }
+          where: { id: existingWhishItem.id },
         },
         info
       );
     }
-    //If its not, create a fresh new item
+    // If its not, create a fresh new item
     return ctx.db.mutation.createWishlist({
       data: {
         course: {
           connect: {
-            id: args.id
-          }
+            id: args.id,
+          },
         },
         user: {
-          connect: { id: userId }
-        }
+          connect: { id: userId },
+        },
       },
-      info
+      info,
     });
   },
   buyCourseFree(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
     if (!userId)
-      throw new Error("You must be signed in to complete this order.");
+      throw new Error('You must be signed in to complete this order.');
 
     return ctx.db.mutation.createUserCourse({
       data: {
         course: { connect: { id: args.id } },
-        user: { connect: { id: userId } }
-      }
+        user: { connect: { id: userId } },
+      },
     });
-  }
+  },
   // async removeFromWish(parent, args, ctx, info) {
   //   //Make sure they are signin
   //   const { userId } = ctx.request;
