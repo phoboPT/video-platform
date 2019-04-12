@@ -416,7 +416,7 @@ const Mutations = {
     const where = {
       id: args.id,
     };
-    // 1.encontrar o video
+    // 1.encontrar o curso
     const course = await ctx.db.query.course(
       {
         where,

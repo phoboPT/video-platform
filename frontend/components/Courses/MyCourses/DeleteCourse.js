@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const DELETE_COMMENT_MUTATION = gql`
-  mutation DELETE_COMMENT_MUTATION($id: ID!) {
-    deleteRateCourse(id: $id) {
+const DELETE_COURSE_MUTATION = gql`
+  mutation DELETE_COURSE_MUTATION($id: ID!) {
+    deleteCourse(id: $id) {
       id
     }
   }
@@ -38,8 +38,8 @@ export class DeleteComment extends Component {
         // update={this.update}
         optimisticResponse={{
           __typename: 'Mutation',
-          deleteRateCourse: {
-            __typename: 'RateCourse',
+          deleteCourse: {
+            __typename: 'Course',
             id: data.id,
           },
         }}
