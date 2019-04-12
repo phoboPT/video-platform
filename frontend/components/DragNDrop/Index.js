@@ -1,8 +1,7 @@
-import React, { Component } from "react";
-import { DragDropContext } from "react-beautiful-dnd";
-import ReactDOM from "react-dom";
-import styled from "styled-components";
-import Column from "./Column";
+import React, { Component } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
+import Column from './Column';
 
 const Container = styled.div`
   margin: 8px;
@@ -15,12 +14,11 @@ const Container = styled.div`
 `;
 
 class Index extends Component {
-  state = require("./initial-data.json");
+  state = { columnOrder: [], sections: {}, videos: {} };
 
   onDragEnd = result => {
-    //TODO reorder our column
-
-    const { destination, draggableId, source } = result;
+    const { destination, draggableId, source, type } = result;
+    const { sections, columnOrder } = this.state;
 
     if (!destination) {
       return;
@@ -32,9 +30,18 @@ class Index extends Component {
     ) {
       return;
     }
+    if (type === 'section') {
+      const newColumnOrder = Array.from(columnOrder);
+      newColumnOrder.splice(source.index, 1);
+      newColumnOrder.splice(destination.index, 0, draggableId);
+      const newState = {
+        ...this.state,
+        columnOrder: newColumnOrder,
+      };
+    }
 
-    const start = this.state.sections[source.droppableId];
-    const finish = this.state.sections[destination.droppableId];
+    const start = sections[source.droppableId];
+    const finish = sections[destination.droppableId];
     if (start === finish) {
       const newVideoIds = Array.from(start.videoIds);
       newVideoIds.splice(source.index, 1);
@@ -45,15 +52,15 @@ class Index extends Component {
         videoIds: newVideoIds,
       };
 
-      const newState = {
+      const changeState = {
         ...this.state,
         sections: {
-          ...this.state.sections,
+          ...sections,
           [newColumn.id]: newColumn,
         },
       };
 
-      this.setState(newState);
+      this.setState(changeState);
       return;
     }
     const startVideosIds = Array.from(start.videoIds);
@@ -73,7 +80,7 @@ class Index extends Component {
     const newState = {
       ...this.state,
       sections: {
-        ...this.state.sections,
+        ...sections,
         [newFinish.id]: newFinish,
         [newStart.id]: newStart,
       },
@@ -82,14 +89,14 @@ class Index extends Component {
   };
 
   handleChange = (title, sectionId) => {
-    const section = this.state.sections[sectionId];
-    //const lastSection = this.state.sections[`section-${lengthSection}`];
+    const { sections } = this.state;
+    const section = sections[sectionId];
     section.title = title;
 
     const newState = {
       ...this.state,
       sections: {
-        ...this.state.sections,
+        ...sections,
       },
     };
 
@@ -97,36 +104,35 @@ class Index extends Component {
   };
 
   handleVideo = (title, sectionId) => {
-    const videos = this.state.videos[sectionId];
-    //const lastSection = this.state.sections[`section-${lengthSection}`];
-    videos.content = title;
-
+    const { videos } = this.state;
+    const video = videos[sectionId];
+    video.content = title;
     const newState = {
       ...this.state,
       videos: {
-        ...this.state.videos,
+        ...videos,
       },
     };
 
     this.setState(newState);
   };
 
-  addSection = e => {
-    const size = Object.keys(this.state.sections).length + 1;
+  addSection = () => {
+    const { sections, columnOrder } = this.state;
+    const size = Object.keys(sections).length + 1;
 
     const newColumn = {
-      id: "section-" + size,
-      title: "",
+      id: `section-${size}`,
+      title: '',
       videoIds: [],
     };
-    // const column = { ...this.state.columnOrder };
 
     const newState = {
       ...this.state,
-      columnOrder: [...this.state.columnOrder, `section-${size}`],
+      columnOrder: [...columnOrder, `section-${size}`],
       sections: {
-        ...this.state.sections,
-        ["section-" + size]: newColumn,
+        ...sections,
+        [`section-${size}`]: newColumn,
       },
     };
 
@@ -134,23 +140,23 @@ class Index extends Component {
   };
 
   addVideo = e => {
-    const sizeVideos = Object.keys(this.state.videos).length + 1;
-    const sizeSection = Object.keys(this.state.sections).length + 1;
+    const { videos, sections } = this.state;
+    const sizeVideos = Object.keys(videos).length + 1;
 
     const newVideo = {
-      content: "",
-      id: "video-" + sizeVideos,
+      content: '',
+      id: `video-${sizeVideos}`,
     };
 
-    e.videoIds.push("video-" + sizeVideos);
+    e.videoIds.push(`video-${sizeVideos}`);
     const newState = {
       ...this.state,
       sections: {
-        ...this.state.sections,
+        ...sections,
       },
       videos: {
-        ...this.state.videos,
-        ["video-" + sizeVideos]: newVideo,
+        ...videos,
+        [`video-${sizeVideos}`]: newVideo,
       },
     };
 
@@ -158,34 +164,50 @@ class Index extends Component {
   };
 
   render() {
+    const { columnOrder, sections, videos } = this.state;
     return (
-      <Container>
-        <button onClick={this.addSection}>+ Add Section</button>
+      <>
+        <button type="button" onClick={this.addSection}>
+          + Add Section
+        </button>
         <DragDropContext onDragEnd={this.onDragEnd}>
-          {this.state.columnOrder.map(columnId => {
-            const section = this.state.sections[columnId];
-            let video;
-            if (section.videoIds) {
-              video = section.videoIds.map(videoId => {
-                console.log("videoId", videoId);
-                return this.state.videos[videoId];
-              });
-            }
-            console.log(section);
-            console.log("index", video);
-            return (
-              <Column
-                addVideo={this.addVideo}
-                handleChange={this.handleChange}
-                handleVideo={this.handleVideo}
-                key={section.id}
-                section={section}
-                videos={video}
-              />
-            );
-          })}
+          <Droppable
+            droppableId="all-columns"
+            direction="vertical"
+            type="section"
+          >
+            {provided => (
+              <Container
+                {...provided.droppableProps}
+                innerRef={provided.innerRef}
+              >
+                {columnOrder.map((columnId, index) => {
+                  const section = sections[columnId];
+                  let video;
+                  if (section.videoIds) {
+                    video = section.videoIds.map(videoId => videos[videoId]);
+                  }
+                  return (
+                    <div key={section.id}>
+                      <Column
+                        addVideo={this.addVideo}
+                        handleChange={this.handleChange}
+                        handleVideo={this.handleVideo}
+                        key={section.id}
+                        section={section}
+                        videos={video}
+                        index={index}
+                      />
+
+                      {provided.placeholder}
+                    </div>
+                  );
+                })}
+              </Container>
+            )}
+          </Droppable>
         </DragDropContext>
-      </Container>
+      </>
     );
   }
 }

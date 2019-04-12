@@ -1,4 +1,4 @@
-import CheckoutDetails from "../components/PersonalArea/CheckoutDetails";
+import CheckoutDetails from '../components/PersonalArea/CheckoutDetails';
 
 const CheckoutPage = props => (
   <div>

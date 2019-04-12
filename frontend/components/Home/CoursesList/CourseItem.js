@@ -1,14 +1,14 @@
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import styled from "styled-components";
-import formatMoney from "../../../lib/formatMoney";
-import User from "../../Authentication/User";
-import ItemStyles from "../../styles/ItemStyles";
-import BuyFreeButton from "../BuyFreeButton";
-import AddToCart from "../Cart/AddToCart";
-import Rating from "../CourseInfo/Comments/Rating";
-import WishButton from "../WishButton";
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import formatMoney from '../../../lib/formatMoney';
+import User from '../../Authentication/User';
+import ItemStyles from '../../styles/ItemStyles';
+import BuyFreeButton from '../BuyFreeButton';
+import AddToCart from '../Cart/AddToCart';
+import Rating from '../CourseInfo/Comments/Rating';
+import WishButton from '../WishButton';
 
 const InfoStyle = styled.p`
   text-align: left;
@@ -19,6 +19,7 @@ export class CourseItem extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
   };
+
   state = {
     ...this.props.course.user,
     buttonToShow: 0,
@@ -26,11 +27,11 @@ export class CourseItem extends Component {
   };
 
   render() {
-    let { course } = this.props;
+    const { course } = this.props;
     return (
       <User>
         {({ data: { me } }) => {
-          //Check if user has logged in or not
+          // Check if user has logged in or not
           if (!me) return null;
 
           return (
@@ -38,11 +39,15 @@ export class CourseItem extends Component {
               <ItemStyles>
                 <Link
                   href={{
-                    pathname: "/course",
+                    pathname: '/course',
                     query: { id: course.id },
                   }}
                 >
-                  <img className="Thumbnail" src={course.thumbnail} />
+                  <img
+                    alt={course.title}
+                    className="Thumbnail"
+                    src={course.thumbnail}
+                  />
                 </Link>
                 <InfoStyle id="title">{course.title}</InfoStyle>
                 <span id="user">{course.user.name}</span>
@@ -57,8 +62,8 @@ export class CourseItem extends Component {
                 )}
                 <div className="rating" id="rating">
                   <Rating
-                    showTotal={true}
-                    readOnly={true}
+                    showTotal
+                    readOnly
                     initialValue={course.totalRate / course.totalComments}
                     totalComments={course.totalComments}
                   />

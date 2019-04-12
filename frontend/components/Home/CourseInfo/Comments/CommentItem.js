@@ -1,13 +1,13 @@
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import styled from "styled-components";
-import formatDate from "../../../../lib/formatDate";
-import User from "../../../Authentication/User";
-import { List, MenuDots } from "../../../styles/CommentItemStyle";
-import DeleteComment from "./DeleteComment";
-import Rating from "./Rating";
-import UpdateComment from "./UpdateComment";
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import formatDate from '../../../../lib/formatDate';
+import User from '../../../Authentication/User';
+import { List, MenuDots } from '../../../styles/CommentItemStyle';
+import DeleteComment from './DeleteComment';
+import Rating from './Rating';
+import UpdateComment from './UpdateComment';
 
 const Style = styled.p`
   min-width: 150px;
@@ -15,12 +15,14 @@ const Style = styled.p`
 
 export class Video extends Component {
   static propTypes = {
-    comments: PropTypes.object.isRequired
+    comments: PropTypes.object.isRequired,
   };
+
   state = {
     edit: false,
-    rating: this.props.rating
+    rating: this.props.rating,
   };
+
   changeEdit = e => {
     this.setState({ edit: true });
   };
@@ -28,9 +30,11 @@ export class Video extends Component {
   changeState = e => {
     this.setState({ edit: false });
   };
+
   getRating = rating => {
-    this.setState({ rating: rating });
+    this.setState({ rating });
   };
+
   render() {
     const { comments } = this.props;
     return (
@@ -55,7 +59,7 @@ export class Video extends Component {
               ) : (
                 <>
                   <div id="rating">
-                    <Rating readOnly={true} initialValue={this.state.rating} />
+                    <Rating readOnly initialValue={this.state.rating} />
                   </div>
                   <div id="updateComment">
                     <span id="comment">{comments.comment}</span>

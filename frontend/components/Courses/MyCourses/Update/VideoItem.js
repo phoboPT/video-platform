@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ItemStyles from "../../../styles/ItemStyles";
-import Title from "../../../styles/Title";
-import Link from "next/link";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import styled from 'styled-components';
+import ItemStyles from '../../../styles/ItemStyles';
+import Title from '../../../styles/Title';
 
 // Adapting based on props
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  padding: "0 1rem"
+  padding: '0 1rem',
 }));
 
 const Div = styled.div`
@@ -24,7 +24,7 @@ const Div = styled.div`
 class Video extends Component {
   static propTypes = {
     video: PropTypes.object.isRequired,
-    data: PropTypes.number.isRequired
+    data: PropTypes.number.isRequired,
   };
 
   render() {
@@ -34,8 +34,8 @@ class Video extends Component {
         <Title>
           <Link
             href={{
-              pathname: "/video",
-              query: { id: video.id }
+              pathname: '/video',
+              query: { id: video.id },
             }}
           >
             <a>{video.title}</a>
@@ -47,7 +47,7 @@ class Video extends Component {
           <span>
             State:
             <State
-              background={video.state === "Published" ? "green" : "red"}
+              background={video.state === 'Published' ? 'green' : 'red'}
               color="white"
             >
               {video.state}

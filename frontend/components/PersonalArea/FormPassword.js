@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import Form from "../styles/Form";
-import gql from "graphql-tag";
-import Error from "../Static/ErrorMessage";
-import { Mutation, Query } from "react-apollo";
-import LinkStyle from "../styles/LinkStyle";
-import Link from "next/link";
-import { Container } from "../styles/Container";
-import User from "../Authentication/User";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import gql from 'graphql-tag';
+import { Mutation, Query } from 'react-apollo';
+import Link from 'next/link';
+import Form from '../styles/Form';
+import Error from '../Static/ErrorMessage';
+import LinkStyle from '../styles/LinkStyle';
+import { Container } from '../styles/Container';
+import User from '../Authentication/User';
 
 const UPDATE_PASSWORD_MUTATION = gql`
   mutation UPDATE_PASSWORD_MUTATION(
@@ -51,7 +51,7 @@ class UpdatePassword extends Component {
 
   handleChange = e => {
     const { name, type, value } = e.target;
-    const val = type === "number" ? parseFloat(value) : value;
+    const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
   };
 
@@ -61,57 +61,55 @@ class UpdatePassword extends Component {
     const res = await updatePasswordMutation({
       variables: {
         id: userID,
-        ...this.state
-      }
+        ...this.state,
+      },
     });
   };
 
   render() {
     return (
       <User>
-        {({ data: { me } }) => {
-          return (
-            <LinkStyle>
-              <Style>
-                <Mutation
-                  mutation={UPDATE_PASSWORD_MUTATION}
-                  variables={this.state}
-                >
-                  {(updatePassword, { loading, error }) => (
-                    <Form onSubmit={e => this.update(e, updatePassword, me.id)}>
-                      <Error error={error} />
-                      <fieldset disabled={loading} aria-busy={loading}>
-                        <h2>Change Password</h2>
-                        <label htmlFor="Password">
-                          <input
-                            type="text"
-                            name="password"
-                            placeholder="New password"
-                            defaultValue={me.password}
-                            onChange={this.handleChange}
-                            required
-                          />
-                        </label>
-                        <label htmlFor="Confirm Password">
-                          <input
-                            type="text"
-                            name="confirmPassword"
-                            placeholder="Confirm Password"
-                            onChange={this.handleChange}
-                            required
-                          />
-                        </label>
-                        <button type="submit">
-                          Sav{loading ? "ing" : "e"} Alterations
-                        </button>
-                      </fieldset>
-                    </Form>
-                  )}
-                </Mutation>
-              </Style>
-            </LinkStyle>
-          );
-        }}
+        {({ data: { me } }) => (
+          <LinkStyle>
+            <Style>
+              <Mutation
+                mutation={UPDATE_PASSWORD_MUTATION}
+                variables={this.state}
+              >
+                {(updatePassword, { loading, error }) => (
+                  <Form onSubmit={e => this.update(e, updatePassword, me.id)}>
+                    <Error error={error} />
+                    <fieldset disabled={loading} aria-busy={loading}>
+                      <h2>Change Password</h2>
+                      <label htmlFor="Password">
+                        <input
+                          type="text"
+                          name="password"
+                          placeholder="New password"
+                          defaultValue={me.password}
+                          onChange={this.handleChange}
+                          required
+                        />
+                      </label>
+                      <label htmlFor="Confirm Password">
+                        <input
+                          type="text"
+                          name="confirmPassword"
+                          placeholder="Confirm Password"
+                          onChange={this.handleChange}
+                          required
+                        />
+                      </label>
+                      <button type="submit">
+                        Sav{loading ? 'ing' : 'e'} Alterations
+                      </button>
+                    </fieldset>
+                  </Form>
+                )}
+              </Mutation>
+            </Style>
+          </LinkStyle>
+        )}
       </User>
     );
   }

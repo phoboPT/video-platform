@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 class Editor extends Component {
-  state = { text: "" };
+  state = { text: '' };
 
   constructor(props) {
     super(props);
-    if (typeof window !== "undefined") {
-      this.ReactQuill = require("react-quill");
+    if (typeof window !== 'undefined') {
+      this.ReactQuill = require('react-quill');
     }
   }
 
@@ -20,13 +20,12 @@ class Editor extends Component {
   };
 
   render() {
-    const ReactQuill = this.ReactQuill;
+    const { ReactQuill } = this;
 
-    if (typeof window !== "undefined" && ReactQuill) {
+    if (typeof window !== 'undefined' && ReactQuill) {
       return <ReactQuill onChange={this.changeState} value={this.state.text} />;
-    } else {
-      return <textarea />;
     }
+    return <textarea />;
   }
 }
 export default Editor;

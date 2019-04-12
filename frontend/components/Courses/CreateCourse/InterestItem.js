@@ -1,8 +1,8 @@
-import gql from "graphql-tag";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import styled from "styled-components";
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import styled from 'styled-components';
 
 const ADD_TAGS_COURSE = gql`
   mutation ADD_TAGS_COURSE($courseId: ID!, $interestId: ID!) {
@@ -46,6 +46,7 @@ class InterestItem extends Component {
     interestId: this.props.interest.id,
     isActive: false,
   };
+
   static propTypes = {
     courseId: PropTypes.string.isRequired,
     interest: PropTypes.object.isRequired,

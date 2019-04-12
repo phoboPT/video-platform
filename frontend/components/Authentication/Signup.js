@@ -1,10 +1,10 @@
-import gql from "graphql-tag";
-import Router from "next/router";
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import Error from "../Static/ErrorMessage";
-import Form from "../styles/Form";
-import { CURRENT_USER_QUERY } from "./User";
+import gql from 'graphql-tag';
+import Router from 'next/router';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import Error from '../Static/ErrorMessage';
+import Form from '../styles/Form';
+import { CURRENT_USER_QUERY } from './User';
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -22,13 +22,15 @@ const SIGNUP_MUTATION = gql`
 
 class Signup extends Component {
   state = {
-    email: "",
-    name: "",
-    password: "",
+    email: '',
+    name: '',
+    password: '',
   };
+
   saveToState = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
   render() {
     return (
       <Mutation
@@ -42,9 +44,9 @@ class Signup extends Component {
             onSubmit={async e => {
               e.preventDefault();
               await signup();
-              this.setState({ name: "", email: "", password: "" });
+              this.setState({ name: '', email: '', password: '' });
               Router.push({
-                pathname: "/choose-interests",
+                pathname: '/choose-interests',
               });
             }}
           >

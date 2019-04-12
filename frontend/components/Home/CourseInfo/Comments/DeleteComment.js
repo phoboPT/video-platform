@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import { ALL_COMMENTS_QUERY } from "./ListComments";
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import { ALL_COMMENTS_QUERY } from './ListComments';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
-  All_COURSES_RATING
-} from "../../CoursesList/ListAllCourses";
-import { CHECK_RATE_COURSE_QUERY } from "../ViewCourse";
+  All_COURSES_RATING,
+} from '../../CoursesList/ListAllCourses';
+import { CHECK_RATE_COURSE_QUERY } from '../ViewCourse';
 
 const DELETE_COMMENT_MUTATION = gql`
   mutation DELETE_COMMENT_MUTATION($id: ID!) {
@@ -23,7 +23,7 @@ export class DeleteComment extends Component {
     // 1. Read the cache for the comments we want
     const data = cache.readQuery({
       query: ALL_COMMENTS_QUERY,
-      variables: { id: this.props.data.course.id }
+      variables: { id: this.props.data.course.id },
     });
 
     // 2. Filter the deleted itemout of the page
@@ -34,9 +34,10 @@ export class DeleteComment extends Component {
     cache.writeQuery({
       query: ALL_COMMENTS_QUERY,
       data,
-      variables: { id: this.props.data.course.id }
+      variables: { id: this.props.data.course.id },
     });
   };
+
   render() {
     console.log(this.props.data.course.id);
     return (
@@ -45,39 +46,39 @@ export class DeleteComment extends Component {
         variables={{ id: this.props.data.id }}
         update={this.update}
         optimisticResponse={{
-          __typename: "Mutation",
+          __typename: 'Mutation',
           deleteRateCourse: {
-            __typename: "RateCourse",
-            id: this.props.data.id
-          }
+            __typename: 'RateCourse',
+            id: this.props.data.id,
+          },
         }}
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
-            variables: { published: "PUBLISHED", skip: 0 }
+            variables: { published: 'PUBLISHED', skip: 0 },
           },
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: "PUBLISHED", skip: 0 }
+            variables: { published: 'PUBLISHED', skip: 0 },
           },
           {
             query: ALL_COURSE_INTERESTS,
-            variables: { published: "PUBLISHED", skip: 0 }
+            variables: { published: 'PUBLISHED', skip: 0 },
           },
           {
             query: CHECK_RATE_COURSE_QUERY,
-            variables: { courseId: this.props.data.course.id }
+            variables: { courseId: this.props.data.course.id },
           },
           {
             query: All_COURSES_RATING,
-            variables: { published: "PUBLISHED", skip: 0 }
-          }
+            variables: { published: 'PUBLISHED', skip: 0 },
+          },
         ]}
       >
         {(deleteRateCourse, { error }) => (
           <button
             onClick={() => {
-              if (confirm("Are you sure you want to delete your comment?")) {
+              if (confirm('Are you sure you want to delete your comment?')) {
                 deleteRateCourse();
               }
             }}

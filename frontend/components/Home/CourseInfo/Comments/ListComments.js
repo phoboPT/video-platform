@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import CommentItem from "./CommentItem";
-import styled from "styled-components";
-import { Container } from "../../../styles/Home";
+import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import styled from 'styled-components';
+import CommentItem from './CommentItem';
+import { Container } from '../../../styles/Home';
 
 const ALL_COMMENTS_QUERY = gql`
   query ALL_COMMENTS_QUERY($id: ID!) {
@@ -54,9 +54,9 @@ function scrollFunction() {
       document.body.scrollTop > 600 ||
       document.documentElement.scrollTop > 600
     ) {
-      document.getElementById("myBtn").style.display = "block";
+      document.getElementById('myBtn').style.display = 'block';
     } else {
-      document.getElementById("myBtn").style.display = "none";
+      document.getElementById('myBtn').style.display = 'none';
     }
   } catch {}
 }

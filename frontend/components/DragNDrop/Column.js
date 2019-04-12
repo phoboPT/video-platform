@@ -1,7 +1,8 @@
-import React, { Component } from "react";
-import { Droppable } from "react-beautiful-dnd";
-import styled from "styled-components";
-import Task from "./Video";
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
+import Video from './Video';
 
 const Container = styled.div`
   margin: auto;
@@ -14,78 +15,97 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h3`
-  padding: 8px;
-`;
 const TaskList = styled.div`
   padding: 8px;
   transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDraggingOver ? "skyblue" : "white")};
+  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
   min-height: 100px;
 `;
-export class Column extends Component {
-  state = { disabled: false, title: this.props.section.title };
+class Column extends Component {
+  constructor(props) {
+    super(props);
+    const { section } = props;
+
+    this.state = { disabled: false, title: section.title };
+  }
 
   changeState = e => {
+    const { handleChange, section } = this.props;
+    const { title } = this.state;
     const { name, type, value } = e.target;
-    const val = type === "number" ? parseFloat(value) : value;
+    const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
 
-    this.props.handleChange(this.state.title, this.props.section.id);
+    handleChange(title, section.id);
   };
 
   disableInput = () => {
-    this.setState({ disabled: !this.state.disabled });
+    const { disabled } = this.state;
+    this.setState({ disabled: !disabled });
   };
 
   render() {
+    const { disabled, title } = this.state;
+    const { addVideo, handleVideo, section, videos, index } = this.props;
     return (
-      <Container>
-        <label htmlFor="Title">
-          <input
-            disabled={this.state.disabled}
-            name="title"
-            onBlur={() => this.disableInput()}
-            onChange={this.changeState}
-            placeholder="Section"
-            required
-            type="text"
-            value={this.state.title}
-          />
-          <button onClick={this.disableInput}>✏️</button>
-        </label>
-
-        <Droppable droppableId={this.props.section.id}>
-          {(provided, snapshot) => (
-            <>
-              <TaskList
-                innerRef={provided.innerRef}
-                {...provided.droppableProps}
-                isDraggingOver={snapshot.isDraggingOver}
-              >
-                <button onClick={() => this.props.addVideo(this.props.section)}>
-                  + Add Video
+      <Draggable draggableId={section.id} index={index}>
+        {provided => (
+          <Container {...provided.draggableProps} innerRef={provided.innerRef}>
+            <div {...provided.dragHandleProps}>
+              <label htmlFor="Title">
+                <input
+                  disabled={disabled}
+                  name="title"
+                  onBlur={() => this.disableInput()}
+                  onChange={this.changeState}
+                  placeholder="Section"
+                  required
+                  type="text"
+                  value={title}
+                />
+                <button onClick={this.disableInput} type="button">
+                  ✏️
                 </button>
-                {this.props.videos &&
-                  this.props.videos.map((video, index) => (
-                    <>
-                      {console.log("video", video)}
-                      <Task
-                        index={index}
-                        key={video.id}
-                        video={video}
-                        handleVideo={this.props.handleVideo}
-                      />
-                    </>
-                  ))}
-                {provided.placeholder}
-              </TaskList>
-            </>
-          )}
-        </Droppable>
-      </Container>
+              </label>
+            </div>
+            <Droppable droppableId={section.id} type="video">
+              {(provided, snapshot) => (
+                <>
+                  <TaskList
+                    innerRef={provided.innerRef}
+                    {...provided.droppableProps}
+                    isDraggingOver={snapshot.isDraggingOver}
+                  >
+                    <button type="button" onClick={() => addVideo(section)}>
+                      + Add Video
+                    </button>
+                    {videos &&
+                      videos.map((video, index) => (
+                        <Video
+                          index={index}
+                          key={video.id}
+                          video={video}
+                          handleVideo={handleVideo}
+                        />
+                      ))}
+                    {provided.placeholder}
+                  </TaskList>
+                </>
+              )}
+            </Droppable>
+          </Container>
+        )}
+      </Draggable>
     );
   }
 }
+
+Column.propTypes = {
+  addVideo: PropTypes.func.isRequired,
+  handleVideo: PropTypes.func.isRequired,
+  section: PropTypes.object.isRequired,
+  videos: PropTypes.array.isRequired,
+  handleChange: PropTypes.func.isRequired,
+};
 
 export default Column;

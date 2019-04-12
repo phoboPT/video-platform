@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 const loading = keyframes`
   from {
@@ -36,7 +36,7 @@ const Form = styled.form`
     }
   }
   button,
-  input[type="submit"] {
+  input[type='submit'] {
     width: auto;
     background: red;
     color: white;
@@ -54,7 +54,7 @@ const Form = styled.form`
       opacity: 0.5;
     }
 
-    &[aria-busy="true"]::before {
+    &[aria-busy='true']::before {
       background-size: 50% auto;
       animation: ${loading} 0.5s linear infinite;
     }

@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import PropTypes from "prop-types";
-import { ALL_INTEREST_QUERY } from "./Interest";
+import React, { Component } from 'react';
+import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import { ALL_INTEREST_QUERY } from './Interest';
+
 const REMOVE_TAGS_COURSE = gql`
   mutation REMOVE_TAGS_COURSE($interestId: ID!) {
     removeTargetUser(interestId: $interestId) {

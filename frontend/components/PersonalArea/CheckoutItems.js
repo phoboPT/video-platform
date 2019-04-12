@@ -1,7 +1,7 @@
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import styled from "styled-components";
-import RemoveFromCart from "../Home/Cart/RemoveFromCart";
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import RemoveFromCart from '../Home/Cart/RemoveFromCart';
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -28,26 +28,24 @@ const CartItemStyles = styled.li`
   }
 `;
 
-const CartItem = ({ cartItem }) => {
-  return (
-    <CartItemStyles>
-      <img
-        alt={cartItem.course.title}
-        src={cartItem.course.thumbnail}
-        width="100"
-      />
-      <div className="cart-item-details">
-        <h3>{cartItem.course.title}</h3>
-        <span>{cartItem.course.user.name}</span>
-        <div className="price">
-          <p>{cartItem.course.price} €</p>
-        </div>
+const CartItem = ({ cartItem }) => (
+  <CartItemStyles>
+    <img
+      alt={cartItem.course.title}
+      src={cartItem.course.thumbnail}
+      width="100"
+    />
+    <div className="cart-item-details">
+      <h3>{cartItem.course.title}</h3>
+      <span>{cartItem.course.user.name}</span>
+      <div className="price">
+        <p>{cartItem.course.price} €</p>
       </div>
+    </div>
 
-      <RemoveFromCart id={cartItem.id} />
-    </CartItemStyles>
-  );
-};
+    <RemoveFromCart id={cartItem.id} />
+  </CartItemStyles>
+);
 
 CartItem.propTypes = {
   cartItem: PropTypes.object.isRequired,

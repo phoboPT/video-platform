@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PorpTypes from "prop-types";
-import styled from "styled-components";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import React, { Component } from 'react';
+import PorpTypes from 'prop-types';
+import styled from 'styled-components';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const Dot = styled.div`
   background: ${props => props.theme.red};
@@ -12,7 +12,7 @@ const Dot = styled.div`
   min-width: 3rem;
   margin-left: 1rem;
   font-weight: 100;
-  font-feature-settings: "tnum";
+  font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
 `;
 

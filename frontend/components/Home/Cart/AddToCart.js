@@ -1,7 +1,7 @@
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import { CURRENT_USER_QUERY } from "../../Authentication/User";
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import { CURRENT_USER_QUERY } from '../../Authentication/User';
 
 const ADD_TO_CART_MUTATION = gql`
   mutation addToCart($id: ID!) {
@@ -11,7 +11,7 @@ const ADD_TO_CART_MUTATION = gql`
   }
 `;
 
-export class AddToCart extends Component {
+class AddToCart extends Component {
   render() {
     const { id } = this.props;
     return (
@@ -21,8 +21,8 @@ export class AddToCart extends Component {
         variables={{ id }}
       >
         {(addToCart, { loading }) => (
-          <button disabled={loading} onClick={addToCart}>
-            Add{loading && "ing"} To Cart
+          <button type="button" disabled={loading} onClick={addToCart}>
+            Add{loading && 'ing'} To Cart
           </button>
         )}
       </Mutation>

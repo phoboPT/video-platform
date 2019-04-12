@@ -1,4 +1,4 @@
-import ShowVideo from "../components/VideoManager/ShowVideo";
+import ShowVideo from '../components/VideoManager/ShowVideo';
 
 const Update = ({ query }) => (
   <div>

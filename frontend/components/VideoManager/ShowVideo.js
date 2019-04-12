@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import gql from "graphql-tag";
-import VideoPlayer from "./VideoPlayer";
-import { Query } from "react-apollo";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import styled from 'styled-components';
+import VideoPlayer from './VideoPlayer';
 
 const SINGLE_VIDEO_QUERY = gql`
   query SINGLE_VIDEO_QUERY($id: ID!) {
@@ -22,8 +22,8 @@ const SINGLE_VIDEO_QUERY = gql`
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  "word-wrap": "wrap",
-  padding: "0 1rem",
+  'word-wrap': 'wrap',
+  padding: '0 1rem',
 }));
 
 const Grid = styled.div`
@@ -67,7 +67,7 @@ class ShowVideo extends Component {
                   <p>File: {data.video.file}</p>
                   <State
                     background={
-                      data.video.state === "Published" ? "green" : "red"
+                      data.video.state === 'Published' ? 'green' : 'red'
                     }
                     color="white"
                   >

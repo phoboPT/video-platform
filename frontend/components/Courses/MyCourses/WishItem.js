@@ -1,12 +1,12 @@
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import styled from "styled-components";
-import formatMoney from "../../../lib/formatMoney";
-import BuyFreeButton from "../../Home/BuyFreeButton";
-import AddToCart from "../../Home/Cart/AddToCart";
-import Rating from "../../Home/CourseInfo/Comments/Rating";
-import ItemStyles from "../../styles/ItemStyles";
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import formatMoney from '../../../lib/formatMoney';
+import BuyFreeButton from '../../Home/BuyFreeButton';
+import AddToCart from '../../Home/Cart/AddToCart';
+import Rating from '../../Home/CourseInfo/Comments/Rating';
+import ItemStyles from '../../styles/ItemStyles';
 
 const InfoStyle = styled.p`
   text-align: left;
@@ -31,7 +31,7 @@ export class WishItem extends Component {
         <ItemStyles>
           <Link
             href={{
-              pathname: "/course",
+              pathname: '/course',
               query: { id: course.id },
             }}
           >
@@ -48,10 +48,10 @@ export class WishItem extends Component {
 
           <div className="rating">
             <Rating
-              readOnly={true}
+              readOnly
               initialValue={course.totalRate / course.totalComments}
               totalComments={course.totalComments}
-              showTotal={true}
+              showTotal
             />
           </div>
           <div className="buttonList">

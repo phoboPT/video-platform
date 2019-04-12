@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Query } from "react-apollo";
-import styled from "styled-components";
-import calcTotalPrice from "../../lib/calcTotalPrice";
-import formatMoney from "../../lib/formatMoney";
-import User from "../Authentication/User";
-import Checkout from "./Checkout";
-import CheckoutItems from "./CheckoutItems";
+import React, { Component } from 'react';
+import { Query } from 'react-apollo';
+import styled from 'styled-components';
+import calcTotalPrice from '../../lib/calcTotalPrice';
+import formatMoney from '../../lib/formatMoney';
+import User from '../Authentication/User';
+import Checkout from './Checkout';
+import CheckoutItems from './CheckoutItems';
 
 const Main = styled.div`
   max-width: 1300px;
@@ -63,28 +63,26 @@ export class CheckoutDetails extends Component {
   render() {
     return (
       <User>
-        {({ data: { me } }) => {
-          return (
-            <>
-              <Main>
-                <div className="cartItems">
-                  <h3>Total {me.cart.length} items in your cart </h3>
-                  <div className="items" />
-                  {me.cart.map(item => (
-                    <CheckoutItems cartItem={item} key={item.id} />
-                  ))}
-                </div>
-                <div className="cartDetails">
-                  <span> Total: </span>
-                  <h1>{formatMoney(calcTotalPrice(me.cart))}</h1>
-                  <Checkout>
-                    <Button>Finish purchase</Button>
-                  </Checkout>
-                </div>
-              </Main>
-            </>
-          );
-        }}
+        {({ data: { me } }) => (
+          <>
+            <Main>
+              <div className="cartItems">
+                <h3>Total {me.cart.length} items in your cart </h3>
+                <div className="items" />
+                {me.cart.map(item => (
+                  <CheckoutItems cartItem={item} key={item.id} />
+                ))}
+              </div>
+              <div className="cartDetails">
+                <span> Total: </span>
+                <h1>{formatMoney(calcTotalPrice(me.cart))}</h1>
+                <Checkout>
+                  <Button>Finish purchase</Button>
+                </Checkout>
+              </div>
+            </Main>
+          </>
+        )}
       </User>
     );
   }

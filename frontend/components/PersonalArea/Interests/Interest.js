@@ -1,9 +1,10 @@
-import gql from "graphql-tag";
-import Link from "next/link";
-import React, { Component } from "react";
-import { Mutation, Query } from "react-apollo";
-import styled from "styled-components";
-import InterestItem from "./InterestsItem";
+import gql from 'graphql-tag';
+import Link from 'next/link';
+import React, { Component } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import styled from 'styled-components';
+import InterestItem from './InterestsItem';
+
 const Title = styled.p`
   font-size: 35px;
   font-weight: 400;
@@ -14,7 +15,7 @@ const Title = styled.p`
 const InterestsList = styled.div`
   display: grid;
   grid-template-columns: ${({ view }) =>
-    (view === 0 && "1fr 1fr 1fr") || (view === 1 && "1fr 1fr 1fr 1fr ")};
+    (view === 0 && '1fr 1fr 1fr') || (view === 1 && '1fr 1fr 1fr 1fr ')};
   padding-top: 1.5rem;
   grid-gap: 60px;
   margin: 1.5rem;
@@ -49,8 +50,9 @@ const ALL_INTEREST_QUERY = gql`
 
 class Interest extends Component {
   state = {
-    view: this.props.view
+    view: this.props.view,
   };
+
   render() {
     return (
       <>

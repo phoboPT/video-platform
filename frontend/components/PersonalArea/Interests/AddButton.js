@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import PropTypes from "prop-types";
-import { ALL_INTEREST_QUERY } from "./Interest";
+import React, { Component } from 'react';
+import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import { ALL_INTEREST_QUERY } from './Interest';
 
 const ADD_TAGS_USER = gql`
   mutation ADD_TAGS_USER($interestId: ID!) {
@@ -14,11 +14,11 @@ const ADD_TAGS_USER = gql`
 
 export class AddButton extends Component {
   state = {
-    interestId: this.props.interestId
+    interestId: this.props.interestId,
   };
 
   static propTypes = {
-    interestId: PropTypes.string.isRequired
+    interestId: PropTypes.string.isRequired,
   };
 
   mutate = async mutation => {
@@ -27,6 +27,7 @@ export class AddButton extends Component {
       this.props.changeTrue(res.data.addTargetUser.id);
     }
   };
+
   render() {
     return (
       <Mutation

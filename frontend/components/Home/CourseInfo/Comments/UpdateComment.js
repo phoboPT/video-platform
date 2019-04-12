@@ -1,15 +1,15 @@
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Mutation, Query } from "react-apollo";
-import styled from "styled-components";
-import Error from "../../../Static/ErrorMessage";
-import { ALL_COMMENTS_QUERY } from "./ListComments";
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import styled from 'styled-components';
+import Error from '../../../Static/ErrorMessage';
+import { ALL_COMMENTS_QUERY } from './ListComments';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
-  All_COURSES_RATING
-} from "../../CoursesList/ListAllCourses";
+  All_COURSES_RATING,
+} from '../../CoursesList/ListAllCourses';
 
 const Style = styled.div`
   button {
@@ -74,9 +74,10 @@ const SINGLE_COMMENT_QUERY = gql`
 
 export class UpdateComment extends Component {
   state = { rate: this.props.children.props.initialValue };
+
   handleChange = e => {
     const { name, type, value } = e.target;
-    const val = type === "number" ? parseFloat(value) : value;
+    const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
   };
 
@@ -86,8 +87,8 @@ export class UpdateComment extends Component {
     const res = await updateCommentMutation({
       variables: {
         id: this.props.data.id,
-        ...this.state
-      }
+        ...this.state,
+      },
     });
   };
 
@@ -102,20 +103,20 @@ export class UpdateComment extends Component {
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
-            variables: { published: "PUBLISHED", skip: 0 }
+            variables: { published: 'PUBLISHED', skip: 0 },
           },
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: "PUBLISHED", skip: 0 }
+            variables: { published: 'PUBLISHED', skip: 0 },
           },
           {
             query: ALL_COURSE_INTERESTS,
-            variables: { published: "PUBLISHED", skip: 0 }
+            variables: { published: 'PUBLISHED', skip: 0 },
           },
           {
             query: All_COURSES_RATING,
-            variables: { published: "PUBLISHED", skip: 0 }
-          }
+            variables: { published: 'PUBLISHED', skip: 0 },
+          },
         ]}
       >
         {({ data, loading }) => {
@@ -127,8 +128,8 @@ export class UpdateComment extends Component {
                 refetchQueries={[
                   {
                     query: ALL_COMMENTS_QUERY,
-                    variables: { id: data.rateCourse.course.id }
-                  }
+                    variables: { id: data.rateCourse.course.id },
+                  },
                 ]}
               >
                 {(updateCommentMutation, { error, loading }) => (

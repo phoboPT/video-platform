@@ -1,5 +1,5 @@
 export default function orderCourses(course) {
-  var final = [];
+  const final = [];
 
   course.map(element => {
     final.push(element);

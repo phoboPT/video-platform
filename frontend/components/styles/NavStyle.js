@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const NavStyle = styled.ul`
   margin: 0;
@@ -27,7 +27,7 @@ const NavStyle = styled.ul`
     &:after {
       height: 2px;
       background: red;
-      content: "";
+      content: '';
       width: 0;
       position: absolute;
       transform: translateX(-50%);

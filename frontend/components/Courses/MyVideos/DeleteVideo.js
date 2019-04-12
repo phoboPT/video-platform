@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import { ALL_VIDEOS_USER } from "./Videos";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import styled from 'styled-components';
+import { ALL_VIDEOS_USER } from './Videos';
 
 const DELETE_VIDEO_MUTATION = gql`
   mutation DELETE_VIDEO_MUTATION($id: ID!) {
@@ -18,14 +18,14 @@ const ButtonStyle = styled.button`
 
 export class DeleteVideo extends Component {
   update = (cache, payload) => {
-    //manually update the cache to reflet changes
-    //Read cache for the Videos
+    // manually update the cache to reflet changes
+    // Read cache for the Videos
     const data = cache.readQuery({ query: ALL_VIDEOS_USER });
-    //Filter the selected video
+    // Filter the selected video
     data.videosUser = data.videosUser.filter(
       video => video.id !== payload.data.deleteVideo.id
     );
-    //Put the video back
+    // Put the video back
     cache.writeQuery({ query: ALL_VIDEOS_USER, data });
   };
 
@@ -40,7 +40,7 @@ export class DeleteVideo extends Component {
           {(deleteVideo, { error, loading }) => (
             <ButtonStyle
               onClick={() => {
-                if (confirm("Are you sure you want to delete this Video?")) {
+                if (confirm('Are you sure you want to delete this Video?')) {
                   deleteVideo();
                 }
               }}

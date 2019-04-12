@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import User from "./User";
-import Interest from "../PersonalArea/Interests/Interest";
-import styled from "styled-components";
-import Router from "next/router";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import Router from 'next/router';
+import User from './User';
+import Interest from '../PersonalArea/Interests/Interest';
 
 const Container = styled.div`
   max-width: ${props => props.theme.maxWidth};
@@ -55,7 +55,7 @@ export class Interests extends Component {
     return (
       <User>
         {({ data: { me } }) => {
-          if (!me) return "You Need to be signed In";
+          if (!me) return 'You Need to be signed In';
 
           return (
             <Container>
@@ -70,7 +70,7 @@ export class Interests extends Component {
                 onClick={async e => {
                   e.preventDefault();
                   Router.push({
-                    pathname: "/"
+                    pathname: '/',
                   });
                 }}
               >

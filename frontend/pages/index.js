@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Query } from "react-apollo";
-import User from "../components/Authentication/User";
-import ListAllCourses from "../components/Home/CoursesList/ListAllCourses";
-import { RENDER_QUERY } from "../components/Home/CoursesList/ListAllCourses";
-import Search from "../components/Home/SearchCourse";
+import React, { Component } from 'react';
+import User from '../components/Authentication/User';
+import ListAllCourses, {
+  RENDER_QUERY,
+} from '../components/Home/CoursesList/ListAllCourses';
+import Search from '../components/Home/SearchCourse';
 
 export class Home extends Component {
   render() {

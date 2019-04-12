@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
-import Form from "../styles/Form";
-import Error from "../Static/ErrorMessage";
-import PropTypes from "prop-types";
-import { CURRENT_USER_QUERY } from "./User";
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import Error from '../Static/ErrorMessage';
+import Form from '../styles/Form';
+import { CURRENT_USER_QUERY } from './User';
 
 const RESET_MUTATION = gql`
   mutation RESET_MUTATION(
@@ -28,56 +28,59 @@ class Reset extends Component {
   static propTypes = {
     resetToken: PropTypes.string.isRequired,
   };
+
   state = {
-    password: "",
-    confirmPassword: "",
+    confirmPassword: '',
+    password: '',
   };
+
   saveToState = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
   render() {
     return (
       <Mutation
         mutation={RESET_MUTATION}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
         variables={{
           resetToken: this.props.resetToken,
           password: this.state.password,
           confirmPassword: this.state.confirmPassword,
         }}
-        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
       >
-        {(reset, { error, loading, called }) => (
+        {(reset, { called, error, loading }) => (
           <Form
             method="post"
             onSubmit={async e => {
               e.preventDefault();
               await reset();
-              this.setState({ password: "", confirmPassword: "" });
+              this.setState({ password: '', confirmPassword: '' });
             }}
           >
-            <fieldset disabled={loading} aria-busy={loading}>
+            <fieldset aria-busy={loading} disabled={loading}>
               <h2>Reset your password</h2>
               <Error error={error} />
 
               <label htmlFor="password">
                 Password
                 <input
-                  type="password"
                   name="password"
-                  placeholder="password"
-                  value={this.state.password}
                   onChange={this.saveToState}
+                  placeholder="password"
+                  type="password"
+                  value={this.state.password}
                 />
               </label>
 
               <label htmlFor="confirmPassword">
                 Confirm Your Password
                 <input
-                  type="password"
                   name="confirmPassword"
-                  placeholder="confirmPassword"
-                  value={this.state.confirmPassword}
                   onChange={this.saveToState}
+                  placeholder="confirmPassword"
+                  type="password"
+                  value={this.state.confirmPassword}
                 />
               </label>
               <button type="submit">Confirm</button>

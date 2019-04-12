@@ -1,4 +1,4 @@
-import Reset from "../components/Authentication/Reset";
+import Reset from '../components/Authentication/Reset';
 
 const ResetPage = props => (
   <div>

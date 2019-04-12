@@ -1,10 +1,10 @@
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import styled from "styled-components";
-import formatDate from "../../../lib/formatDate";
-import formatString from "../../../lib/formatString";
-import ItemStyles from "../../styles/ItemStyles";
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import formatDate from '../../../lib/formatDate';
+import formatString from '../../../lib/formatString';
+import ItemStyles from '../../styles/ItemStyles';
 
 const Div = styled.div`
   padding: none;
@@ -27,14 +27,15 @@ const Div = styled.div`
 const State = styled.strong(props => ({
   background: props.background,
   color: props.color,
-  padding: "0 0,5rem"
+  padding: '0 0,5rem',
 }));
 
 class ListCourses extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
-    update: PropTypes.bool.isRequired
+    update: PropTypes.bool.isRequired,
   };
+
   render() {
     const { course } = this.props;
 
@@ -44,8 +45,8 @@ class ListCourses extends Component {
           {this.props.update ? (
             <Link
               href={{
-                pathname: "/updateCourse",
-                query: { id: course.id }
+                pathname: '/updateCourse',
+                query: { id: course.id },
               }}
             >
               <img src={course.thumbnail} />
@@ -53,8 +54,8 @@ class ListCourses extends Component {
           ) : (
             <Link
               href={{
-                pathname: "/course",
-                query: { id: course.id }
+                pathname: '/course',
+                query: { id: course.id },
               }}
             >
               <img src={course.thumbnail} />
@@ -72,7 +73,7 @@ class ListCourses extends Component {
             <span>
               State:
               <State
-                background={course.state === "Published" ? "green" : "red"}
+                background={course.state === 'Published' ? 'green' : 'red'}
                 color="white"
                 id="state"
               >
@@ -81,6 +82,7 @@ class ListCourses extends Component {
             </span>
           )}
           <span>
+            <p>hi</p>
             Created at:
             <State id="createdAt">{formatDate(course.createdAt)}</State>
           </span>

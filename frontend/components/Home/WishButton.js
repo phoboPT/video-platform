@@ -1,13 +1,13 @@
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import styled from "styled-components";
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import styled from 'styled-components';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
-  All_COURSES_RATING
-} from "./CoursesList/ListAllCourses";
+  ALL_COURSES_RATING,
+} from './CoursesList/ListAllCourses';
 
 const ADD_TO_WISHLIST_MUTATION = gql`
   mutation ADD_TO_WISHLIST_MUTATION($id: ID!) {
@@ -69,65 +69,63 @@ const Img = styled.div`
 export class AddToWish extends Component {
   state = {
     ...this.props.data.user,
-    courseId: this.props.id
+    courseId: this.props.id,
   };
 
   changeClass = async mutation => {
-    this.setState({ class: "animate" });
+    this.setState({ className: 'animate' });
     const res = await mutation();
-    this.setState({ classButton: "added" });
-    if (res) {
-    }
+    this.setState({ classButton: 'added' });
   };
 
   render() {
-    const { data } = this.props;
+    const { data, skip } = this.props;
+    const { className } = this.state;
     return (
       <Mutation
         mutation={ADD_TO_WISHLIST_MUTATION}
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
-            variables: { published: "PUBLISHED", skip: data.skip }
+            variables: { published: 'PUBLISHED', skip: data.skip },
           },
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: "PUBLISHED", skip: data.skip }
+            variables: { published: 'PUBLISHED', skip: data.skip },
           },
           {
             query: ALL_COURSE_INTERESTS,
-            variables: { published: "PUBLISHED", skip: data.skip }
+            variables: { published: 'PUBLISHED', skip: data.skip },
           },
           {
-            query: All_COURSES_RATING,
-            variables: { published: "PUBLISHED", skip: data.skip }
-          }
+            query: ALL_COURSES_RATING,
+            variables: { published: 'PUBLISHED', skip: data.skip },
+          },
         ]}
         variables={{
           id: data.id,
-          published: "PUBLISHED",
-          skip: this.props.skip
+          published: 'PUBLISHED',
+          skip,
         }}
       >
-        {(addToWish, { loading }) => {
-          return (
-            <Img>
-              <button
-                className={this.props.data.wished ? "added" : ""}
-                disabled={loading}
-                id="search-button"
-                onClick={() => this.changeClass(addToWish)}
-              >
-                <svg className={this.state.class} viewBox="0 0 32 32">
-                  <path
-                    d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+        {(addToWish, { loading }) => (
+          <Img>
+            <button
+              type="button"
+              className={data.wished ? 'added' : ''}
+              disabled={loading}
+              id="search-button"
+              onClick={() => this.changeClass(addToWish)}
+            >
+              <svg className={className} viewBox="0 0 32 32">
+                <path
+                  d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
                         c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"
-                  />
-                </svg>
-              </button>
-            </Img>
-          );
-        }}
+                />
+              </svg>
+            </button>
+          </Img>
+        )}
       </Mutation>
     );
   }

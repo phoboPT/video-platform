@@ -1,13 +1,13 @@
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Query } from "react-apollo";
-import styled from "styled-components";
-import orderCourse from "../../../lib/orderCourses";
-import ItemList from "../../styles/ItemList";
-import CourseItem from "./CourseItem";
-import FilterAuthor from "./Filters/FilterAuthor";
-import FilterCategory from "./Filters/FilterCategory";
-import Wishlist from "./Wishlist";
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Query } from 'react-apollo';
+import styled from 'styled-components';
+import orderCourse from '../../../lib/orderCourses';
+import ItemList from '../../styles/ItemList';
+import CourseItem from './CourseItem';
+import FilterAuthor from './Filters/FilterAuthor';
+import FilterCategory from './Filters/FilterCategory';
+import Wishlist from './Wishlist';
 
 const COURSES_FILTER_QUERY = gql`
   query COURSES_FILTER_QUERY($category: ID, $author: ID) {
@@ -85,8 +85,8 @@ const Container = styled.div`
 
 class UserCourses extends Component {
   state = {
-    author: "a",
-    category: "a",
+    author: 'a',
+    category: 'a',
     isDisabled: true,
     view: 1,
   };
@@ -98,17 +98,18 @@ class UserCourses extends Component {
   changeCategory = categoryId => {
     this.setState({ category: categoryId, isDisabled: false });
   };
+
   changeAuthor = authorId => {
     this.setState({ author: authorId, isDisabled: false });
   };
 
   reset = e => {
-    let selectBoxcategory = document.getElementById("category");
-    selectBoxcategory.value = "a";
+    const selectBoxcategory = document.getElementById('category');
+    selectBoxcategory.value = 'a';
 
-    let selectBoxauthor = document.getElementById("author");
-    selectBoxauthor.value = "a";
-    this.setState({ author: "a", category: "a", isDisabled: true });
+    const selectBoxauthor = document.getElementById('author');
+    selectBoxauthor.value = 'a';
+    this.setState({ author: 'a', category: 'a', isDisabled: true });
   };
 
   render() {
@@ -142,11 +143,11 @@ class UserCourses extends Component {
                       <div id="flex">
                         <FilterCategory
                           changeCategory={this.changeCategory}
-                          state={"a"}
+                          state="a"
                         />
                         <FilterAuthor
                           changeAuthor={this.changeAuthor}
-                          state={"a"}
+                          state="a"
                         />
                         <button
                           disabled={this.state.isDisabled}
@@ -157,15 +158,13 @@ class UserCourses extends Component {
                         </button>
                       </div>
                       <ItemList>
-                        {courses.map(course => {
-                          return (
-                            <CourseItem
-                              course={course.course}
-                              key={course.course.id}
-                              update={false}
-                            />
-                          );
-                        })}
+                        {courses.map(course => (
+                          <CourseItem
+                            course={course.course}
+                            key={course.course.id}
+                            update={false}
+                          />
+                        ))}
                       </ItemList>
                     </Container>
                   ))}

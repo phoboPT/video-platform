@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import Index from "../DragNDrop/Index";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import Index from '../DragNDrop/Index';
 
 const Container = styled.div`
   margin: 1rem;

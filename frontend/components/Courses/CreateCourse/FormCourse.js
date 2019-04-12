@@ -1,17 +1,17 @@
-import { convertToRaw, EditorState } from "draft-js";
-import draftToHtml from "draftjs-to-html";
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Mutation, Query } from "react-apollo";
-import Editor from "../Editor";
+import { convertToRaw, EditorState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import styled from 'styled-components';
+import Link from 'next/link';
+import Editor from '../Editor';
 // import ReactQuill from "react-quill";
-import styled from "styled-components";
-import Error from "../../Static/ErrorMessage";
-import Form from "../../styles/Form";
-import Published from "../CourseState/Published";
-import Unpublished from "../CourseState/Unpublished";
-import { CURRENT_COURSES_QUERY } from "../MyCourses/MyCourses";
-import Link from "next/link";
+import Error from '../../Static/ErrorMessage';
+import Form from '../../styles/Form';
+import Published from '../CourseState/Published';
+import Unpublished from '../CourseState/Unpublished';
+import { CURRENT_COURSES_QUERY } from '../MyCourses/MyCourses';
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -51,7 +51,7 @@ const Container = styled.div`
     text-align: left;
   }
   button,
-  input[type="submit"] {
+  input[type='submit'] {
     width: auto;
     background: red;
     color: white;
@@ -112,49 +112,52 @@ const Back = styled.div`
 
 class FormCourse extends Component {
   state = {
-    category: "",
-    description: "",
+    category: '',
+    description: '',
     editorState: EditorState.createEmpty(),
     isDisabled: true,
     price: 0,
     published: false,
-    state: "UNPUBLISHED",
-    target: "",
-    thumbnail: "",
-    title: "",
-    unpublished: true
+    state: 'UNPUBLISHED',
+    target: '',
+    thumbnail: '',
+    title: '',
+    unpublished: true,
   };
 
   saveState = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
   changePublished = e => {
+    const { unpublished, published } = this.state;
     this.setState({
-      published: !this.state.published,
-      state: "PUBLISHED",
-      unpublished: !this.state.unpublished
+      published: !published,
+      state: 'PUBLISHED',
+      unpublished: !unpublished,
     });
   };
 
   changeUnpublished = e => {
+    const { unpublished, published } = this.state;
     this.setState({
-      published: !this.state.published,
-      state: "UNPUBLISHED",
-      unpublished: !this.state.unpublished
+      published: !published,
+      state: 'UNPUBLISHED',
+      unpublished: !unpublished,
     });
   };
 
   uploadThumbnail = async e => {
     this.setState({ isDisabled: true });
-    const files = e.target.files;
+    const { files } = e.target;
 
     const data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "thumbnail");
+    data.append('file', files[0]);
+    data.append('upload_preset', 'thumbnail');
 
     const res = await fetch(
-      "https://api.cloudinary.com/v1_1/deky2cxlm/image/upload",
-      { method: "POST", body: data }
+      'https://api.cloudinary.com/v1_1/deky2cxlm/image/upload',
+      { method: 'POST', body: data }
     );
 
     const file = await res.json();
@@ -163,25 +166,35 @@ class FormCourse extends Component {
 
   onEditorStateChange = editorState => {
     this.setState({
-      editorState
+      editorState,
     });
     this.setState({
-      description: draftToHtml(convertToRaw(editorState.getCurrentContent()))
+      description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
     });
   };
 
   changeQuill = value => {
     this.setState({ description: value, text: value });
   };
+
   handleChange = e => {
     this.setState({ category: e.target.value });
   };
 
   render() {
+    const { changeView, saveToState } = this.props;
+    const {
+      thumbnail,
+      published,
+      unpublished,
+      description,
+      category,
+      isDisabled,
+    } = this.state;
     return (
       <>
         <Back>
-          <button onClick={() => this.props.changeView(1)}>
+          <button type="button" onClick={() => changeView(1)}>
             <a>⬅ Go Back</a>
           </button>
         </Back>
@@ -204,7 +217,7 @@ class FormCourse extends Component {
                         onSubmit={async e => {
                           e.preventDefault();
                           const res = await createCourse();
-                          this.props.saveToState(res);
+                          saveToState(res);
                         }}
                       >
                         <Error error={error} />
@@ -215,7 +228,7 @@ class FormCourse extends Component {
                             <input
                               type="text"
                               name="title"
-                              placeholder="Awsome "
+                              placeholder="Awsome"
                               value={this.title}
                               onChange={this.saveState}
                               required
@@ -226,7 +239,7 @@ class FormCourse extends Component {
                             Description
                             <div className="description">
                               <Editor
-                                data={this.state.description}
+                                data={description}
                                 changeQuill={this.changeQuill}
                               />
                               {/* <ReactQuill onChange={this.changeQuill} /> */}
@@ -236,11 +249,11 @@ class FormCourse extends Component {
                             Course Status
                             <div id="courseState">
                               <Published
-                                published={this.state.published}
+                                published={published}
                                 changePublished={this.changePublished}
                               />
                               <Unpublished
-                                unpublished={this.state.unpublished}
+                                unpublished={unpublished}
                                 changeUnpublished={this.changeUnpublished}
                               />
                             </div>
@@ -256,9 +269,9 @@ class FormCourse extends Component {
                               required
                             />
                           </label>
-                          {this.state.thumbnail && (
+                          {thumbnail && (
                             <img
-                              src={this.state.thumbnail}
+                              src={thumbnail}
                               alt="Upload Preview"
                               width="200"
                             />
@@ -277,7 +290,7 @@ class FormCourse extends Component {
                             />
                           </label>
                           <label htmlFor="category">Category</label>
-                          {this.state.category === "" ? (
+                          {category === '' ? (
                             this.setState({ category: data.categories[0].id })
                           ) : (
                             <></>
@@ -296,7 +309,8 @@ class FormCourse extends Component {
                           <br />
                           <br />
                           <button
-                            disabled={this.state.isDisabled}
+                            type="button"
+                            disabled={isDisabled}
                             className="button-next"
                           >
                             Next

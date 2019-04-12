@@ -1,10 +1,10 @@
-import gql from "graphql-tag";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import styled from "styled-components";
-import { CURRENT_USER_QUERY } from "../../../Authentication/User";
-import { SINGLE_COURSE_QUERY } from "./Update";
+import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import styled from 'styled-components';
+import { CURRENT_USER_QUERY } from '../../../Authentication/User';
+import { SINGLE_COURSE_QUERY } from './Update';
 
 const REMOVE_VIDEO_COURSE = gql`
   mutation REMOVE_VIDEO_COURSE($id: ID!, $courseId: ID!) {
@@ -43,6 +43,7 @@ const ButtonStyle = styled.button`
 
 class RemoveVideoButton extends Component {
   state = this.props.state;
+
   render() {
     const { id } = this.props;
     const { courseId } = this.props;
@@ -60,7 +61,7 @@ class RemoveVideoButton extends Component {
       >
         {(removeFromCourse, { loading }) => (
           <ButtonStyle disabled={loading} onClick={removeFromCourse}>
-            Remov{loading ? "ing" : "e"}
+            Remov{loading ? 'ing' : 'e'}
           </ButtonStyle>
         )}
       </Mutation>

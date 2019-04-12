@@ -1,11 +1,11 @@
-import gql from "graphql-tag";
-import React, { Component } from "react";
-import { Mutation, Query } from "react-apollo";
-import { perPageCourse } from "../../../config";
-import { Container, CoursesList, Title } from "../../styles/Home";
-import CourseItem from "./CourseItem";
-import CourseItemNoUser from "./CourseItemNoUser";
-import Pagination from "./Pagination";
+import gql from 'graphql-tag';
+import React, { Component } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import { perPageCourse } from '../../../config';
+import { Container, CoursesList, Title } from '../../styles/Home';
+import CourseItem from './CourseItem';
+import CourseItemNoUser from './CourseItemNoUser';
+import Pagination from './Pagination';
 
 const RENDER_QUERY = gql`
   query RENDER_QUERY {
@@ -72,7 +72,7 @@ const ALL_COURSES_ORDERED_NOUSER = gql`
       }
     }
 `;
-//orderby query
+// orderby query
 
 const ALL_COURSES_ORDERED = gql`
   query ALL_COURSES_ORDERED($skip: Int = 0, $first: Int = ${perPageCourse} $orderBy: String = "createdAt_DESC") {
@@ -93,7 +93,7 @@ totalRate
       }
     }
 `;
-//interests query
+// interests query
 const ALL_COURSE_INTERESTS = gql`
   query ALL_COURSE_INTERESTS($skip: Int = 0, $first: Int = ${perPageCourse} ) {
     coursesUserInterestList(first: $first, skip: $skip ) {
@@ -115,8 +115,8 @@ const ALL_COURSE_INTERESTS = gql`
   }
 `;
 
-const All_COURSES_RATING = gql`
-  query All_COURSES_RATING($skip: Int = 0, $first: Int = ${perPageCourse} ) {
+const ALL_COURSES_RATING = gql`
+  query ALL_COURSES_RATING($skip: Int = 0, $first: Int = ${perPageCourse} ) {
     coursesRating(first: $first, skip: $skip ) {
       id
       title
@@ -136,48 +136,48 @@ const All_COURSES_RATING = gql`
   }
 `;
 
-export class ListAllCourses extends Component {
+class ListAllCourses extends Component {
   componentWillMount() {
     switch (this.props.query) {
-      case "ALL_COURSE_INTERESTS": {
+      case 'ALL_COURSE_INTERESTS': {
         this.setState({
           query: ALL_COURSE_INTERESTS,
-          title: "You May be Interested In..."
+          title: 'You May be Interested In...',
         });
         break;
       }
-      case "ALL_COURSES_NOUSER": {
+      case 'ALL_COURSES_NOUSER': {
         this.setState({
           query: ALL_COURSES_NOUSER,
-          title: "All Courses"
+          title: 'All Courses',
         });
         break;
       }
-      case "ALL_COURSES_ORDERED_NOUSER": {
+      case 'ALL_COURSES_ORDERED_NOUSER': {
         this.setState({
           query: ALL_COURSES_ORDERED_NOUSER,
-          title: "More Recent"
+          title: 'More Recent',
         });
         break;
       }
-      case "ALL_COURSES_ORDERED": {
+      case 'ALL_COURSES_ORDERED': {
         this.setState({
           query: ALL_COURSES_ORDERED,
-          title: "More Recent"
+          title: 'More Recent',
         });
         break;
       }
-      case "ALL_COURSES_QUERY": {
+      case 'ALL_COURSES_QUERY': {
         this.setState({
           query: ALL_COURSES_QUERY,
-          title: "All Courses "
+          title: 'All Courses ',
         });
         break;
       }
-      case "All_COURSES_RATING": {
+      case 'ALL_COURSES_RATING': {
         this.setState({
-          query: All_COURSES_RATING,
-          title: "Most Popular"
+          query: ALL_COURSES_RATING,
+          title: 'Most Popular',
         });
         break;
       }
@@ -188,33 +188,33 @@ export class ListAllCourses extends Component {
       }
     }
   }
+
   state = {
-    classe: "",
-    count: 0,
+    classe: '',
     page: 1,
     query: ALL_COURSES_QUERY,
-    title: ""
+    title: '',
   };
 
   animationSliderControlForward = () => {
-    this.setState({ classe: "animation" });
+    this.setState({ classe: 'animation' });
     setTimeout(() => {
       this.setState({ page: this.state.page + 1 });
     }, 600);
 
     setTimeout(() => {
-      this.setState({ classe: "" });
+      this.setState({ classe: '' });
     }, 1000);
   };
 
   animationSliderControlBackward = () => {
-    this.setState({ classe: "animation" });
+    this.setState({ classe: 'animation' });
     setTimeout(() => {
       this.setState({ page: this.state.page - 1 });
     }, 600);
 
     setTimeout(() => {
-      this.setState({ classe: "" });
+      this.setState({ classe: '' });
     }, 1000);
   };
 
@@ -224,8 +224,8 @@ export class ListAllCourses extends Component {
         <Query
           query={this.state.query}
           variables={{
-            published: "PUBLISHED",
-            skip: this.state.page * perPageCourse - perPageCourse
+            published: 'PUBLISHED',
+            skip: this.state.page * perPageCourse - perPageCourse,
           }}
         >
           {({ data, error, loading }) => {
@@ -324,7 +324,7 @@ export class ListAllCourses extends Component {
                         animationSliderControlBackward={
                           this.animationSliderControlBackward
                         }
-                        isInterest={true}
+                        isInterest
                         count={
                           data.coursesUserInterestList
                             ? data.coursesUserInterestList[0].count
@@ -376,6 +376,6 @@ export {
   ALL_COURSES_ORDERED,
   ALL_COURSES_ORDERED_NOUSER,
   ALL_COURSES_QUERY,
-  All_COURSES_RATING,
-  RENDER_QUERY
+  ALL_COURSES_RATING,
+  RENDER_QUERY,
 };

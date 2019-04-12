@@ -1,17 +1,17 @@
-import gql from "graphql-tag";
-import Router from "next/router";
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import { ALL_VIDEOS_USER } from "..//Courses/MyVideos/Videos";
-import { CURRENT_USER_QUERY } from "../Authentication/User";
-import { CURRENT_COURSES_QUERY } from "../Courses/MyCourses/MyCourses";
+import gql from 'graphql-tag';
+import Router from 'next/router';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import { ALL_VIDEOS_USER } from '../Courses/MyVideos/Videos';
+import { CURRENT_USER_QUERY } from './User';
+import { CURRENT_COURSES_QUERY } from '../Courses/MyCourses/MyCourses';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
-} from "../Home/CoursesList/ListAllCourses";
-import Error from "../Static/ErrorMessage";
-import Form from "../styles/Form";
+} from '../Home/CoursesList/ListAllCourses';
+import Error from '../Static/ErrorMessage';
+import Form from '../styles/Form';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -24,15 +24,17 @@ const SIGNIN_MUTATION = gql`
 
 class Signin extends Component {
   state = {
-    email: "",
+    email: '',
     first: 5,
-    password: "",
-    published: "PUBLISHED",
+    password: '',
+    published: 'PUBLISHED',
     skip: 0,
   };
+
   saveToState = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
   render() {
     return (
       <Mutation
@@ -50,7 +52,7 @@ class Signin extends Component {
           },
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: "PUBLISHED", skip: 0, first: 5 },
+            variables: { published: 'PUBLISHED', skip: 0, first: 5 },
           },
           {
             query: ALL_COURSES_QUERY,
@@ -64,9 +66,9 @@ class Signin extends Component {
             onSubmit={async e => {
               e.preventDefault();
               await signin();
-              this.setState({ name: "", email: "", password: "" });
+              this.setState({ name: '', email: '', password: '' });
               Router.push({
-                pathname: "/",
+                pathname: '/',
               });
             }}
           >

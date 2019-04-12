@@ -1,9 +1,9 @@
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import styled from "styled-components";
-import User from "../../Authentication/User";
-import AddButton from "./AddButton";
-import RemoveButton from "./RemoveButton";
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import User from '../../Authentication/User';
+import AddButton from './AddButton';
+import RemoveButton from './RemoveButton';
 
 const Border = styled.div`
   background: white;
@@ -51,7 +51,7 @@ const Border = styled.div`
 
 class InterestItem extends Component {
   state = {
-    idToDelete: "",
+    idToDelete: '',
     interestId: this.props.interest.id,
     isActive: false,
     userInterest: [this.props.userInterest],
@@ -64,13 +64,15 @@ class InterestItem extends Component {
   changeFalse = e => {
     this.setState({ isActive: false });
   };
+
   changeTrue = e => {
     this.setState({ idToDelete: e, isActive: true });
   };
+
   componentDidMount = () => {
     this.state.userInterest.forEach(item => {
       item.forEach(user => {
-        var found = false;
+        let found = false;
         if (user.interest.id === this.state.interestId) {
           found = true;
           this.setState({ idToDelete: user.id });

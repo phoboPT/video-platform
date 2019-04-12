@@ -1,13 +1,13 @@
-import gql from "graphql-tag";
-import Router from "next/router";
-import NProgress from "nprogress";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import StripeCheckout from "react-stripe-checkout";
-import calcTotalPrice from "../../lib/calcTotalPrice";
-import User, { CURRENT_USER_QUERY } from "../Authentication/User";
-import Error from "../Static/ErrorMessage";
+import gql from 'graphql-tag';
+import Router from 'next/router';
+import NProgress from 'nprogress';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import StripeCheckout from 'react-stripe-checkout';
+import calcTotalPrice from '../../lib/calcTotalPrice';
+import User, { CURRENT_USER_QUERY } from '../Authentication/User';
+import Error from '../Static/ErrorMessage';
 
 const CREATE_ORDER_MUTATION = gql`
   mutation createOrder($token: String!) {
@@ -35,9 +35,10 @@ export class Checkout extends Component {
     });
 
     Router.push({
-      pathname: "/courses",
+      pathname: '/courses',
     });
   };
+
   render() {
     return (
       <User>
