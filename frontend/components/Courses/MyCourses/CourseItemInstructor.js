@@ -57,7 +57,7 @@ const State = styled.strong(props => ({
 class CourseItemInstructor extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
-    update: PropTypes.bool.isRequired
+    
   };
   render() {
     const { course } = this.props;
