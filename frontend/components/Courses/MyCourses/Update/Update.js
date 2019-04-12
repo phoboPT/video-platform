@@ -109,17 +109,13 @@ const Form = styled.div`
   }
 `;
 
-const VideoListStyle = styled.h3`
-  text-align: center;
-`;
-
 class Update extends Component {
   state = {
     alreadyExecuted: false,
     changeThumbnail: false,
-    published: '',
+    published: false,
     state: '',
-    unpublished: '',
+    unpublished: false,
   };
 
   changePublished = e => {

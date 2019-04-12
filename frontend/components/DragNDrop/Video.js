@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -72,5 +73,10 @@ class Video extends Component {
     );
   }
 }
+
+Video.propType = {
+  video: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+};
 
 export default Video;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Button = styled.button`
   margin-right: 5px;
@@ -9,18 +10,25 @@ const Button = styled.button`
     color: white !important;
   }
 `;
-export class Published extends Component {
+class Published extends Component {
   render() {
+    const { changePublished, published } = this.props;
     return (
       <Button
         type="button"
-        onClick={() => this.props.changePublished()}
-        disabled={this.props.published}
+        onClick={() => changePublished()}
+        disabled={published}
       >
-        <img src="../../../../static/rightpublished.png" /> Published
+        <img alt="Published" src="../../../../static/rightpublished.png" />{' '}
+        Published
       </Button>
     );
   }
 }
+
+Published.propTypes = {
+  changePublished: PropTypes.func.isRequired,
+  published: PropTypes.bool.isRequired,
+};
 
 export default Published;

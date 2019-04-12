@@ -1,18 +1,72 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Column from './Column';
 
 const Container = styled.div`
-  margin: 8px;
+  margin: 15px 15px;
   border: 1px solid lightgrey;
   border-radius: 2px;
   max-width: 720px;
+  background-color: grey;
   button {
     margin: 8px;
   }
 `;
 
+class InnerList extends React.Component {
+  static propTypes = {
+    column: PropTypes.array,
+    videosMap: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    section: PropTypes.object.isRequired,
+    addVideo: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleVideo: PropTypes.func.isRequired,
+  };
+
+  shouldComponentUpdate(nextProps) {
+    const { column, videosMap, index } = this.props;
+
+    if (
+      nextProps.column === column &&
+      nextProps.videosMap === videosMap &&
+      nextProps.index === index
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  render() {
+    const {
+      section,
+      videosMap,
+      index,
+      addVideo,
+      handleChange,
+      handleVideo,
+    } = this.props;
+    let videos;
+    if (section.videoIds) {
+      videos = section.videoIds.map(videoId => videosMap[videoId]);
+    }
+    return (
+      <Column
+        addVideo={addVideo}
+        handleChange={handleChange}
+        handleVideo={handleVideo}
+        key={section.id}
+        section={section}
+        videos={videos}
+        index={index}
+      />
+    );
+  }
+}
+
+// eslint-disable-next-line react/no-multi-comp
 class Index extends Component {
   state = { columnOrder: [], sections: {}, videos: {} };
 
@@ -38,8 +92,9 @@ class Index extends Component {
         ...this.state,
         columnOrder: newColumnOrder,
       };
+      this.setState(newState);
+      return;
     }
-
     const start = sections[source.droppableId];
     const finish = sections[destination.droppableId];
     if (start === finish) {
@@ -183,26 +238,20 @@ class Index extends Component {
               >
                 {columnOrder.map((columnId, index) => {
                   const section = sections[columnId];
-                  let video;
-                  if (section.videoIds) {
-                    video = section.videoIds.map(videoId => videos[videoId]);
-                  }
-                  return (
-                    <div key={section.id}>
-                      <Column
-                        addVideo={this.addVideo}
-                        handleChange={this.handleChange}
-                        handleVideo={this.handleVideo}
-                        key={section.id}
-                        section={section}
-                        videos={video}
-                        index={index}
-                      />
 
-                      {provided.placeholder}
-                    </div>
+                  return (
+                    <InnerList
+                      addVideo={this.addVideo}
+                      handleChange={this.handleChange}
+                      handleVideo={this.handleVideo}
+                      key={section.id}
+                      section={section}
+                      videosMap={videos}
+                      index={index}
+                    />
                   );
                 })}
+                {provided.placeholder}
               </Container>
             )}
           </Droppable>
@@ -211,5 +260,14 @@ class Index extends Component {
     );
   }
 }
+
+Index.propTypes = {
+  index: PropTypes.number,
+  videosMap: PropTypes.object,
+  addVideo: PropTypes.func,
+  handleChange: PropTypes.func,
+  handleVideo: PropTypes.func,
+  section: PropTypes.object,
+};
 
 export default Index;
