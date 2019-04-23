@@ -56,7 +56,7 @@ class InnerList extends React.PureComponent {
 class Index extends Component {
   state = { columnOrder: [], sections: {}, videos: {} };
 
-  onDragEnd = result => {
+  onDragEnd = async result => {
     const { destination, draggableId, source, type } = result;
     const { sections, columnOrder } = this.state;
 
@@ -95,7 +95,7 @@ class Index extends Component {
         videoIds: newVideoIds,
       };
 
-      const changeState = {
+      const newState = {
         ...this.state,
         sections: {
           ...sections,
@@ -103,9 +103,10 @@ class Index extends Component {
         },
       };
 
-      this.setState(changeState);
+      this.setState(newState);
       return;
     }
+
     const startVideosIds = Array.from(start.videoIds);
     startVideosIds.splice(source.index, 1);
     const newStart = {
@@ -133,8 +134,9 @@ class Index extends Component {
     this.setState(newState);
   };
 
-  handleChange = (title, sectionId) => {
+  handleChange = async (title, sectionId) => {
     const { sections } = this.state;
+
     const section = sections[sectionId];
     section.title = title;
 
@@ -151,9 +153,9 @@ class Index extends Component {
   handleVideo = async (title, sectionId) => {
     const { videos } = this.state;
     const video = videos[sectionId];
+
     video.content = title;
 
-    console.log('title', title);
     const newState = {
       ...this.state,
       videos: {
@@ -162,11 +164,9 @@ class Index extends Component {
     };
 
     await this.setState(newState);
-
-    console.log('state', newState.videos);
   };
 
-  addSection = () => {
+  addSection = async () => {
     const { sections, columnOrder } = this.state;
     const size = Object.keys(sections).length + 1;
 
@@ -185,11 +185,10 @@ class Index extends Component {
       },
     };
 
-    this.setState(newState);
-    console.log(JSON.stringify(this.state));
+    await this.setState(newState);
   };
 
-  addVideo = e => {
+  addVideo = async e => {
     const { videos, sections } = this.state;
     const sizeVideos = Object.keys(videos).length + 1;
 
@@ -199,6 +198,7 @@ class Index extends Component {
     };
 
     e.videoIds.push(`video-${sizeVideos}`);
+
     const newState = {
       ...this.state,
       sections: {
@@ -210,7 +210,7 @@ class Index extends Component {
       },
     };
 
-    this.setState(newState);
+    await this.setState(newState);
   };
 
   render() {
@@ -263,6 +263,7 @@ Index.propTypes = {
   handleChange: PropTypes.func,
   handleVideo: PropTypes.func,
   section: PropTypes.object,
+  sections: PropTypes.object,
 };
 
 export default Index;

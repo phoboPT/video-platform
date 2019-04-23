@@ -94,7 +94,7 @@ const Mutations = {
       id: args.id,
     };
     // 1.encontrar o video
-    const video = await ctx.db.query.video(
+    await ctx.db.query.video(
       {
         where,
       },
@@ -183,7 +183,7 @@ const Mutations = {
     const where = {
       id: args.id,
     };
-   
+
     return ctx.db.mutation.deleteCategory(
       {
         where,
@@ -225,7 +225,7 @@ const Mutations = {
     // finally we return the user to the browser
     return user;
   },
-  async signin(parent, { email, password }, ctx, info) {
+  async signin(parent, { email, password }, ctx) {
     // check if there is a user
     const user = await ctx.db.query.user({
       where: { email },
@@ -271,7 +271,7 @@ const Mutations = {
       info
     );
   },
-  signout(parent, args, ctx, info) {
+  signout(parent, args, ctx) {
     ctx.response.clearCookie('token');
     return { message: 'Goodbye!' };
   },
@@ -306,7 +306,7 @@ const Mutations = {
       info
     );
   },
-  async requestReset(parents, args, ctx, info) {
+  async requestReset(parents, args, ctx) {
     // 1.check if the user is real
     const user = await ctx.db.query.user({ where: { email: args.email } });
 
@@ -318,13 +318,13 @@ const Mutations = {
     const resetToken = (await promisify(randomBytes)(20)).toString('hex');
     const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
 
-    const res = await ctx.db.mutation.updateUser({
+    await ctx.db.mutation.updateUser({
       where: { email: args.email },
       data: { resetToken, resetTokenExpiry },
     });
 
     // 3. Email them that reset tokenaaa
-    const mailRes = await transport.sendMail({
+    await transport.sendMail({
       from: 'picus@gmail.com',
       to: user.email,
       subject: 'Your password reset',
@@ -335,7 +335,7 @@ const Mutations = {
     });
     return { message: 'Thanks' };
   },
-  async resetPassword(parents, args, ctx, info) {
+  async resetPassword(parents, args, ctx) {
     // checkar pwbb
     if (args.password !== args.confirmPassword) {
       throw new Error('Passwords don t match!');
@@ -381,7 +381,7 @@ const Mutations = {
     const data = {
       ...args,
     };
-    console.log("estou aqui");
+    console.log('estou aqui');
 
     // elimina o id dos updates
     delete data.category;
@@ -411,7 +411,6 @@ const Mutations = {
       throw new Error('You must be logged in to do that!');
     }
 
-   
     // // 1.encontrar o curso
     // const course = await ctx.db.query.course(
     //   {
@@ -421,7 +420,7 @@ const Mutations = {
     //   },
     //   '{id}'
     // );
-    
+
     // // 2.checkar se tem permissoes para o apagar
     // const ownsCourse = course.user.id === ctx.request.userId;
     // // falta verificar se é admin ou user (hasPermissions)
@@ -429,53 +428,50 @@ const Mutations = {
     //   throw new Error("You don't have permission to do that!");
     // }
 
-    //delete relations
-     await ctx.db.mutation.deleteManyWishlists({
-        where: {
-          course: {
-              id: args.id
-          }
-        }
-      }
-    );
-
-     await ctx.db.mutation.deleteManyCourseInterests({
-        where: {
-          course: {
-             id: args.id
-          }
-        }
-      }
-    );
-     await ctx.db.mutation.deleteManyCourseVideoses({
+    // delete relations
+    await ctx.db.mutation.deleteManyWishlists({
       where: {
         course: {
-          id: args.id
-        }
-      }
-    }
-  );
-  await ctx.db.mutation.deleteManyRateCourses({
-    where: {
-      course: {
-        id: args.id
-      }
-    }
-  });
-  
-   await ctx.db.mutation. deleteManyUserCourses({
-     where: {
-       course: {
-         id: args.id
-       }
-     }
-   });
+          id: args.id,
+        },
+      },
+    });
+
+    await ctx.db.mutation.deleteManyCourseInterests({
+      where: {
+        course: {
+          id: args.id,
+        },
+      },
+    });
+    await ctx.db.mutation.deleteManyCourseVideoses({
+      where: {
+        course: {
+          id: args.id,
+        },
+      },
+    });
+    await ctx.db.mutation.deleteManyRateCourses({
+      where: {
+        course: {
+          id: args.id,
+        },
+      },
+    });
+
+    await ctx.db.mutation.deleteManyUserCourses({
+      where: {
+        course: {
+          id: args.id,
+        },
+      },
+    });
 
     // 3.dar delete
     return ctx.db.mutation.deleteCourse(
       {
-        where:{
-          id: args.id
+        where: {
+          id: args.id,
         },
       },
       info
@@ -756,7 +752,7 @@ const Mutations = {
       info
     );
   },
-  async createOrder(parent, args, ctx, info) {
+  async createOrder(parent, args, ctx) {
     // query current user and make sure they are signin
     const { userId } = ctx.request;
     if (!userId)
@@ -871,7 +867,7 @@ const Mutations = {
       info,
     });
   },
-  buyCourseFree(parent, args, ctx, info) {
+  buyCourseFree(parent, args, ctx) {
     const { userId } = ctx.request;
 
     if (!userId)

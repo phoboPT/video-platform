@@ -123,22 +123,24 @@ export class UpdateCourse extends Component {
   };
 
   render() {
+    const { view } = this.state;
+    const { id } = this.props;
     return (
       <>
         <Link href="/courses">
           <a>⬅ Go Back</a>
         </Link>
         <Marcador>
-          <button id="1" onClick={this.changeView}>
+          <button type="button" id="1" onClick={this.changeView}>
             Info
           </button>
-          <button id="2" onClick={this.changeView}>
+          <button type="button" id="2" onClick={this.changeView}>
             Media
           </button>
         </Marcador>
         <CourseContainer>
-          {this.state.view === 1 && <Update id={this.props.id} />}
-          {this.state.view === 2 && <Media />}
+          {view === 1 && <Update id={id} />}
+          {view === 2 && <Media />}
         </CourseContainer>
       </>
     );

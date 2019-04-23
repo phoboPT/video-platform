@@ -6,8 +6,9 @@
     "start": "nodemon -e js,graphql -x node src/index.js",
     "dev": "nodemon -e js,graphql -x node --inspect src/index.js",
     "test": "jest",
-    "deploy": "prisma deploy  --env-file variables.env",
-    "reset": "prisma reset --force --env-file variables.env",
+    "deploy": "prisma deploy --env-file variables.env",
+    "export": "prisma export .sql  --env-file variables.env",
+    "reset": "prisma reset --env-file variables.env",
     "seed": "prisma seed --env-file variables.env",
     "lint": "eslint --fix ./"
   },
@@ -25,7 +26,7 @@
     "nodemailer": "^4.7.0",
     "nodemon": "^1.18.10",
     "npm-run-all": "^4.1.5",
-    "prisma": "^1.30.0",
+    "prisma": "^1.31.1",
     "prisma-binding": "2.1.6",
     "stripe": "^6.28.0"
   },

@@ -6,7 +6,7 @@ import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
-  All_COURSES_RATING,
+  ALL_COURSES_RATING,
 } from '../../CoursesList/ListAllCourses';
 import { CHECK_RATE_COURSE_QUERY } from '../ViewCourse';
 
@@ -39,7 +39,6 @@ export class DeleteComment extends Component {
   };
 
   render() {
-    console.log(this.props.data.course.id);
     return (
       <Mutation
         mutation={DELETE_COMMENT_MUTATION}
@@ -70,13 +69,14 @@ export class DeleteComment extends Component {
             variables: { courseId: this.props.data.course.id },
           },
           {
-            query: All_COURSES_RATING,
+            query: ALL_COURSES_RATING,
             variables: { published: 'PUBLISHED', skip: 0 },
           },
         ]}
       >
         {(deleteRateCourse, { error }) => (
           <button
+            type="button"
             onClick={() => {
               if (confirm('Are you sure you want to delete your comment?')) {
                 deleteRateCourse();
