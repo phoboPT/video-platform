@@ -109,17 +109,13 @@ const Form = styled.div`
   }
 `;
 
-const VideoListStyle = styled.h3`
-  text-align: center;
-`;
-
 class Update extends Component {
   state = {
     alreadyExecuted: false,
     changeThumbnail: false,
-    published: '',
+    published: false,
     state: '',
-    unpublished: '',
+    unpublished: false,
   };
 
   changePublished = e => {
@@ -184,13 +180,15 @@ class Update extends Component {
   };
 
   render() {
+    const { id } = this.props;
+    const { alreadyExecuted } = this.state;
     return (
-      <Query query={SINGLE_COURSE_QUERY} variables={{ id: this.props.id }}>
+      <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
-          if (!data.course) return <p>No Courses Found for {this.props.id}</p>;
+          if (!data.course) return <p>No Courses Found for {id}</p>;
 
-          if (!this.state.alreadyExecuted) {
+          if (!alreadyExecuted) {
             this.courseState(data.course.state);
           }
 
@@ -214,6 +212,7 @@ class Update extends Component {
                             <label htmlFor="Title">
                               Title
                               <input
+                                id="title"
                                 type="text"
                                 name="title"
                                 placeholder="title"
@@ -221,6 +220,7 @@ class Update extends Component {
                                 onChange={this.handleChange}
                               />
                             </label>
+
                             <label htmlFor="description">
                               Description
                               <div className="description">

@@ -22,6 +22,7 @@ class RequestReset extends Component {
   };
 
   render() {
+    const { email } = this.state;
     return (
       <Mutation mutation={REQUEST_RESET_MUTATION} variables={this.state}>
         {(reset, { error, loading, called }) => (
@@ -45,7 +46,7 @@ class RequestReset extends Component {
                   type="email"
                   name="email"
                   placeholder="email"
-                  value={this.state.email}
+                  value={email}
                   onChange={this.saveToState}
                 />
               </label>

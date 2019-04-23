@@ -1,18 +1,58 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Column from './Column';
 
 const Container = styled.div`
-  margin: 8px;
+  margin: 15px 15px;
   border: 1px solid lightgrey;
   border-radius: 2px;
   max-width: 720px;
+  background-color: grey;
   button {
     margin: 8px;
   }
 `;
 
+class InnerList extends React.PureComponent {
+  static propTypes = {
+    videosMap: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    section: PropTypes.object.isRequired,
+    addVideo: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleVideo: PropTypes.func.isRequired,
+  };
+
+  render() {
+    const {
+      section,
+      videosMap,
+      index,
+      addVideo,
+      handleChange,
+      handleVideo,
+    } = this.props;
+    let videos;
+    if (section.videoIds) {
+      videos = section.videoIds.map(videoId => videosMap[videoId]);
+    }
+    return (
+      <Column
+        addVideo={addVideo}
+        handleChange={handleChange}
+        handleVideo={handleVideo}
+        key={section.id}
+        section={section}
+        videos={videos}
+        index={index}
+      />
+    );
+  }
+}
+
+// eslint-disable-next-line react/no-multi-comp
 class Index extends Component {
   state = { columnOrder: [], sections: {}, videos: {} };
 
@@ -30,6 +70,7 @@ class Index extends Component {
     ) {
       return;
     }
+    // Section
     if (type === 'section') {
       const newColumnOrder = Array.from(columnOrder);
       newColumnOrder.splice(source.index, 1);
@@ -38,10 +79,12 @@ class Index extends Component {
         ...this.state,
         columnOrder: newColumnOrder,
       };
+      this.setState(newState);
+      return;
     }
-
     const start = sections[source.droppableId];
     const finish = sections[destination.droppableId];
+
     if (start === finish) {
       const newVideoIds = Array.from(start.videoIds);
       newVideoIds.splice(source.index, 1);
@@ -85,6 +128,8 @@ class Index extends Component {
         [newStart.id]: newStart,
       },
     };
+
+    // console.log('new state', newState.videos);
     this.setState(newState);
   };
 
@@ -103,10 +148,12 @@ class Index extends Component {
     this.setState(newState);
   };
 
-  handleVideo = (title, sectionId) => {
+  handleVideo = async (title, sectionId) => {
     const { videos } = this.state;
     const video = videos[sectionId];
     video.content = title;
+
+    console.log('title', title);
     const newState = {
       ...this.state,
       videos: {
@@ -114,7 +161,9 @@ class Index extends Component {
       },
     };
 
-    this.setState(newState);
+    await this.setState(newState);
+
+    console.log('state', newState.videos);
   };
 
   addSection = () => {
@@ -137,6 +186,7 @@ class Index extends Component {
     };
 
     this.setState(newState);
+    console.log(JSON.stringify(this.state));
   };
 
   addVideo = e => {
@@ -183,26 +233,20 @@ class Index extends Component {
               >
                 {columnOrder.map((columnId, index) => {
                   const section = sections[columnId];
-                  let video;
-                  if (section.videoIds) {
-                    video = section.videoIds.map(videoId => videos[videoId]);
-                  }
-                  return (
-                    <div key={section.id}>
-                      <Column
-                        addVideo={this.addVideo}
-                        handleChange={this.handleChange}
-                        handleVideo={this.handleVideo}
-                        key={section.id}
-                        section={section}
-                        videos={video}
-                        index={index}
-                      />
 
-                      {provided.placeholder}
-                    </div>
+                  return (
+                    <InnerList
+                      addVideo={this.addVideo}
+                      handleChange={this.handleChange}
+                      handleVideo={this.handleVideo}
+                      key={section.id}
+                      section={section}
+                      videosMap={videos}
+                      index={index}
+                    />
                   );
                 })}
+                {provided.placeholder}
               </Container>
             )}
           </Droppable>
@@ -211,5 +255,14 @@ class Index extends Component {
     );
   }
 }
+
+Index.propTypes = {
+  index: PropTypes.number,
+  videosMap: PropTypes.object,
+  addVideo: PropTypes.func,
+  handleChange: PropTypes.func,
+  handleVideo: PropTypes.func,
+  section: PropTypes.object,
+};
 
 export default Index;

@@ -37,19 +37,19 @@ class ListCourses extends Component {
   };
 
   render() {
-    const { course } = this.props;
+    const { course, update } = this.props;
 
     return (
       <ItemStyles>
         <Div>
-          {this.props.update ? (
+          {update ? (
             <Link
               href={{
                 pathname: '/updateCourse',
                 query: { id: course.id },
               }}
             >
-              <img src={course.thumbnail} />
+              <img alt={course.title} src={course.thumbnail} />
             </Link>
           ) : (
             <Link
@@ -58,7 +58,7 @@ class ListCourses extends Component {
                 query: { id: course.id },
               }}
             >
-              <img src={course.thumbnail} />
+              <img alt={course.title} src={course.thumbnail} />
             </Link>
           )}
           <br />
@@ -69,7 +69,7 @@ class ListCourses extends Component {
           <span>
             Category: <State id="category">{course.category.name} </State>
           </span>
-          {this.props.update && (
+          {update && (
             <span>
               State:
               <State
@@ -86,7 +86,7 @@ class ListCourses extends Component {
             Created at:
             <State id="createdAt">{formatDate(course.createdAt)}</State>
           </span>
-          {this.props.update && (
+          {update && (
             <span>
               Price: <State id="price">{course.price} €</State>
             </span>

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
@@ -5,22 +6,45 @@ import styled from 'styled-components';
 import Video from './Video';
 
 const Container = styled.div`
-  margin: auto;
+  margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
   width: 700px;
+  background-color: white;
 
   input {
     margin: 10px 0px 5px 10px;
   }
 `;
 
-const TaskList = styled.div`
+const VideoList = styled.div`
   padding: 8px;
   transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+  background-color: ${props =>
+    props.isDraggingOver ? 'ligthgrey' : 'inherit'};
   min-height: 100px;
 `;
+
+class InnerList extends React.PureComponent {
+  static propTypes = {
+    videos: PropTypes.array.isRequired,
+    handleVideo: PropTypes.func.isRequired,
+  };
+
+  render() {
+    const { videos, handleVideo } = this.props;
+
+    return videos.map((video, index) => (
+      <Video
+        index={index}
+        key={video.id}
+        video={video}
+        handleVideo={handleVideo}
+      />
+    ));
+  }
+}
+
 class Column extends Component {
   constructor(props) {
     super(props);
@@ -71,7 +95,7 @@ class Column extends Component {
             <Droppable droppableId={section.id} type="video">
               {(provided, snapshot) => (
                 <>
-                  <TaskList
+                  <VideoList
                     innerRef={provided.innerRef}
                     {...provided.droppableProps}
                     isDraggingOver={snapshot.isDraggingOver}
@@ -79,17 +103,9 @@ class Column extends Component {
                     <button type="button" onClick={() => addVideo(section)}>
                       + Add Video
                     </button>
-                    {videos &&
-                      videos.map((video, index) => (
-                        <Video
-                          index={index}
-                          key={video.id}
-                          video={video}
-                          handleVideo={handleVideo}
-                        />
-                      ))}
+                    <InnerList videos={videos} handleVideo={handleVideo} />
                     {provided.placeholder}
-                  </TaskList>
+                  </VideoList>
                 </>
               )}
             </Droppable>
@@ -106,6 +122,7 @@ Column.propTypes = {
   section: PropTypes.object.isRequired,
   videos: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default Column;

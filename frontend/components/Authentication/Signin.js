@@ -36,6 +36,7 @@ class Signin extends Component {
   };
 
   render() {
+    const { email, password } = this.state;
     return (
       <Mutation
         mutation={SIGNIN_MUTATION}
@@ -66,7 +67,7 @@ class Signin extends Component {
             onSubmit={async e => {
               e.preventDefault();
               await signin();
-              this.setState({ name: '', email: '', password: '' });
+              this.setState({ email: '', password: '' });
               Router.push({
                 pathname: '/',
               });
@@ -83,7 +84,7 @@ class Signin extends Component {
                   placeholder="email"
                   required
                   type="email"
-                  value={this.state.email}
+                  value={email}
                 />
               </label>
               <label htmlFor="password">
@@ -94,7 +95,7 @@ class Signin extends Component {
                   placeholder="password"
                   required
                   type="password"
-                  value={this.state.password}
+                  value={password}
                 />
               </label>
 

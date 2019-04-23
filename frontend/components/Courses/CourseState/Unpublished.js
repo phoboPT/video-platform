@@ -8,7 +8,7 @@ const Button = styled.button`
     color: white !important;
   }
 `;
-export class Unpublished extends Component {
+class Unpublished extends Component {
   render() {
     return (
       <Button

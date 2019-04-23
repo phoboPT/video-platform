@@ -25,10 +25,6 @@ const RESET_MUTATION = gql`
 `;
 
 class Reset extends Component {
-  static propTypes = {
-    resetToken: PropTypes.string.isRequired,
-  };
-
   state = {
     confirmPassword: '',
     password: '',
@@ -39,14 +35,16 @@ class Reset extends Component {
   };
 
   render() {
+    const { password, confirmPassword } = this.state;
+    const { resetToken } = this.props;
     return (
       <Mutation
         mutation={RESET_MUTATION}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
         variables={{
-          resetToken: this.props.resetToken,
-          password: this.state.password,
-          confirmPassword: this.state.confirmPassword,
+          resetToken,
+          password,
+          confirmPassword,
         }}
       >
         {(reset, { called, error, loading }) => (
@@ -69,7 +67,7 @@ class Reset extends Component {
                   onChange={this.saveToState}
                   placeholder="password"
                   type="password"
-                  value={this.state.password}
+                  value={password}
                 />
               </label>
 
@@ -80,7 +78,7 @@ class Reset extends Component {
                   onChange={this.saveToState}
                   placeholder="confirmPassword"
                   type="password"
-                  value={this.state.confirmPassword}
+                  value={confirmPassword}
                 />
               </label>
               <button type="submit">Confirm</button>
@@ -91,5 +89,9 @@ class Reset extends Component {
     );
   }
 }
+
+Reset.propTypes = {
+  resetToken: PropTypes.string.isRequired,
+};
 
 export default Reset;

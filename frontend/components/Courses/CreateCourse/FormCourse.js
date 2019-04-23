@@ -126,7 +126,9 @@ class FormCourse extends Component {
   };
 
   saveState = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    const { name, type, value } = e.target;
+    const val = type === 'number' ? parseFloat(value) : value;
+    this.setState({ [name]: val });
   };
 
   changePublished = e => {
@@ -212,11 +214,11 @@ class FormCourse extends Component {
                   {(createCourse, { error, loading }) => (
                     <>
                       <Form
-                        id="3"
                         method="post"
                         onSubmit={async e => {
                           console.log('ehtre9maquisafdso');
                           e.preventDefault();
+                          console.log('submit');
                           const res = await createCourse();
                           saveToState(res);
                         }}
@@ -309,11 +311,7 @@ class FormCourse extends Component {
                           </select>
                           <br />
                           <br />
-                          <button
-                            type="button"
-                            disabled={isDisabled}
-                            className="button-next"
-                          >
+                          <button type="submit" className="button-next">
                             Next
                           </button>
                         </fieldset>

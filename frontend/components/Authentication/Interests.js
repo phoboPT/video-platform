@@ -66,6 +66,7 @@ export class Interests extends Component {
 
               <Interest view={1} />
               <button
+                type="button"
                 id="NextButton"
                 onClick={async e => {
                   e.preventDefault();

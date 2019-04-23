@@ -32,6 +32,7 @@ class Signup extends Component {
   };
 
   render() {
+    const { email, name, password } = this.state;
     return (
       <Mutation
         mutation={SIGNUP_MUTATION}
@@ -61,7 +62,7 @@ class Signup extends Component {
                   placeholder="email"
                   required
                   type="email"
-                  value={this.state.email}
+                  value={email}
                 />
               </label>
               <label htmlFor="name">
@@ -72,7 +73,7 @@ class Signup extends Component {
                   placeholder="name"
                   required
                   type="text"
-                  value={this.state.name}
+                  value={name}
                 />
               </label>
               <label htmlFor="password">
@@ -83,7 +84,7 @@ class Signup extends Component {
                   placeholder="password"
                   required
                   type="password"
-                  value={this.state.password}
+                  value={password}
                 />
               </label>
               <button type="submit">Sign Up!</button>
