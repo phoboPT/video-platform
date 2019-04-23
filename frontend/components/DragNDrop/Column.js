@@ -25,19 +25,11 @@ const VideoList = styled.div`
   min-height: 100px;
 `;
 
-class InnerList extends React.Component {
+class InnerList extends React.PureComponent {
   static propTypes = {
     videos: PropTypes.array.isRequired,
     handleVideo: PropTypes.func.isRequired,
   };
-
-  shouldComponentUpdate(nextProps) {
-    const { videos } = this.props;
-    if (nextProps.videos === videos) {
-      return false;
-    }
-    return true;
-  }
 
   render() {
     const { videos, handleVideo } = this.props;

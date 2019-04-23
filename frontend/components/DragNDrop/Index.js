@@ -15,9 +15,8 @@ const Container = styled.div`
   }
 `;
 
-class InnerList extends React.Component {
+class InnerList extends React.PureComponent {
   static propTypes = {
-    column: PropTypes.array,
     videosMap: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     section: PropTypes.object.isRequired,
@@ -25,19 +24,6 @@ class InnerList extends React.Component {
     handleChange: PropTypes.func.isRequired,
     handleVideo: PropTypes.func.isRequired,
   };
-
-  shouldComponentUpdate(nextProps) {
-    const { column, videosMap, index } = this.props;
-
-    if (
-      nextProps.column === column &&
-      nextProps.videosMap === videosMap &&
-      nextProps.index === index
-    ) {
-      return false;
-    }
-    return true;
-  }
 
   render() {
     const {
@@ -84,6 +70,7 @@ class Index extends Component {
     ) {
       return;
     }
+    // Section
     if (type === 'section') {
       const newColumnOrder = Array.from(columnOrder);
       newColumnOrder.splice(source.index, 1);
@@ -97,6 +84,7 @@ class Index extends Component {
     }
     const start = sections[source.droppableId];
     const finish = sections[destination.droppableId];
+
     if (start === finish) {
       const newVideoIds = Array.from(start.videoIds);
       newVideoIds.splice(source.index, 1);
@@ -140,6 +128,8 @@ class Index extends Component {
         [newStart.id]: newStart,
       },
     };
+
+    // console.log('new state', newState.videos);
     this.setState(newState);
   };
 
@@ -158,10 +148,12 @@ class Index extends Component {
     this.setState(newState);
   };
 
-  handleVideo = (title, sectionId) => {
+  handleVideo = async (title, sectionId) => {
     const { videos } = this.state;
     const video = videos[sectionId];
     video.content = title;
+
+    console.log('title', title);
     const newState = {
       ...this.state,
       videos: {
@@ -169,7 +161,9 @@ class Index extends Component {
       },
     };
 
-    this.setState(newState);
+    await this.setState(newState);
+
+    console.log('state', newState.videos);
   };
 
   addSection = () => {
@@ -192,6 +186,7 @@ class Index extends Component {
     };
 
     this.setState(newState);
+    console.log(JSON.stringify(this.state));
   };
 
   addVideo = e => {

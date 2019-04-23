@@ -20,17 +20,15 @@ const Handle = styled.div`
   margin-right: 8px;
 `;
 class Video extends Component {
-  state = this.props.video;
+  state = { ...this.props.video, disabled: true };
 
-  changeState = e => {
+  changeState = async e => {
     const { handleVideo, video } = this.props;
-    const { content } = this.state;
 
-    const { name, type, value } = e.target;
-    const val = type === 'number' ? parseFloat(value) : value;
-    this.setState({ [name]: val });
+    const { value } = e.target;
 
-    handleVideo(content, video.id);
+    await this.setState({ content: value });
+    handleVideo(value, video.id);
   };
 
   disableInput = () => {
@@ -50,11 +48,11 @@ class Video extends Component {
             innerRef={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
-            <label htmlFor="Title">
+            <label htmlFor="Content">
               <input
                 disabled={disabled}
                 name="content"
-                onBlur={() => this.disableInput()}
+                onBlur={this.disableInput}
                 onChange={this.changeState}
                 placeholder="Video"
                 required
@@ -77,6 +75,7 @@ class Video extends Component {
 Video.propType = {
   video: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
+  handleVideo: PropTypes.func.isRequired,
 };
 
 export default Video;
