@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Index from '../DragNDrop/Index';
 
 const Container = styled.div`
@@ -7,18 +8,25 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export class Media extends Component {
+class Media extends Component {
   render() {
+    const { sections, updateState } = this.props;
+
     return (
       <Container>
         <h2>Create the Sections</h2>
 
         <br />
         <p>Sections</p>
-        <Index />
+        <Index sections={sections} updateState={updateState} />
       </Container>
     );
   }
 }
+
+Media.propTypes = {
+  sections: PropTypes.object.isRequired,
+  updateState: PropTypes.func.isRequired,
+};
 
 export default Media;

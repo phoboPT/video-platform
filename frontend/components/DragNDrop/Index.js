@@ -54,11 +54,12 @@ class InnerList extends React.PureComponent {
 
 // eslint-disable-next-line react/no-multi-comp
 class Index extends Component {
-  state = { columnOrder: [], sections: {}, videos: {} };
+  state = this.props.sections;
 
   onDragEnd = async result => {
     const { destination, draggableId, source, type } = result;
     const { sections, columnOrder } = this.state;
+    const { updateState } = this.props;
 
     if (!destination) {
       return;
@@ -79,7 +80,8 @@ class Index extends Component {
         ...this.state,
         columnOrder: newColumnOrder,
       };
-      this.setState(newState);
+      await this.setState(newState);
+      updateState(this.state);
       return;
     }
     const start = sections[source.droppableId];
@@ -103,7 +105,8 @@ class Index extends Component {
         },
       };
 
-      this.setState(newState);
+      await this.setState(newState);
+      updateState(this.state);
       return;
     }
 
@@ -131,11 +134,13 @@ class Index extends Component {
     };
 
     // console.log('new state', newState.videos);
-    this.setState(newState);
+    await this.setState(newState);
+    updateState(this.state);
   };
 
   handleChange = async (title, sectionId) => {
     const { sections } = this.state;
+    const { updateState } = this.props;
 
     const section = sections[sectionId];
     section.title = title;
@@ -147,12 +152,14 @@ class Index extends Component {
       },
     };
 
-    this.setState(newState);
+    await this.setState(newState);
+    updateState(this.state);
   };
 
   handleVideo = async (title, sectionId) => {
     const { videos } = this.state;
     const video = videos[sectionId];
+    const { updateState } = this.props;
 
     video.content = title;
 
@@ -164,12 +171,13 @@ class Index extends Component {
     };
 
     await this.setState(newState);
+    updateState(this.state);
   };
 
   addSection = async () => {
     const { sections, columnOrder } = this.state;
     const size = Object.keys(sections).length + 1;
-
+    const { updateState } = this.props;
     const newColumn = {
       id: `section-${size}`,
       title: '',
@@ -186,12 +194,13 @@ class Index extends Component {
     };
 
     await this.setState(newState);
+    updateState(this.state);
   };
 
   addVideo = async e => {
     const { videos, sections } = this.state;
     const sizeVideos = Object.keys(videos).length + 1;
-
+    const { updateState } = this.props;
     const newVideo = {
       content: '',
       id: `video-${sizeVideos}`,
@@ -211,6 +220,7 @@ class Index extends Component {
     };
 
     await this.setState(newState);
+    updateState(this.state);
   };
 
   render() {
@@ -264,6 +274,7 @@ Index.propTypes = {
   handleVideo: PropTypes.func,
   section: PropTypes.object,
   sections: PropTypes.object,
+  updateState: PropTypes.func.isRequired,
 };
 
 export default Index;
