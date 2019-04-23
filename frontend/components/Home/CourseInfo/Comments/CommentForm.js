@@ -131,7 +131,7 @@ export class CommentForm extends Component {
                   rows="6"
                   value={this.state.comment}
                 />
-                <button>Comment</button>
+                <button type="submit">Comment</button>
               </fieldset>
             </form>
           </Style>

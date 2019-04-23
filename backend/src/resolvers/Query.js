@@ -574,7 +574,6 @@ const Query = {
         coursesId.push(user.course.id);
       });
     }
-    console.log('aqui');
     // query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
       {
