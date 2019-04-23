@@ -103,7 +103,7 @@ class UserCourses extends Component {
     this.setState({ author: authorId, isDisabled: false });
   };
 
-  reset = e => {
+  reset = () => {
     const selectBoxcategory = document.getElementById('category');
     selectBoxcategory.value = 'a';
 
@@ -113,11 +113,9 @@ class UserCourses extends Component {
   };
 
   render() {
+    const { category, author } = this.state;
     return (
-      <Query
-        query={COURSES_FILTER_QUERY}
-        variables={{ category: this.state.category, author: this.state.author }}
-      >
+      <Query query={COURSES_FILTER_QUERY} variables={{ category, author }}>
         {({ data, loading }) => {
           if (data) {
             const courses = orderCourse(data.coursesFilter);
@@ -126,10 +124,10 @@ class UserCourses extends Component {
               <>
                 <Bar>
                   <div className="info-bar">
-                    <button id={1} onClick={this.changeView}>
+                    <button type="button" id={1} onClick={this.changeView}>
                       My Courses
                     </button>
-                    <button id={2} onClick={this.changeView}>
+                    <button type="button" id={2} onClick={this.changeView}>
                       Whish List
                     </button>
                   </div>
@@ -150,6 +148,7 @@ class UserCourses extends Component {
                           state="a"
                         />
                         <button
+                          type="button"
                           disabled={this.state.isDisabled}
                           className="reset"
                           onClick={this.reset}

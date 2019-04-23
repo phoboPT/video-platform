@@ -27,7 +27,7 @@ const WISHLIST_QUERY = gql`
   }
 `;
 
-export class Wishlist extends Component {
+class Wishlist extends Component {
   render() {
     return (
       <Query query={WISHLIST_QUERY}>

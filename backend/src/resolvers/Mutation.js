@@ -183,11 +183,7 @@ const Mutations = {
     const where = {
       id: args.id,
     };
-    // //1.encontrar o video
-    // const video = await ctx.db.query.category({ where }, `{id name}`);
-    // //2.checkar se tem permissoes para o apagar
-
-    // 3.dar delete
+   
     return ctx.db.mutation.deleteCategory(
       {
         where,
@@ -385,6 +381,7 @@ const Mutations = {
     const data = {
       ...args,
     };
+    console.log("estou aqui");
 
     // elimina o id dos updates
     delete data.category;
@@ -413,26 +410,73 @@ const Mutations = {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
-    const where = {
-      id: args.id,
-    };
-    // 1.encontrar o video
-    const course = await ctx.db.query.course(
-      {
-        where,
-      },
-      '{id}'
+
+   
+    // // 1.encontrar o curso
+    // const course = await ctx.db.query.course(
+    //   {
+    //     where:{
+    //       id: args.id
+    //     }
+    //   },
+    //   '{id}'
+    // );
+    
+    // // 2.checkar se tem permissoes para o apagar
+    // const ownsCourse = course.user.id === ctx.request.userId;
+    // // falta verificar se é admin ou user (hasPermissions)
+    // if (!ownsCourse) {
+    //   throw new Error("You don't have permission to do that!");
+    // }
+
+    //delete relations
+     await ctx.db.mutation.deleteManyWishlists({
+        where: {
+          course: {
+              id: args.id
+          }
+        }
+      }
     );
-    // 2.checkar se tem permissoes para o apagar
-    const ownsCourse = course.user.id === ctx.request.userId;
-    // falta verificar se é admin ou user (hasPermissions)
-    if (!ownsCourse) {
-      throw new Error("You don't have permission to do that!");
+
+     await ctx.db.mutation.deleteManyCourseInterests({
+        where: {
+          course: {
+             id: args.id
+          }
+        }
+      }
+    );
+     await ctx.db.mutation.deleteManyCourseVideoses({
+      where: {
+        course: {
+          id: args.id
+        }
+      }
     }
+  );
+  await ctx.db.mutation.deleteManyRateCourses({
+    where: {
+      course: {
+        id: args.id
+      }
+    }
+  });
+  
+   await ctx.db.mutation. deleteManyUserCourses({
+     where: {
+       course: {
+         id: args.id
+       }
+     }
+   });
+
     // 3.dar delete
     return ctx.db.mutation.deleteCourse(
       {
-        where,
+        where:{
+          id: args.id
+        },
       },
       info
     );

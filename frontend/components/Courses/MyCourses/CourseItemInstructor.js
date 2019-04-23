@@ -6,6 +6,7 @@ import { formatDistance } from 'date-fns';
 import formatDate from '../../../lib/formatDate';
 import formatString from '../../../lib/formatString';
 import ItemStyles from '../../styles/ItemStyles';
+import DeleteCourse from './DeleteCourse';
 
 const Div = styled.div`
   padding: none;
@@ -121,7 +122,9 @@ class CourseItemInstructor extends Component {
               </Link>
             </div>
             <div id="delete">
-              <img alt={course.title} src="../../../static/deleteIcon.png" />
+              <DeleteCourse id={course.id}>
+                <img alt={course.title} src="../../../static/deleteIcon.png" />
+              </DeleteCourse>
             </div>
           </div>
         </Div>

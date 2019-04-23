@@ -25,7 +25,7 @@ const Style = styled.div`
     }
   }
 `;
-export class FilterAuthor extends Component {
+class FilterAuthor extends Component {
   state = {
     authorId: this.props.state,
   };

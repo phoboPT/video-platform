@@ -21,7 +21,7 @@ const Style = styled.div`
   }
 `;
 
-export class FilterCategory extends Component {
+class FilterCategory extends Component {
   state = {
     categoryId: this.props.state,
   };
