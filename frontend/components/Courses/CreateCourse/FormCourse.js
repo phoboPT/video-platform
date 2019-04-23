@@ -215,6 +215,7 @@ class FormCourse extends Component {
                         id="3"
                         method="post"
                         onSubmit={async e => {
+                          console.log('ehtre9maquisafdso');
                           e.preventDefault();
                           const res = await createCourse();
                           saveToState(res);

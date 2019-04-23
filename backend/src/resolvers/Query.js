@@ -645,8 +645,14 @@ const Query = {
       if (a.average < b.average) return 1;
       return 0;
     });
+
+
     return finalRes;
+
+
   },
+
+
 };
 
 module.exports = Query;

@@ -114,7 +114,7 @@ const ALL_COURSE_INTERESTS = gql`
     }
   }
 `;
-
+// rating ordered query
 const ALL_COURSES_RATING = gql`
   query ALL_COURSES_RATING($skip: Int = 0, $first: Int = ${perPageCourse} ) {
     coursesRating(first: $first, skip: $skip ) {
@@ -137,6 +137,13 @@ const ALL_COURSES_RATING = gql`
 `;
 
 class ListAllCourses extends Component {
+  state = {
+    classe: '',
+    page: 1,
+    query: ALL_COURSES_QUERY,
+    title: '',
+  };
+
   componentWillMount() {
     switch (this.props.query) {
       case 'ALL_COURSE_INTERESTS': {
@@ -177,7 +184,7 @@ class ListAllCourses extends Component {
       case 'ALL_COURSES_RATING': {
         this.setState({
           query: ALL_COURSES_RATING,
-          title: 'Most Popular',
+          title: 'Popular ',
         });
         break;
       }
@@ -188,13 +195,6 @@ class ListAllCourses extends Component {
       }
     }
   }
-
-  state = {
-    classe: '',
-    page: 1,
-    query: ALL_COURSES_QUERY,
-    title: '',
-  };
 
   animationSliderControlForward = () => {
     this.setState({ classe: 'animation' });
@@ -337,29 +337,45 @@ class ListAllCourses extends Component {
               );
             if (data.coursesRating) {
               return (
-                <Container>
-                  {data.coursesRating && <Title>{this.state.title}</Title>}
-                  <CoursesList className={this.state.classe}>
+                <>
+                  <Container>
                     {data.coursesRating &&
-                      data.coursesRating.map(course => (
-                        <CourseItem
-                          course={course}
-                          key={course.id}
-                          skip={this.state.page * perPageCourse - perPageCourse}
-                        />
+                      (data.coursesRating[0] !== undefined && (
+                        <Title>{this.state.title}</Title>
                       ))}
-                  </CoursesList>
-                  <Pagination
-                    page={this.state.page}
-                    animationSliderControlForward={
-                      this.animationSliderControlForward
-                    }
-                    animationSliderControlBackward={
-                      this.animationSliderControlBackward
-                    }
-                    isInterest={false}
-                  />
-                </Container>
+                    {/* Filtering the data to show the correct list */}
+                    <CoursesList className={this.state.classe}>
+                      {data.coursesRating &&
+                        data.coursesRating.map(course => (
+                          <CourseItem
+                            course={course}
+                            key={course.id}
+                            skip={
+                              this.state.page * perPageCourse - perPageCourse
+                            }
+                          />
+                        ))}
+                    </CoursesList>
+
+                    {/* Check what pagination to render ( count gives the total of items of the interest list) */}
+
+                    {data.coursesRating[0] !== undefined && (
+                      <Pagination
+                        page={this.state.page}
+                        animationSliderControlForward={
+                          this.animationSliderControlForward
+                        }
+                        animationSliderControlBackward={
+                          this.animationSliderControlBackward
+                        }
+                        isInterest
+                        count={
+                          data.coursesRating ? data.coursesRating[0].count : 0
+                        }
+                      />
+                    )}
+                  </Container>
+                </>
               );
             }
           }}

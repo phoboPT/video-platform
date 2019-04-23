@@ -27,7 +27,7 @@ export class Home extends Component {
               )}
               <ListAllCourses query="ALL_COURSES_QUERY" />
               <ListAllCourses query="ALL_COURSES_ORDERED" />
-              <ListAllCourses query="All_COURSES_RATING" />
+              <ListAllCourses query="ALL_COURSES_RATING" />
             </div>
           );
         }}
