@@ -39,7 +39,6 @@ export class DeleteComment extends Component {
   };
 
   render() {
-    console.log(this.props.data.course.id);
     return (
       <Mutation
         mutation={DELETE_COMMENT_MUTATION}
@@ -77,6 +76,7 @@ export class DeleteComment extends Component {
       >
         {(deleteRateCourse, { error }) => (
           <button
+            type="button"
             onClick={() => {
               if (confirm('Are you sure you want to delete your comment?')) {
                 deleteRateCourse();

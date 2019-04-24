@@ -115,14 +115,24 @@ const Marcador = styled.div`
     outline: none;
   }
 `;
-export class UpdateCourse extends Component {
-  state = { view: 2 };
+class UpdateCourse extends Component {
+  state = { view: 2, sections: { columnOrder: [], sections: {}, videos: {} } };
 
   changeView = e => {
     this.setState({ view: parseInt(e.target.id) });
   };
 
+  updateState = newState => {
+    console.log('newState', newState);
+    this.setState(prevState => ({
+      value: prevState.value + 1,
+      sections: { ...newState },
+    }));
+  };
+
   render() {
+    const { view, sections } = this.state;
+    const { id } = this.props;
     return (
       <>
         <Link href="/courses">
@@ -137,8 +147,10 @@ export class UpdateCourse extends Component {
           </button>
         </Marcador>
         <CourseContainer>
-          {this.state.view === 1 && <Update id={this.props.id} />}
-          {this.state.view === 2 && <Media />}
+          {view === 1 && <Update id={id} />}
+          {view === 2 && (
+            <Media sections={sections} updateState={this.updateState} />
+          )}
         </CourseContainer>
       </>
     );

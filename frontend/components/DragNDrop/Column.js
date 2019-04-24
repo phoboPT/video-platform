@@ -53,12 +53,12 @@ class Column extends Component {
     this.state = { disabled: false, title: section.title };
   }
 
-  changeState = e => {
+  changeState = async e => {
     const { handleChange, section } = this.props;
     const { title } = this.state;
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
-    this.setState({ [name]: val });
+    await this.setState({ [name]: val });
 
     handleChange(title, section.id);
   };

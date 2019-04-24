@@ -64,7 +64,11 @@ export class CourseItem extends Component {
                   <Rating
                     showTotal
                     readOnly
-                    initialValue={course.totalRate / course.totalComments}
+                    initialValue={
+                      Number.isNaN(course.totalRate / course.totalComments)
+                        ? 0
+                        : course.totalRate / course.totalComments
+                    }
                     totalComments={course.totalComments}
                   />
                 </div>

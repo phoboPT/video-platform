@@ -13,50 +13,60 @@ enum State {
 }
 
 type Interest {
-  id: ID! @unique
+  id: ID! @id
   name: String!
   thumbnail: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 type CourseInterest {
-  id: ID! @unique
+  id: ID! @id
   interest: Interest!
   course: Course!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 type UserInterest {
-  id: ID! @unique
+  id: ID! @id
   interest: Interest!
   user: User!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type User {
-  id: ID! @unique
+  id: ID! @id
   name: String!
   email: String! @unique
   password: String!
-  interests: [UserInterest]!
+  interests: [UserInterest]! @scalarList(strategy: RELATION)
   resetToken: String
   resetTokenExpiry: Float
-  permission: [Permission]
-  courses: [UserCourse!]!
-  cart: [CartItem!]!
-  wishlist: [Wishlist!]!
+  permission: [Permission] @scalarList(strategy: RELATION)
+  courses: [UserCourse!]! @scalarList(strategy: RELATION)
+  cart: [CartItem!]! @scalarList(strategy: RELATION)
+  wishlist: [Wishlist!]! @scalarList(strategy: RELATION)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Wishlist {
-  id: ID! @unique
+  id: ID! @id
   user: User!
   course: Course!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Course {
-  id: ID! @unique
+  id: ID! @id
   videos: [CourseVideos!]!
   title: String
   description: String!
   thumbnail: String!
   user: User!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   # target: [Target]! @default(value: "JavaScript")
   state: State
   price: Float!
@@ -69,65 +79,77 @@ type Course {
 
 # item
 type Video {
-  id: ID! @unique
+  id: ID! @id
   title: String!
   description: String!
-  state: State! @default(value: "UNPUBLISHED")
+  state: State!
   user: User!
   urlVideo: String!
   file: String
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type CourseVideos {
-  id: ID! @unique
+  id: ID! @id
   course: Course!
   video: Video
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Category {
-  id: ID! @unique
+  id: ID! @id
   name: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type RateCourse {
-  id: ID! @unique
+  id: ID! @id
   comment: String!
   user: User!
   course: Course!
   rate: Float!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type UserCourse {
-  id: ID! @unique
+  id: ID! @id
   user: User!
   course: Course!
   watched: Boolean! @default(value: false)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type CartItem {
-  id: ID! @unique
+  id: ID! @id
   user: User!
   course: Course!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type OrderItem {
-  id: ID! @unique
+  id: ID! @id
   title: String
   description: String!
   thumbnail: String!
   price: Float!
   category: Category!
   user: User
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Order {
-  id: ID! @unique
+  id: ID! @id
   items: [OrderItem!]!
   total: Int!
   user: User!
   charge: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

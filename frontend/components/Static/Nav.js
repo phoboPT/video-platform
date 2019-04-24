@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import styled from 'styled-components';
 import { Mutation } from 'react-apollo';
 import NavStyle from '../styles/NavStyle';
 import User from '../Authentication/User';
