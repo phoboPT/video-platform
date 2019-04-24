@@ -36,7 +36,6 @@ export class CourseItem extends Component {
 
           return (
             <>
-              <button type="submit"> Comment </button>
               <ItemStyles>
                 <Link
                   href={{

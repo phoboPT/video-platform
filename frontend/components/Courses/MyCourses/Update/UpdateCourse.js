@@ -129,10 +129,10 @@ export class UpdateCourse extends Component {
           <a>⬅ Go Back</a>
         </Link>
         <Marcador>
-          <button id="1" onClick={this.changeView}>
+          <button type="button" id="1" onClick={this.changeView}>
             Info
           </button>
-          <button id="2" onClick={this.changeView}>
+          <button type="button" id="2" onClick={this.changeView}>
             Media
           </button>
         </Marcador>

@@ -7,7 +7,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-export class Media extends Component {
+class Media extends Component {
   render() {
     return (
       <Container>

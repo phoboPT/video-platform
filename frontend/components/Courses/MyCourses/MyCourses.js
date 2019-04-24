@@ -32,20 +32,7 @@ const CURRENT_COURSES_QUERY = gql`
     }
   }
 `;
-const AddButon = styled.div`
-  padding-bottom: 25px;
-  button {
-    border: none !important;
-    background: none;
-    float: left;
-  }
-  button:focus {
-    outline: none;
-  }
-  input:focus {
-    outline: none;
-  }
-`;
+
 class MyCourses extends Component {
   render() {
     const { changeView } = this.props;
@@ -58,23 +45,6 @@ class MyCourses extends Component {
           if (data.coursesUser) {
             return (
               <>
-                <AddButon>
-                  <button
-                    type="button"
-                    id="2"
-                    onClick={() => {
-                      changeView(2);
-                    }}
-                  >
-                    <input
-                      type="image"
-                      src="../../../static/addButton.png"
-                      alt="Submit"
-                      width="48"
-                      height="48"
-                    />
-                  </button>
-                </AddButon>
                 <ItemList>
                   {data.coursesUser.map(course => (
                     <CourseItemInstructor course={course} key={course.id} />
