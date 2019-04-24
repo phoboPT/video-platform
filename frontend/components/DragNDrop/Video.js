@@ -2,25 +2,52 @@ import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { parse } from 'url';
+import CreateVideo from '../Courses/UploadVideo/CreateVideo';
 
 const Container = styled.div`
   border: 1px solid lightgrey;
   padding: 8px;
   margin-bottom: 8px;
   border-radius: 2px;
-  background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
-  display: flex;
+  background-color: ${props => (props.isDragging ? 'lightgreen' : ' #5AC4F5')};
+  .video {
+    float: right;
+    padding-right: 5rem;
+    background: none;
+    border: none;
+    margin: auto;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+    img {
+      height: 36px;
+      width: 36px;
+    }
+  }
+  .upload {
+    margin: 0 0 0 40rem;
+    button {
+      background: none;
+      border: none;
+      &:focus {
+        outline: none;
+      }
+      img {
+        height: 36px;
+        width: 36px;
+      }
+    }
+  }
 `;
 
-const Handle = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: orange;
-  border-radius: 4px;
-  margin-right: 8px;
-`;
 class Video extends Component {
-  state = { ...this.props.video, disabled: true };
+  state = {
+    ...this.props.video,
+    disabled: true,
+    upload: 0,
+  };
 
   changeState = async e => {
     const { handleVideo, video } = this.props;
@@ -36,9 +63,18 @@ class Video extends Component {
     this.setState({ disabled: !disabled });
   };
 
+  changeUpload = e => {
+    console.log(e.currentTarget.id);
+    const { upload } = this.state;
+    if (upload === 1 && parseInt(e.currentTarget.id) === 1) {
+      return this.setState({ upload: 0 });
+    }
+    this.setState({ upload: parseInt(e.currentTarget.id) });
+  };
+
   render() {
     const { video, index } = this.props;
-    const { disabled, content } = this.state;
+    const { disabled, content, upload } = this.state;
     return (
       <Draggable draggableId={video.id} index={index}>
         {(provided, snapshot) => (
@@ -63,7 +99,29 @@ class Video extends Component {
               <button type="button" onClick={this.disableInput}>
                 ✏️
               </button>
-              <Handle />
+              <button
+                type="button"
+                className="video"
+                id="1"
+                onClick={this.changeUpload}
+              >
+                <img src="../../static/upload.png" alt="Upload" />
+              </button>
+              <br />
+              {upload !== 0 && (
+                <div className="upload">
+                  <button type="button" id="2" onClick={this.changeUpload}>
+                    <img src="../../static/videoUpload.png" alt="Video" />
+                  </button>
+
+                  <button type="button" id="3" onClick={this.changeUpload}>
+                    <img src="../../static/fileIcon.png" alt="File" />
+                  </button>
+
+                  {upload === 2 && <CreateVideo title="Video" show={1} />}
+                  {upload === 3 && <CreateVideo title="File" show={2} />}
+                </div>
+              )}
             </label>
           </Container>
         )}
@@ -72,7 +130,7 @@ class Video extends Component {
   }
 }
 
-Video.propType = {
+Video.propTypes = {
   video: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   handleVideo: PropTypes.func.isRequired,

@@ -3,6 +3,7 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import Router from 'next/router';
+import PropTypes from 'prop-types';
 import Form from '../../styles/Form';
 import Error from '../../Static/ErrorMessage.js';
 import { ALL_VIDEOS_USER } from '../MyVideos/Videos';
@@ -30,8 +31,7 @@ const CREATE_VIDEO_MUTATION = gql`
 `;
 
 const Container = styled.div`
-  max-width: 70%;
-  margin: auto;
+  max-width: 40%;
   text-align: center;
   label {
     text-align: left;
@@ -44,8 +44,6 @@ const Container = styled.div`
     border: 0;
     font-size: 2rem;
     font-weight: 600;
-    padding: 0.5rem 1.2rem;
-    margin-top: 1rem;
   }
 
   .false {
@@ -55,7 +53,6 @@ const Container = styled.div`
     border: 0;
     font-size: 2rem;
     font-weight: 600;
-    padding: 0.5rem 1.2rem;
     text-align: center;
     margin-top: 1rem;
   }
@@ -91,7 +88,7 @@ class CreateVideo extends Component {
     this.setState({ [name]: val });
   };
 
-  uploadVideo = async e => {
+  uploadVideo = async (e, createVideoMutation) => {
     this.setState({
       isUploading: 1,
     });
@@ -114,6 +111,8 @@ class CreateVideo extends Component {
       urlVideo: file.secure_url,
       isUploading: 2,
     });
+
+    createVideoMutation();
   };
 
   uploadFile = async e => {
@@ -144,6 +143,8 @@ class CreateVideo extends Component {
         file: file.secure_url,
         isUploadingFile: 2,
       });
+
+      createVideoMutation();
     } else {
       alert('File Format not supported');
     }
@@ -157,7 +158,13 @@ class CreateVideo extends Component {
     this.setState({ course: e.target.value });
   };
 
+  changeUpload = e => {
+    this.setState({ isUploading: 0 });
+  };
+
   render() {
+    const { title, show } = this.props;
+    const { isUploading } = this.state;
     return (
       <Query query={COURSE_QUERY}>
         {({ data, error, loading }) => {
@@ -181,7 +188,7 @@ class CreateVideo extends Component {
                   <Form
                     onSubmit={async e => {
                       e.preventDefault();
-                      const res = await createVideo();
+                      // const res = await createVideo();
                       Router.push({
                         pathname: '/video',
                         query: { id: res.data.createVideo.id },
@@ -189,11 +196,11 @@ class CreateVideo extends Component {
                     }}
                   >
                     <Error error={error} />
-                    <fieldset disabled={loading} aria-busy={loading}>
-                      <h2>Video</h2>
+                    {title}
+
+                    {show === 1 && (
                       <label htmlFor="file">
-                        Video
-                        {this.state.isUploading === 0 && (
+                        {isUploading === 0 && (
                           <input
                             className="file"
                             type="file"
@@ -201,75 +208,42 @@ class CreateVideo extends Component {
                             id="file"
                             placeholder="Upload a Video"
                             // required
-                            onChange={this.uploadVideo}
+                            onChange={e => this.uploadVideo(e, createVideo)}
                           />
                         )}
                       </label>
+                    )}
 
-                      {this.state.isUploading === 1 && (
-                        <img src="../../static/loading.gif" />
-                      )}
-                      {this.state.isUploading === 2 && (
-                        <img src="../../static/done.png" />
-                      )}
-                      <label htmlFor="title">
-                        Title
-                        <input
-                          type="text"
-                          name="title"
-                          id="title"
-                          placeholder="Title"
-                          required
-                          value={this.state.title}
-                          onChange={this.handleChange}
-                        />
-                      </label>
-                      <label htmlFor="description">
-                        Description
-                        <input
-                          type="text"
-                          name="description"
-                          id="description"
-                          placeholder="Description"
-                          required
-                          value={this.state.description}
-                          onChange={this.handleChange}
-                        />
-                      </label>
+                    {show === 2 && (
                       <label htmlFor="file">
-                        Files
                         <input
                           type="file"
                           name="file"
                           id="file"
                           placeholder="file"
-                          onChange={this.uploadFile}
+                          onChange={e => this.uploadFile(e, createVideo)}
                         />
                       </label>
-                      <label htmlFor="course">
-                        Course
-                        {this.state.course === '' &&
-                          this.setState({ course: data.courses[0].id })}
-                        <select
-                          id="dropdownlist"
-                          name="course"
-                          onChange={this.handleChange}
-                        >
-                          {data.courses.map(course => (
-                            <option key={course.id} value={course.id}>
-                              {course.title}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                      <button
+                    )}
+
+                    {isUploading === 1 && (
+                      <img src="../../static/loading.gif" alt="Loading" />
+                    )}
+                    {isUploading === 2 && (
+                      <>
+                        <img src="../../static/done.png" alt="done" />
+                        <button type="button" onClick={this.changeUpload}>
+                          Change Video
+                        </button>
+                      </>
+                    )}
+                    {/* <button
                         type="submit"
-                        disabled={!this.state.hasVideo}
-                        className={this.state.hasVideo.toString()}
+                        disabled={!hasVideo}
+                        className={hasVideo.toString()}
                       >
                         Sav{loading ? 'ing' : 'e'}
-                      </button>
-                    </fieldset>
+                      </button> */}
                   </Form>
                 )}
               </Mutation>
@@ -280,6 +254,11 @@ class CreateVideo extends Component {
     );
   }
 }
+
+CreateVideo.propTypes = {
+  title: PropTypes.string.isRequired,
+  show: PropTypes.number.isRequired,
+};
 
 export default CreateVideo;
 export { CREATE_VIDEO_MUTATION };

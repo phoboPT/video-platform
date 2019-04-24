@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Media from '../../Media';
 import Update from './Update';
 
@@ -116,7 +117,20 @@ const Marcador = styled.div`
   }
 `;
 class UpdateCourse extends Component {
-  state = { view: 2, sections: { columnOrder: [], sections: {}, videos: {} } };
+  state = {
+    view: 2,
+    sections: {
+      columnOrder: ['section-1'],
+      sections: {
+        'section-1': {
+          id: 'section-1',
+          title: 'Section 1',
+          videoIds: ['video-1'],
+        },
+      },
+      videos: { 'video-1': { content: 'Video 1', id: 'video-1' } },
+    },
+  };
 
   changeView = e => {
     this.setState({ view: parseInt(e.target.id) });
@@ -156,5 +170,9 @@ class UpdateCourse extends Component {
     );
   }
 }
+
+UpdateCourse.propTypes = {
+  id: PropTypes.number.isRequired,
+};
 
 export default UpdateCourse;

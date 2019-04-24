@@ -8,8 +8,7 @@ const Container = styled.div`
   margin: 15px 15px;
   border: 1px solid lightgrey;
   border-radius: 2px;
-  max-width: 720px;
-  background-color: grey;
+  background-color: lightgrey;
   button {
     margin: 8px;
   }

@@ -75,6 +75,7 @@ type Course {
   rate: [RateCourse]
   totalRate: Float
   totalComments: Int
+  section: String
 }
 
 # item
@@ -82,7 +83,6 @@ type Video {
   id: ID! @id
   title: String!
   description: String!
-  state: State!
   user: User!
   urlVideo: String!
   file: String

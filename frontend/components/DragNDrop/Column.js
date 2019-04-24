@@ -9,8 +9,8 @@ const Container = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
-  width: 700px;
-  background-color: white;
+  background-color: #23a3de;
+  padding: 1rem 0 0 3rem;
 
   input {
     margin: 10px 0px 5px 10px;
@@ -23,6 +23,7 @@ const VideoList = styled.div`
   background-color: ${props =>
     props.isDraggingOver ? 'ligthgrey' : 'inherit'};
   min-height: 100px;
+  padding: 0 1rem 0 5rem;
 `;
 
 class InnerList extends React.PureComponent {
