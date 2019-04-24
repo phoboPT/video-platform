@@ -113,6 +113,21 @@ const Bar = styled.div`
   }
 `;
 
+const ButtonStyle = styled.div`
+  padding-bottom: 1rem;
+  button {
+    background: none;
+    border: none;
+    font-size: 15px;
+    line-height: 10px;
+    color: #2c2f33;
+    cursor: pointer;
+  }
+  button:focus {
+    outline: none;
+  }
+`;
+
 class ViewCourse extends Component {
   state = {
     view: 1,
@@ -120,6 +135,10 @@ class ViewCourse extends Component {
 
   changeView = e => {
     this.setState({ view: parseInt(e.target.id) });
+  };
+
+  goBack = () => {
+    window.history.back();
   };
 
   render() {
@@ -148,6 +167,11 @@ class ViewCourse extends Component {
 
                       return (
                         <>
+                          <ButtonStyle>
+                            <button type="button" onClick={this.goBack}>
+                              ⬅ Go Back
+                            </button>
+                          </ButtonStyle>
                           <CourseContainer>
                             <div className="video-bar">
                               <img src={course.thumbnail} />
@@ -155,17 +179,29 @@ class ViewCourse extends Component {
                             <div className="info-bar">
                               <h2>{course.title}</h2>
                               <br />
-                              <button>Go to the Video 1</button>
+                              <button type="button"> Go to the Video 1 </button>
                             </div>
                           </CourseContainer>
                           <Bar>
-                            <button id="1" onClick={this.changeView}>
+                            <button
+                              id="1"
+                              type="button"
+                              onClick={this.changeView}
+                            >
                               Overview
                             </button>
-                            <button id="2" onClick={this.changeView}>
+                            <button
+                              id="2"
+                              type="button"
+                              onClick={this.changeView}
+                            >
                               Course Content
                             </button>
-                            <button id="3" onClick={this.changeView}>
+                            <button
+                              id="3"
+                              type="button"
+                              onClick={this.changeView}
+                            >
                               Review
                             </button>
                           </Bar>

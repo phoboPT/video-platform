@@ -6,22 +6,10 @@ import CreateCourse from './CreateCourse/CreateCourse';
 import FormCourse from './CreateCourse/FormCourse';
 import MyCourses from './MyCourses/MyCourses';
 import UserCourses from './MyCourses/UserCourses';
-import CreateVideo from './UploadVideo/CreateVideo';
-
-const Button = styled.button`
-  width: auto !important;
-  background: red !important;
-  color: white !important;
-  border: 0 !important;
-  font-size: 2rem !important;
-  font-weight: 600 !important;
-  padding: 0.5rem 1.2rem !important;
-  text-align: center !important;
-`;
 
 const Style = styled.div`
   .container {
-    display: columuns;
+    display: flex;
   }
 
   .top-bar {
@@ -35,6 +23,8 @@ const Style = styled.div`
   }
 
   .main-bar {
+    order: 2;
+    flex: 7;
     padding-top: 30px;
     float: bottom;
     text-align: center;
@@ -48,6 +38,34 @@ const Style = styled.div`
       padding: 0.5rem 1.2rem;
       text-align: center;
     }
+  }
+  .left-bar {
+    order: 1;
+    flex: 1;
+    border-right: 1px solid black;
+    #ButtonAdd {
+      width: 90%;
+      padding-top: 4rem;
+    }
+  }
+`;
+const AddButon = styled.div`
+  padding-bottom: 25px;
+  button {
+    border: none !important;
+    background: none;
+    text-align: right;
+    cursor: pointer;
+  }
+  button:focus {
+    outline: none;
+  }
+
+  span {
+    position: absolute;
+    top: 38%;
+    left: 10%;
+    font-size: 3rem;
   }
 `;
 
@@ -74,14 +92,32 @@ class Courses extends Component {
             <>
               {me.permission[0] === 'INSTRUTOR' && (
                 <Style>
-                  <div className="container">
-                    <section id="main" className="top-bar">
-                      <h2>My Courses</h2>
+                  <section id="main" className="top-bar">
+                    <h2> Manage Courses </h2>
+                  </section>
 
-                      {/* <button id="4" onClick={this.changeView}>
-                        Upload Video
-                      </button> */}
-                    </section>
+                  <div className="container">
+                    {this.state.view !== 2 && (
+                      <div className="left-bar">
+                        <AddButon>
+                          <button
+                            type="button"
+                            id="ButtonAdd"
+                            onClick={() => {
+                              this.changeView(2);
+                            }}
+                          >
+                            <span>Add</span>
+                            <img
+                              src="../../../static/addButton.png"
+                              alt="Add"
+                              width="48"
+                              height="48"
+                            />
+                          </button>
+                        </AddButon>
+                      </div>
+                    )}
 
                     <aside id="sidebar" className="main-bar">
                       {this.state.view === 1 && (
@@ -96,7 +132,7 @@ class Courses extends Component {
                       {this.state.view === 3 && (
                         <CreateCourse courseId={this.state.courseId} />
                       )}
-                      {this.state.view === 4 && <CreateVideo />}
+                      {/* {this.state.view === 4 && <CreateVideo />} */}
                     </aside>
                   </div>
                 </Style>

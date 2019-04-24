@@ -17,7 +17,7 @@ const Nav = () => (
           {me && (
             <>
               <Link href="/courses">
-                <a>Courses</a>
+                <a>Instructor Area</a>
               </Link>
 
               <ul>
@@ -39,7 +39,7 @@ const Nav = () => (
               </ul>
               <Mutation mutation={TOGGLE_CART_MUTATION}>
                 {toggleCart => (
-                  <button onClick={toggleCart}>
+                  <button type="button" onClick={toggleCart}>
                     My Cart
                     <CartCount count={me.cart.length} />
                   </button>

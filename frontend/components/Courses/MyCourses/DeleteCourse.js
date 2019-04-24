@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import styled from 'styled-components';
 import { CURRENT_COURSES_QUERY } from './MyCourses';
 
 const DELETE_COURSE_MUTATION = gql`
@@ -8,6 +9,14 @@ const DELETE_COURSE_MUTATION = gql`
     deleteCourse(id: $id) {
       id
     }
+  }
+`;
+
+const ButtonStyle = styled.div`
+  button {
+    background: none;
+    border: none;
+    padding: 0px;
   }
 `;
 class DeleteCourse extends Component {
@@ -28,17 +37,19 @@ class DeleteCourse extends Component {
         refetchQueries={[{ query: CURRENT_COURSES_QUERY }]}
       >
         {(deleteRateCourse, { error }) => (
-          <button
-            type="button"
-            onClick={() => {
-              // eslint-disable-next-line no-restricted-globals
-              if (confirm('Are you sure you want to delete your comment?')) {
-                deleteRateCourse();
-              }
-            }}
-          >
-            {children}
-          </button>
+          <ButtonStyle>
+            <button
+              type="button"
+              onClick={() => {
+                // eslint-disable-next-line no-restricted-globals
+                if (confirm('Are you sure you want to delete your comment?')) {
+                  deleteRateCourse();
+                }
+              }}
+            >
+              {children}
+            </button>
+          </ButtonStyle>
         )}
       </Mutation>
     );

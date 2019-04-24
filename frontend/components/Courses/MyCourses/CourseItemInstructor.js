@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { formatDistance } from 'date-fns';
-import formatDate from '../../../lib/formatDate';
 import formatString from '../../../lib/formatString';
 import ItemStyles from '../../styles/ItemStyles';
 import DeleteCourse from './DeleteCourse';
