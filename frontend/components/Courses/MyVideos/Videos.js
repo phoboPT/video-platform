@@ -13,8 +13,6 @@ const ALL_VIDEOS_USER = gql`
       videosUser(first:$first,skip:$skip,orderBy:createdAt_DESC)  {
       id
       title
-      description
-      state
       urlVideo
       createdAt
      

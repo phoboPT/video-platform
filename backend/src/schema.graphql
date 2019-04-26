@@ -38,17 +38,13 @@ type Course {
 type Mutation {
   createVideo(
     title: String!
-    description: String
     urlVideo: String
     course: ID!
     file: String
+    isUpdate: Boolean!
+    videoId: ID
   ): Video!
-  updateVideo(
-    id: ID!
-    title: String
-    description: String
-    category: String
-  ): Video!
+  updateVideo(id: ID!, title: String, category: String): Video!
   deleteVideo(id: ID!): Video
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Video!

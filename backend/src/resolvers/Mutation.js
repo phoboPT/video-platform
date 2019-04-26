@@ -19,9 +19,7 @@ const updateRate = async (ctx, courseId, newRate, oldRate) => {
     {
       where: { course: { id: courseId } },
     },
-    `{
-  rate
-}`
+    `{ rate }`
   );
 
   let updatedRate;
@@ -50,38 +48,54 @@ const Mutations = {
     const video = {
       ...args,
     };
-    const { course } = video;
+    const { course, isUpdate, videoId } = video;
+
+    console.log(isUpdate, videoId);
     // elimina o id dos updates
     delete video.course;
+    delete video.isUpdate;
+    delete video.videoId;
+    let videos;
 
-    const videos = await ctx.db.mutation.createVideo(
-      {
-        data: {
-          user: {
-            connect: {
-              id: userId,
+    if (isUpdate) {
+      videos = ctx.db.mutation.updateVideo(
+        {
+          data: { title: video.title },
+          where: {
+            id: videoId,
+          },
+        },
+        info
+      );
+    } else {
+      videos = await ctx.db.mutation.createVideo(
+        {
+          data: {
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+
+            ...video,
+          },
+        },
+        info
+      );
+      ctx.db.mutation.createCourseVideos(
+        {
+          data: {
+            course: {
+              connect: { id: course },
+            },
+            video: {
+              connect: { id: videos.id },
             },
           },
-
-          ...video,
         },
-      },
-      info
-    );
-
-    ctx.db.mutation.createCourseVideos(
-      {
-        data: {
-          course: {
-            connect: { id: course },
-          },
-          video: {
-            connect: { id: videos.id },
-          },
-        },
-      },
-      info
-    );
+        info
+      );
+    }
 
     // para dar debug console.log(video);
     return videos;

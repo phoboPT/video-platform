@@ -29,11 +29,20 @@ const VideoList = styled.div`
 class InnerList extends React.PureComponent {
   static propTypes = {
     videos: PropTypes.array.isRequired,
+    updateSections: PropTypes.func.isRequired,
     handleVideo: PropTypes.func.isRequired,
+    courseId: PropTypes.string.isRequired,
+    section: PropTypes.object.isRequired,
   };
 
   render() {
-    const { videos, handleVideo } = this.props;
+    const {
+      videos,
+      handleVideo,
+      courseId,
+      updateSections,
+      section,
+    } = this.props;
 
     return videos.map((video, index) => (
       <Video
@@ -41,6 +50,9 @@ class InnerList extends React.PureComponent {
         key={video.id}
         video={video}
         handleVideo={handleVideo}
+        courseId={courseId}
+        updateSections={updateSections}
+        section={section}
       />
     ));
   }
@@ -71,7 +83,15 @@ class Column extends Component {
 
   render() {
     const { disabled, title } = this.state;
-    const { addVideo, handleVideo, section, videos, index } = this.props;
+    const {
+      addVideo,
+      handleVideo,
+      section,
+      videos,
+      index,
+      courseId,
+      updateSections,
+    } = this.props;
     return (
       <Draggable draggableId={section.id} index={index}>
         {provided => (
@@ -104,7 +124,13 @@ class Column extends Component {
                     <button type="button" onClick={() => addVideo(section)}>
                       + Add Video
                     </button>
-                    <InnerList videos={videos} handleVideo={handleVideo} />
+                    <InnerList
+                      videos={videos}
+                      handleVideo={handleVideo}
+                      courseId={courseId}
+                      updateSections={updateSections}
+                      section={section}
+                    />
                     {provided.placeholder}
                   </VideoList>
                 </>
@@ -123,7 +149,9 @@ Column.propTypes = {
   section: PropTypes.object.isRequired,
   videos: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
+  updateSections: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
+  courseId: PropTypes.string.isRequired,
 };
 
 export default Column;

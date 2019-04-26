@@ -2,8 +2,30 @@ import Link from 'next/link';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Mutation, Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import Media from '../../Media';
 import Update from './Update';
+
+const SINGLE_COURSE_QUERY = gql`
+  query SINGLE_COURSE_QUERY($id: ID!) {
+    course(where: { id: $id }) {
+      id
+      title
+      description
+      thumbnail
+      state
+      createdAt
+      videos {
+        video {
+          id
+          title
+          file
+        }
+      }
+    }
+  }
+`;
 
 const CourseContainer = styled.div`
   color: black;
@@ -120,15 +142,10 @@ class UpdateCourse extends Component {
   state = {
     view: 2,
     sections: {
-      columnOrder: ['section-1'],
-      sections: {
-        'section-1': {
-          id: 'section-1',
-          title: 'Section 1',
-          videoIds: ['video-1'],
-        },
-      },
-      videos: { 'video-1': { content: 'Video 1', id: 'video-1' } },
+      columnOrder: [],
+      sections: {},
+      videos: {},
+      files: { 'file-1': { content: 123, id: 'cjuxxpdrjlwd50b95l7pksbie' } },
     },
   };
 
@@ -148,31 +165,44 @@ class UpdateCourse extends Component {
     const { view, sections } = this.state;
     const { id } = this.props;
     return (
-      <>
-        <Link href="/courses">
-          <a>⬅ Go Back</a>
-        </Link>
-        <Marcador>
-          <button type="button" id="1" onClick={this.changeView}>
-            Info
-          </button>
-          <button type="button" id="2" onClick={this.changeView}>
-            Media
-          </button>
-        </Marcador>
-        <CourseContainer>
-          {view === 1 && <Update id={id} />}
-          {view === 2 && (
-            <Media sections={sections} updateState={this.updateState} />
-          )}
-        </CourseContainer>
-      </>
+      <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
+        {({ data, loading }) => {
+          if (loading) return <p>Loading</p>;
+          if (!data.course) return <p>No Courses Found for {id}</p>;
+
+          return (
+            <>
+              <Link href="/courses">
+                <a>⬅ Go Back</a>
+              </Link>
+              <Marcador>
+                <button type="button" id="1" onClick={this.changeView}>
+                  Info
+                </button>
+                <button type="button" id="2" onClick={this.changeView}>
+                  Media
+                </button>
+              </Marcador>
+              <CourseContainer>
+                {view === 1 && <Update id={id} course={data.course} />}
+                {view === 2 && (
+                  <Media
+                    sections={sections}
+                    updateState={this.updateState}
+                    courseId={id}
+                  />
+                )}
+              </CourseContainer>
+            </>
+          );
+        }}
+      </Query>
     );
   }
 }
 
 UpdateCourse.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default UpdateCourse;

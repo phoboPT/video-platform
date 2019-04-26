@@ -13,17 +13,19 @@ import validateExtension from '../../../lib/validateFileExtensions';
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
     $title: String!
-    $description: String!
     $urlVideo: String
     $course: ID!
     $file: String
+    $isUpdate: Boolean!
+    $videoId: ID
   ) {
     createVideo(
       title: $title
-      description: $description
       urlVideo: $urlVideo
       course: $course
       file: $file
+      isUpdate: $isUpdate
+      videoId: $videoId
     ) {
       id
     }
@@ -62,24 +64,30 @@ const Container = styled.div`
 `;
 const COURSE_QUERY = gql`
   query COURSE_QUERY {
-    courses {
+    videos {
       id
-      title
     }
   }
 `;
 
 class CreateVideo extends Component {
+  static propTypes = {
+    updateSections: PropTypes.func.isRequired,
+    video: PropTypes.object.isRequired,
+    section: PropTypes.object.isRequired,
+  };
+
   state = {
-    title: '',
-    description: '',
+    title: this.props.title,
     urlVideo: '',
     category: '',
-    course: '',
+    course: this.props.courseId,
     file: '',
     hasVideo: false,
     isUploading: 0,
     isUploadingFile: 0,
+    isUpdate: this.props.isUpdate,
+    videoId: this.props.video.id,
   };
 
   handleChange = e => {
@@ -94,6 +102,7 @@ class CreateVideo extends Component {
     });
 
     const { files } = e.target;
+    const { updateSections, video, section } = this.props;
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'video-platform');
@@ -112,10 +121,16 @@ class CreateVideo extends Component {
       isUploading: 2,
     });
 
-    createVideoMutation();
+    const {
+      data: {
+        createVideo: { id },
+      },
+    } = await createVideoMutation();
+    // change Video id
+    updateSections(video, id, section);
   };
 
-  uploadFile = async e => {
+  uploadFile = async (e, createVideoMutation) => {
     this.setState({
       isUploadingFile: 1,
     });
@@ -163,8 +178,9 @@ class CreateVideo extends Component {
   };
 
   render() {
-    const { title, show } = this.props;
+    const { title, show, isUpdate, video } = this.props;
     const { isUploading } = this.state;
+    console.log('video', video);
     return (
       <Query query={COURSE_QUERY}>
         {({ data, error, loading }) => {
@@ -174,6 +190,7 @@ class CreateVideo extends Component {
           if (error) {
             return <p>Error:{error.message}</p>;
           }
+          console.log('date', data);
           return (
             <Container>
               <Mutation
@@ -258,6 +275,7 @@ class CreateVideo extends Component {
 CreateVideo.propTypes = {
   title: PropTypes.string.isRequired,
   show: PropTypes.number.isRequired,
+  courseId: PropTypes.string.isRequired,
 };
 
 export default CreateVideo;

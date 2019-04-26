@@ -22,6 +22,8 @@ class InnerList extends React.PureComponent {
     addVideo: PropTypes.func.isRequired,
     handleChange: PropTypes.func.isRequired,
     handleVideo: PropTypes.func.isRequired,
+    updateSections: PropTypes.func.isRequired,
+    courseId: PropTypes.string.isRequired,
   };
 
   render() {
@@ -32,6 +34,8 @@ class InnerList extends React.PureComponent {
       addVideo,
       handleChange,
       handleVideo,
+      courseId,
+      updateSections,
     } = this.props;
     let videos;
     if (section.videoIds) {
@@ -46,6 +50,8 @@ class InnerList extends React.PureComponent {
         section={section}
         videos={videos}
         index={index}
+        courseId={courseId}
+        updateSections={updateSections}
       />
     );
   }
@@ -173,6 +179,36 @@ class Index extends Component {
     updateState(this.state);
   };
 
+  updateSections = async (video, id, section) => {
+    const { videos, sections } = this.state;
+    const atualvideo = videos[video.id];
+    const { updateState } = this.props;
+    // const atualSection = sections[section.id];
+    // let index;
+    // atualSection.videoIds.forEach((item, i) => {
+    //   if (item === video.id) {
+    //     index = i;
+    //   }
+    // });
+
+    // atualSection.videoIds[index] = id;
+
+    if (id) {
+      atualvideo.id = id;
+    }
+
+    const newState = {
+      ...this.state,
+      videos: {
+        ...videos,
+      },
+    };
+
+    console.log(newState);
+    await this.setState(newState);
+    updateState(this.state);
+  };
+
   addSection = async () => {
     const { sections, columnOrder } = this.state;
     const size = Object.keys(sections).length + 1;
@@ -224,6 +260,7 @@ class Index extends Component {
 
   render() {
     const { columnOrder, sections, videos } = this.state;
+    const { courseId } = this.props;
     return (
       <>
         <button type="button" onClick={this.addSection}>
@@ -248,10 +285,12 @@ class Index extends Component {
                       addVideo={this.addVideo}
                       handleChange={this.handleChange}
                       handleVideo={this.handleVideo}
+                      updateSections={this.updateSections}
                       key={section.id}
                       section={section}
                       videosMap={videos}
                       index={index}
+                      courseId={courseId}
                     />
                   );
                 })}
@@ -274,6 +313,7 @@ Index.propTypes = {
   section: PropTypes.object,
   sections: PropTypes.object,
   updateState: PropTypes.func.isRequired,
+  courseId: PropTypes.string.isRequired,
 };
 
 export default Index;

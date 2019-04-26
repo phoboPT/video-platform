@@ -82,7 +82,6 @@ type Course {
 type Video {
   id: ID! @id
   title: String!
-  description: String!
   user: User!
   urlVideo: String!
   file: String

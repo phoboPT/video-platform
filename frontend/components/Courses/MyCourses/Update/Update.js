@@ -180,105 +180,92 @@ class Update extends Component {
   };
 
   render() {
-    const { id } = this.props;
+    const { course } = this.props;
     const { alreadyExecuted } = this.state;
+    if (!alreadyExecuted) {
+      this.courseState(course.state);
+    }
+
     return (
-      <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
-        {({ data, loading }) => {
-          if (loading) return <p>Loading</p>;
-          if (!data.course) return <p>No Courses Found for {id}</p>;
-
-          if (!alreadyExecuted) {
-            this.courseState(data.course.state);
-          }
-
-          return (
+      <>
+        <Mutation mutation={UPDATE_COURSE_MUTATION} variables={this.state}>
+          {(updateCourse, { loading, error }) => (
             <>
-              <Mutation
-                mutation={UPDATE_COURSE_MUTATION}
-                variables={this.state}
-              >
-                {(updateCourse, { loading, error }) => (
-                  <>
-                    <>
-                      <div className="info-container">
-                        <Form>
-                          <Error error={error} />
-                          <fieldset disabled={loading} aria-busy={loading}>
-                            <h2>Edit Course</h2>
-                            {/* <label htmlFor="Image">
+              <>
+                <div className="info-container">
+                  <Form>
+                    <Error error={error} />
+                    <fieldset disabled={loading} aria-busy={loading}>
+                      <h2>Edit Course</h2>
+                      {/* <label htmlFor="Image">
                               <img src={data.course.thumbnail} />
                             </label> */}
-                            <label htmlFor="Title">
-                              Title
-                              <input
-                                id="title"
-                                type="text"
-                                name="title"
-                                placeholder="title"
-                                defaultValue={data.course.title}
-                                onChange={this.handleChange}
-                              />
-                            </label>
+                      <label htmlFor="Title">
+                        Title
+                        <input
+                          id="title"
+                          type="text"
+                          name="title"
+                          placeholder="title"
+                          defaultValue={course.title}
+                          onChange={this.handleChange}
+                        />
+                      </label>
 
-                            <label htmlFor="description">
-                              Description
-                              <div className="description">
-                                <Editor
-                                  data={data.course.description}
-                                  changeQuill={this.changeQuill}
-                                />
-                              </div>
-                            </label>
-                          </fieldset>
-                        </Form>
-                      </div>
-                      {/* divisao  */}
-                      <div className="actions-container">
-                        <form
-                          onSubmit={e => this.updateCourse(e, updateCourse)}
-                        >
-                          <button
-                            id={loading ? 'submitLoading' : 'submit'}
-                            type="submit"
-                            disabled={loading}
-                          >
-                            {loading ? 'Saving...' : 'Save Changes'}
-                          </button>
-                        </form>
-                        <label htmlFor="state">
-                          Course State
-                          <div id="courseState">
-                            <Published
-                              published={this.state.published}
-                              changePublished={this.changePublished}
-                            />
-                            <Unpublished
-                              unpublished={this.state.unpublished}
-                              changeUnpublished={this.changeUnpublished}
-                            />
-                          </div>
-                        </label>
-                        <label htmlFor="thumbnail">
-                          Thumbnail Preview
-                          {this.state.changeThumbnail ? (
-                            data.course.thumbnail && (
-                              <img src={this.state.thumbnail} />
-                            )
-                          ) : (
-                            <img src={data.course.thumbnail} />
-                          )}
-                          <input
-                            type="file"
-                            name="thumbnail"
-                            placeholder="thumbnail"
-                            value={this.thumbnail}
-                            onChange={this.uploadThumbnail}
+                      <label htmlFor="description">
+                        Description
+                        <div className="description">
+                          <Editor
+                            data={course.description}
+                            changeQuill={this.changeQuill}
                           />
-                        </label>
-                      </div>
-                    </>
-                    {/* <VideoListStyle>Videos</VideoListStyle>
+                        </div>
+                      </label>
+                    </fieldset>
+                  </Form>
+                </div>
+                {/* divisao  */}
+                <div className="actions-container">
+                  <form onSubmit={e => this.updateCourse(e, updateCourse)}>
+                    <button
+                      id={loading ? 'submitLoading' : 'submit'}
+                      type="submit"
+                      disabled={loading}
+                    >
+                      {loading ? 'Saving...' : 'Save Changes'}
+                    </button>
+                  </form>
+                  <label htmlFor="state">
+                    Course State
+                    <div id="courseState">
+                      <Published
+                        published={this.state.published}
+                        changePublished={this.changePublished}
+                      />
+                      <Unpublished
+                        unpublished={this.state.unpublished}
+                        changeUnpublished={this.changeUnpublished}
+                      />
+                    </div>
+                  </label>
+                  <label htmlFor="thumbnail">
+                    Thumbnail Preview
+                    {this.state.changeThumbnail ? (
+                      course.thumbnail && <img src={this.state.thumbnail} />
+                    ) : (
+                      <img src={course.thumbnail} />
+                    )}
+                    <input
+                      type="file"
+                      name="thumbnail"
+                      placeholder="thumbnail"
+                      value={this.thumbnail}
+                      onChange={this.uploadThumbnail}
+                    />
+                  </label>
+                </div>
+              </>
+              {/* <VideoListStyle>Videos</VideoListStyle>
                     {data.course.videos.map((video, index) => (
                       <VideoItem
                         videos={video}
@@ -291,13 +278,10 @@ class Update extends Component {
                         />
                       </VideoItem>
                     ))} */}
-                  </>
-                )}
-              </Mutation>
             </>
-          );
-        }}
-      </Query>
+          )}
+        </Mutation>
+      </>
     );
   }
 }

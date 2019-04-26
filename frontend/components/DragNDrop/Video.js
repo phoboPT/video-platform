@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { parse } from 'url';
 import CreateVideo from '../Courses/UploadVideo/CreateVideo';
 
 const Container = styled.div`
@@ -64,7 +63,6 @@ class Video extends Component {
   };
 
   changeUpload = e => {
-    console.log(e.currentTarget.id);
     const { upload } = this.state;
     if (upload === 1 && parseInt(e.currentTarget.id) === 1) {
       return this.setState({ upload: 0 });
@@ -73,7 +71,7 @@ class Video extends Component {
   };
 
   render() {
-    const { video, index } = this.props;
+    const { video, index, courseId, updateSections, section } = this.props;
     const { disabled, content, upload } = this.state;
     return (
       <Draggable draggableId={video.id} index={index}>
@@ -118,7 +116,17 @@ class Video extends Component {
                     <img src="../../static/fileIcon.png" alt="File" />
                   </button>
 
-                  {upload === 2 && <CreateVideo title="Video" show={1} />}
+                  {upload === 2 && (
+                    <CreateVideo
+                      title="Video"
+                      show={1}
+                      video={video}
+                      courseId={courseId}
+                      updateSections={updateSections}
+                      isUpdate={video.id.length > 20}
+                      section={section}
+                    />
+                  )}
                   {upload === 3 && <CreateVideo title="File" show={2} />}
                 </div>
               )}
@@ -133,7 +141,8 @@ class Video extends Component {
 Video.propTypes = {
   video: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  handleVideo: PropTypes.func.isRequired,
+  updateSections: PropTypes.func.isRequired,
+  courseId: PropTypes.string.isRequired,
 };
 
 export default Video;
