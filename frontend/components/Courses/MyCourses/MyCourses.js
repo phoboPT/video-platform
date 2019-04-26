@@ -23,8 +23,6 @@ const CURRENT_COURSES_QUERY = gql`
         id
         video {
           title
-          description
-          state
           file
           createdAt
         }
