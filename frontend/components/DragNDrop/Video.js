@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import CreateVideo from '../Courses/UploadVideo/CreateVideo';
+import CreateVideo from '../InstructorArea/UploadVideo/CreateVideo';
 
 const Container = styled.div`
   border: 1px solid lightgrey;

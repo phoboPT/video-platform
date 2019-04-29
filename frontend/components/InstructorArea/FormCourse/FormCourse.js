@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
 // import ReactQuill from "react-quill"; // ES6
 import styled, { keyframes } from 'styled-components';
-import Error from '../../../Static/ErrorMessage';
-import Published from '../../CourseState/Published';
-import Unpublished from '../../CourseState/Unpublished';
-import Editor from '../../Editor';
+import Error from '../../Static/ErrorMessage';
+import Published from '../CourseState/Published';
+import Unpublished from '../CourseState/Unpublished';
+import Editor from '../Editor';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -51,15 +51,35 @@ const UPDATE_COURSE_MUTATION = gql`
     }
   }
 `;
-const loading = keyframes`
-  from {
-    background-position: 0 0;
-    /* rotate: 0; */
+// create
+const CREATE_COURSE_MUTATION = gql`
+  mutation CREATE_COURSE_MUTATION(
+    $title: String!
+    $thumbnail: String!
+    $description: String!
+    $price: Float!
+    $state: String!
+    $category: ID!
+  ) {
+    createCourse(
+      title: $title
+      thumbnail: $thumbnail
+      description: $description
+      price: $price
+      category: $category
+      state: $state
+    ) {
+      id
+    }
   }
+`;
 
-  to {
-    background-position: 100% 100%;
-    /* rotate: 360deg; */
+const ALL_CATEGORIES_QUERY = gql`
+  query ALL_CATEGORIES_QUERY {
+    categories {
+      name
+      id
+    }
   }
 `;
 
@@ -93,19 +113,6 @@ const Form = styled.div`
     font-weight: 600;
     padding: 0.5rem 1.2rem;
     text-align: center;
-  }
-  fieldset {
-    border: 0;
-    padding: 0;
-
-    &[disabled] {
-      opacity: 0.5;
-    }
-
-    &[aria-busy='true']::before {
-      background-size: 50% auto;
-      animation: ${loading} 0.5s linear infinite;
-    }
   }
 `;
 
@@ -192,92 +199,77 @@ class Update extends Component {
           {(updateCourse, { loading, error }) => (
             <>
               <>
-                <div className="info-container">
-                  <Form>
+                <Form id="form">
+                  <div className="info-container">
                     <Error error={error} />
-                    <fieldset disabled={loading} aria-busy={loading}>
-                      <h2>Edit Course</h2>
-                      {/* <label htmlFor="Image">
+                    <h2>Edit Course</h2>
+                    {/* <label htmlFor="Image">
                               <img src={data.course.thumbnail} />
                             </label> */}
-                      <label htmlFor="Title">
-                        Title
-                        <input
-                          id="title"
-                          type="text"
-                          name="title"
-                          placeholder="title"
-                          defaultValue={course.title}
-                          onChange={this.handleChange}
-                        />
-                      </label>
+                    <label htmlFor="Title">
+                      Title
+                      <input
+                        id="title"
+                        type="text"
+                        name="title"
+                        placeholder="title"
+                        defaultValue={course.title || ''}
+                        onChange={this.handleChange}
+                      />
+                    </label>
 
-                      <label htmlFor="description">
-                        Description
-                        <div className="description">
-                          <Editor
-                            data={course.description}
-                            changeQuill={this.changeQuill}
-                          />
-                        </div>
-                      </label>
-                    </fieldset>
-                  </Form>
-                </div>
-                {/* divisao  */}
-                <div className="actions-container">
-                  <form onSubmit={e => this.updateCourse(e, updateCourse)}>
-                    <button
-                      id={loading ? 'submitLoading' : 'submit'}
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading ? 'Saving...' : 'Save Changes'}
-                    </button>
-                  </form>
-                  <label htmlFor="state">
-                    Course State
-                    <div id="courseState">
-                      <Published
-                        published={this.state.published}
-                        changePublished={this.changePublished}
-                      />
-                      <Unpublished
-                        unpublished={this.state.unpublished}
-                        changeUnpublished={this.changeUnpublished}
-                      />
-                    </div>
-                  </label>
-                  <label htmlFor="thumbnail">
-                    Thumbnail Preview
-                    {this.state.changeThumbnail ? (
-                      course.thumbnail && <img src={this.state.thumbnail} />
-                    ) : (
-                      <img src={course.thumbnail} />
-                    )}
-                    <input
-                      type="file"
-                      name="thumbnail"
-                      placeholder="thumbnail"
-                      value={this.thumbnail}
-                      onChange={this.uploadThumbnail}
-                    />
-                  </label>
-                </div>
-              </>
-              {/* <VideoListStyle>Videos</VideoListStyle>
-                    {data.course.videos.map((video, index) => (
-                      <VideoItem
-                        videos={video}
-                        data={index}
-                        key={video.video.id}
-                      >
-                        <RemoveVideoButton
-                          courseId={data.course.id}
-                          id={video.video.id}
+                    <label htmlFor="description">
+                      Description
+                      <div className="description">
+                        <Editor
+                          data={course.description}
+                          changeQuill={this.changeQuill}
                         />
-                      </VideoItem>
-                    ))} */}
+                      </div>
+                    </label>
+                  </div>
+                  {/* divisao  */}
+                  <div className="actions-container">
+                    <form onSubmit={e => this.updateCourse(e, updateCourse)}>
+                      <button
+                        id={loading ? 'submitLoading' : 'submit'}
+                        type="submit"
+                        disabled={loading}
+                      >
+                        {loading ? 'Saving...' : 'Save Changes'}
+                      </button>
+                    </form>
+                    <label htmlFor="state">
+                      Course State
+                      <div id="courseState">
+                        <Published
+                          published={this.state.published}
+                          changePublished={this.changePublished}
+                        />
+                        <Unpublished
+                          unpublished={this.state.unpublished}
+                          changeUnpublished={this.changeUnpublished}
+                        />
+                      </div>
+                    </label>
+                    <label htmlFor="thumbnail">
+                      Thumbnail Preview
+                      {this.state.changeThumbnail ? (
+                        course.thumbnail && <img src={this.state.thumbnail} />
+                      ) : (
+                        <img src={course.thumbnail} />
+                      )}
+                      <input
+                        type="file"
+                        name="thumbnail"
+                        placeholder="thumbnail"
+                        value={this.thumbnail}
+                        onChange={this.uploadThumbnail}
+                      />
+                    </label>
+                  </div>
+                </Form>
+              </>
             </>
           )}
         </Mutation>

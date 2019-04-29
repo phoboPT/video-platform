@@ -19,7 +19,7 @@ class Published extends Component {
         onClick={() => changePublished()}
         disabled={published}
       >
-        <img alt="Published" src="../../../../static/rightpublished.png" />{' '}
+        <img alt="Published" src="../../../static/rightpublished.png" />{' '}
         Published
       </Button>
     );

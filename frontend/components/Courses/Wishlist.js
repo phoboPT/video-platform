@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import { Container, CoursesList, Title } from '../../styles/Home';
+import { Container, CoursesList, Title } from '../styles/Home';
 import WishItem from './WishItem';
 
 const WISHLIST_QUERY = gql`

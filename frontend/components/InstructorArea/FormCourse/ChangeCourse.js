@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import Media from '../../Media';
-import Update from './Update';
+import Media from './Media';
+import Update from './FormCourse';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -30,20 +30,24 @@ const SINGLE_COURSE_QUERY = gql`
 const CourseContainer = styled.div`
   color: black;
   background: rgba(242, 242, 242, 0.7);
-  display: flex;
+
+  #form {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+  }
 
   .info-container {
-    order: 1;
-    flex: 3;
+    grid-column: 1 / 2;
+
     label {
       text-align: left;
     }
   }
   .actions-container {
-    order: 2;
-    flex: 1;
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
     text-align: center;
-    display: flex;
+    display: grid;
     flex-direction: column;
     input {
       margin: 10px;
@@ -56,6 +60,7 @@ const CourseContainer = styled.div`
         height: 80%;
       }
     }
+
     #submit {
       border-radius: 5px;
       height: 50px;

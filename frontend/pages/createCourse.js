@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import CreateCourse from '../components/Courses/CreateCourse/CreateCourse';
+import CreateCourse from '../components/InstructorArea/CreateCourse/CreateCourse';
 
 class createCourse extends Component {
   render() {
     return (
       <div>
-        <CreateCourse />
+        <updateCourse />
       </div>
     );
   }

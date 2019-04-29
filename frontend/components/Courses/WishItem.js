@@ -2,18 +2,18 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import formatMoney from '../../../lib/formatMoney';
-import BuyFreeButton from '../../Home/BuyFreeButton';
-import AddToCart from '../../Home/Cart/AddToCart';
-import Rating from '../../Home/CourseInfo/Comments/Rating';
-import ItemStyles from '../../styles/ItemStyles';
+import formatMoney from '../../lib/formatMoney';
+import BuyFreeButton from '../Home/BuyFreeButton';
+import AddToCart from '../Home/Cart/AddToCart';
+import Rating from '../Home/CourseInfo/Comments/Rating';
+import ItemStyles from '../styles/ItemStyles';
 
 const InfoStyle = styled.p`
   text-align: left;
   padding: none;
 `;
 
-export class WishItem extends Component {
+class WishItem extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
   };

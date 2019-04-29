@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import User from '../Authentication/User';
-import LinkStyle from '../styles/LinkStyle';
-import CreateCourse from './CreateCourse/CreateCourse';
+import CreateCourse from './CreateCourse/Interest';
 import FormCourse from './CreateCourse/FormCourse';
-import MyCourses from './MyCourses/MyCourses';
-import UserCourses from './MyCourses/UserCourses';
+import MyCourses from './MyCourses';
 
 const Style = styled.div`
   .container {

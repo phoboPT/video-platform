@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import User from '../../../Authentication/User';
-import reduceData from '../../../../lib/reduceData';
+import User from '../../Authentication/User';
+import reduceData from '../../../lib/reduceData';
 
 const Style = styled.div`
   margin-left: 5rem;

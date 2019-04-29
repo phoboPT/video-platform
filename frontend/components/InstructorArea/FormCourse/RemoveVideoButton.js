@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
-import { CURRENT_USER_QUERY } from '../../../Authentication/User';
-import { SINGLE_COURSE_QUERY } from './Update';
+import { CURRENT_USER_QUERY } from '../../Authentication/User';
+import { SINGLE_COURSE_QUERY } from './FormCourse';
 
 const REMOVE_VIDEO_COURSE = gql`
   mutation REMOVE_VIDEO_COURSE($id: ID!, $courseId: ID!) {
