@@ -24,6 +24,7 @@ class InnerList extends React.PureComponent {
     handleVideo: PropTypes.func.isRequired,
     updateSections: PropTypes.func.isRequired,
     courseId: PropTypes.string.isRequired,
+    updateFiles: PropTypes.func.isRequired,
   };
 
   render() {
@@ -36,6 +37,7 @@ class InnerList extends React.PureComponent {
       handleVideo,
       courseId,
       updateSections,
+      updateFiles,
     } = this.props;
     let videos;
     if (section.videoIds) {
@@ -53,6 +55,7 @@ class InnerList extends React.PureComponent {
         index={index}
         courseId={courseId}
         updateSections={updateSections}
+        updateFiles={updateFiles}
       />
     );
   }
@@ -187,10 +190,9 @@ class Index extends Component {
   };
 
   updateSections = async (video, id, section) => {
-    const { videos, sections } = this.state;
+    const { videos } = this.state;
     const atualvideo = videos[video.id];
     const { updateState } = this.props;
-    const { length } = Object.keys(videos);
 
     delete Object.assign(videos, { [id]: videos[video.id] })[video.id];
     let index = 0;
@@ -205,13 +207,42 @@ class Index extends Component {
     if (id) {
       atualvideo.id = id;
     }
-    // console.log('video', videos[]);
-    // delete Object.assign(videos, { [id]: videos[video.id] })[video.id];
 
     const newState = {
       ...this.state,
       videos: {
         ...videos,
+      },
+    };
+
+    await this.setState(newState);
+    console.log('video', this.state);
+    updateState(this.state);
+  };
+
+  updateFiles = async (id, newFile) => {
+    const { files } = this.state;
+    const atualFile = files[id];
+    const { updateState } = this.props;
+
+    // delete Object.assign(videos, { [id]: videos[video.id] })[video.id];
+    // let index = 0;
+    // section.videoIds.forEach((item, i) => {
+    //   if (item === video.id) {
+    //     index = i;
+    //   }
+    // });
+
+    // section.videoIds[index] = id;
+
+    // if (id) {
+    //   atualvideo.id = id;
+    // }
+
+    const newState = {
+      ...this.state,
+      files: {
+        ...newFile,
       },
     };
 
@@ -300,6 +331,7 @@ class Index extends Component {
                         handleChange={this.handleChange}
                         handleVideo={this.handleVideo}
                         updateSections={this.updateSections}
+                        updateFiles={this.updateFiles}
                         key={section.id}
                         section={section}
                         videosMap={videos}

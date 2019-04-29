@@ -152,10 +152,10 @@ class UpdateCourse extends Component {
       sections: {},
       videos: {},
       files: {
-        cjuxxpdrjlwd50b95l7pksbie: {
-          content: '123',
-          id: 'cjuxxpdrjlwd50b95l7pksbie',
-        },
+        // cjuxxpdrjlwd50b95l7pksbie: {
+        //   content: '123',
+        //   id: 'cjuxxpdrjlwd50b95l7pksbie',
+        // },
       },
     },
     hasUpdated: false,

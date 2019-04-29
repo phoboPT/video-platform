@@ -74,10 +74,7 @@ class CreateVideo extends Component {
 
   state = {
     title: this.props.title,
-    urlVideo: '',
-    category: '',
     course: this.props.courseId,
-    file: '',
     hasVideo: false,
     isUploading: 0,
     isUploadingFile: 0,
@@ -129,7 +126,7 @@ class CreateVideo extends Component {
     this.setState({
       isUploadingFile: 1,
     });
-
+    const { updateFiles } = this.props;
     const { files } = e.target;
     const data = new FormData();
     data.append('file', files[0]);
@@ -154,7 +151,22 @@ class CreateVideo extends Component {
         isUploadingFile: 2,
       });
 
-      createVideoMutation();
+      const {
+        data: {
+          createVideo: { id },
+        },
+      } = await createVideoMutation();
+
+      this.setState({ title: file.public_id.replace('files/', '') });
+      const newFile = {
+        [id]: {
+          content: file.public_id.replace('files/', ''),
+          id,
+        },
+      };
+      console.log('file', newFile, file);
+
+      updateFiles(id, newFile);
     } else {
       alert('File Format not supported');
     }
@@ -173,8 +185,9 @@ class CreateVideo extends Component {
   };
 
   render() {
-    const { title, show, isUpdate, video } = this.props;
+    const { title, show, isUpdate, video, updateFiles } = this.props;
     const { isUploading } = this.state;
+    console.log('show', show);
     return (
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id: video.id }}>
         {({ data, error, loading }) => {
@@ -210,7 +223,7 @@ class CreateVideo extends Component {
                     }}
                   >
                     <Error error={error} />
-                    <h1>{data.video ? data.video.title : title}</h1>
+                    <h1>{title}</h1>
 
                     {show === 1 && (
                       <label htmlFor="file">
@@ -235,7 +248,7 @@ class CreateVideo extends Component {
                           name="file"
                           id="file"
                           placeholder="file"
-                          // onChange={e => this.uploadFile(e, createVideo)}
+                          onChange={e => this.uploadFile(e, createVideo)}
                         />
                       </label>
                     )}
@@ -274,6 +287,7 @@ CreateVideo.propTypes = {
   show: PropTypes.number.isRequired,
   courseId: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool.isRequired,
+  updateFiles: PropTypes.func.isRequired,
 };
 
 export default CreateVideo;

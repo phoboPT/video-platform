@@ -45,6 +45,8 @@ const Mutations = {
       throw new Error('You must be logged in to do that!');
     }
 
+    console.log(args);
+
     const video = {
       ...args,
     };
@@ -60,10 +62,11 @@ const Mutations = {
     if (isUpdate) {
       videos = ctx.db.mutation.updateVideo(
         {
-          data: { title: video.title },
+          data: video,
           where: {
             id: videoId,
           },
+          video,
         },
         info
       );

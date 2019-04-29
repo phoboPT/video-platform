@@ -33,6 +33,8 @@ class InnerList extends React.PureComponent {
     handleVideo: PropTypes.func.isRequired,
     courseId: PropTypes.string.isRequired,
     section: PropTypes.object.isRequired,
+    updateFiles: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
   };
 
   render() {
@@ -42,6 +44,8 @@ class InnerList extends React.PureComponent {
       courseId,
       updateSections,
       section,
+      updateFiles,
+      title,
     } = this.props;
 
     console.log(videos);
@@ -55,8 +59,9 @@ class InnerList extends React.PureComponent {
             handleVideo={handleVideo}
             courseId={courseId}
             updateSections={updateSections}
+            updateFiles={updateFiles}
             section={section}
-            title={this.props.title}
+            title={title}
           />
         )
     );
@@ -96,6 +101,7 @@ class Column extends Component {
       index,
       courseId,
       updateSections,
+      updateFiles,
     } = this.props;
     return (
       <Draggable draggableId={section.id} index={index}>
@@ -134,6 +140,7 @@ class Column extends Component {
                       handleVideo={handleVideo}
                       courseId={courseId}
                       updateSections={updateSections}
+                      updateFiles={updateFiles}
                       section={section}
                       title={this.state.title}
                     />
@@ -158,6 +165,7 @@ Column.propTypes = {
   updateSections: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
   courseId: PropTypes.string.isRequired,
+  updateFiles: PropTypes.func.isRequired,
 };
 
 export default Column;
