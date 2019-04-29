@@ -3,7 +3,7 @@ import draftToHtml from 'draftjs-to-html';
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
 import Editor from '../Editor';
 // import ReactQuill from "react-quill";
@@ -11,7 +11,7 @@ import Error from '../../Static/ErrorMessage';
 import Form from '../../styles/Form';
 import Published from '../CourseState/Published';
 import Unpublished from '../CourseState/Unpublished';
-import { CURRENT_COURSES_QUERY } from '../MyCourses/MyCourses';
+import { CURRENT_COURSES_QUERY } from '../MyCourses';
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -43,23 +43,49 @@ const ALL_CATEGORIES_QUERY = gql`
     }
   }
 `;
+const loading = keyframes`
+  from {
+    background-position: 0 0;
+    /* rotate: 0; */
+  }
 
+  to {
+    background-position: 100% 100%;
+    /* rotate: 360deg; */
+  }
+`;
 const Container = styled.div`
-  max-width: 70%;
-  margin: auto;
-  display: flex;
   .info-container {
-    order: 1;
-    flex: 3;
+    grid-column: 1 / 2;
+
     label {
+      display: block;
+      margin-bottom: 1rem;
       text-align: left;
     }
   }
+  form {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    fieldset {
+      border: 0;
+      padding: 0;
+
+      & [disabled] {
+        opacity: 0.5;
+      }
+
+      & [aria-busy='true']::before {
+        background-size: 50 % auto;
+        animation: ${loading} 0.5 s linear infinite;
+      }
+    }
+  }
   .actions-container {
-    order: 2;
-    flex: 1;
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
     text-align: center;
-    display: flex;
+    display: grid;
     flex-direction: column;
     input {
       margin: 10px;
@@ -72,6 +98,7 @@ const Container = styled.div`
         height: 80%;
       }
     }
+
     #submit {
       border-radius: 5px;
       height: 50px;
@@ -107,31 +134,10 @@ const Container = styled.div`
       cursor: pointer;
     }
   }
-  /* button,
-  input[type='submit'] {
-    width: auto;
-    background: red;
-    color: white;
-    border: 0;
-    font-size: 2rem;
-    font-weight: 600;
-    padding: 0.5rem 1.2rem;
-    text-align: center;
-  }
-
-  .description {
-    background-color: lightgray;
-  }
-  .button-next {
-    :disabled {
-      opacity: 0.5;
-    }
-  } */
 
   #courseState {
     padding-top: 10px;
     padding-bottom: 10px;
-
     button {
       color: #3d3d3d;
       font-size: 17px;
@@ -271,8 +277,8 @@ class FormCourse extends Component {
                 >
                   {(createCourse, { error, loading }) => (
                     <>
-                      <div className="info-container">
-                        <Form>
+                      <form>
+                        <div className="info-container">
                           <Error error={error} />
                           <fieldset disabled={loading} aria-busy={loading}>
                             <h2>Information</h2>
@@ -298,90 +304,89 @@ class FormCourse extends Component {
                               </div>
                             </label>
                           </fieldset>
-                        </Form>
-                      </div>
-                      {/* divisao */}
-                      <div className="actions-container">
-                        <form
-                          method="post"
-                          onSubmit={async e => {
-                            e.preventDefault();
-                            const res = await createCourse();
-                            saveToState(res);
-                          }}
-                        >
-                          <button
-                            id={loading ? 'submitLoading' : 'submit'}
-                            type="submit"
-                            disabled={loading}
+                        </div>
+                        {/* divisao */}
+                        <div className="actions-container">
+                          <form
+                            method="post"
+                            onSubmit={async e => {
+                              e.preventDefault();
+                              const res = await createCourse();
+                              saveToState(res);
+                            }}
                           >
-                            {loading ? 'Creating...' : 'Create Course'}
-                          </button>
-                        </form>
-                        <label htmlFor="state">
-                          Course Status
-                          <div id="courseState">
-                            <Published
-                              published={published}
-                              changePublished={this.changePublished}
+                            <button
+                              id={loading ? 'submitLoading' : 'submit'}
+                              type="submit"
+                              disabled={loading}
+                            >
+                              {loading ? 'Creating...' : 'Create Course'}
+                            </button>
+                          </form>
+
+                          <label htmlFor="state">
+                            Course Status
+                            <div id="courseState">
+                              <Published
+                                published={published}
+                                changePublished={this.changePublished}
+                              />
+                              <Unpublished
+                                unpublished={unpublished}
+                                changeUnpublished={this.changeUnpublished}
+                              />
+                            </div>
+                          </label>
+                          <label htmlFor="thumbnail">
+                            Thumbnail
+                            <span> *20 mb max</span>
+                            <input
+                              type="file"
+                              name="thumbnail"
+                              placeholder="Upload an Image"
+                              onChange={this.uploadThumbnail}
+                              required
                             />
-                            <Unpublished
-                              unpublished={unpublished}
-                              changeUnpublished={this.changeUnpublished}
+                          </label>
+                          {thumbnail && (
+                            <img
+                              src={thumbnail}
+                              alt="Upload Preview"
+                              width="200"
                             />
-                          </div>
-                        </label>
-                        <label htmlFor="thumbnail">
-                          Thumbnail
-                          <span> *20 mb max</span>
-                          <input
-                            type="file"
-                            name="thumbnail"
-                            placeholder="Upload an Image"
-                            onChange={this.uploadThumbnail}
-                            required
-                          />
-                        </label>
-                        {thumbnail && (
-                          <img
-                            src={thumbnail}
-                            alt="Upload Preview"
-                            width="200"
-                          />
-                        )}
-                        {/* <label htmlFor="price">
-                          Price
-                          <input
-                            type="number"
-                            min="0"
-                            step="any"
-                            name="price"
-                            placeholder="00.00"
-                            value={this.price}
-                            onChange={this.saveState}
-                            required
-                          />
-                        </label>
-                        <label htmlFor="category">Category</label>
-                        {category === '' ? (
-                          this.setState({ category: data.categories[0].id })
-                        ) : (
-                          <></>
-                        )}
-                        <select
-                          id="dropdownlist"
-                          onChange={this.handleChange}
-                          name="category"
-                        >
-                          {data.categories.map(category => (
-                            <option key={category.id} value={category.id}>
-                              {category.name}
-                            </option>
-                          ))}
-                        </select> */}
-                        <br />
-                        <br />
-                      </div>
+                          )}
+                          <label htmlFor="price">
+                            Price
+                            <input
+                              type="number"
+                              min="0"
+                              step="any"
+                              name="price"
+                              placeholder="00.00"
+                              value={this.price}
+                              onChange={this.saveState}
+                              required
+                            />
+                          </label>
+                          <label htmlFor="category">Category</label>
+                          {category === '' ? (
+                            this.setState({ category: data.categories[0].id })
+                          ) : (
+                            <></>
+                          )}
+                          <select
+                            id="dropdownlist"
+                            onChange={this.handleChange}
+                            name="category"
+                          >
+                            {data.categories.map(category => (
+                              <option key={category.id} value={category.id}>
+                                {category.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </form>
                     </>
                   )}
                 </Mutation>

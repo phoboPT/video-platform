@@ -1,4 +1,4 @@
-import InstructorArea from '../components/Courses/InstructorArea';
+import InstructorArea from '../components/InstructorArea/InstructorArea';
 
 const InstructorAreaPage = props => (
   <div>

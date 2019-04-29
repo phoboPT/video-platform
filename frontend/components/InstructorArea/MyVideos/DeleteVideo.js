@@ -16,7 +16,7 @@ const ButtonStyle = styled.button`
   border-radius: ${props => props.theme.borderRadius};
 `;
 
-export class DeleteVideo extends Component {
+class DeleteVideo extends Component {
   update = (cache, payload) => {
     // manually update the cache to reflet changes
     // Read cache for the Videos

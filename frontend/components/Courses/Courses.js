@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LinkStyle from '../styles/LinkStyle';
-import MyCourses from './MyCourses/MyCourses';
-import UserCourses from './MyCourses/UserCourses';
+import UserCourses from './UserCourses';
 
 class Courses extends Component {
   render() {

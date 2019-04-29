@@ -2,9 +2,9 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import formatDate from '../../../lib/formatDate';
-import formatString from '../../../lib/formatString';
-import ItemStyles from '../../styles/ItemStyles';
+import formatDate from '../../lib/formatDate';
+import formatString from '../../lib/formatString';
+import ItemStyles from '../styles/ItemStyles';
 
 const Div = styled.div`
   padding: none;

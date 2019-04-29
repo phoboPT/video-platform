@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { formatDistance } from 'date-fns';
-import formatString from '../../../lib/formatString';
-import ItemStyles from '../../styles/ItemStyles';
+import formatString from '../../lib/formatString';
+import ItemStyles from '../styles/ItemStyles';
 import DeleteCourse from './DeleteCourse';
 
 const Div = styled.div`
