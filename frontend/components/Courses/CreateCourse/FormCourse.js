@@ -47,10 +47,67 @@ const ALL_CATEGORIES_QUERY = gql`
 const Container = styled.div`
   max-width: 70%;
   margin: auto;
-  label {
-    text-align: left;
+  display: flex;
+  .info-container {
+    order: 1;
+    flex: 3;
+    label {
+      text-align: left;
+    }
   }
-  button,
+  .actions-container {
+    order: 2;
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    input {
+      margin: 10px;
+    }
+    label {
+      margin: 40px;
+      img {
+        margin-top: 10px;
+        width: 100%;
+        height: 80%;
+      }
+    }
+    #submit {
+      border-radius: 5px;
+      height: 50px;
+      width: 200px;
+      text-align: center;
+      margin-top: 40px;
+      margin: 0 auto;
+      font-size: 25px;
+      font-weight: 400;
+      border: none;
+      background: #27ad39;
+      margin-top: 40px;
+      cursor: pointer;
+      color: white;
+      :focus {
+        outline: none;
+      }
+    }
+
+    #submitLoading {
+      border-radius: 5px;
+      height: 50px;
+      width: 200px;
+      text-align: center;
+      margin-top: 40px;
+      margin: 0 auto;
+      font-size: 25px;
+      font-weight: 400;
+      border: 2px solid #727272;
+      background: white;
+      color: #727272;
+      margin-top: 40px;
+      cursor: pointer;
+    }
+  }
+  /* button,
   input[type='submit'] {
     width: auto;
     background: red;
@@ -69,7 +126,7 @@ const Container = styled.div`
     :disabled {
       opacity: 0.5;
     }
-  }
+  } */
 
   #courseState {
     padding-top: 10px;
@@ -94,6 +151,7 @@ const Container = styled.div`
     }
   }
 `;
+
 const Back = styled.div`
   float: left;
   text-align: center;
@@ -213,109 +271,117 @@ class FormCourse extends Component {
                 >
                   {(createCourse, { error, loading }) => (
                     <>
-                      <Form
-                        method="post"
-                        onSubmit={async e => {
-                          console.log('ehtre9maquisafdso');
-                          e.preventDefault();
-                          console.log('submit');
-                          const res = await createCourse();
-                          saveToState(res);
-                        }}
-                      >
-                        <Error error={error} />
-                        <fieldset disabled={loading} aria-busy={loading}>
-                          <h2>Information</h2>
-                          <label htmlFor="Title">
-                            Title
-                            <input
-                              type="text"
-                              name="title"
-                              placeholder="Awsome"
-                              value={this.title}
-                              onChange={this.saveState}
-                              required
-                            />
-                          </label>
+                      <div className="info-container">
+                        <Form>
+                          <Error error={error} />
+                          <fieldset disabled={loading} aria-busy={loading}>
+                            <h2>Information</h2>
+                            <label htmlFor="Title">
+                              Title
+                              <input
+                                type="text"
+                                name="title"
+                                placeholder="Awsome"
+                                value={this.title}
+                                onChange={this.saveState}
+                                required
+                              />
+                            </label>
 
-                          <label htmlFor="description">
-                            Description
-                            <div className="description">
-                              <Editor
-                                data={description}
-                                changeQuill={this.changeQuill}
-                              />
-                              {/* <ReactQuill onChange={this.changeQuill} /> */}
-                            </div>
-                          </label>
-                          <label htmlFor="state">
-                            Course Status
-                            <div id="courseState">
-                              <Published
-                                published={published}
-                                changePublished={this.changePublished}
-                              />
-                              <Unpublished
-                                unpublished={unpublished}
-                                changeUnpublished={this.changeUnpublished}
-                              />
-                            </div>
-                          </label>
-                          <label htmlFor="thumbnail">
-                            Thumbnail
-                            <span> *20 mb max</span>
-                            <input
-                              type="file"
-                              name="thumbnail"
-                              placeholder="Upload an Image"
-                              onChange={this.uploadThumbnail}
-                              required
-                            />
-                          </label>
-                          {thumbnail && (
-                            <img
-                              src={thumbnail}
-                              alt="Upload Preview"
-                              width="200"
-                            />
-                          )}
-                          <label htmlFor="price">
-                            Price
-                            <input
-                              type="number"
-                              min="0"
-                              step="any"
-                              name="price"
-                              placeholder="00.00"
-                              value={this.price}
-                              onChange={this.saveState}
-                              required
-                            />
-                          </label>
-                          <label htmlFor="category">Category</label>
-                          {category === '' ? (
-                            this.setState({ category: data.categories[0].id })
-                          ) : (
-                            <></>
-                          )}
-                          <select
-                            id="dropdownlist"
-                            onChange={this.handleChange}
-                            name="category"
+                            <label htmlFor="description">
+                              Description
+                              <div className="description">
+                                <Editor
+                                  data={description}
+                                  changeQuill={this.changeQuill}
+                                />
+                              </div>
+                            </label>
+                          </fieldset>
+                        </Form>
+                      </div>
+                      {/* divisao */}
+                      <div className="actions-container">
+                        <form
+                          method="post"
+                          onSubmit={async e => {
+                            e.preventDefault();
+                            const res = await createCourse();
+                            saveToState(res);
+                          }}
+                        >
+                          <button
+                            id={loading ? 'submitLoading' : 'submit'}
+                            type="submit"
+                            disabled={loading}
                           >
-                            {data.categories.map(category => (
-                              <option key={category.id} value={category.id}>
-                                {category.name}
-                              </option>
-                            ))}
-                          </select>
-                          <br />
-                          <br />
-                          <button type="submit" className="button-next">
-                            Next
+                            {loading ? 'Creating...' : 'Create Course'}
                           </button>
-                        </fieldset>
-                      </Form>
+                        </form>
+                        <label htmlFor="state">
+                          Course Status
+                          <div id="courseState">
+                            <Published
+                              published={published}
+                              changePublished={this.changePublished}
+                            />
+                            <Unpublished
+                              unpublished={unpublished}
+                              changeUnpublished={this.changeUnpublished}
+                            />
+                          </div>
+                        </label>
+                        <label htmlFor="thumbnail">
+                          Thumbnail
+                          <span> *20 mb max</span>
+                          <input
+                            type="file"
+                            name="thumbnail"
+                            placeholder="Upload an Image"
+                            onChange={this.uploadThumbnail}
+                            required
+                          />
+                        </label>
+                        {thumbnail && (
+                          <img
+                            src={thumbnail}
+                            alt="Upload Preview"
+                            width="200"
+                          />
+                        )}
+                        {/* <label htmlFor="price">
+                          Price
+                          <input
+                            type="number"
+                            min="0"
+                            step="any"
+                            name="price"
+                            placeholder="00.00"
+                            value={this.price}
+                            onChange={this.saveState}
+                            required
+                          />
+                        </label>
+                        <label htmlFor="category">Category</label>
+                        {category === '' ? (
+                          this.setState({ category: data.categories[0].id })
+                        ) : (
+                          <></>
+                        )}
+                        <select
+                          id="dropdownlist"
+                          onChange={this.handleChange}
+                          name="category"
+                        >
+                          {data.categories.map(category => (
+                            <option key={category.id} value={category.id}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select> */}
+                        <br />
+                        <br />
+                      </div>
                     </>
                   )}
                 </Mutation>
