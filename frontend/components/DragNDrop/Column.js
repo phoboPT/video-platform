@@ -44,17 +44,22 @@ class InnerList extends React.PureComponent {
       section,
     } = this.props;
 
-    return videos.map((video, index) => (
-      <Video
-        index={index}
-        key={video.id}
-        video={video}
-        handleVideo={handleVideo}
-        courseId={courseId}
-        updateSections={updateSections}
-        section={section}
-      />
-    ));
+    console.log(videos);
+    return videos.map(
+      (video, index) =>
+        video && (
+          <Video
+            index={index}
+            key={video.id}
+            video={video}
+            handleVideo={handleVideo}
+            courseId={courseId}
+            updateSections={updateSections}
+            section={section}
+            title={this.props.title}
+          />
+        )
+    );
   }
 }
 
@@ -130,6 +135,7 @@ class Column extends Component {
                       courseId={courseId}
                       updateSections={updateSections}
                       section={section}
+                      title={this.state.title}
                     />
                     {provided.placeholder}
                   </VideoList>

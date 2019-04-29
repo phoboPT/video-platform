@@ -27,9 +27,7 @@ const SINGLE_COURSE_QUERY = gql`
         video {
           id
           title
-          description
           file
-          state
           createdAt
         }
       }
@@ -153,6 +151,7 @@ class ViewCourse extends Component {
                 return <p>No Courses Found for {this.props.id}</p>;
               }
               const { course } = data;
+              console.log(course);
               if (course.id) {
                 return (
                   <Query
@@ -217,7 +216,6 @@ class ViewCourse extends Component {
                                 key={video.video.id}
                               />
                             ))}
-                          {console.log(showForm)}
                           {this.state.view === 3 && (
                             <>
                               {showForm === 'true' && me ? (

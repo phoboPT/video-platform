@@ -154,7 +154,6 @@ class UpdateCourse extends Component {
   };
 
   updateState = newState => {
-    console.log('newState', newState);
     this.setState(prevState => ({
       value: prevState.value + 1,
       sections: { ...newState },

@@ -9,6 +9,7 @@ import Error from '../../Static/ErrorMessage.js';
 import { ALL_VIDEOS_USER } from '../MyVideos/Videos';
 import { ALL_COURSES_QUERY } from '../../Home/CoursesList/ListAllCourses';
 import validateExtension from '../../../lib/validateFileExtensions';
+import { SINGLE_VIDEO_QUERY } from '../MyVideos/UpdateVideo';
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
@@ -62,19 +63,13 @@ const Container = styled.div`
     height: 50px;
   }
 `;
-const COURSE_QUERY = gql`
-  query COURSE_QUERY {
-    videos {
-      id
-    }
-  }
-`;
 
 class CreateVideo extends Component {
   static propTypes = {
     updateSections: PropTypes.func.isRequired,
     video: PropTypes.object.isRequired,
     section: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
   };
 
   state = {
@@ -87,7 +82,7 @@ class CreateVideo extends Component {
     isUploading: 0,
     isUploadingFile: 0,
     isUpdate: this.props.isUpdate,
-    videoId: this.props.video.id,
+    videoId: this.props.video.id || '',
   };
 
   handleChange = e => {
@@ -180,9 +175,8 @@ class CreateVideo extends Component {
   render() {
     const { title, show, isUpdate, video } = this.props;
     const { isUploading } = this.state;
-    console.log('video', video);
     return (
-      <Query query={COURSE_QUERY}>
+      <Query query={SINGLE_VIDEO_QUERY} variables={{ id: video.id }}>
         {({ data, error, loading }) => {
           if (loading) {
             return <p>Loading...</p>;
@@ -190,7 +184,10 @@ class CreateVideo extends Component {
           if (error) {
             return <p>Error:{error.message}</p>;
           }
-          console.log('date', data);
+          if (data) {
+            console.log('data', data);
+          }
+
           return (
             <Container>
               <Mutation
@@ -213,7 +210,7 @@ class CreateVideo extends Component {
                     }}
                   >
                     <Error error={error} />
-                    {title}
+                    <h1>{data.video ? data.video.title : title}</h1>
 
                     {show === 1 && (
                       <label htmlFor="file">
@@ -238,7 +235,7 @@ class CreateVideo extends Component {
                           name="file"
                           id="file"
                           placeholder="file"
-                          onChange={e => this.uploadFile(e, createVideo)}
+                          // onChange={e => this.uploadFile(e, createVideo)}
                         />
                       </label>
                     )}
@@ -276,6 +273,7 @@ CreateVideo.propTypes = {
   title: PropTypes.string.isRequired,
   show: PropTypes.number.isRequired,
   courseId: PropTypes.string.isRequired,
+  isUpdate: PropTypes.bool.isRequired,
 };
 
 export default CreateVideo;

@@ -76,7 +76,6 @@ const Mutations = {
                 id: userId,
               },
             },
-
             ...video,
           },
         },

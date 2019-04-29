@@ -183,19 +183,23 @@ class Index extends Component {
     const { videos, sections } = this.state;
     const atualvideo = videos[video.id];
     const { updateState } = this.props;
-    // const atualSection = sections[section.id];
-    // let index;
-    // atualSection.videoIds.forEach((item, i) => {
-    //   if (item === video.id) {
-    //     index = i;
-    //   }
-    // });
+    const { length } = Object.keys(videos);
 
-    // atualSection.videoIds[index] = id;
+    delete Object.assign(videos, { [id]: videos[video.id] })[video.id];
+    let index = 0;
+    section.videoIds.forEach((item, i) => {
+      if (item === video.id) {
+        index = i;
+      }
+    });
+
+    section.videoIds[index] = id;
 
     if (id) {
       atualvideo.id = id;
     }
+    // console.log('video', videos[]);
+    // delete Object.assign(videos, { [id]: videos[video.id] })[video.id];
 
     const newState = {
       ...this.state,
@@ -204,8 +208,8 @@ class Index extends Component {
       },
     };
 
-    console.log(newState);
     await this.setState(newState);
+    console.log('video', this.state);
     updateState(this.state);
   };
 

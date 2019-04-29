@@ -73,6 +73,7 @@ class Video extends Component {
   render() {
     const { video, index, courseId, updateSections, section } = this.props;
     const { disabled, content, upload } = this.state;
+    console.log('title', this.props.title);
     return (
       <Draggable draggableId={video.id} index={index}>
         {(provided, snapshot) => (
@@ -118,7 +119,7 @@ class Video extends Component {
 
                   {upload === 2 && (
                     <CreateVideo
-                      title="Video"
+                      title={this.state.content}
                       show={1}
                       video={video}
                       courseId={courseId}
@@ -127,7 +128,17 @@ class Video extends Component {
                       section={section}
                     />
                   )}
-                  {upload === 3 && <CreateVideo title="File" show={2} />}
+                  {upload === 3 && (
+                    <CreateVideo
+                      title="File"
+                      show={2}
+                      video={video}
+                      courseId={courseId}
+                      updateSections={updateSections}
+                      isUpdate={video.id.length > 20}
+                      section={section}
+                    />
+                  )}
                 </div>
               )}
             </label>
@@ -143,6 +154,7 @@ Video.propTypes = {
   index: PropTypes.number.isRequired,
   updateSections: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default Video;

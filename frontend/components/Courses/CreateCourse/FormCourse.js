@@ -216,9 +216,7 @@ class FormCourse extends Component {
                       <Form
                         method="post"
                         onSubmit={async e => {
-                          console.log('ehtre9maquisafdso');
                           e.preventDefault();
-                          console.log('submit');
                           const res = await createCourse();
                           saveToState(res);
                         }}

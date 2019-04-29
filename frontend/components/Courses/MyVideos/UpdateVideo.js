@@ -3,7 +3,6 @@ import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import Form from '../../styles/Form';
 import Error from '../../Static/ErrorMessage';
-import { CourseContainer } from '../MyCourses/Update/UpdateCourse';
 import VideoPlayer from '../../VideoManager/VideoPlayer';
 
 const SINGLE_VIDEO_QUERY = gql`
@@ -11,8 +10,8 @@ const SINGLE_VIDEO_QUERY = gql`
     video(where: { id: $id }) {
       id
       title
-      description
       urlVideo
+      file
     }
   }
 `;
@@ -105,3 +104,4 @@ class UpdateVideo extends Component {
 }
 
 export default UpdateVideo;
+export { SINGLE_VIDEO_QUERY };
