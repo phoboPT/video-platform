@@ -16,8 +16,14 @@ const Nav = () => (
           </Link>
           {me && (
             <>
+              {me.permission[0] === 'INSTRUTOR' && (
+                <Link href="/instructor-area">
+                  <a>Instructor Area</a>
+                </Link>
+              )}
+
               <Link href="/courses">
-                <a>Instructor Area</a>
+                <a> Courses </a>
               </Link>
 
               <ul>
