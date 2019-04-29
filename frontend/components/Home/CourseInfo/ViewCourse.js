@@ -140,15 +140,17 @@ class ViewCourse extends Component {
   };
 
   render() {
+    const { view } = this.state;
+    const { id } = this.props;
     return (
       <SimpleUser>
         {({ data: { me } }) => (
-          <Query query={SINGLE_COURSE_QUERY} variables={{ id: this.props.id }}>
+          <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
             {({ data, error, loading }) => {
               if (loading) return <p>Loading</p>;
               if (error) return <p>Error</p>;
               if (!data.course) {
-                return <p>No Courses Found for {this.props.id}</p>;
+                return <p>No Courses Found for {id}</p>;
               }
               const { course } = data;
               console.log(course);
@@ -173,7 +175,7 @@ class ViewCourse extends Component {
                           </ButtonStyle>
                           <CourseContainer>
                             <div className="video-bar">
-                              <img src={course.thumbnail} />
+                              <img alt={course.title} src={course.thumbnail} />
                             </div>
                             <div className="info-bar">
                               <h2>{course.title}</h2>
@@ -208,8 +210,7 @@ class ViewCourse extends Component {
                             <Overview data={course} key={course.id} />
                           )}
                           {this.state.view === 2 &&
-                            data.course.videos !== null &&
-                            data.course.videos.map((video, index) => (
+                            course.videos.map((video, index) => (
                               <VideoItem
                                 videos={video}
                                 data={parseInt(index)}

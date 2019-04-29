@@ -31,6 +31,7 @@ type Course {
   wished: Boolean
   totalRate: Float
   totalComments: Int
+  section: String
   # Variaveis nao definidas em datamodel mas necessarias backend
   count: Int
 }
@@ -67,6 +68,7 @@ type Mutation {
     price: Float!
     category: ID!
     state: String!
+    section: String
   ): Course!
   addTargetCourse(courseId: ID!, interestId: ID!): Course!
   removeFromCourse(id: ID!, courseId: ID!): Course
@@ -76,6 +78,7 @@ type Mutation {
     thumbnail: String
     description: String
     state: String
+    section: String
   ): Course!
   deleteCourse(id: ID!): Course
   createRateCourse(courseId: ID!, comment: String!, rating: Float!): RateCourse!

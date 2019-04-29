@@ -16,6 +16,7 @@ const SINGLE_COURSE_QUERY = gql`
       thumbnail
       state
       createdAt
+      section
       videos {
         video {
           id
@@ -140,13 +141,19 @@ const Marcador = styled.div`
 `;
 class UpdateCourse extends Component {
   state = {
-    view: 2,
+    view: 1,
     sections: {
       columnOrder: [],
       sections: {},
       videos: {},
-      files: { 'file-1': { content: 123, id: 'cjuxxpdrjlwd50b95l7pksbie' } },
+      files: {
+        cjuxxpdrjlwd50b95l7pksbie: {
+          content: '123',
+          id: 'cjuxxpdrjlwd50b95l7pksbie',
+        },
+      },
     },
+    hasUpdated: false,
   };
 
   changeView = e => {
@@ -161,14 +168,19 @@ class UpdateCourse extends Component {
   };
 
   render() {
-    const { view, sections } = this.state;
+    const { view, sections, hasUpdated } = this.state;
     const { id } = this.props;
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {id}</p>;
-
+          if (!hasUpdated && data.course) {
+            const newSection = JSON.parse(data.course.section);
+            console.log(newSection);
+            this.setState({ sections: newSection });
+            this.setState({ hasUpdated: true });
+          }
           return (
             <>
               <Link href="/courses">
@@ -183,13 +195,32 @@ class UpdateCourse extends Component {
                 </button>
               </Marcador>
               <CourseContainer>
-                {view === 1 && <Update id={id} course={data.course} />}
+                {view === 1 && (
+                  <Update id={id} course={data.course} section={sections}>
+                    <button
+                      id={loading ? 'submitLoading' : 'submit'}
+                      type="submit"
+                      disabled={loading}
+                    >
+                      {loading ? 'Saving...' : 'Save Changes'}
+                    </button>
+                  </Update>
+                )}
                 {view === 2 && (
                   <Media
                     sections={sections}
                     updateState={this.updateState}
                     courseId={id}
-                  />
+                  >
+                    <button
+                      id={loading ? 'submitLoading' : 'submit'}
+                      type="submit"
+                      disabled={loading}
+                      className="save"
+                    >
+                      {loading ? 'Saving...' : 'Save Changes'}
+                    </button>
+                  </Media>
                 )}
               </CourseContainer>
             </>

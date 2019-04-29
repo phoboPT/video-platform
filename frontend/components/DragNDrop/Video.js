@@ -26,7 +26,8 @@ const Container = styled.div`
     }
   }
   .upload {
-    margin: 0 0 0 40rem;
+    text-align: right;
+    padding-right: 2rem;
     button {
       background: none;
       border: none;
@@ -73,7 +74,6 @@ class Video extends Component {
   render() {
     const { video, index, courseId, updateSections, section } = this.props;
     const { disabled, content, upload } = this.state;
-    console.log('title', this.props.title);
     return (
       <Draggable draggableId={video.id} index={index}>
         {(provided, snapshot) => (
@@ -119,7 +119,7 @@ class Video extends Component {
 
                   {upload === 2 && (
                     <CreateVideo
-                      title={this.state.content}
+                      title={content}
                       show={1}
                       video={video}
                       courseId={courseId}
@@ -155,6 +155,7 @@ Video.propTypes = {
   updateSections: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  section: PropTypes.object.isRequired,
 };
 
 export default Video;

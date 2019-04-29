@@ -6,16 +6,28 @@ import Index from '../DragNDrop/Index';
 const Container = styled.div`
   margin: 1rem;
   width: 100%;
+
+  .button {
+    .save {
+      width: auto;
+      background: red;
+      color: white;
+      border: 0;
+      font-size: 2rem;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+    }
+  }
 `;
 
 class Media extends Component {
   render() {
-    const { sections, updateState, courseId } = this.props;
-
+    const { sections, updateState, courseId, children } = this.props;
+    console.log('media', sections);
     return (
       <Container>
         <h2>Create the Sections</h2>
-
+        <div className="button">{children}</div>
         <br />
         <p>Sections</p>
         <Index
@@ -32,6 +44,7 @@ Media.propTypes = {
   sections: PropTypes.object.isRequired,
   updateState: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired,
 };
 
 export default Media;

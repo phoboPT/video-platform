@@ -113,7 +113,7 @@ class UserCourses extends Component {
   };
 
   render() {
-    const { category, author } = this.state;
+    const { category, author, view, isDisabled } = this.state;
     return (
       <Query query={COURSES_FILTER_QUERY} variables={{ category, author }}>
         {({ data, loading }) => {
@@ -133,9 +133,9 @@ class UserCourses extends Component {
                   </div>
                 </Bar>
                 {data.coursesFilter.length === 0 &&
-                  (this.state.view === 1 && <p>No Courses Found </p>)}
+                  (view === 1 && <p>No Courses Found </p>)}
                 {data.coursesFilter.length > 0 &&
-                  (this.state.view === 1 && (
+                  (view === 1 && (
                     <Container>
                       <p className="filter">Filtrar Por</p>
                       <div id="flex">
@@ -149,7 +149,7 @@ class UserCourses extends Component {
                         />
                         <button
                           type="button"
-                          disabled={this.state.isDisabled}
+                          disabled={isDisabled}
                           className="reset"
                           onClick={this.reset}
                         >
@@ -167,7 +167,7 @@ class UserCourses extends Component {
                       </ItemList>
                     </Container>
                   ))}
-                {this.state.view === 2 && (
+                {view === 2 && (
                   <>
                     <Wishlist />
                   </>

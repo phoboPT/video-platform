@@ -41,6 +41,7 @@ class InnerList extends React.PureComponent {
     if (section.videoIds) {
       videos = section.videoIds.map(videoId => videosMap[videoId]);
     }
+    console.log('sections', section);
     return (
       <Column
         addVideo={addVideo}
@@ -59,7 +60,13 @@ class InnerList extends React.PureComponent {
 
 // eslint-disable-next-line react/no-multi-comp
 class Index extends Component {
-  state = this.props.sections;
+  state = {};
+
+  componentDidMount() {
+    const { sections } = this.props;
+    console.log('update State', sections);
+    this.setState(sections);
+  }
 
   onDragEnd = async result => {
     const { destination, draggableId, source, type } = result;
@@ -221,6 +228,7 @@ class Index extends Component {
       id: `section-${size}`,
       title: '',
       videoIds: [],
+      fileIds: [],
     };
 
     const newState = {
@@ -263,10 +271,11 @@ class Index extends Component {
   };
 
   render() {
-    const { columnOrder, sections, videos } = this.state;
+    const { columnOrder, sections, videos, key } = this.state;
     const { courseId } = this.props;
+
     return (
-      <>
+      <div key={key}>
         <button type="button" onClick={this.addSection}>
           + Add Section
         </button>
@@ -281,41 +290,36 @@ class Index extends Component {
                 {...provided.droppableProps}
                 innerRef={provided.innerRef}
               >
-                {columnOrder.map((columnId, index) => {
-                  const section = sections[columnId];
+                {columnOrder &&
+                  columnOrder.map((columnId, index) => {
+                    const section = sections[columnId];
 
-                  return (
-                    <InnerList
-                      addVideo={this.addVideo}
-                      handleChange={this.handleChange}
-                      handleVideo={this.handleVideo}
-                      updateSections={this.updateSections}
-                      key={section.id}
-                      section={section}
-                      videosMap={videos}
-                      index={index}
-                      courseId={courseId}
-                    />
-                  );
-                })}
+                    return (
+                      <InnerList
+                        addVideo={this.addVideo}
+                        handleChange={this.handleChange}
+                        handleVideo={this.handleVideo}
+                        updateSections={this.updateSections}
+                        key={section.id}
+                        section={section}
+                        videosMap={videos}
+                        index={index}
+                        courseId={courseId}
+                      />
+                    );
+                  })}
                 {provided.placeholder}
               </Container>
             )}
           </Droppable>
         </DragDropContext>
-      </>
+      </div>
     );
   }
 }
 
 Index.propTypes = {
-  index: PropTypes.number,
-  videosMap: PropTypes.object,
-  addVideo: PropTypes.func,
-  handleChange: PropTypes.func,
-  handleVideo: PropTypes.func,
-  section: PropTypes.object,
-  sections: PropTypes.object,
+  sections: PropTypes.object.isRequired,
   updateState: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
 };

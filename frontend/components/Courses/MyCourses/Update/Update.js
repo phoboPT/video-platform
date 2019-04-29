@@ -17,6 +17,7 @@ const SINGLE_COURSE_QUERY = gql`
       thumbnail
       state
       createdAt
+      sections
       videos {
         video {
           id
@@ -36,6 +37,7 @@ const UPDATE_COURSE_MUTATION = gql`
     $state: String
     $thumbnail: String
     $description: String
+    $section: String
   ) {
     updateCourse(
       id: $id
@@ -43,6 +45,7 @@ const UPDATE_COURSE_MUTATION = gql`
       state: $state
       thumbnail: $thumbnail
       description: $description
+      section: $section
     ) {
       id
       title
@@ -83,17 +86,7 @@ const Form = styled.div`
       border-color: ${props => props.theme.red};
     }
   }
-  button,
-  input[type='submit'] {
-    width: auto;
-    background: red;
-    color: white;
-    border: 0;
-    font-size: 2rem;
-    font-weight: 600;
-    padding: 0.5rem 1.2rem;
-    text-align: center;
-  }
+
   fieldset {
     border: 0;
     padding: 0;
@@ -116,6 +109,7 @@ class Update extends Component {
     published: false,
     state: '',
     unpublished: false,
+    section: JSON.stringify(this.props.section) || {},
   };
 
   changePublished = e => {
@@ -227,13 +221,7 @@ class Update extends Component {
                 {/* divisao  */}
                 <div className="actions-container">
                   <form onSubmit={e => this.updateCourse(e, updateCourse)}>
-                    <button
-                      id={loading ? 'submitLoading' : 'submit'}
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading ? 'Saving...' : 'Save Changes'}
-                    </button>
+                    {this.props.children}
                   </form>
                   <label htmlFor="state">
                     Course State

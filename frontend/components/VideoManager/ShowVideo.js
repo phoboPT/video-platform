@@ -10,9 +10,7 @@ const SINGLE_VIDEO_QUERY = gql`
       id
       title
       file
-      description
       urlVideo
-      state
       createdAt
     }
   }
@@ -63,7 +61,6 @@ class ShowVideo extends Component {
                 </div>
                 <div className="info">
                   <p>Title: {data.video.title}</p>
-                  <p>Description: {data.video.description}</p>
                   <p>File: {data.video.file}</p>
                   <State
                     background={
