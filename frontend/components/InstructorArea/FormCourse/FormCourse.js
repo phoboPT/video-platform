@@ -270,7 +270,7 @@ class FormCourse extends Component {
                             defaultValue={!createCourse ? course.price : ''}
                             placeholder="00.00"
                             value={this.price}
-                            onChange={this.saveState}
+                            onChange={this.handleChange}
                             required
                           />
                         </label>{' '}
