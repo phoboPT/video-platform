@@ -7,7 +7,7 @@ import Error from '../../Static/ErrorMessage';
 import Published from '../CourseState/Published';
 import Unpublished from '../CourseState/Unpublished';
 import Editor from '../Editor';
-import SaveCourseButton from '../CreateCourse/SaveCourseButton';
+import SaveCourseButton from './SaveCourseButton';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {

@@ -236,6 +236,9 @@ class ChangeCourse extends Component {
                 <button type="button" id="2" onClick={this.changeView}>
                   Media
                 </button>
+                <button type="button" id="3" onClick={this.changeView}>
+                  Target
+                </button>
               </Marcador>
               <CourseContainer>
                 {view === 1 &&
@@ -245,6 +248,13 @@ class ChangeCourse extends Component {
                     <Update id={id} course={data.course} section={sections} />
                   ))}
                 {view === 2 && (
+                  <Media
+                    sections={sections}
+                    updateState={this.updateState}
+                    courseId={id}
+                  />
+                )}
+                {view === 3 && (
                   <Media
                     sections={sections}
                     updateState={this.updateState}
