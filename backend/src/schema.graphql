@@ -78,6 +78,8 @@ type Mutation {
     thumbnail: String
     description: String
     state: String
+    category: ID
+    price: Float
     section: String
   ): Course!
   deleteCourse(id: ID!): Course

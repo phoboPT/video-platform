@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import User from '../Authentication/User';
-import CreateCourse from './CreateCourse/Interest';
-import FormCourse from './CreateCourse/FormCourse';
+import ChangeCourse from './FormCourse/ChangeCourse';
 import MyCourses from './MyCourses';
 
 const Style = styled.div`
@@ -25,7 +24,6 @@ const Style = styled.div`
     flex: 7;
     padding-top: 30px;
     float: bottom;
-    text-align: center;
     .create-course {
       width: auto;
       background: red;
@@ -119,15 +117,12 @@ class Courses extends Component {
                         <MyCourses changeView={this.changeView} />
                       )}
                       {this.state.view === 2 && (
-                        <FormCourse
-                          changeView={this.changeView}
+                        <ChangeCourse
+                          changeIntructorView={this.changeView}
+                          createCourse
                           saveToState={this.saveToState}
                         />
                       )}
-                      {this.state.view === 3 && (
-                        <CreateCourse courseId={this.state.courseId} />
-                      )}
-                      {/* {this.state.view === 4 && <CreateVideo />} */}
                     </aside>
                   </div>
                 </Style>

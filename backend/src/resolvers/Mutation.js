@@ -497,22 +497,34 @@ const Mutations = {
       throw new Error('You must be signed in soooon');
     }
 
+    
+
     const updates = {
       ...args,
     };
+
     // elimina o id dos updates
     delete updates.id;
+    delete updates.category;
     // da run no update method
-    return ctx.db.mutation.updateCourse(
+      return ctx.db.mutation.updateCourse(
       {
-        data: updates,
-        where: {
-          id: args.id,
+        data: {
+        category: {
+          update: 
+          { id: args.category }
+          
         },
+        updates
+        },
+          where: {
+           id: args.id,
+                },
       },
-      info
-    );
-  },
+       info
+     );
+    },
+
   async createRateCourse(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
