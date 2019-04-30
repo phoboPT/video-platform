@@ -522,12 +522,20 @@ const Mutations = {
     const updates = {
       ...args,
     };
+
     // elimina o id dos updates
     delete updates.id;
+    delete updates.category;
+    console.log(updates);
     // da run no update method
     return ctx.db.mutation.updateCourse(
       {
-        data: updates,
+        data: {
+          ...updates,
+          category: {
+            connect: { id: args.category },
+          },
+        },
         where: {
           id: args.id,
         },
@@ -535,6 +543,7 @@ const Mutations = {
       info
     );
   },
+
   async createRateCourse(parent, args, ctx, info) {
     const { userId } = ctx.request;
 

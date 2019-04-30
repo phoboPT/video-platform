@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { create } from 'domain';
 import Media from './Media';
 import Update from './FormCourse';
 
@@ -17,6 +18,11 @@ const SINGLE_COURSE_QUERY = gql`
       state
       createdAt
       section
+      price
+      category {
+        id
+        name
+      }
       videos {
         video {
           id
@@ -144,8 +150,25 @@ const Marcador = styled.div`
     outline: none;
   }
 `;
+
+const ButtonStyle = styled.div`
+  padding-bottom: 1rem;
+  button {
+    background: none;
+    border: none;
+    font-size: 15px;
+    line-height: 10px;
+    color: #2c2f33;
+    cursor: pointer;
+  }
+  button:focus {
+    outline: none;
+  }
+`;
+
 class ChangeCourse extends Component {
   state = {
+    createCourse: this.props.createCourse,
     view: 1,
     sections: {
       columnOrder: [],
@@ -172,26 +195,41 @@ class ChangeCourse extends Component {
     }));
   };
 
+  goBack = () => {
+    window.history.back();
+  };
+
   render() {
-    const { view, sections, hasUpdated } = this.state;
-    const { id } = this.props;
+    const { view, sections, hasUpdated, createCourse } = this.state;
+    const { id, changeIntructorView } = this.props;
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
-          if (!data.course) return <p>No Courses Found for {id}</p>;
-          if (!hasUpdated && data.course) {
-            if (data.course.section) {
-              const newSection = JSON.parse(data.course.section);
-              this.setState({ sections: newSection });
-              this.setState({ hasUpdated: true });
+          if (!createCourse) {
+            if (!data.course) return <p>No Courses Found for {id}</p>;
+            if (!hasUpdated && data.course) {
+              if (data.course.section) {
+                const newSection = JSON.parse(data.course.section);
+                this.setState({ sections: newSection });
+                this.setState({ hasUpdated: true });
+              }
             }
           }
           return (
             <>
-              <Link href="/courses">
-                <a>⬅ Go Back</a>
-              </Link>
+              <ButtonStyle>
+                {!changeIntructorView ? (
+                  <button type="button" onClick={this.goBack}>
+                    {' '}
+                    ⬅Go Back{' '}
+                  </button>
+                ) : (
+                  <button type="button" onClick={() => changeIntructorView(1)}>
+                    <a> ⬅Go Back </a>{' '}
+                  </button>
+                )}
+              </ButtonStyle>
               <Marcador>
                 <button type="button" id="1" onClick={this.changeView}>
                   Info
@@ -201,9 +239,28 @@ class ChangeCourse extends Component {
                 </button>
               </Marcador>
               <CourseContainer>
-                {view === 1 && (
-                  <Update id={id} course={data.course} section={sections} />
-                )}
+                {view === 1 &&
+                  (createCourse ? (
+                    <Update createCourse>
+                      <button
+                        id={loading ? 'submitLoading' : 'submit'}
+                        type="submit"
+                        disabled={loading}
+                      >
+                        {loading ? 'Saving...' : 'Save Changes'}{' '}
+                      </button>{' '}
+                    </Update>
+                  ) : (
+                    <Update id={id} course={data.course} section={sections}>
+                      <button
+                        id={loading ? 'submitLoading' : 'submit'}
+                        type="submit"
+                        disabled={loading}
+                      >
+                        {loading ? 'Saving...' : 'Save Changes'}{' '}
+                      </button>{' '}
+                    </Update>
+                  ))}
                 {view === 2 && (
                   <Media
                     sections={sections}
