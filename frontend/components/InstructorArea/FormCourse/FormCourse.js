@@ -108,6 +108,7 @@ class FormCourse extends Component {
     changeThumbnail: false,
     published: false,
     state: '',
+    triggerOnce: true,
     unpublished: !!this.props.createCourse,
     section: JSON.stringify(this.props.section) || {},
   };
@@ -182,7 +183,8 @@ class FormCourse extends Component {
   render() {
     console.log(this.state.category);
     const { course, createCourse } = this.props;
-    const { alreadyExecuted } = this.state;
+    const { alreadyExecuted, triggerOnce } = this.state;
+
     if (!createCourse) {
       if (!alreadyExecuted) {
         this.courseState(course.state);
@@ -192,6 +194,14 @@ class FormCourse extends Component {
     return (
       <Query query={ALL_CATEGORIES_QUERY}>
         {({ data, loading }) => {
+          if (triggerOnce) {
+            if (!createCourse) {
+              this.setState({
+                triggerOnce: false,
+                category: course.category.id,
+              });
+            }
+          }
           if (loading) return <p> Loading </p>;
           return (
             <Mutation mutation={UPDATE_COURSE_MUTATION} variables={this.state}>
