@@ -48,30 +48,33 @@ const Button = styled.div`
     border-radius: 4px;
   }
 `;
-function scrollFunction() {
-  try {
-    if (
-      document.body.scrollTop > 600 ||
-      document.documentElement.scrollTop > 600
-    ) {
-      document.getElementById('myBtn').style.display = 'block';
-    } else {
-      document.getElementById('myBtn').style.display = 'none';
-    }
-  } catch {}
-}
 
-// When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-  document.body.scrollTop = 150;
-  document.documentElement.scrollTop = 150;
-}
-
-export class ListComments extends Component {
+class ListComments extends Component {
   componentDidMount = () => {
-    window.onscroll = function() {
-      scrollFunction();
+    window.onscroll = () => {
+      this.scrollFunction();
     };
+  };
+
+  scrollFunction = () => {
+    try {
+      if (
+        document.body.scrollTop > 600 ||
+        document.documentElement.scrollTop > 600
+      ) {
+        document.getElementById('myBtn').style.display = 'block';
+      } else {
+        document.getElementById('myBtn').style.display = 'none';
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+
+  // When the user clicks on the button, scroll to the top of the document
+  topFunction = () => {
+    document.body.scrollTop = 150;
+    document.documentElement.scrollTop = 150;
   };
 
   render() {
@@ -94,7 +97,7 @@ export class ListComments extends Component {
                 />
               ))}
               <Button>
-                <button id="myBtn" onClick={() => topFunction()}>
+                <button id="myBtn" onClick={this.topFunction}>
                   Go Top
                 </button>
               </Button>

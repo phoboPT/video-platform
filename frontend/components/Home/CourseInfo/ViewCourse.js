@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import Markdown from 'react-markdown';
 import styled from 'styled-components';
 import Rating from 'react-rating';
 import SimpleUser from '../../Authentication/SimpleUser';
@@ -217,13 +216,16 @@ class ViewCourse extends Component {
                             <Overview data={course} key={course.id} />
                           )}
                           {this.state.view === 2 &&
-                            course.videos.map((video, index) => (
-                              <VideoItem
-                                videos={video}
-                                data={parseInt(index)}
-                                key={video.video.id}
-                              />
-                            ))}
+                            course.videos.map(
+                              (video, index) =>
+                                console.log(video.video.id) && (
+                                  <VideoItem
+                                    videos={video}
+                                    data={parseInt(index)}
+                                    key={video.video.id}
+                                  />
+                                )
+                            )}
                           {this.state.view === 3 && (
                             <>
                               {showForm === 'true' && me ? (

@@ -47,7 +47,7 @@ const ADD_RATING = gql`
   }
 `;
 
-export class CommentForm extends Component {
+class CommentForm extends Component {
   state = {
     comment: '',
     courseId: this.props.data.id,

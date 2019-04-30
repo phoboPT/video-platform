@@ -127,7 +127,7 @@ class FormCourse extends Component {
     published: false,
     state: '',
     unpublished: false,
-    section: JSON.stringify(this.props.section) || {},
+    category: 'cjv3nzz3blpm70b95kc521geg',
   };
 
   changePublished = e => {

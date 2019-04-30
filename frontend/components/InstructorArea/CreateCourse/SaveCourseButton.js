@@ -52,7 +52,7 @@ const Style = styled.button`
 class SaveCourseButton extends Component {
   state = {
     ...this.props.data,
-    section: JSON.stringify(this.props.sections) || {},
+    section: JSON.stringify(this.props.sections),
   };
 
   static getDerivedStateFromProps(props, currentState) {
