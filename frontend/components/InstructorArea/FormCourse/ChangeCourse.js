@@ -204,8 +204,10 @@ class ChangeCourse extends Component {
   };
 
   changeToEdit = res => {
-    console.log('res', res);
-    this.setState({ createCourse: false });
+    this.setState({
+      createCourse: false,
+      id: res.data.saveCourse.id,
+    });
   };
 
   render() {
@@ -274,26 +276,6 @@ class ChangeCourse extends Component {
                     </button>
                   </>
                 )}
-                {/* {createCourse && (
-                  <>
-                    <button
-                      type="button"
-                      id="2"
-                      disabled={selected === 2}
-                      onClick={this.changeView}
-                    >
-                      Media🎞️{' '}
-                    </button>{' '}
-                    <button
-                      type="button"
-                      id="3"
-                      disabled={selected === 3}
-                      onClick={this.changeView}
-                    >
-                      Target🎯{' '}
-                    </button>{' '}
-                  </>
-                )} */}
               </Marcador>
               <CourseContainer>
                 {view === 1 &&
@@ -313,7 +295,7 @@ class ChangeCourse extends Component {
                     courseId={id}
                   />
                 )}
-                {view === 3 && <Interest courseId={data.course.id} />}
+                {view === 3 && <Interest courseId={id} />}
               </CourseContainer>
             </>
           );
