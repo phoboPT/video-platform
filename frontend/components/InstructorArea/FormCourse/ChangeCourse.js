@@ -169,6 +169,7 @@ const ButtonStyle = styled.div`
 
 class ChangeCourse extends Component {
   state = {
+    isCreated = true,
     selected: '',
     createCourse: this.props.createCourse,
     view: 1,
@@ -247,7 +248,7 @@ class ChangeCourse extends Component {
                 >
                   Info ℹ️
                 </button>
-                {!createCourse && (
+                {!isCreated && (
                   <>
                     <button
                       type="button"
