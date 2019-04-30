@@ -51,7 +51,6 @@ class Video extends Component {
 
   changeState = async e => {
     const { handleVideo, video } = this.props;
-
     const { value } = e.target;
 
     await this.setState({ content: value });
@@ -126,7 +125,7 @@ class Video extends Component {
 
                   {upload === 2 && (
                     <CreateVideo
-                      title="Video"
+                      header="Video"
                       show={1}
                       video={video}
                       courseId={courseId}
@@ -138,7 +137,7 @@ class Video extends Component {
                   )}
                   {upload === 3 && (
                     <CreateVideo
-                      title="File"
+                      header="File"
                       show={2}
                       video={video}
                       courseId={courseId}
@@ -166,6 +165,7 @@ Video.propTypes = {
   title: PropTypes.string.isRequired,
   section: PropTypes.object.isRequired,
   updateFiles: PropTypes.func.isRequired,
+  handleVideo: PropTypes.func.isRequired,
 };
 
 export default Video;

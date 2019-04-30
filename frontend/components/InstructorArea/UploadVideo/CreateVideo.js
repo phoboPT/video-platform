@@ -73,9 +73,8 @@ class CreateVideo extends Component {
   };
 
   state = {
-    title: this.props.title,
+    title: this.props.video.content,
     course: this.props.courseId,
-    hasVideo: false,
     isUploading: 0,
     isUploadingFile: 0,
     isUpdate: this.props.isUpdate,
@@ -103,11 +102,7 @@ class CreateVideo extends Component {
       { method: 'POST', body: data }
     );
     const file = await res.json();
-    if (file) {
-      this.setState({
-        hasVideo: true,
-      });
-    }
+
     this.setState({
       urlVideo: file.secure_url,
       isUploading: 2,
@@ -124,7 +119,7 @@ class CreateVideo extends Component {
 
   uploadFile = async (e, createVideoMutation) => {
     this.setState({
-      isUploadingFile: 1,
+      isUploading: 1,
     });
     const { updateFiles } = this.props;
     const { files } = e.target;
@@ -141,14 +136,10 @@ class CreateVideo extends Component {
       );
 
       const file = await res.json();
-      if (file) {
-        this.setState({
-          hasFile: false,
-        });
-      }
+
       this.setState({
         file: file.secure_url,
-        isUploadingFile: 2,
+        isUploading: 2,
       });
 
       const {
@@ -157,14 +148,12 @@ class CreateVideo extends Component {
         },
       } = await createVideoMutation();
 
-      this.setState({ title: file.public_id.replace('files/', '') });
       const newFile = {
         [id]: {
           content: file.public_id.replace('files/', ''),
           id,
         },
       };
-      console.log('file', newFile, file);
 
       updateFiles(id, newFile);
     } else {
@@ -185,9 +174,8 @@ class CreateVideo extends Component {
   };
 
   render() {
-    const { title, show, isUpdate, video, updateFiles } = this.props;
+    const { header, show, video } = this.props;
     const { isUploading } = this.state;
-    console.log('show', show);
     return (
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id: video.id }}>
         {({ data, error, loading }) => {
@@ -212,18 +200,9 @@ class CreateVideo extends Component {
                 ]}
               >
                 {(createVideo, { loading, error }) => (
-                  <Form
-                    onSubmit={async e => {
-                      e.preventDefault();
-                      // const res = await createVideo();
-                      Router.push({
-                        pathname: '/video',
-                        query: { id: res.data.createVideo.id },
-                      });
-                    }}
-                  >
+                  <Form>
                     <Error error={error} />
-                    <h1>{title}</h1>
+                    <h1>{header}</h1>
 
                     {show === 1 && (
                       <label htmlFor="file">
@@ -264,13 +243,6 @@ class CreateVideo extends Component {
                         </button>
                       </>
                     )}
-                    {/* <button
-                        type="submit"
-                        disabled={!hasVideo}
-                        className={hasVideo.toString()}
-                      >
-                        Sav{loading ? 'ing' : 'e'}
-                      </button> */}
                   </Form>
                 )}
               </Mutation>
@@ -283,7 +255,7 @@ class CreateVideo extends Component {
 }
 
 CreateVideo.propTypes = {
-  title: PropTypes.string.isRequired,
+  header: PropTypes.string.isRequired,
   show: PropTypes.number.isRequired,
   courseId: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool.isRequired,

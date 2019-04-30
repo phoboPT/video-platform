@@ -7,6 +7,7 @@ import Error from '../../Static/ErrorMessage';
 import Published from '../CourseState/Published';
 import Unpublished from '../CourseState/Unpublished';
 import Editor from '../Editor';
+import SaveCourseButton from '../CreateCourse/SaveCourseButton';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -119,7 +120,7 @@ const Form = styled.div`
   }
 `;
 
-class Update extends Component {
+class FormCourse extends Component {
   state = {
     alreadyExecuted: false,
     changeThumbnail: false,
@@ -198,89 +199,70 @@ class Update extends Component {
     }
 
     return (
-      <>
-        <Mutation mutation={UPDATE_COURSE_MUTATION} variables={this.state}>
-          {(updateCourse, { loading, error }) => (
-            <>
-              <>
-                <Form id="form">
-                  <div className="info-container">
-                    <Error error={error} />
-                    <h2>Edit Course</h2>
-                    {/* <label htmlFor="Image">
+      <Form id="form">
+        <div className="info-container">
+          <h2>Edit Course</h2>
+          {/* <label htmlFor="Image">
                               <img src={data.course.thumbnail} />
                             </label> */}
-                    <label htmlFor="Title">
-                      Title
-                      <input
-                        id="title"
-                        type="text"
-                        name="title"
-                        placeholder="title"
-                        defaultValue={course.title || ''}
-                        onChange={this.handleChange}
-                      />
-                    </label>
+          <label htmlFor="Title">
+            Title
+            <input
+              id="title"
+              type="text"
+              name="title"
+              placeholder="title"
+              defaultValue={course.title || ''}
+              onChange={this.handleChange}
+            />
+          </label>
 
-                    <label htmlFor="description">
-                      Description
-                      <div className="description">
-                        <Editor
-                          data={course.description}
-                          changeQuill={this.changeQuill}
-                        />
-                      </div>
-                    </label>
-                  </div>
-                  {/* divisao  */}
-                  <div className="actions-container">
-                    <form onSubmit={e => this.updateCourse(e, updateCourse)}>
-                      <button
-                        id={loading ? 'submitLoading' : 'submit'}
-                        type="submit"
-                        disabled={loading}
-                      >
-                        {loading ? 'Saving...' : 'Save Changes'}
-                      </button>
-                    </form>
-                    <label htmlFor="state">
-                      Course State
-                      <div id="courseState">
-                        <Published
-                          published={this.state.published}
-                          changePublished={this.changePublished}
-                        />
-                        <Unpublished
-                          unpublished={this.state.unpublished}
-                          changeUnpublished={this.changeUnpublished}
-                        />
-                      </div>
-                    </label>
-                    <label htmlFor="thumbnail">
-                      Thumbnail Preview
-                      {this.state.changeThumbnail ? (
-                        course.thumbnail && <img src={this.state.thumbnail} />
-                      ) : (
-                        <img src={course.thumbnail} />
-                      )}
-                      <input
-                        type="file"
-                        name="thumbnail"
-                        placeholder="thumbnail"
-                        value={this.thumbnail}
-                        onChange={this.uploadThumbnail}
-                      />
-                    </label>
-                  </div>
-                </Form>
-              </>
-            </>
-          )}
-        </Mutation>
-      </>
+          <label htmlFor="description">
+            Description
+            <div className="description">
+              <Editor
+                data={course.description}
+                changeQuill={this.changeQuill}
+              />
+            </div>
+          </label>
+        </div>
+        {/* divisao  */}
+        <div className="actions-container">
+          <SaveCourseButton data={this.state} id={this.props.id} />
+          <label htmlFor="state">
+            Course State
+            <div id="courseState">
+              <Published
+                published={this.state.published}
+                changePublished={this.changePublished}
+              />
+              <Unpublished
+                unpublished={this.state.unpublished}
+                changeUnpublished={this.changeUnpublished}
+              />
+            </div>
+          </label>
+          <label htmlFor="thumbnail">
+            Thumbnail Preview
+            {this.state.changeThumbnail ? (
+              course.thumbnail && <img src={this.state.thumbnail} />
+            ) : (
+              <img src={course.thumbnail} />
+            )}
+            <input
+              type="file"
+              name="thumbnail"
+              placeholder="thumbnail"
+              value={this.thumbnail}
+              onChange={this.uploadThumbnail}
+            />
+          </label>
+        </div>
+      </Form>
     );
   }
 }
 
-export default Update;
+export default FormCourse;
 export { SINGLE_COURSE_QUERY };

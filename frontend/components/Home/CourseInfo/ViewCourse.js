@@ -1,9 +1,9 @@
-import { isFunction, validate } from '@babel/types';
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import Markdown from 'react-markdown';
 import styled from 'styled-components';
+import Rating from 'react-rating';
 import SimpleUser from '../../Authentication/SimpleUser';
 import CommentForm from './Comments/CommentForm';
 import ListComments from './Comments/ListComments';
@@ -153,7 +153,6 @@ class ViewCourse extends Component {
                 return <p>No Courses Found for {id}</p>;
               }
               const { course } = data;
-              console.log(course);
               if (course.id) {
                 return (
                   <Query
@@ -178,6 +177,14 @@ class ViewCourse extends Component {
                               <img alt={course.title} src={course.thumbnail} />
                             </div>
                             <div className="info-bar">
+                              <Rating
+                                readOnly
+                                initialValue={
+                                  course.totalRate / course.totalComments
+                                }
+                                totalComments={course.totalComments}
+                                showTotal
+                              />
                               <h2>{course.title}</h2>
                               <br />
                               <button type="button"> Go to the Video 1 </button>

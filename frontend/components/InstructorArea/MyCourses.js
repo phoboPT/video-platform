@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import styled from 'styled-components';
 import ItemList from '../styles/ItemList';
 import CourseItemInstructor from './CourseItemInstructor';
 

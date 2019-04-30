@@ -12,6 +12,7 @@ import Form from '../../styles/Form';
 import Published from '../CourseState/Published';
 import Unpublished from '../CourseState/Unpublished';
 import { CURRENT_COURSES_QUERY } from '../MyCourses';
+import SaveCourseButton from './SaveCourseButton';
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -307,7 +308,7 @@ class FormCourse extends Component {
                         </div>
                         {/* divisao */}
                         <div className="actions-container">
-                          <form
+                          {/* <form
                             method="post"
                             onSubmit={async e => {
                               e.preventDefault();
@@ -322,7 +323,9 @@ class FormCourse extends Component {
                             >
                               {loading ? 'Creating...' : 'Create Course'}
                             </button>
-                          </form>
+                          </form> */}
+
+                          <SaveCourseButton data={this.state} />
 
                           <label htmlFor="state">
                             Course Status

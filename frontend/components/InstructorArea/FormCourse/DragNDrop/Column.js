@@ -82,8 +82,8 @@ class Column extends Component {
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
     await this.setState({ [name]: val });
-
-    handleChange(title, section.id);
+    console.log('title', this.state.title);
+    handleChange(this.state.title, section.id);
   };
 
   disableInput = () => {
@@ -142,7 +142,7 @@ class Column extends Component {
                       updateSections={updateSections}
                       updateFiles={updateFiles}
                       section={section}
-                      title={this.state.title}
+                      title={title}
                     />
                     {provided.placeholder}
                   </VideoList>

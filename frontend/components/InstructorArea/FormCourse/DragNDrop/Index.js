@@ -216,7 +216,6 @@ class Index extends Component {
     };
 
     await this.setState(newState);
-    console.log('video', this.state);
     updateState(this.state);
   };
 

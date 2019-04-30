@@ -144,7 +144,7 @@ const Marcador = styled.div`
     outline: none;
   }
 `;
-class UpdateCourse extends Component {
+class ChangeCourse extends Component {
   state = {
     view: 1,
     sections: {
@@ -181,10 +181,11 @@ class UpdateCourse extends Component {
           if (loading) return <p>Loading</p>;
           if (!data.course) return <p>No Courses Found for {id}</p>;
           if (!hasUpdated && data.course) {
-            const newSection = JSON.parse(data.course.section);
-            console.log(newSection);
-            this.setState({ sections: newSection });
-            this.setState({ hasUpdated: true });
+            if (data.course.section) {
+              const newSection = JSON.parse(data.course.section);
+              this.setState({ sections: newSection });
+              this.setState({ hasUpdated: true });
+            }
           }
           return (
             <>
@@ -201,31 +202,14 @@ class UpdateCourse extends Component {
               </Marcador>
               <CourseContainer>
                 {view === 1 && (
-                  <Update id={id} course={data.course} section={sections}>
-                    <button
-                      id={loading ? 'submitLoading' : 'submit'}
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading ? 'Saving...' : 'Save Changes'}
-                    </button>
-                  </Update>
+                  <Update id={id} course={data.course} section={sections} />
                 )}
                 {view === 2 && (
                   <Media
                     sections={sections}
                     updateState={this.updateState}
                     courseId={id}
-                  >
-                    <button
-                      id={loading ? 'submitLoading' : 'submit'}
-                      type="submit"
-                      disabled={loading}
-                      className="save"
-                    >
-                      {loading ? 'Saving...' : 'Save Changes'}
-                    </button>
-                  </Media>
+                  />
                 )}
               </CourseContainer>
             </>
@@ -236,8 +220,8 @@ class UpdateCourse extends Component {
   }
 }
 
-UpdateCourse.propTypes = {
+ChangeCourse.propTypes = {
   id: PropTypes.string.isRequired,
 };
 
-export default UpdateCourse;
+export default ChangeCourse;
