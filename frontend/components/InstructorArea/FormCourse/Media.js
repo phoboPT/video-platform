@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Index from './DragNDrop/Index';
-import SaveCourseButton from '../CreateCourse/SaveCourseButton';
+import SaveCourseButton from './SaveCourseButton';
 
 const Container = styled.div`
   margin: 1rem;
