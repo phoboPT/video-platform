@@ -60,7 +60,7 @@ class FormCourse extends Component {
     unpublished: true,
   };
 
-  changePublished = e => {
+  changePublished = () => {
     this.setState({
       published: !this.state.published,
       state: 'PUBLISHED',
@@ -68,7 +68,7 @@ class FormCourse extends Component {
     });
   };
 
-  changeUnpublished = e => {
+  changeUnpublished = () => {
     this.setState({
       published: !this.state.published,
       state: 'UNPUBLISHED',
@@ -100,7 +100,7 @@ class FormCourse extends Component {
   changeCourse = async (e, updateCourseMutation) => {
     e.preventDefault();
 
-    const res = await updateCourseMutation({
+    await updateCourseMutation({
       variables: {
         id: this.props.id,
         ...this.state,
@@ -191,7 +191,7 @@ class FormCourse extends Component {
                   </div>
                 </label>
                 <label htmlFor="price">
-                  Price{' '}
+                  Price
                   <input
                     type="number"
                     min="0"
@@ -203,7 +203,7 @@ class FormCourse extends Component {
                     onChange={this.handleChange}
                     required
                   />
-                </label>{' '}
+                </label>
                 <select
                   id="dropdownlist"
                   onChange={this.handleChangeCategory}
