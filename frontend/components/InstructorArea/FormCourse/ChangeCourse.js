@@ -169,10 +169,10 @@ const ButtonStyle = styled.div`
 
 class ChangeCourse extends Component {
   state = {
-    isCreated = true,
     selected: '',
     createCourse: this.props.createCourse,
     view: 1,
+    id: this.props.id,
     sections: {
       columnOrder: [],
       sections: {},
@@ -205,13 +205,21 @@ class ChangeCourse extends Component {
     window.history.back();
   };
 
-  changeToEdit = () => {
+  changeToEdit = res => {
+    console.log('res', res);
     this.setState({ createCourse: false });
   };
 
   render() {
-    const { view, sections, hasUpdated, createCourse, selected } = this.state;
-    const { id, changeIntructorView } = this.props;
+    const {
+      id,
+      view,
+      sections,
+      hasUpdated,
+      createCourse,
+      selected,
+    } = this.state;
+    const { changeIntructorView } = this.props;
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
         {({ data, loading }) => {
@@ -248,7 +256,7 @@ class ChangeCourse extends Component {
                 >
                   Info ℹ️
                 </button>
-                {!isCreated && (
+                {!createCourse && (
                   <>
                     <button
                       type="button"
@@ -322,3 +330,4 @@ ChangeCourse.propTypes = {
 };
 
 export default ChangeCourse;
+export { SINGLE_COURSE_QUERY };

@@ -20,7 +20,7 @@ type Course {
   videos: [CourseVideos!]!
   title: String
   description: String!
-  thumbnail: String!
+  thumbnail: String
   user: User!
   createdAt: DateTime!
   updatedAt: DateTime!

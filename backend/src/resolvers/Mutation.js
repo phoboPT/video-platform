@@ -395,11 +395,14 @@ const Mutations = {
       ...args,
     };
     console.table(args);
-    const existingCourse = await ctx.db.query.course({
-      where: {
-        id: args.id,
-      },
-    });
+    let existingCourse;
+    if (args.id) {
+      existingCourse = await ctx.db.query.course({
+        where: {
+          id: args.id,
+        },
+      });
+    }
 
     // elimina o id dos updates
     delete data.category;
@@ -412,14 +415,27 @@ const Mutations = {
       delete updates.id;
       delete updates.category;
       // da run no update method
-      return ctx.db.mutation.updateCourse(
-        {
-          data: {
-            ...updates,
-            category: {
-              connect: { id: args.category },
+      if (args.category) {
+        return ctx.db.mutation.updateCourse(
+          {
+            data: {
+              ...updates,
+              category: {
+                connect: { id: args.category },
+              },
+            },
+            where: {
+              id: args.id,
             },
           },
+          info
+        );
+      }
+
+      return ctx.db.mutation.updateCourse(
+        {
+          data: updates,
+
           where: {
             id: args.id,
           },

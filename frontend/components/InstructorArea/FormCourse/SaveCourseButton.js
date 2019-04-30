@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
-import { CURRENT_COURSES_QUERY } from '../MyCourses';
+import { SINGLE_COURSE_QUERY } from './ChangeCourse';
 import Error from '../../Static/ErrorMessage.js';
 
 const CREATE_COURSE_MUTATION = gql`
@@ -95,22 +95,31 @@ class SaveCourseButton extends Component {
 
   updateCourse = async (e, updateCourseMutation) => {
     e.preventDefault();
-
-    this.props.changeToEdit();
-
+    const { createCourse, changeToEdit, id } = this.props;
     const res = await updateCourseMutation({
       variables: {
-        id: this.props.id,
+        id,
         ...this.state,
       },
     });
+    if (createCourse) {
+      changeToEdit(res);
+    }
   };
 
   render() {
+    const { id } = this.props;
     return (
       <Mutation
         mutation={CREATE_COURSE_MUTATION}
-        refetchQueries={[{ query: CURRENT_COURSES_QUERY }]}
+        refetchQueries={[
+          {
+            query: SINGLE_COURSE_QUERY,
+            variables: {
+              id,
+            },
+          },
+        ]}
         variables={this.state}
       >
         {(updateCourse, { loading, error }) => (

@@ -9,57 +9,6 @@ import Unpublished from '../CourseState/Unpublished';
 import Editor from '../Editor';
 import SaveCourseButton from './SaveCourseButton';
 
-const SINGLE_COURSE_QUERY = gql`
-  query SINGLE_COURSE_QUERY($id: ID!) {
-    course(where: { id: $id }) {
-      id
-      title
-      description
-      thumbnail
-      state
-      createdAt
-      sections
-      videos {
-        video {
-          id
-          description
-          title
-          file
-        }
-      }
-    }
-  }
-`;
-
-const UPDATE_COURSE_MUTATION = gql`
-  mutation UPDATE_COURSE_MUTATION(
-    $id: ID!
-    $title: String
-    $state: String
-    $thumbnail: String
-    $description: String
-    $price: Float
-    $category: ID
-    $section: String
-  ) {
-    updateCourse(
-      id: $id
-      title: $title
-      state: $state
-      thumbnail: $thumbnail
-      description: $description
-      section: $section
-      price: $price
-      category: $category
-    ) {
-      id
-      title
-      thumbnail
-      description
-    }
-  }
-`;
-
 const ALL_CATEGORIES_QUERY = gql`
   query ALL_CATEGORIES_QUERY {
     categories {
@@ -109,8 +58,6 @@ class FormCourse extends Component {
     published: false,
     state: '',
     unpublished: true,
-    category: 'cjv3nzz3blpm70b95kc521geg',
-    triggerOnce: true,
   };
 
   changePublished = e => {
@@ -157,7 +104,6 @@ class FormCourse extends Component {
       variables: {
         id: this.props.id,
         ...this.state,
-        UpdaFormCoursete,
       },
     });
   };
@@ -195,14 +141,6 @@ class FormCourse extends Component {
     return (
       <Query query={ALL_CATEGORIES_QUERY}>
         {({ data, loading }) => {
-          if (triggerOnce) {
-            if (!createCourse) {
-              this.setState({
-                triggerOnce: false,
-                category: course.category.id,
-              });
-            }
-          }
           if (loading) return <p> Loading </p>;
           return (
             <Form id="form">
@@ -234,6 +172,7 @@ class FormCourse extends Component {
               {/* divisao  */}
               <div className="actions-container">
                 <SaveCourseButton
+                  createCourse={createCourse}
                   data={this.state}
                   id={id}
                   changeToEdit={changeToEdit}
@@ -314,4 +253,3 @@ class FormCourse extends Component {
 }
 
 export default FormCourse;
-export { SINGLE_COURSE_QUERY };
