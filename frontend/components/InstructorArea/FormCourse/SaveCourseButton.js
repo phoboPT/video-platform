@@ -96,6 +96,8 @@ class SaveCourseButton extends Component {
   updateCourse = async (e, updateCourseMutation) => {
     e.preventDefault();
 
+    this.props.changeToEdit();
+
     const res = await updateCourseMutation({
       variables: {
         id: this.props.id,

@@ -108,7 +108,7 @@ class FormCourse extends Component {
     changeThumbnail: false,
     published: false,
     state: '',
-    unpublished: false,
+    unpublished: true,
     category: 'cjv3nzz3blpm70b95kc521geg',
     triggerOnce: true,
   };
@@ -157,6 +157,7 @@ class FormCourse extends Component {
       variables: {
         id: this.props.id,
         ...this.state,
+        UpdaFormCoursete,
       },
     });
   };
@@ -182,7 +183,7 @@ class FormCourse extends Component {
 
   render() {
     console.log(this.state.category);
-    const { course, createCourse, id } = this.props;
+    const { course, createCourse, id, changeToEdit } = this.props;
     const { alreadyExecuted, triggerOnce } = this.state;
 
     if (!createCourse) {
@@ -241,7 +242,11 @@ class FormCourse extends Component {
                       </div>
                       {/* divisao  */}
                       <div className="actions-container">
-                        <SaveCourseButton data={this.state} id={id} />
+                        <SaveCourseButton
+                          data={this.state}
+                          id={id}
+                          changeToEdit={changeToEdit}
+                        />
                         <label htmlFor="state">
                           Course State
                           <div id="courseState">

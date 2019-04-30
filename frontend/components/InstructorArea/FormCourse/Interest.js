@@ -16,7 +16,6 @@ const ALL_INTEREST_QUERY = gql`
 
 const InterestStyle = styled.div`
   max-width: 1400px;
-  background-color: #fff;
   padding: 30px 0;
   display: flex;
   align-items: center;
@@ -24,6 +23,15 @@ const InterestStyle = styled.div`
   flex-wrap: wrap;
   button {
     margin: 0px 10px;
+  }
+`;
+
+const Container = styled.div`
+  #message {
+    margin: 0;
+    padding-top: 2.5rem;
+    padding-left: 1.5rem;
+    text-align: left;
   }
 `;
 
@@ -40,22 +48,27 @@ class CreateCourse extends Component {
               return <p>Error:{error.message}</p>;
             }
             return (
-              <InterestStyle>
-                {data.interests.map((interest, index) => (
-                  <InterestItem
-                    key={interest.id}
-                    interest={interest}
-                    courseId={this.props.courseId}
-                    id={index}
-                  />
-                ))}
-              </InterestStyle>
+              <>
+                <Container>
+                  <p id="message">
+                    Here you can Select the areas that this course is targeting
+                    🎯
+                  </p>
+                </Container>
+                <InterestStyle>
+                  {data.interests.map((interest, index) => (
+                    <InterestItem
+                      key={interest.id}
+                      interest={interest}
+                      courseId={this.props.courseId}
+                      id={index}
+                    />
+                  ))}
+                </InterestStyle>
+              </>
             );
           }}
         </Query>
-        <Link href="/">
-          <a className="create-course">Finish</a>
-        </Link>
       </>
     );
   }

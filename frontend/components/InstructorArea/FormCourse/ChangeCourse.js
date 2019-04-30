@@ -6,7 +6,8 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { create } from 'domain';
 import Media from './Media';
-import Update from './FormCourse';
+import FormCourse from './FormCourse';
+import Interest from './Interest';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -168,6 +169,7 @@ const ButtonStyle = styled.div`
 
 class ChangeCourse extends Component {
   state = {
+    selected: '',
     createCourse: this.props.createCourse,
     view: 1,
     sections: {
@@ -185,7 +187,10 @@ class ChangeCourse extends Component {
   };
 
   changeView = e => {
-    this.setState({ view: parseInt(e.target.id) });
+    this.setState({
+      view: parseInt(e.target.id),
+      selected: parseInt(e.target.id),
+    });
   };
 
   updateState = newState => {
@@ -199,8 +204,12 @@ class ChangeCourse extends Component {
     window.history.back();
   };
 
+  changeToEdit = () => {
+    this.setState({ createCourse: false });
+  };
+
   render() {
-    const { view, sections, hasUpdated, createCourse } = this.state;
+    const { view, sections, hasUpdated, createCourse, selected } = this.state;
     const { id, changeIntructorView } = this.props;
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
@@ -230,22 +239,65 @@ class ChangeCourse extends Component {
                 )}
               </ButtonStyle>
               <Marcador>
-                <button type="button" id="1" onClick={this.changeView}>
-                  Info
+                <button
+                  type="button"
+                  id="1"
+                  disabled={selected === 1}
+                  onClick={this.changeView}
+                >
+                  Info ℹ️
                 </button>
-                <button type="button" id="2" onClick={this.changeView}>
-                  Media
-                </button>
-                <button type="button" id="3" onClick={this.changeView}>
-                  Target
-                </button>
+                {!createCourse && (
+                  <>
+                    <button
+                      type="button"
+                      id="2"
+                      disabled={selected === 2}
+                      onClick={this.changeView}
+                    >
+                      Media 🎞️
+                    </button>
+                    <button
+                      type="button"
+                      id="3"
+                      disabled={selected === 3}
+                      onClick={this.changeView}
+                    >
+                      Target 🎯
+                    </button>
+                  </>
+                )}
+                {/* {createCourse && (
+                  <>
+                    <button
+                      type="button"
+                      id="2"
+                      disabled={selected === 2}
+                      onClick={this.changeView}
+                    >
+                      Media🎞️{' '}
+                    </button>{' '}
+                    <button
+                      type="button"
+                      id="3"
+                      disabled={selected === 3}
+                      onClick={this.changeView}
+                    >
+                      Target🎯{' '}
+                    </button>{' '}
+                  </>
+                )} */}
               </Marcador>
               <CourseContainer>
                 {view === 1 &&
                   (createCourse ? (
-                    <Update createCourse />
+                    <FormCourse createCourse changeToEdit={this.changeToEdit} />
                   ) : (
-                    <Update id={id} course={data.course} section={sections} />
+                    <FormCourse
+                      id={id}
+                      course={data.course}
+                      section={sections}
+                    />
                   ))}
                 {view === 2 && (
                   <Media
@@ -254,13 +306,7 @@ class ChangeCourse extends Component {
                     courseId={id}
                   />
                 )}
-                {view === 3 && (
-                  <Media
-                    sections={sections}
-                    updateState={this.updateState}
-                    courseId={id}
-                  />
-                )}
+                {view === 3 && <Interest courseId={data.course.id} />}
               </CourseContainer>
             </>
           );

@@ -76,7 +76,6 @@ class InterestItem extends Component {
                 this.updateState();
               }}
             >
-              <p>hello</p>
               {interest.name}
             </ButtonStyle>
           );
