@@ -103,7 +103,7 @@ class CreateVideo extends Component {
       { method: 'POST', body: data }
     );
     const file = await res.json();
-    console.log(file);
+    console.log(files[0].duration);
     this.setState({
       urlVideo: file.secure_url,
       isUploading: 2,

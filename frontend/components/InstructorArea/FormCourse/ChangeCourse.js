@@ -1,10 +1,8 @@
-import Link from 'next/link';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Mutation, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { create } from 'domain';
 import Media from './Media';
 import FormCourse from './FormCourse';
 import Interest from './Interest';
