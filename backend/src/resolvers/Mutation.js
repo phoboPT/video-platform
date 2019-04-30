@@ -534,10 +534,10 @@ const Mutations = {
         data: {
         category: {
           update: 
-          { id: args.category }
+          { category: args.category }
           
         },
-        updates
+        ...updates
         },
           where: {
            id: args.id,
