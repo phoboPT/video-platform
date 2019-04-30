@@ -102,6 +102,7 @@ class Column extends Component {
       courseId,
       updateSections,
       updateFiles,
+      isShow,
     } = this.props;
     return (
       <Draggable draggableId={section.id} index={index}>
@@ -119,9 +120,11 @@ class Column extends Component {
                   type="text"
                   value={title}
                 />
-                <button onClick={this.disableInput} type="button">
-                  ✏️
-                </button>
+                {!isShow && (
+                  <button onClick={this.disableInput} type="button">
+                    ✏️
+                  </button>
+                )}
               </label>
             </div>
             <Droppable droppableId={section.id} type="video">
@@ -166,6 +169,7 @@ Column.propTypes = {
   index: PropTypes.number.isRequired,
   courseId: PropTypes.string.isRequired,
   updateFiles: PropTypes.func.isRequired,
+  isShow: PropTypes.bool.isRequired,
 };
 
 export default Column;

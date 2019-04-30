@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Rating from 'react-rating';
+import RatingComponent from 'react-rating';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -15,11 +15,9 @@ const Container = styled.div`
   .rigth {
     display: inline-block;
     padding-left: 0.8rem;
-
     color: grey;
     strong {
       padding-right: 0.5rem;
-      color: black;
       opacity: 0.8;
     }
     .ratingDisplay {
@@ -28,7 +26,7 @@ const Container = styled.div`
   }
 `;
 
-class RatingPage extends Component {
+class Rating extends Component {
   state = {
     value: 0,
   };
@@ -46,7 +44,7 @@ class RatingPage extends Component {
     return (
       <Container>
         <div className="left">
-          <Rating
+          <RatingComponent
             className="ratingDisplay"
             emptySymbol="far fa-star fa-2x"
             fractions={2}
@@ -66,4 +64,4 @@ class RatingPage extends Component {
   }
 }
 
-export default RatingPage;
+export default Rating;

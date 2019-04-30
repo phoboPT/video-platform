@@ -25,6 +25,7 @@ class InnerList extends React.PureComponent {
     updateSections: PropTypes.func.isRequired,
     courseId: PropTypes.string.isRequired,
     updateFiles: PropTypes.func.isRequired,
+    isShow: PropTypes.bool.isRequired,
   };
 
   render() {
@@ -38,6 +39,7 @@ class InnerList extends React.PureComponent {
       courseId,
       updateSections,
       updateFiles,
+      isShow,
     } = this.props;
     let videos;
     if (section.videoIds) {
@@ -53,6 +55,7 @@ class InnerList extends React.PureComponent {
         section={section}
         videos={videos}
         index={index}
+        isShow={isShow}
         courseId={courseId}
         updateSections={updateSections}
         updateFiles={updateFiles}
@@ -302,13 +305,15 @@ class Index extends Component {
 
   render() {
     const { columnOrder, sections, videos, key } = this.state;
-    const { courseId } = this.props;
+    const { courseId, isShow } = this.props;
 
     return (
       <div key={key}>
-        <button type="button" onClick={this.addSection}>
-          + Add Section
-        </button>
+        {!isShow && (
+          <button type="button" onClick={this.addSection}>
+            + Add Section
+          </button>
+        )}
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable
             droppableId="all-columns"
@@ -332,6 +337,7 @@ class Index extends Component {
                         updateSections={this.updateSections}
                         updateFiles={this.updateFiles}
                         key={section.id}
+                        isShow={isShow}
                         section={section}
                         videosMap={videos}
                         index={index}
@@ -353,6 +359,7 @@ Index.propTypes = {
   sections: PropTypes.object.isRequired,
   updateState: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
+  isShow: PropTypes.bool.isRequired,
 };
 
 export default Index;

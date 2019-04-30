@@ -56,14 +56,14 @@ export class Video extends Component {
   };
 
   render() {
-    const { videos, data } = this.props;
+    const { videos, data, courseId } = this.props;
     return (
       <List>
         <div className="image">
           <Link
             href={{
               pathname: '/video',
-              query: { id: videos.video.id },
+              query: { id: courseId },
             }}
           >
             <a>

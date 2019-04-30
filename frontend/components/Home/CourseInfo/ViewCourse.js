@@ -2,12 +2,12 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
-import Rating from 'react-rating';
 import SimpleUser from '../../Authentication/SimpleUser';
 import CommentForm from './Comments/CommentForm';
 import ListComments from './Comments/ListComments';
 import Overview from './Overview';
 import VideoItem from './VideoItem';
+import Rating from './Comments/Rating';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -18,6 +18,8 @@ const SINGLE_COURSE_QUERY = gql`
       thumbnail
       state
       createdAt
+      totalComments
+      totalRate
       user {
         id
         name
@@ -163,7 +165,6 @@ class ViewCourse extends Component {
                       if (error) return <p>Error</p>;
 
                       const showForm = data.checkUserRated.message;
-
                       return (
                         <>
                           <ButtonStyle>
@@ -176,14 +177,20 @@ class ViewCourse extends Component {
                               <img alt={course.title} src={course.thumbnail} />
                             </div>
                             <div className="info-bar">
-                              <Rating
-                                readOnly
-                                initialValue={
-                                  course.totalRate / course.totalComments
-                                }
-                                totalComments={course.totalComments}
-                                showTotal
-                              />
+                              <div className="rating">
+                                <Rating
+                                  showTotal
+                                  readOnly
+                                  initialValue={
+                                    Number.isNaN(
+                                      course.totalRate / course.totalComments
+                                    )
+                                      ? 0
+                                      : course.totalRate / course.totalComments
+                                  }
+                                  totalComments={course.totalComments}
+                                />
+                              </div>
                               <h2>{course.title}</h2>
                               <br />
                               <button type="button"> Go to the Video 1 </button>
@@ -216,16 +223,14 @@ class ViewCourse extends Component {
                             <Overview data={course} key={course.id} />
                           )}
                           {this.state.view === 2 &&
-                            course.videos.map(
-                              (video, index) =>
-                                console.log(video.video.id) && (
-                                  <VideoItem
-                                    videos={video}
-                                    data={parseInt(index)}
-                                    key={video.video.id}
-                                  />
-                                )
-                            )}
+                            course.videos.map((video, index) => (
+                              <VideoItem
+                                videos={video}
+                                data={parseInt(index)}
+                                key={video.video.id}
+                                courseId={course.id}
+                              />
+                            ))}
                           {this.state.view === 3 && (
                             <>
                               {showForm === 'true' && me ? (
