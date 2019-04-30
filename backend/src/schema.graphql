@@ -61,14 +61,15 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
-  createCourse(
-    title: String!
-    thumbnail: String!
-    description: String!
-    price: Float!
-    category: ID!
-    state: String!
+  saveCourse(
+    title: String
+    thumbnail: String
+    description: String
+    price: Float
+    category: ID
+    state: String
     section: String
+    id: ID
   ): Course!
   addTargetCourse(courseId: ID!, interestId: ID!): Course!
   removeFromCourse(id: ID!, courseId: ID!): Course

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import CreateVideo from '../InstructorArea/UploadVideo/CreateVideo';
+import CreateVideo from '../../UploadVideo/CreateVideo';
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -51,7 +51,6 @@ class Video extends Component {
 
   changeState = async e => {
     const { handleVideo, video } = this.props;
-
     const { value } = e.target;
 
     await this.setState({ content: value });
@@ -72,7 +71,14 @@ class Video extends Component {
   };
 
   render() {
-    const { video, index, courseId, updateSections, section } = this.props;
+    const {
+      video,
+      index,
+      courseId,
+      updateSections,
+      section,
+      updateFiles,
+    } = this.props;
     const { disabled, content, upload } = this.state;
     return (
       <Draggable draggableId={video.id} index={index}>
@@ -119,21 +125,23 @@ class Video extends Component {
 
                   {upload === 2 && (
                     <CreateVideo
-                      title={content}
+                      header="Video"
                       show={1}
                       video={video}
                       courseId={courseId}
                       updateSections={updateSections}
+                      updateFiles={updateFiles}
                       isUpdate={video.id.length > 20}
                       section={section}
                     />
                   )}
                   {upload === 3 && (
                     <CreateVideo
-                      title="File"
+                      header="File"
                       show={2}
                       video={video}
                       courseId={courseId}
+                      updateFiles={updateFiles}
                       updateSections={updateSections}
                       isUpdate={video.id.length > 20}
                       section={section}
@@ -156,6 +164,8 @@ Video.propTypes = {
   courseId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   section: PropTypes.object.isRequired,
+  updateFiles: PropTypes.func.isRequired,
+  handleVideo: PropTypes.func.isRequired,
 };
 
 export default Video;

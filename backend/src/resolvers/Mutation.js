@@ -50,7 +50,6 @@ const Mutations = {
     };
     const { course, isUpdate, videoId } = video;
 
-    console.log(isUpdate, videoId);
     // elimina o id dos updates
     delete video.course;
     delete video.isUpdate;
@@ -60,10 +59,11 @@ const Mutations = {
     if (isUpdate) {
       videos = ctx.db.mutation.updateVideo(
         {
-          data: { title: video.title },
+          data: video,
           where: {
             id: videoId,
           },
+          video,
         },
         info
       );
@@ -385,7 +385,7 @@ const Mutations = {
     // return new user
     return updatedUser;
   },
-  async createCourse(parent, args, ctx, info) {
+  async saveCourse(parent, args, ctx, info) {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
     if (!userId) {
@@ -394,11 +394,33 @@ const Mutations = {
     const data = {
       ...args,
     };
-    console.log('estou aqui');
+    console.table(args);
+    const existingCourse = await ctx.db.query.course({
+      where: {
+        id: args.id,
+      },
+    });
 
     // elimina o id dos updates
     delete data.category;
     // 4. If its not, create a fresh CourseVideo for that Course!
+    if (existingCourse) {
+      const updates = {
+        ...args,
+      };
+      // elimina o id dos updates
+      delete updates.id;
+      // da run no update method
+      return ctx.db.mutation.updateCourse(
+        {
+          data: updates,
+          where: {
+            id: args.id,
+          },
+        },
+        info
+      );
+    }
     return ctx.db.mutation.createCourse(
       {
         data: {

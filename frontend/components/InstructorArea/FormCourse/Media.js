@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Index from '../../DragNDrop/Index';
+import Index from './DragNDrop/Index';
+import SaveCourseButton from '../CreateCourse/SaveCourseButton';
 
 const Container = styled.div`
   margin: 1rem;
@@ -23,11 +24,12 @@ const Container = styled.div`
 class Media extends Component {
   render() {
     const { sections, updateState, courseId, children } = this.props;
-    console.log('media', sections);
     return (
       <Container>
         <h2>Create the Sections</h2>
-        <div className="button">{children}</div>
+        <div className="button">
+          <SaveCourseButton sections={sections} id={courseId} />
+        </div>
         <br />
         <p>Sections</p>
         <Index

@@ -73,12 +73,8 @@ class CreateVideo extends Component {
   };
 
   state = {
-    title: this.props.title,
-    urlVideo: '',
-    category: '',
+    title: this.props.video.content,
     course: this.props.courseId,
-    file: '',
-    hasVideo: false,
     isUploading: 0,
     isUploadingFile: 0,
     isUpdate: this.props.isUpdate,
@@ -106,11 +102,7 @@ class CreateVideo extends Component {
       { method: 'POST', body: data }
     );
     const file = await res.json();
-    if (file) {
-      this.setState({
-        hasVideo: true,
-      });
-    }
+
     this.setState({
       urlVideo: file.secure_url,
       isUploading: 2,
@@ -127,9 +119,9 @@ class CreateVideo extends Component {
 
   uploadFile = async (e, createVideoMutation) => {
     this.setState({
-      isUploadingFile: 1,
+      isUploading: 1,
     });
-
+    const { updateFiles } = this.props;
     const { files } = e.target;
     const data = new FormData();
     data.append('file', files[0]);
@@ -144,17 +136,26 @@ class CreateVideo extends Component {
       );
 
       const file = await res.json();
-      if (file) {
-        this.setState({
-          hasFile: false,
-        });
-      }
+
       this.setState({
         file: file.secure_url,
-        isUploadingFile: 2,
+        isUploading: 2,
       });
 
-      createVideoMutation();
+      const {
+        data: {
+          createVideo: { id },
+        },
+      } = await createVideoMutation();
+
+      const newFile = {
+        [id]: {
+          content: file.public_id.replace('files/', ''),
+          id,
+        },
+      };
+
+      updateFiles(id, newFile);
     } else {
       alert('File Format not supported');
     }
@@ -173,7 +174,7 @@ class CreateVideo extends Component {
   };
 
   render() {
-    const { title, show, isUpdate, video } = this.props;
+    const { header, show, video } = this.props;
     const { isUploading } = this.state;
     return (
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id: video.id }}>
@@ -199,18 +200,9 @@ class CreateVideo extends Component {
                 ]}
               >
                 {(createVideo, { loading, error }) => (
-                  <Form
-                    onSubmit={async e => {
-                      e.preventDefault();
-                      // const res = await createVideo();
-                      Router.push({
-                        pathname: '/video',
-                        query: { id: res.data.createVideo.id },
-                      });
-                    }}
-                  >
+                  <Form>
                     <Error error={error} />
-                    <h1>{data.video ? data.video.title : title}</h1>
+                    <h1>{header}</h1>
 
                     {show === 1 && (
                       <label htmlFor="file">
@@ -235,7 +227,7 @@ class CreateVideo extends Component {
                           name="file"
                           id="file"
                           placeholder="file"
-                          // onChange={e => this.uploadFile(e, createVideo)}
+                          onChange={e => this.uploadFile(e, createVideo)}
                         />
                       </label>
                     )}
@@ -251,13 +243,6 @@ class CreateVideo extends Component {
                         </button>
                       </>
                     )}
-                    {/* <button
-                        type="submit"
-                        disabled={!hasVideo}
-                        className={hasVideo.toString()}
-                      >
-                        Sav{loading ? 'ing' : 'e'}
-                      </button> */}
                   </Form>
                 )}
               </Mutation>
@@ -270,10 +255,11 @@ class CreateVideo extends Component {
 }
 
 CreateVideo.propTypes = {
-  title: PropTypes.string.isRequired,
+  header: PropTypes.string.isRequired,
   show: PropTypes.number.isRequired,
   courseId: PropTypes.string.isRequired,
   isUpdate: PropTypes.bool.isRequired,
+  updateFiles: PropTypes.func.isRequired,
 };
 
 export default CreateVideo;

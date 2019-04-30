@@ -175,10 +175,10 @@ class ChangeCourse extends Component {
       sections: {},
       videos: {},
       files: {
-        cjuxxpdrjlwd50b95l7pksbie: {
-          content: '123',
-          id: 'cjuxxpdrjlwd50b95l7pksbie',
-        },
+        // cjuxxpdrjlwd50b95l7pksbie: {
+        //   content: '123',
+        //   id: 'cjuxxpdrjlwd50b95l7pksbie',
+        // },
       },
     },
     hasUpdated: false,
@@ -208,14 +208,12 @@ class ChangeCourse extends Component {
           if (loading) return <p>Loading</p>;
           if (!createCourse) {
             if (!data.course) return <p>No Courses Found for {id}</p>;
-          }
-
-          if (!createCourse) {
             if (!hasUpdated && data.course) {
-              const newSection = JSON.parse(data.course.section);
-              console.log(newSection);
-              this.setState({ sections: newSection });
-              this.setState({ hasUpdated: true });
+              if (data.course.section) {
+                const newSection = JSON.parse(data.course.section);
+                this.setState({ sections: newSection });
+                this.setState({ hasUpdated: true });
+              }
             }
           }
           return (
@@ -268,16 +266,7 @@ class ChangeCourse extends Component {
                     sections={sections}
                     updateState={this.updateState}
                     courseId={id}
-                  >
-                    <button
-                      id={loading ? 'submitLoading' : 'submit'}
-                      type="submit"
-                      disabled={loading}
-                      className="save"
-                    >
-                      {loading ? 'Saving...' : 'Save Changes'}
-                    </button>
-                  </Media>
+                  />
                 )}
               </CourseContainer>
             </>

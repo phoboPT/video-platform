@@ -2,9 +2,9 @@ import gql from 'graphql-tag';
 import Router from 'next/router';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
-import { ALL_VIDEOS_USER } from '../Courses/MyVideos/Videos';
+import { ALL_VIDEOS_USER } from '../InstructorArea/MyVideos/Videos';
 import { CURRENT_USER_QUERY } from './User';
-import { CURRENT_COURSES_QUERY } from '../Courses/MyCourses/MyCourses';
+import { CURRENT_COURSES_QUERY } from '../InstructorArea/MyCourses';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
