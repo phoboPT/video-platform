@@ -410,10 +410,16 @@ const Mutations = {
       };
       // elimina o id dos updates
       delete updates.id;
+      delete updates.category;
       // da run no update method
       return ctx.db.mutation.updateCourse(
         {
-          data: updates,
+          data: {
+            ...updates,
+            category: {
+              connect: { id: args.category },
+            },
+          },
           where: {
             id: args.id,
           },
@@ -505,37 +511,6 @@ const Mutations = {
     // 3.dar delete
     return ctx.db.mutation.deleteCourse(
       {
-        where: {
-          id: args.id,
-        },
-      },
-      info
-    );
-  },
-  updateCourse(parent, args, ctx, info) {
-    // faz uma copia dos updates
-    const { userId } = ctx.request;
-    if (!userId) {
-      throw new Error('You must be signed in soooon');
-    }
-
-    const updates = {
-      ...args,
-    };
-
-    // elimina o id dos updates
-    delete updates.id;
-    delete updates.category;
-    console.log(updates);
-    // da run no update method
-    return ctx.db.mutation.updateCourse(
-      {
-        data: {
-          ...updates,
-          category: {
-            connect: { id: args.category },
-          },
-        },
         where: {
           id: args.id,
         },

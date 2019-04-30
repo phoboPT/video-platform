@@ -73,16 +73,6 @@ type Mutation {
   ): Course!
   addTargetCourse(courseId: ID!, interestId: ID!): Course!
   removeFromCourse(id: ID!, courseId: ID!): Course
-  updateCourse(
-    id: ID!
-    title: String
-    thumbnail: String
-    description: String
-    state: String
-    category: ID
-    price: Float
-    section: String
-  ): Course!
   deleteCourse(id: ID!): Course
   createRateCourse(courseId: ID!, comment: String!, rating: Float!): RateCourse!
   updateRateCourse(id: ID!, comment: String, rate: Float): RateCourse!

@@ -221,12 +221,11 @@ class ChangeCourse extends Component {
               <ButtonStyle>
                 {!changeIntructorView ? (
                   <button type="button" onClick={this.goBack}>
-                    {' '}
-                    ⬅Go Back{' '}
+                    ⬅Go Back
                   </button>
                 ) : (
                   <button type="button" onClick={() => changeIntructorView(1)}>
-                    <a> ⬅Go Back </a>{' '}
+                    <a> ⬅Go Back </a>
                   </button>
                 )}
               </ButtonStyle>
@@ -241,25 +240,9 @@ class ChangeCourse extends Component {
               <CourseContainer>
                 {view === 1 &&
                   (createCourse ? (
-                    <Update createCourse>
-                      <button
-                        id={loading ? 'submitLoading' : 'submit'}
-                        type="submit"
-                        disabled={loading}
-                      >
-                        {loading ? 'Saving...' : 'Save Changes'}{' '}
-                      </button>{' '}
-                    </Update>
+                    <Update createCourse />
                   ) : (
-                    <Update id={id} course={data.course} section={sections}>
-                      <button
-                        id={loading ? 'submitLoading' : 'submit'}
-                        type="submit"
-                        disabled={loading}
-                      >
-                        {loading ? 'Saving...' : 'Save Changes'}{' '}
-                      </button>{' '}
-                    </Update>
+                    <Update id={id} course={data.course} section={sections} />
                   ))}
                 {view === 2 && (
                   <Media
