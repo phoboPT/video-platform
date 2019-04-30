@@ -5,9 +5,12 @@ import Index from './DragNDrop/Index';
 import SaveCourseButton from './SaveCourseButton';
 
 const Container = styled.div`
-  margin: 1rem;
   width: 100%;
-
+  h2 {
+    padding-top: 2.5rem;
+    padding-left: 1rem;
+    margin: 0;
+  }
   .button {
     .save {
       width: auto;

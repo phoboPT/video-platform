@@ -9,57 +9,6 @@ import Unpublished from '../CourseState/Unpublished';
 import Editor from '../Editor';
 import SaveCourseButton from './SaveCourseButton';
 
-const SINGLE_COURSE_QUERY = gql`
-  query SINGLE_COURSE_QUERY($id: ID!) {
-    course(where: { id: $id }) {
-      id
-      title
-      description
-      thumbnail
-      state
-      createdAt
-      sections
-      videos {
-        video {
-          id
-          description
-          title
-          file
-        }
-      }
-    }
-  }
-`;
-
-const UPDATE_COURSE_MUTATION = gql`
-  mutation UPDATE_COURSE_MUTATION(
-    $id: ID!
-    $title: String
-    $state: String
-    $thumbnail: String
-    $description: String
-    $price: Float
-    $category: ID
-    $section: String
-  ) {
-    updateCourse(
-      id: $id
-      title: $title
-      state: $state
-      thumbnail: $thumbnail
-      description: $description
-      section: $section
-      price: $price
-      category: $category
-    ) {
-      id
-      title
-      thumbnail
-      description
-    }
-  }
-`;
-
 const ALL_CATEGORIES_QUERY = gql`
   query ALL_CATEGORIES_QUERY {
     categories {
@@ -108,9 +57,7 @@ class FormCourse extends Component {
     changeThumbnail: false,
     published: false,
     state: '',
-    unpublished: false,
-    category: 'cjv3nzz3blpm70b95kc521geg',
-    triggerOnce: true,
+    unpublished: true,
   };
 
   changePublished = () => {
@@ -182,7 +129,7 @@ class FormCourse extends Component {
 
   render() {
     console.log(this.state.category);
-    const { course, createCourse, id } = this.props;
+    const { course, createCourse, id, changeToEdit } = this.props;
     const { alreadyExecuted, triggerOnce } = this.state;
 
     if (!createCourse) {
@@ -194,14 +141,6 @@ class FormCourse extends Component {
     return (
       <Query query={ALL_CATEGORIES_QUERY}>
         {({ data, loading }) => {
-          if (triggerOnce) {
-            if (!createCourse) {
-              this.setState({
-                triggerOnce: false,
-                category: course.category.id,
-              });
-            }
-          }
           if (loading) return <p> Loading </p>;
           return (
             <Form id="form">
@@ -232,7 +171,12 @@ class FormCourse extends Component {
               </div>
               {/* divisao  */}
               <div className="actions-container">
-                <SaveCourseButton data={this.state} id={id} />
+                <SaveCourseButton
+                  createCourse={createCourse}
+                  data={this.state}
+                  id={id}
+                  changeToEdit={changeToEdit}
+                />
                 <label htmlFor="state">
                   Course State
                   <div id="courseState">
@@ -256,7 +200,7 @@ class FormCourse extends Component {
                     defaultValue={!createCourse ? course.price : ''}
                     placeholder="00.00"
                     value={this.price}
-                    onChange={this.saveState}
+                    onChange={this.handleChange}
                     required
                   />
                 </label>
@@ -309,4 +253,3 @@ class FormCourse extends Component {
 }
 
 export default FormCourse;
-export { SINGLE_COURSE_QUERY };
