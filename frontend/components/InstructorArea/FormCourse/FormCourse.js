@@ -204,121 +204,104 @@ class FormCourse extends Component {
           }
           if (loading) return <p> Loading </p>;
           return (
-            <Mutation mutation={UPDATE_COURSE_MUTATION} variables={this.state}>
-              {(updateCourse, { loading, error }) => (
-                <>
-                  <>
-                    <Form id="form">
-                      <div className="info-container">
-                        <Error error={error} />
-                        {!createCourse ? (
-                          <h2>Edit Course</h2>
-                        ) : (
-                          <h2>Create Course</h2>
-                        )}
+            <Form id="form">
+              <div className="info-container">
+                <Error error={error} />
+                {!createCourse ? <h2>Edit Course</h2> : <h2>Create Course</h2>}
 
-                        <label htmlFor="Title">
-                          Title
-                          <input
-                            id="title"
-                            type="text"
-                            name="title"
-                            placeholder="title"
-                            defaultValue={!createCourse ? course.title : ''}
-                            onChange={this.handleChange}
-                          />
-                        </label>
+                <label htmlFor="Title">
+                  Title
+                  <input
+                    id="title"
+                    type="text"
+                    name="title"
+                    placeholder="title"
+                    defaultValue={!createCourse ? course.title : ''}
+                    onChange={this.handleChange}
+                  />
+                </label>
 
-                        <label htmlFor="description">
-                          Description
-                          <div className="description">
-                            <Editor
-                              data={!createCourse ? course.description : ''}
-                              changeQuill={this.changeQuill}
-                            />
-                          </div>
-                        </label>
-                      </div>
-                      {/* divisao  */}
-                      <div className="actions-container">
-                        <SaveCourseButton data={this.state} id={id} />
-                        <label htmlFor="state">
-                          Course State
-                          <div id="courseState">
-                            <Published
-                              published={this.state.published}
-                              changePublished={this.changePublished}
-                            />
-                            <Unpublished
-                              unpublished={this.state.unpublished}
-                              changeUnpublished={this.changeUnpublished}
-                            />
-                          </div>
-                        </label>
-                        <label htmlFor="price">
-                          Price{' '}
-                          <input
-                            type="number"
-                            min="0"
-                            step="any"
-                            name="price"
-                            defaultValue={!createCourse ? course.price : ''}
-                            placeholder="00.00"
-                            value={this.price}
-                            onChange={this.saveState}
-                            required
-                          />
-                        </label>{' '}
-                        <select
-                          id="dropdownlist"
-                          onChange={this.handleChangeCategory}
-                          name="category"
-                          defaultValue={
-                            !createCourse ? course.category.id : 'a'
-                          }
-                        >
-                          <option value="a" disabled hidden>
-                            Select an Category
-                          </option>
-                          {data.categories.map(category => (
-                            <option key={category.id} value={category.id}>
-                              {category.name}
-                            </option>
-                          ))}
-                        </select>
-                        <label htmlFor="thumbnail">
-                          Thumbnail Preview
-                          {this.state.changeThumbnail ? (
-                            course.thumbnail && (
-                              <img
-                                alt="Placeholder"
-                                src={this.state.thumbnail}
-                              />
-                            )
-                          ) : (
-                            <img
-                              alt="Placeholder"
-                              src={
-                                !createCourse
-                                  ? course.thumbnail
-                                  : '../../../static/placeholderIMG.png'
-                              }
-                            />
-                          )}
-                          <input
-                            type="file"
-                            name="thumbnail"
-                            placeholder="thumbnail"
-                            value={!createCourse ? this.thumbnail : ''}
-                            onChange={this.uploadThumbnail}
-                          />
-                        </label>
-                      </div>
-                    </Form>
-                  </>
-                </>
-              )}
-            </Mutation>
+                <label htmlFor="description">
+                  Description
+                  <div className="description">
+                    <Editor
+                      data={!createCourse ? course.description : ''}
+                      changeQuill={this.changeQuill}
+                    />
+                  </div>
+                </label>
+              </div>
+              {/* divisao  */}
+              <div className="actions-container">
+                <SaveCourseButton data={this.state} id={id} />
+                <label htmlFor="state">
+                  Course State
+                  <div id="courseState">
+                    <Published
+                      published={this.state.published}
+                      changePublished={this.changePublished}
+                    />
+                    <Unpublished
+                      unpublished={this.state.unpublished}
+                      changeUnpublished={this.changeUnpublished}
+                    />
+                  </div>
+                </label>
+                <label htmlFor="price">
+                  Price{' '}
+                  <input
+                    type="number"
+                    min="0"
+                    step="any"
+                    name="price"
+                    defaultValue={!createCourse ? course.price : ''}
+                    placeholder="00.00"
+                    value={this.price}
+                    onChange={this.saveState}
+                    required
+                  />
+                </label>{' '}
+                <select
+                  id="dropdownlist"
+                  onChange={this.handleChangeCategory}
+                  name="category"
+                  defaultValue={!createCourse ? course.category.id : 'a'}
+                >
+                  <option value="a" disabled hidden>
+                    Select an Category
+                  </option>
+                  {data.categories.map(category => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                <label htmlFor="thumbnail">
+                  Thumbnail Preview
+                  {this.state.changeThumbnail ? (
+                    course.thumbnail && (
+                      <img alt="Placeholder" src={this.state.thumbnail} />
+                    )
+                  ) : (
+                    <img
+                      alt="Placeholder"
+                      src={
+                        !createCourse
+                          ? course.thumbnail
+                          : '../../../static/placeholderIMG.png'
+                      }
+                    />
+                  )}
+                  <input
+                    type="file"
+                    name="thumbnail"
+                    placeholder="thumbnail"
+                    value={!createCourse ? this.thumbnail : ''}
+                    onChange={this.uploadThumbnail}
+                  />
+                </label>
+              </div>
+            </Form>
           );
         }}
       </Query>

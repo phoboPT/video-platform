@@ -3,38 +3,46 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import VideoPlayer from './VideoPlayer';
+import Index from '../InstructorArea/FormCourse/DragNDrop/Index';
 
 const SINGLE_VIDEO_QUERY = gql`
   query SINGLE_VIDEO_QUERY($id: ID!) {
-    video(where: { id: $id }) {
+    course(where: { id: $id }) {
       id
       title
-      file
-      urlVideo
       createdAt
+      section
+      videos {
+        video {
+          id
+          title
+          urlVideo
+          file
+        }
+      }
     }
   }
 `;
 
-// Adapting based on props
-const State = styled.strong(props => ({
-  background: props.background,
-  color: props.color,
-  'word-wrap': 'wrap',
-  padding: '0 1rem',
-}));
-
 const Grid = styled.div`
+  white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  white-space: pre-wrap; /* css-3 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+  word-break: break-all;
+  white-space: normal;
+  margin: none;
   .container {
-    max-width: 1300px;
     background-color: #fff;
     margin: 40px auto 0 auto;
     line-height: 1.65;
-    padding: 20px 50px;
     display: flex;
   }
 
   .video {
+    min-width: 1000px;
     flex: 2;
     order: 1;
   }
@@ -51,25 +59,22 @@ class ShowVideo extends Component {
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
-          if (!data.video) return <p>No Video Found for {this.props.id}</p>;
+          if (!data.course) return <p>No Video Found for {this.props.id}</p>;
+          const { videos } = data.course;
 
+          console.log(data.course);
           return (
             <Grid>
               <div className="container">
                 <div className="video">
-                  <VideoPlayer url={data.video.urlVideo} />
+                  <VideoPlayer url={videos[0].video.urlVideo} />
                 </div>
                 <div className="info">
-                  <p>Title: {data.video.title}</p>
-                  <p>File: {data.video.file}</p>
-                  <State
-                    background={
-                      data.video.state === 'Published' ? 'green' : 'red'
-                    }
-                    color="white"
-                  >
-                    {data.video.state}
-                  </State>
+                  <Index
+                    sections={JSON.parse(data.course.section)}
+                    isShow
+                    courseId={data.course.id}
+                  />
                 </div>
               </div>
             </Grid>
