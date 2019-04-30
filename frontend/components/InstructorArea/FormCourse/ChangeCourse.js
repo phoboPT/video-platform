@@ -276,26 +276,6 @@ class ChangeCourse extends Component {
                     </button>
                   </>
                 )}
-                {/* {createCourse && (
-                  <>
-                    <button
-                      type="button"
-                      id="2"
-                      disabled={selected === 2}
-                      onClick={this.changeView}
-                    >
-                      Media🎞️{' '}
-                    </button>{' '}
-                    <button
-                      type="button"
-                      id="3"
-                      disabled={selected === 3}
-                      onClick={this.changeView}
-                    >
-                      Target🎯{' '}
-                    </button>{' '}
-                  </>
-                )} */}
               </Marcador>
               <CourseContainer>
                 {view === 1 &&
