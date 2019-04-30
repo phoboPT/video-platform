@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import Router from 'next/router';
 import PropTypes from 'prop-types';
 import Form from '../../styles/Form';
 import Error from '../../Static/ErrorMessage.js';
@@ -19,6 +18,7 @@ const CREATE_VIDEO_MUTATION = gql`
     $file: String
     $isUpdate: Boolean!
     $videoId: ID
+    $duration: Float
   ) {
     createVideo(
       title: $title
@@ -27,6 +27,7 @@ const CREATE_VIDEO_MUTATION = gql`
       file: $file
       isUpdate: $isUpdate
       videoId: $videoId
+      duration: $duration
     ) {
       id
     }
@@ -102,10 +103,11 @@ class CreateVideo extends Component {
       { method: 'POST', body: data }
     );
     const file = await res.json();
-
+    console.log(file);
     this.setState({
       urlVideo: file.secure_url,
       isUploading: 2,
+      duration: file.duration / 28.6732,
     });
 
     const {
@@ -136,7 +138,6 @@ class CreateVideo extends Component {
       );
 
       const file = await res.json();
-
       this.setState({
         file: file.secure_url,
         isUploading: 2,
