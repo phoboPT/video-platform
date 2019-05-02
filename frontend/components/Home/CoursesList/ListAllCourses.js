@@ -368,7 +368,6 @@ class ListAllCourses extends Component {
                         animationSliderControlBackward={
                           this.animationSliderControlBackward
                         }
-                        isInterest
                         count={
                           data.coursesRating ? data.coursesRating[0].count : 0
                         }

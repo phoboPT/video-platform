@@ -29,7 +29,7 @@ class Media extends Component {
     const { sections, updateState, courseId, children } = this.props;
     return (
       <Container>
-        <h2>Create the Sections</h2>
+        <h2>Media</h2>
         <div className="button">
           <SaveCourseButton sections={sections} id={courseId} />
         </div>

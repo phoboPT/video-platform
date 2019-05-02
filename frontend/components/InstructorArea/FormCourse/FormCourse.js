@@ -56,8 +56,9 @@ class FormCourse extends Component {
     alreadyExecuted: false,
     changeThumbnail: false,
     published: false,
-    state: '',
+    state: 'UNPUBLISHED',
     unpublished: true,
+    once: false,
   };
 
   changePublished = () => {
@@ -128,13 +129,21 @@ class FormCourse extends Component {
   };
 
   render() {
-    console.log(this.state.category);
     const { course, createCourse, id, changeToEdit } = this.props;
-    const { alreadyExecuted, triggerOnce } = this.state;
+    const { alreadyExecuted, changeThumbnail, once } = this.state;
 
     if (!createCourse) {
       if (!alreadyExecuted) {
         this.courseState(course.state);
+      }
+    }
+
+    if (!once) {
+      if (createCourse) {
+        this.setState({
+          thumbnail: '../../../static/placeholderIMG.png',
+          once: true,
+        });
       }
     }
 
@@ -204,42 +213,44 @@ class FormCourse extends Component {
                     required
                   />
                 </label>
-                <select
-                  id="dropdownlist"
-                  onChange={this.handleChangeCategory}
-                  name="category"
-                  defaultValue={!createCourse ? course.category.id : 'a'}
-                >
-                  <option value="a" disabled hidden>
-                    Select an Category
-                  </option>
-                  {data.categories.map(category => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
+                <label htmlFor="category">
+                  Category
+                  <select
+                    id="dropdownlist"
+                    onChange={this.handleChangeCategory}
+                    name="category"
+                    defaultValue={!createCourse ? course.category.id : 'a'}
+                  >
+                    <option value="a" disabled hidden>
+                      Select an Category
                     </option>
-                  ))}
-                </select>
+                    {data.categories.map(category => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label htmlFor="thumbnail">
                   Thumbnail Preview
-                  {this.state.changeThumbnail ? (
-                    course.thumbnail && (
-                      <img alt="Placeholder" src={this.state.thumbnail} />
-                    )
-                  ) : (
-                    <img
-                      alt="Placeholder"
-                      src={
-                        !createCourse
-                          ? course.thumbnail
-                          : '../../../static/placeholderIMG.png'
-                      }
-                    />
+                  {/* Thumbnail para o Edit */}
+                  {!createCourse &&
+                    (changeThumbnail ? (
+                      course.thumbnail && (
+                        <img alt="Placeholder" src={this.state.thumbnail} />
+                      )
+                    ) : (
+                      <img alt="Placeholder" src={course.thumbnail} />
+                    ))}
+                  {/* Thumbnail para o create */}
+                  {createCourse && (
+                    <img alt="Placeholder" src={this.state.thumbnail} />
                   )}
                   <input
                     type="file"
                     name="thumbnail"
                     placeholder="thumbnail"
-                    value={!createCourse ? this.thumbnail : ''}
+                    value={!createCourse ? this.state.thumbnail : ''}
                     onChange={this.uploadThumbnail}
                   />
                 </label>

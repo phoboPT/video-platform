@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
-import { ALL_INTEREST_QUERY } from './Interest';
+import { COURSE_QUERY } from './Interest';
 
 const REMOVE_TAGS_COURSE = gql`
   mutation REMOVE_TAGS_COURSE($interestId: ID!) {
-    removeTargetUser(interestId: $interestId) {
+    removeTargetCourse(interestId: $interestId) {
       id
     }
   }
 `;
 
-class RemoveButton extends Component {
+export class RemoveButton extends Component {
   state = {
     interestId: this.props.interestId,
   };
@@ -29,29 +29,31 @@ class RemoveButton extends Component {
   };
 
   render() {
+    const { courseId } = this.props;
     return (
       <>
         <Mutation
           mutation={REMOVE_TAGS_COURSE}
           variables={this.state}
-          refetchQueries={[{ query: ALL_INTEREST_QUERY }]}
+          refetchQueries={[
+            {
+              query: COURSE_QUERY,
+              variables: {
+                id: courseId,
+              },
+            },
+          ]}
         >
-          {(removeTargetUser, { loading }) => {
+          {(removeTargetCourse, { loading }) => {
             if (loading) return <p />;
             return (
               <button
                 type="button"
                 onClick={e => {
-                  this.mutate(removeTargetUser);
+                  this.mutate(removeTargetCourse);
                 }}
               >
-                <input
-                  alt="Wrong"
-                  type="image"
-                  src="../../../static/wrong.png"
-                  width="48"
-                  height="48"
-                />
+                Remove
               </button>
             );
           }}
