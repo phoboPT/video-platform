@@ -12,7 +12,7 @@ const ADD_TAGS_USER = gql`
   }
 `;
 
-export class AddButton extends Component {
+class AddButton extends Component {
   state = {
     interestId: this.props.interestId,
   };
@@ -39,6 +39,7 @@ export class AddButton extends Component {
           if (loading) return <p />;
           return (
             <button
+              type="button"
               onClick={e => {
                 this.mutate(addTargetUser);
               }}

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-for */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
@@ -59,9 +61,9 @@ class FormCourse extends Component {
     alreadyExecuted: false,
     changeThumbnail: false,
     published: false,
-    state: '',
-    thumbnail: '../../../static/placeholderIMG.png',
+    state: 'UNPUBLISHED',
     unpublished: true,
+    once: false,
   };
 
   changePublished = () => {
@@ -133,11 +135,27 @@ class FormCourse extends Component {
 
   render() {
     const { course, createCourse, id, changeToEdit } = this.props;
-    const { alreadyExecuted, triggerOnce } = this.state;
+    const {
+      alreadyExecuted,
+      changeThumbnail,
+      once,
+      thumbnail,
+      published,
+      unpublished,
+    } = this.state;
 
     if (!createCourse) {
       if (!alreadyExecuted) {
         this.courseState(course.state);
+      }
+    }
+
+    if (!once) {
+      if (createCourse) {
+        this.setState({
+          thumbnail: '../../../static/placeholderIMG.png',
+          once: true,
+        });
       }
     }
 
@@ -149,7 +167,6 @@ class FormCourse extends Component {
             <Form id="form">
               <div className="info-container">
                 {!createCourse ? <h2>Edit Course</h2> : <h2>Create Course</h2>}
-
                 <label htmlFor="Title">
                   Title
                   <input
@@ -161,11 +178,11 @@ class FormCourse extends Component {
                     onChange={this.handleChange}
                   />
                 </label>
-
-                <label htmlFor="description">
+                <label htmlFor="description" id="description">
                   Description
-                  <div className="description">
+                  <div className="description" id="description">
                     <Editor
+                      id="description"
                       data={!createCourse ? course.description : ''}
                       changeQuill={this.changeQuill}
                     />
@@ -184,11 +201,11 @@ class FormCourse extends Component {
                   Course State
                   <div id="courseState">
                     <Published
-                      published={this.state.published}
+                      published={published}
                       changePublished={this.changePublished}
                     />
                     <Unpublished
-                      unpublished={this.state.unpublished}
+                      unpublished={unpublished}
                       changeUnpublished={this.changeUnpublished}
                     />
                   </div>
@@ -207,42 +224,42 @@ class FormCourse extends Component {
                     required
                   />
                 </label>
-                <select
-                  id="dropdownlist"
-                  onChange={this.handleChangeCategory}
-                  name="category"
-                  defaultValue={!createCourse ? course.category.id : 'a'}
-                >
-                  <option value="a" disabled hidden>
-                    Select an Category
-                  </option>
-                  {data.categories.map(category => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
+                <label htmlFor="category">
+                  Category
+                  <select
+                    id="dropdownlist"
+                    onChange={this.handleChangeCategory}
+                    name="category"
+                    defaultValue={!createCourse ? course.category.id : 'a'}
+                  >
+                    <option value="a" disabled hidden>
+                      Select an Category
                     </option>
-                  ))}
-                </select>
+                    {data.categories.map(category => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label htmlFor="thumbnail">
                   Thumbnail Preview
-                  {this.state.changeThumbnail ? (
-                    course.thumbnail && (
-                      <img alt="Placeholder" src={this.state.thumbnail} />
-                    )
-                  ) : (
-                    <img
-                      alt="Placeholder"
-                      src={
-                        !createCourse
-                          ? course.thumbnail
-                          : '../../../static/placeholderIMG.png'
-                      }
-                    />
-                  )}
+                  {/* Thumbnail para o Edit */}
+                  {!createCourse &&
+                    (changeThumbnail ? (
+                      course.thumbnail && (
+                        <img alt="Placeholder" src={thumbnail} />
+                      )
+                    ) : (
+                      <img alt="Placeholder" src={course.thumbnail} />
+                    ))}
+                  {/* Thumbnail para o create */}
+                  {createCourse && <img alt="Placeholder" src={thumbnail} />}
                   <input
                     type="file"
                     name="thumbnail"
                     placeholder="thumbnail"
-                    value={!createCourse ? this.thumbnail : ''}
+                    value={!createCourse ? thumbnail : ''}
                     onChange={this.uploadThumbnail}
                   />
                 </label>

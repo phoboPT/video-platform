@@ -47,20 +47,21 @@ const Pagination = props => (
           <button
             disabled={page <= 1}
             className="Left"
+            type="button"
             id="arrowbutton"
             onClick={() => props.animationSliderControlBackward()}
           >
-            <img id="arrow" src="../../../static/arrowleft.png" />
+            <img alt="arrow" id="arrow" src="../../../static/arrowleft.png" />
           </button>
-
           <button
             disabled={props.isInterest ? page >= pages : page >= pages}
             className="Right"
             id="arrowbutton"
+            type="button"
             onLoad={fetchNext()}
             onClick={() => props.animationSliderControlForward()}
           >
-            <img id="arrow" src="../../../static/arrowright.png" />
+            <img alt="arrow" id="arrow" src="../../../static/arrowright.png" />
           </button>
         </>
       );

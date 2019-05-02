@@ -694,6 +694,23 @@ const Mutations = {
       info
     );
   },
+
+  async removeTargetUser(parent, args, ctx, info) {
+    // Make sure they are signin
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error('You must be signed in soooon');
+    }
+
+    return ctx.db.mutation.deleteUserInterest(
+      {
+        where: {
+          id: args.interestId,
+        },
+      },
+      info
+    );
+  },
   async addTargetUser(parent, args, ctx, info) {
     // 1. Make sure they are signed in
     const { userId } = ctx.request;
@@ -915,6 +932,22 @@ const Mutations = {
         user: { connect: { id: userId } },
       },
     });
+  },
+  async removeTargetCourse(parent, args, ctx, info) {
+    // Make sure they are signin
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error('You must be signed in soooon');
+    }
+
+    return ctx.db.mutation.deleteCourseInterest(
+      {
+        where: {
+          id: args.interestId,
+        },
+      },
+      info
+    );
   },
   // async removeFromWish(parent, args, ctx, info) {
   //   //Make sure they are signin

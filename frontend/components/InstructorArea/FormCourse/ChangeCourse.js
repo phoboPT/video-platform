@@ -5,7 +5,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Media from './Media';
 import FormCourse from './FormCourse';
-import Interest from './Interest';
+import Interest from './Interest/Interest';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -144,9 +144,18 @@ const Marcador = styled.div`
     font-weight: 400;
     height: 50px;
     cursor: pointer;
+    background: white;
+    margin-right: 3px;
+  }
+  button:hover {
+    background: #d1d1d1;
   }
   button:focus {
     outline: none;
+  }
+  button:disabled {
+    cursor: not-allowed;
+    background: white;
   }
 `;
 
@@ -167,7 +176,7 @@ const ButtonStyle = styled.div`
 
 class ChangeCourse extends Component {
   state = {
-    selected: '',
+    selected: 1,
     createCourse: this.props.createCourse,
     view: 1,
     id: this.props.id,
