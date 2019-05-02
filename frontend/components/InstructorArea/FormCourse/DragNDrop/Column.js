@@ -48,7 +48,6 @@ class InnerList extends React.PureComponent {
       title,
     } = this.props;
 
-    console.log(videos);
     return videos.map(
       (video, index) =>
         video && (
@@ -82,7 +81,6 @@ class Column extends Component {
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
     await this.setState({ [name]: val });
-    console.log('title', this.state.title);
     handleChange(this.state.title, section.id);
   };
 

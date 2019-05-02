@@ -45,7 +45,6 @@ class InnerList extends React.PureComponent {
     if (section.videoIds) {
       videos = section.videoIds.map(videoId => videosMap[videoId]);
     }
-    console.log('sections', section);
     return (
       <Column
         addVideo={addVideo}
@@ -70,7 +69,6 @@ class Index extends Component {
 
   componentDidMount() {
     const { sections } = this.props;
-    console.log('update State', sections);
     this.setState(sections);
   }
 
@@ -249,7 +247,6 @@ class Index extends Component {
     };
 
     await this.setState(newState);
-    console.log('video', this.state);
     updateState(this.state);
   };
 

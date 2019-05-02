@@ -18,11 +18,27 @@ class VideoPlayer extends Component {
     url: PropTypes.string.isRequired,
   };
 
+  state = this.props;
+
+  componentDidUpdate(prevProps) {
+    const { player } = this;
+    const { changeShow, url } = this.props;
+    if (url !== prevProps.url) {
+      player.load();
+      changeShow();
+    }
+  }
+
   render() {
     const { url } = this.props;
     return (
       <Div>
-        <Player fluid>
+        <Player
+          fluid
+          ref={c => {
+            this.player = c;
+          }}
+        >
           <source src={url} />
           <LoadingSpinner />
           <ControlBar autoHide>
@@ -38,5 +54,9 @@ class VideoPlayer extends Component {
     );
   }
 }
+
+VideoPlayer.propTypes = {
+  changeShow: PropTypes.func.isRequired,
+};
 
 export default VideoPlayer;

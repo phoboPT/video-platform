@@ -103,11 +103,14 @@ class CreateVideo extends Component {
       { method: 'POST', body: data }
     );
     const file = await res.json();
-    console.log(files[0].duration);
+
+    const duration = parseInt(file.duration / 60, 10);
+    console.log(file.duration);
+
     this.setState({
       urlVideo: file.secure_url,
       isUploading: 2,
-      duration: file.duration / 28.6732,
+      duration,
     });
 
     const {

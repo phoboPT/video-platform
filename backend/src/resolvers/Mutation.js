@@ -443,6 +443,7 @@ const Mutations = {
         info
       );
     }
+
     return ctx.db.mutation.createCourse(
       {
         data: {

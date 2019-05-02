@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import VideoPlayer from './VideoPlayer';
-import Index from '../InstructorArea/FormCourse/DragNDrop/Index';
+import VideoSection from './VideoSection/VideoSection';
 
 const SINGLE_VIDEO_QUERY = gql`
   query SINGLE_VIDEO_QUERY($id: ID!) {
@@ -54,27 +55,61 @@ const Grid = styled.div`
 `;
 
 class ShowVideo extends Component {
+  state = { hasUpdated: false, selectedVideo: '' };
+
+  changeSelectedVideo = url => {
+    const { videos } = this.state;
+    videos.map(item => {
+      if (item.video.id === url) {
+        return this.setState({
+          selectedVideo: item.video.urlVideo,
+          id: item.video.id,
+        });
+      }
+      return item;
+    });
+  };
+
+  changeShow = () => {
+    const { show } = this.state;
+    this.setState({ show: !show });
+  };
+
   render() {
+    const { selectedVideo, hasUpdated, show, id: key } = this.state;
+    const { id } = this.props;
     return (
-      <Query query={SINGLE_VIDEO_QUERY} variables={{ id: this.props.id }}>
+      <Query query={SINGLE_VIDEO_QUERY} variables={{ id }}>
         {({ data, loading }) => {
           if (loading) return <p>Loading</p>;
-          if (!data.course) return <p>No Video Found for {this.props.id}</p>;
-          const { videos } = data.course;
-
-          console.log(data.course);
+          if (!data.course) return <p>No Video Found for {id}</p>;
+          if (!hasUpdated) {
+            this.setState(data.course);
+            this.setState({
+              hasUpdated: !hasUpdated,
+              selectedVideo: data.course.videos[0].video.urlVideo,
+              id: data.course.videos[0].video.id,
+            });
+          }
           return (
             <Grid>
               <div className="container">
                 <div className="video">
-                  <VideoPlayer url={videos[0].video.urlVideo} />
+                  <VideoPlayer
+                    url={selectedVideo}
+                    show={show}
+                    changeShow={this.changeShow}
+                  />
                 </div>
                 <div className="info">
-                  <Index
-                    sections={JSON.parse(data.course.section)}
-                    isShow
-                    courseId={data.course.id}
-                  />
+                  {selectedVideo !== 0 && (
+                    <VideoSection
+                      key={key}
+                      data={data}
+                      changeSelectedVideo={this.changeSelectedVideo}
+                      id={key}
+                    />
+                  )}
                 </div>
               </div>
             </Grid>
@@ -84,5 +119,9 @@ class ShowVideo extends Component {
     );
   }
 }
+
+ShowVideo.propTypes = {
+  id: PropTypes.string.isRequired,
+};
 
 export default ShowVideo;

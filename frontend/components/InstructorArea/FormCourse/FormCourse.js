@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
-import { Mutation, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 // import ReactQuill from "react-quill"; // ES6
 import styled, { keyframes } from 'styled-components';
 import Error from '../../Static/ErrorMessage';
@@ -49,6 +49,9 @@ const Form = styled.div`
     padding: 0.5rem 1.2rem;
     text-align: center;
   }
+  .ql-container {
+    height: 250px;
+  }
 `;
 
 class FormCourse extends Component {
@@ -57,6 +60,7 @@ class FormCourse extends Component {
     changeThumbnail: false,
     published: false,
     state: '',
+    thumbnail: '../../../static/placeholderIMG.png',
     unpublished: true,
   };
 
@@ -128,7 +132,6 @@ class FormCourse extends Component {
   };
 
   render() {
-    console.log(this.state.category);
     const { course, createCourse, id, changeToEdit } = this.props;
     const { alreadyExecuted, triggerOnce } = this.state;
 

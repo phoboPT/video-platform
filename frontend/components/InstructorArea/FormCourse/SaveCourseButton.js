@@ -56,7 +56,6 @@ class SaveCourseButton extends Component {
   };
 
   static getDerivedStateFromProps(props, currentState) {
-    console.log('currentState', currentState, props.sections);
     if (props.sections) {
       if (currentState !== props.sections) {
         const state = {
