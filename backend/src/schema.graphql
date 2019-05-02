@@ -44,7 +44,7 @@ type Mutation {
     file: String
     isUpdate: Boolean!
     videoId: ID
-    duration: Float
+    duration: String
   ): Video!
   updateVideo(id: ID!, title: String, category: String): Video!
   deleteVideo(id: ID!): Video
@@ -71,7 +71,6 @@ type Mutation {
     state: String
     section: String
     id: ID
-    duration: Float
   ): Course!
   addTargetCourse(courseId: ID!, interestId: ID!): Course!
   removeFromCourse(id: ID!, courseId: ID!): Course

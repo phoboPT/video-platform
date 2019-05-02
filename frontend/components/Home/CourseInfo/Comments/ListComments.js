@@ -67,7 +67,7 @@ class ListComments extends Component {
         document.getElementById('myBtn').style.display = 'none';
       }
     } catch (error) {
-      console.warn(error);
+      // console.warn(error);
     }
   };
 

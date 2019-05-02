@@ -18,7 +18,7 @@ const CREATE_VIDEO_MUTATION = gql`
     $file: String
     $isUpdate: Boolean!
     $videoId: ID
-    $duration: Float
+    $duration: String
   ) {
     createVideo(
       title: $title
@@ -104,9 +104,9 @@ class CreateVideo extends Component {
     );
     const file = await res.json();
 
-    const duration = parseInt(file.duration / 60, 10);
-    console.log(file.duration);
-
+    const s = parseInt(file.duration % 60);
+    const m = parseInt((file.duration / 60) % 60);
+    const duration = `${m}:${s}`;
     this.setState({
       urlVideo: file.secure_url,
       isUploading: 2,

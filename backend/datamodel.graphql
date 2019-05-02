@@ -87,7 +87,7 @@ type Video {
   file: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  duration: Float
+  duration: String
 }
 
 type CourseVideos {

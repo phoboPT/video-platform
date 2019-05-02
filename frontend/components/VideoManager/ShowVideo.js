@@ -19,6 +19,7 @@ const SINGLE_VIDEO_QUERY = gql`
           title
           urlVideo
           file
+          duration
         }
       }
     }
