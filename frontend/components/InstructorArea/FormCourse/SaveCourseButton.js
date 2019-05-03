@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
 import { SINGLE_COURSE_QUERY } from './ChangeCourse';
 import Error from '../../Static/ErrorMessage.js';
+import { CURRENT_COURSES_QUERY } from '../MyCourses';
 
 const CREATE_COURSE_MUTATION = gql`
   mutation CREATE_COURSE_MUTATION(
@@ -117,6 +118,9 @@ class SaveCourseButton extends Component {
             variables: {
               id,
             },
+          },
+          {
+            query: CURRENT_COURSES_QUERY,
           },
         ]}
         variables={this.state}

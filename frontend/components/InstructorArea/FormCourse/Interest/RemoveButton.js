@@ -48,6 +48,7 @@ export class RemoveButton extends Component {
             if (loading) return <p />;
             return (
               <button
+                id="remove"
                 type="button"
                 onClick={e => {
                   this.mutate(removeTargetCourse);

@@ -48,6 +48,7 @@ export class AddButton extends Component {
           if (loading) return <p />;
           return (
             <button
+              id="add"
               type="button"
               onClick={e => {
                 this.mutate(addTargetCourse);
