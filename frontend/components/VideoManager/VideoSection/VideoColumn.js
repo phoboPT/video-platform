@@ -81,7 +81,7 @@ class InnerList extends React.PureComponent {
   }
 
   render() {
-    const { item, file, changeSelectedVideo, data } = this.props;
+    const { item, changeSelectedVideo, data } = this.props;
     const { selected } = this.state;
     return (
       <div className="right">
