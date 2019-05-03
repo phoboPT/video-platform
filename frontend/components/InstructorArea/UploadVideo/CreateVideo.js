@@ -189,9 +189,6 @@ class CreateVideo extends Component {
           if (error) {
             return <p>Error:{error.message}</p>;
           }
-          if (data) {
-            console.log('data', data);
-          }
 
           return (
             <Container>

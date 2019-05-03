@@ -609,7 +609,7 @@ const Query = {
     );
 
     // fazer a media
-    coursesAverage = await res.map(item => {
+    const coursesAverage = await res.map(item => {
       item.average = item.totalRate / item.totalComments;
       return item;
     });
@@ -645,13 +645,8 @@ const Query = {
       return 0;
     });
 
-
     return finalRes;
-
-
   },
-
-
 };
 
 module.exports = Query;

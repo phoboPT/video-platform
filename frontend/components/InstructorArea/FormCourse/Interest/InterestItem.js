@@ -70,7 +70,6 @@ class InterestItem extends Component {
   };
 
   changeTrue = e => {
-    console.log('entrei');
     this.setState({
       idToDelete: e,
       isActive: true,
