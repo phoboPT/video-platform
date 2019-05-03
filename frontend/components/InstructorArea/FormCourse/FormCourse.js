@@ -54,6 +54,12 @@ const Form = styled.div`
   .ql-container {
     height: 250px;
   }
+
+  #message {
+    margin: 0;
+    padding-bottom: 3rem;
+    text-align: left;
+  }
 `;
 
 class FormCourse extends Component {
@@ -153,7 +159,7 @@ class FormCourse extends Component {
     if (!once) {
       if (createCourse) {
         this.setState({
-          thumbnail: '../../../static/placeholderIMG.png',
+          thumbnail: '../../../static/no-thumbnail.jpg',
           once: true,
         });
       }
@@ -166,7 +172,12 @@ class FormCourse extends Component {
           return (
             <Form id="form">
               <div className="info-container">
-                {!createCourse ? <h2>Edit Course</h2> : <h2>Create Course</h2>}
+                <p id="message">
+                  Here is where you enter basic information to your course, such
+                  as the title, description.
+                </p>
+
+                {/* {!createCourse ? <h2>Edit Course</h2> : <h2>Create Course</h2>} */}
                 <label htmlFor="Title">
                   Title
                   <input
@@ -210,6 +221,26 @@ class FormCourse extends Component {
                     />
                   </div>
                 </label>
+                <label htmlFor="thumbnail">
+                  Thumbnail Preview {/* Thumbnail para o Edit */}{' '}
+                  {!createCourse &&
+                    (changeThumbnail ? (
+                      course.thumbnail && (
+                        <img alt="Placeholder" src={thumbnail} />
+                      )
+                    ) : (
+                      <img alt="Placeholder" src={course.thumbnail} />
+                    ))}{' '}
+                  {/* Thumbnail para o create */}{' '}
+                  {createCourse && <img alt="Placeholder" src={thumbnail} />}{' '}
+                  <input
+                    type="file"
+                    name="thumbnail"
+                    placeholder="thumbnail"
+                    value={!createCourse ? thumbnail : ''}
+                    onChange={this.uploadThumbnail}
+                  />{' '}
+                </label>
                 <label htmlFor="price">
                   Price
                   <input
@@ -241,27 +272,6 @@ class FormCourse extends Component {
                       </option>
                     ))}
                   </select>
-                </label>
-                <label htmlFor="thumbnail">
-                  Thumbnail Preview
-                  {/* Thumbnail para o Edit */}
-                  {!createCourse &&
-                    (changeThumbnail ? (
-                      course.thumbnail && (
-                        <img alt="Placeholder" src={thumbnail} />
-                      )
-                    ) : (
-                      <img alt="Placeholder" src={course.thumbnail} />
-                    ))}
-                  {/* Thumbnail para o create */}
-                  {createCourse && <img alt="Placeholder" src={thumbnail} />}
-                  <input
-                    type="file"
-                    name="thumbnail"
-                    placeholder="thumbnail"
-                    value={!createCourse ? thumbnail : ''}
-                    onChange={this.uploadThumbnail}
-                  />
                 </label>
               </div>
             </Form>

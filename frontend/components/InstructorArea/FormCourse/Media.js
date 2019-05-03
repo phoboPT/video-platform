@@ -5,13 +5,15 @@ import Index from './DragNDrop/Index';
 import SaveCourseButton from './SaveCourseButton';
 
 const Container = styled.div`
-  width: 100%;
+  width: 90%;
+  margin-left: 2rem;
   h2 {
     padding-top: 2.5rem;
     padding-left: 1rem;
     margin: 0;
   }
   .button {
+    float: right;
     .save {
       width: auto;
       background: red;
@@ -22,6 +24,12 @@ const Container = styled.div`
       padding: 0.5rem 1.2rem;
     }
   }
+  #message {
+    margin: 0;
+    padding-top: 2.5rem;
+    padding-left: 1.5rem;
+    text-align: left;
+  }
 `;
 
 class Media extends Component {
@@ -29,7 +37,10 @@ class Media extends Component {
     const { sections, updateState, courseId, children } = this.props;
     return (
       <Container>
-        <h2>Media</h2>
+        <p id="message">
+          In this area you can add content to your course and customize it to
+          your liking
+        </p>
         <div className="button">
           <SaveCourseButton sections={sections} id={courseId} />
         </div>

@@ -35,15 +35,19 @@ const Border = styled.div`
     margin: 0.5rem;
   }
   button {
-    padding-top: 30px !important;
-    background: none;
+    margin-top: 30px !important;
     float: right;
+    border-radius: 4px;
     border: none;
     cursor: pointer;
   }
-  button:hover {
-    background: none !important;
+  #remove {
+    background: rgba(255, 0, 21, 0.3);
   }
+  #add {
+    background: rgba(0, 255, 46, 0.3);
+  }
+
   button:focus {
     outline: none;
   }
@@ -70,7 +74,6 @@ class InterestItem extends Component {
   };
 
   changeTrue = e => {
-    console.log('entrei');
     this.setState({
       idToDelete: e,
       isActive: true,

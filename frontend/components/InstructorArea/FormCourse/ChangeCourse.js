@@ -43,13 +43,17 @@ const CourseContainer = styled.div`
   }
 
   .info-container {
+    padding-right: 1.5rem;
     grid-column: 1 / 2;
 
     label {
+      color: #353535;
+
       text-align: left;
     }
   }
   .actions-container {
+    border-left: 1px solid #cccccc;
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     text-align: center;
@@ -59,6 +63,8 @@ const CourseContainer = styled.div`
       margin: 10px;
     }
     label {
+      color: #353535;
+
       margin: 40px;
       img {
         margin-top: 10px;
@@ -72,8 +78,7 @@ const CourseContainer = styled.div`
       height: 50px;
       width: 200px;
       text-align: center;
-      margin-top: 40px;
-      margin: 0 auto;
+      margin: 0 auto 15 auto;
       font-size: 25px;
       font-weight: 400;
       border: none;
