@@ -20,17 +20,28 @@ class VideoPlayer extends Component {
 
   state = this.props;
 
+  componentDidMount() {
+    const { player } = this;
+    // subscribe state change
+    player.subscribeToStateChange(this.handleStateChange.bind(this));
+  }
+
   componentDidUpdate(prevProps) {
     const { player } = this;
-    const { changeShow, url } = this.props;
+    const { url } = this.props;
     if (url !== prevProps.url) {
       player.load();
-      changeShow();
     }
+  }
+
+  handleStateChange(state, prevState) {
+    // copy player state to this component's state
+    this.setState({ ...state });
   }
 
   render() {
     const { url } = this.props;
+
     return (
       <Div>
         <Player
@@ -54,9 +65,5 @@ class VideoPlayer extends Component {
     );
   }
 }
-
-VideoPlayer.propTypes = {
-  changeShow: PropTypes.func.isRequired,
-};
 
 export default VideoPlayer;

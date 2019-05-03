@@ -19,6 +19,8 @@ const SINGLE_VIDEO_QUERY = gql`
           title
           urlVideo
           file
+          duration
+          watched
         }
       }
     }
@@ -35,6 +37,7 @@ const Grid = styled.div`
   word-break: break-all;
   white-space: normal;
   margin: none;
+
   .container {
     background-color: #fff;
     margin: 40px auto 0 auto;
@@ -70,13 +73,8 @@ class ShowVideo extends Component {
     });
   };
 
-  changeShow = () => {
-    const { show } = this.state;
-    this.setState({ show: !show });
-  };
-
   render() {
-    const { selectedVideo, hasUpdated, show, id: key } = this.state;
+    const { selectedVideo, hasUpdated, id: key } = this.state;
     const { id } = this.props;
     return (
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id }}>
@@ -95,11 +93,7 @@ class ShowVideo extends Component {
             <Grid>
               <div className="container">
                 <div className="video">
-                  <VideoPlayer
-                    url={selectedVideo}
-                    show={show}
-                    changeShow={this.changeShow}
-                  />
+                  <VideoPlayer url={selectedVideo} />
                 </div>
                 <div className="info">
                   {selectedVideo !== 0 && (

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -8,19 +9,30 @@ const Container = styled.div`
   border: 1px solid #d4d8da;
   border-radius: 2px;
   background-color: #d4d8da;
+  max-height: 630px;
+  overflow-x: auto;
+
   h4 {
     margin: 1rem;
     background-color: #c2c6c8;
   }
   .left {
-    float: left;
+    text-align: left;
+    flex: 9;
+    order: 1;
+    background-color: #c2c6c8;
   }
   .rigth {
+    order: 2;
+    flex: 1;
+    width: 100%;
     background-color: #c2c6c8;
     text-align: right;
     padding: 1rem 2rem 1rem 0;
   }
   button {
+    display: flex;
+    width: 100%;
     background: none;
     color: inherit;
     border: none;
@@ -31,60 +43,101 @@ const Container = styled.div`
   }
 `;
 
-class VideoSection extends Component {
-  state = {
-    section: JSON.parse(this.props.data.course.section),
-    show: true,
-    sectionHided: ['section-1'],
+class VideoElement extends React.PureComponent {
+  static propTypes = {
+    index: PropTypes.number.isRequired,
+    section: PropTypes.object.isRequired,
+    videos: PropTypes.object.isRequired,
+    id: PropTypes.number.isRequired,
+    files: PropTypes.object.isRequired,
+    changeSelectedVideo: PropTypes.func.isRequired,
+    localStorageId: PropTypes.string.isRequired,
+    data: PropTypes.object.isRequired,
   };
 
+  state = { selected: this.props.item === this.props.id };
+
+  componentDidMount() {
+    const { localStorageId } = this.props;
+    const value = JSON.parse(localStorage.getItem(localStorageId));
+    this.setState({ show: value });
+  }
+
   expand = (e, section) => {
-    const { section: prevSection, sectionHided } = this.state;
-    console.log('state', prevSection.sections[section].id, section);
-    let findEqual = 0;
-    sectionHided.forEach((item, index) => {
-      if (item === prevSection.sections[section].id) {
-        findEqual += 1;
-      }
-    });
-    console.log('final', findEqual);
-    if (findEqual < 1) {
-      const newSection = [...sectionHided, section];
-      this.setState({ sectionHided: newSection });
-    }
+    const { localStorageId } = this.props;
+    const { show } = this.state;
+    this.setState({ show: !show });
+    localStorage.setItem(localStorageId, !show);
+  };
+
+  saveStateToLocalStorage = () => {
+    // for every item in React state
+    const { localStorageId } = this.props;
+    const { show } = this.state;
+    localStorage.setItem(localStorageId, show);
   };
 
   render() {
-    const { changeSelectedVideo, id } = this.props;
+    const {
+      index,
+      section,
+      videos,
+      id,
+      files,
+      changeSelectedVideo,
+      data,
+    } = this.props;
+    const { show } = this.state;
+    return (
+      <Fragment key={index}>
+        <button type="button" onClick={e => this.expand(e, section.id)}>
+          <div className="left">
+            <h4>{section.title}</h4>
+          </div>
+          <div className="rigth">🔽</div>
+        </button>
+
+        <Fragment key={index}>
+          <VideoColumn
+            data={data}
+            id={section.id}
+            section={section}
+            key={section.id}
+            videos={videos}
+            files={files}
+            changeSelectedVideo={changeSelectedVideo}
+            show={show}
+          />
+        </Fragment>
+      </Fragment>
+    );
+  }
+}
+
+class VideoSection extends Component {
+  state = {
+    section: JSON.parse(this.props.data.course.section),
+  };
+
+  render() {
+    const { data, changeSelectedVideo, id } = this.props;
     const { columnOrder, sections, videos, files } = this.state.section;
-    const { show, sectionHided } = this.state;
     return (
       <Container>
         {columnOrder.map((columnId, index) => {
           const section = sections[columnId];
           return (
-            <Fragment key={index}>
-              <div className="left">
-                <h4>{section.title}</h4>
-              </div>
-              <div className="rigth">
-                <button type="button" onClick={e => this.expand(e, section.id)}>
-                  🔽
-                </button>
-              </div>
-
-              <Fragment key={index}>
-                <VideoColumn
-                  id={id}
-                  section={section}
-                  key={section.id}
-                  videos={videos}
-                  sectionHided={sectionHided}
-                  files={files}
-                  changeSelectedVideo={changeSelectedVideo}
-                />
-              </Fragment>
-            </Fragment>
+            <VideoElement
+              id={id}
+              section={section}
+              key={section.id}
+              localStorageId={section.id}
+              videos={videos}
+              files={files}
+              data={data}
+              changeSelectedVideo={changeSelectedVideo}
+              expand={this.expand}
+            />
           );
         })}
       </Container>
