@@ -35,6 +35,13 @@ const Container = styled.div`
     margin: auto;
     order: 5;
     flex: 1;
+    button {
+      border-radius: 10px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.2;
+      }
+    }
   }
 `;
 
