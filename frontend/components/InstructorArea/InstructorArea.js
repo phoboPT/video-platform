@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import User from '../Authentication/User';
 import ChangeCourse from './FormCourse/ChangeCourse';
 import MyCourses from './MyCourses';
+import Stats from './Stats';
 
 const Style = styled.div`
   .container {
@@ -65,7 +66,7 @@ const AddButon = styled.div`
 
 class Courses extends Component {
   state = {
-    view: 1,
+    view: 3,
   };
 
   // This method will be sent to the child component
@@ -78,6 +79,7 @@ class Courses extends Component {
   };
 
   render() {
+    const { view } = this.state;
     return (
       <User>
         {({ data: { me } }) => {
@@ -91,7 +93,7 @@ class Courses extends Component {
                   </section>
 
                   <div className="container">
-                    {this.state.view !== 2 && (
+                    {view !== 2 && (
                       <div className="left-bar">
                         <AddButon>
                           <button
@@ -113,16 +115,15 @@ class Courses extends Component {
                     )}
 
                     <aside id="sidebar" className="main-bar">
-                      {this.state.view === 1 && (
-                        <MyCourses changeView={this.changeView} />
-                      )}
-                      {this.state.view === 2 && (
+                      {view === 1 && <MyCourses changeView={this.changeView} />}
+                      {view === 2 && (
                         <ChangeCourse
                           changeIntructorView={this.changeView}
                           createCourse
                           saveToState={this.saveToState}
                         />
                       )}
+                      {view === 3 && <Stats />}
                     </aside>
                   </div>
                 </Style>

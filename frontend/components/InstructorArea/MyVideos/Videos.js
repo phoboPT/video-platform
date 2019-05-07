@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import styled from 'styled-components';
 import VideoItem from './VideoItem';
 import { perPage } from '../../../config';
 import Pagination from './Pagination';
@@ -10,7 +9,7 @@ import ItemList from '../../styles/ItemList';
 
 const ALL_VIDEOS_USER = gql`
   query ALL_VIDEOS_USER ($skip: Int =0,$first:Int=${perPage}){
-      videosUser(first:$first,skip:$skip,orderBy:createdAt_DESC)  {
+      videosFromUser(first:$first,skip:$skip,orderBy:createdAt_DESC)  {
       id
       title
       urlVideo

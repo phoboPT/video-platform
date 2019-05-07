@@ -13,6 +13,7 @@ type User {
   cart: [CartItem!]!
   courses: [UserCourse!]!
   wishlist: [Wishlist!]
+  videoUser: [VideoUser]
 }
 
 type Course {
@@ -137,12 +138,12 @@ type Query {
   coursesFilter(category: ID, author: ID): [UserCourse]
   ordersUser: [Order]!
   # querys selecionar tudo com argumentos
-  # videosUser(
-  #   where: VideoWhereInput
-  #   orderBy: VideoOrderByInput
-  #   skip: Int
-  #   first: Int
-  # ): [Video]
+  videosFromUser(
+    where: VideoWhereInput
+    orderBy: VideoOrderByInput
+    skip: Int
+    first: Int
+  ): [Video]
 
   videos(
     where: VideoWhereInput
