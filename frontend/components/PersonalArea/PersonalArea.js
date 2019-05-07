@@ -1,82 +1,121 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Link from 'next/link';
-import LinkStyle from '../styles/LinkStyle';
 import User from '../Authentication/User';
 import Information from './Information';
 import FormUser from './FormUser';
 import FormPassword from './FormPassword';
 import Interest from './Interests/Interest';
+import UserPurchases from './MyPurchases/UserPurchases';
 
-const Style = styled.div`
-  button {
-    color: #293a44;
-    font: inherit;
-    padding-block-end: 18px;
-    /* border-block-end: 1px solid #d6dbe1; */
-    /*border is optional*/
-    cursor: pointer;
-    width: auto;
-    border: 0;
-    text-align: center;
-  }
-  button :hover {
-    background: #b8c7d1;
-  }
-  #main {
-    width: 16%;
-    margin-top: 25px;
+const Container = styled.div`
+  display: flex;
+
+  #menu {
+    display: block;
+    flex: 1;
+    order: 1;
+    border-right: 1.5px solid #959ba5;
+    margin-top: 1.5rem;
     padding-right: 0px;
     padding-left: 55px;
+    button {
+      color: #293a44;
+      background: none;
+      font: inherit;
+      margin-top: 2rem;
+      cursor: pointer;
+      border: none;
+      &:hover {
+        background: #b8c7d1;
+      }
+      &:focus {
+        outline: none;
+      }
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.3;
+      }
+    }
   }
 
-  #sidebar {
-    width: 84%;
-    border-left: 1.5px solid #959ba5;
+  #content {
+    padding-top: 2rem;
+    flex: 4;
+    order: 2;
   }
 `;
 
 class PersonalArea extends Component {
   state = {
-    view: 1,
+    view: 5,
+    selected: 1,
   };
 
-  // This method will be sent to the child component
-
   changeView = e => {
-    this.setState({ view: parseInt(e.target.id) });
+    this.setState({ view: parseInt(e.target.id), selected: e.target.id });
+  };
+
+  changeManualView = id => {
+    this.setState({
+      view: id,
+    });
   };
 
   render() {
+    const { view, selected } = this.state;
     return (
       <User>
         {({ data: { me } }) => (
           <>
             {me.permission[0] !== 'Instructor' && (
-              <LinkStyle>
-                <Style>
-                  <section id="main">
-                    <button id="1" onClick={this.changeView}>
-                      Account Information
-                    </button>
-                    <button id="2" onClick={this.changeView}>
-                      Change Informations
-                    </button>
-                    <button id="3" onClick={this.changeView}>
-                      Change Password
-                    </button>
-                    <button id="4" onClick={this.changeView}>
-                      Customize your Interests
-                    </button>
-                  </section>
-                  <aside id="sidebar">
-                    {this.state.view === 1 && <Information />}
-                    {this.state.view === 2 && <FormUser />}
-                    {this.state.view === 3 && <FormPassword />}
-                    {this.state.view === 4 && <Interest view={0} />}
-                  </aside>
-                </Style>
-              </LinkStyle>
+              <Container>
+                <div id="menu">
+                  <button
+                    id="1"
+                    type="button"
+                    disabled={selected == 1}
+                    onClick={this.changeView}
+                  >
+                    Information
+                  </button>
+
+                  <button
+                    type="button"
+                    id="3"
+                    disabled={selected == 3}
+                    onClick={this.changeView}
+                  >
+                    Change Password
+                  </button>
+                  <button
+                    id="4"
+                    type="button"
+                    disabled={selected == 4}
+                    onClick={this.changeView}
+                  >
+                    Customize your Interests
+                  </button>
+                  <button
+                    id="5"
+                    type="button"
+                    disabled={selected == 5}
+                    onClick={this.changeView}
+                  >
+                    My Purchases 🛒
+                  </button>
+                </div>
+                <div id="content">
+                  {view === 1 && (
+                    <Information changeManualView={this.changeManualView} />
+                  )}
+                  {view === 2 && (
+                    <FormUser changeManualView={this.changeManualView} />
+                  )}
+                  {view === 3 && <FormPassword />}
+                  {view === 4 && <Interest view={0} />}
+                  {view === 5 && <UserPurchases />}
+                </div>
+              </Container>
             )}
           </>
         )}
@@ -84,5 +123,13 @@ class PersonalArea extends Component {
     );
   }
 }
+// {
+//   /* change informations passar a ser no information */
+// }
+// {
+//   /* <button id="2" onClick={this.changeView}>
+//                         Change Informations
+//                       </button> */
+// }
 
 export default PersonalArea;

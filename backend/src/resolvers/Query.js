@@ -647,6 +647,27 @@ const Query = {
 
     return finalRes;
   },
+  ordersUser(parent, args, ctx, info) {
+    const {
+      userId
+    } = ctx.request;
+
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be signed in!');
+    }
+
+    // query o video atual com comparaçao de ids de user
+    return ctx.db.query.orders({
+        where: {
+          user: {
+            id: userId,
+          },
+        },
+      },
+      info
+    );
+  },
 };
 
 module.exports = Query;
