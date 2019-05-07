@@ -50,6 +50,18 @@ type User {
   updatedAt: DateTime! @updatedAt
 }
 
+type VideoUser {
+  id: ID! @id
+  user: User
+  videoItem: [VideoItem]
+}
+
+type VideoItem {
+  id: ID! @id
+  video: Video
+  watched: Boolean
+}
+
 type Wishlist {
   id: ID! @id
   user: User!
@@ -88,7 +100,6 @@ type Video {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   duration: String
-  watched: Boolean
   freeToWatch: Boolean
 }
 

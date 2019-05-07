@@ -39,16 +39,17 @@ export class DeleteComment extends Component {
   };
 
   render() {
+    const { data, children } = this.props;
     return (
       <Mutation
         mutation={DELETE_COMMENT_MUTATION}
-        variables={{ id: this.props.data.id }}
+        variables={{ id: data.id }}
         update={this.update}
         optimisticResponse={{
           __typename: 'Mutation',
           deleteRateCourse: {
             __typename: 'RateCourse',
-            id: this.props.data.id,
+            id: data.id,
           },
         }}
         refetchQueries={[
@@ -83,7 +84,7 @@ export class DeleteComment extends Component {
               }
             }}
           >
-            {this.props.children}
+            {children}
           </button>
         )}
       </Mutation>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { SINGLE_COURSE_QUERY } from './ChangeCourse';
 import Error from '../../Static/ErrorMessage.js';
 import { CURRENT_COURSES_QUERY } from '../MyCourses';
@@ -74,25 +75,6 @@ class SaveCourseButton extends Component {
     return null;
   }
 
-  componentDidMount() {
-    if (this.props.sections) {
-      //   this.setState({ section: JSON.stringify(this.props.sections) });
-    }
-  }
-
-  //   componentWillReceiveProps(nextProps) {
-  //     // You don't have to do this check first, but it can help prevent an unneeded render
-  //       if (nextProps.data !== this.state) {
-
-  //            const newState = {
-  //         ...this.state,
-  //        nextProps.data
-  //         },
-  //       };
-  //       this.setState( newState);
-  //     }
-  // }
-
   updateCourse = async (e, updateCourseMutation) => {
     e.preventDefault();
     const { createCourse, changeToEdit, id } = this.props;
@@ -144,5 +126,11 @@ class SaveCourseButton extends Component {
     );
   }
 }
+
+SaveCourseButton.propTypes = {
+  id: PropTypes.string.isRequired,
+  changeToEdit: PropTypes.func.isRequired,
+  createCourse: PropTypes.func.isRequired,
+};
 
 export default SaveCourseButton;

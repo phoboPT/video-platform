@@ -104,8 +104,6 @@ export class AddToWish extends Component {
         ]}
         variables={{
           id: data.id,
-          published: 'PUBLISHED',
-          skip,
         }}
         optimisticResponse={{
           __typename: 'Mutation',

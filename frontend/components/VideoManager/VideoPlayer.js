@@ -9,6 +9,8 @@ import {
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import UpdateVideo from './UpdateVideo';
+
 const Div = styled.div`
   margin: 30px;
 `;
@@ -16,9 +18,15 @@ const Div = styled.div`
 class VideoPlayer extends Component {
   static propTypes = {
     url: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    courseId: PropTypes.string.isRequired,
   };
 
-  state = this.props;
+  constructor(props) {
+    super(props);
+    // Don't call this.setState() here!
+    this.state = props;
+  }
 
   componentDidMount() {
     const { player } = this;
@@ -40,27 +48,31 @@ class VideoPlayer extends Component {
   }
 
   render() {
-    const { url } = this.props;
+    const { url, id, courseId } = this.props;
+    const { ended } = this.state;
 
     return (
       <Div>
-        <Player
-          fluid
-          ref={c => {
-            this.player = c;
-          }}
-        >
-          <source src={url} />
-          <LoadingSpinner />
-          <ControlBar autoHide>
-            <ReplayControl seconds={5} order={2.1} />
-            <ReplayControl seconds={10} order={2.2} />
-            <ReplayControl seconds={30} order={2.3} />
-            <ForwardControl seconds={5} order={3.1} />
-            <ForwardControl seconds={10} order={3.2} />
-            <ForwardControl seconds={30} order={3.3} />
-          </ControlBar>
-        </Player>
+        <>
+          <Player
+            fluid
+            ref={c => {
+              this.player = c;
+            }}
+          >
+            <source src={url} />
+            <LoadingSpinner />
+            <ControlBar autoHide>
+              <ReplayControl seconds={5} order={2.1} />
+              <ReplayControl seconds={10} order={2.2} />
+              <ReplayControl seconds={30} order={2.3} />
+              <ForwardControl seconds={5} order={3.1} />
+              <ForwardControl seconds={10} order={3.2} />
+              <ForwardControl seconds={30} order={3.3} />
+            </ControlBar>
+          </Player>
+          {ended && <UpdateVideo id={id} watched={ended} courseId={courseId} />}
+        </>
       </Div>
     );
   }

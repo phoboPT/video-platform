@@ -129,7 +129,7 @@ const Mutations = {
   },
   updateVideo(parent, args, ctx, info) {
     const { userId } = ctx.request;
-
+    console.log(args);
     if (!userId) {
       throw new Error('You must be logged in to do that!');
     }
@@ -148,6 +148,67 @@ const Mutations = {
         },
       },
       info
+    );
+  },
+  async updateVideoUser(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const [videoUser] = await ctx.db.query.videoUsers(
+      {
+        where: {
+          user: { id: userId },
+        },
+      },
+      '{id}'
+    );
+
+    // da run no update method
+
+    const updatedItem = {
+      video: { connect: { id: args.id } },
+      watched: args.watched,
+    };
+
+    if (videoUser) {
+      const [video] = await ctx.db.query.videoItems(
+        {
+          where: {
+            video: { id: args.id },
+          },
+        },
+        `{id}`
+      );
+
+      if (video) {
+        console.log('already exists');
+        return video;
+      }
+      return ctx.db.mutation.updateVideoUser(
+        {
+          data: { videoItem: { create: updatedItem } },
+          where: {
+            id: videoUser.id,
+          },
+        },
+        info
+      );
+    }
+
+    const newItem = {
+      video: { connect: { id: args.id } },
+      watched: args.watched,
+    };
+    return ctx.db.mutation.createVideoUser(
+      {
+        data: {
+          user: { connect: { id: userId } },
+          videoItem: { create: newItem },
+        },
+      },
+      `{ id }`
     );
   },
   async createCategory(parent, args, ctx, info) {
@@ -787,20 +848,6 @@ const Mutations = {
         where: {
           id: args.id,
         },
-      },
-      info
-    );
-  },
-  async removeTargetUser(parent, args, ctx, info) {
-    // Make sure they are signin
-    const { userId } = ctx.request;
-    if (!userId) {
-      throw new Error('You must be signed in soooon');
-    }
-
-    return ctx.db.mutation.deleteUserInterest(
-      {
-        where: { id: args.interestId },
       },
       info
     );

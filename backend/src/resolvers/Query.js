@@ -14,6 +14,8 @@ const Query = {
   video: forwardTo('db'),
   videos: forwardTo('db'),
   rateCourses: forwardTo('db'),
+  videoUsers: forwardTo('db'),
+  videoItems: forwardTo('db'),
 
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
@@ -51,26 +53,26 @@ const Query = {
     );
   },
 
-  videosUser(parent, args, ctx, info) {
-    const { userId } = ctx.request;
+  // videosUser(parent, args, ctx, info) {
+  //   const { userId } = ctx.request;
 
-    // Ver se esta logado
-    if (!userId) {
-      throw new Error('you must be signed in!');
-    }
+  //   // Ver se esta logado
+  //   if (!userId) {
+  //     throw new Error('you must be signed in!');
+  //   }
 
-    // query o video atual com comparaçao de ids de user
-    return ctx.db.query.videos(
-      {
-        where: {
-          user: {
-            id: userId,
-          },
-        },
-      },
-      info
-    );
-  },
+  //   // query o video atual com comparaçao de ids de user
+  //   return ctx.db.query.videos(
+  //     {
+  //       where: {
+  //         user: {
+  //           id: userId,
+  //         },
+  //       },
+  //     },
+  //     info
+  //   );
+  // },
 
   rateCourseList(parent, args, ctx, info) {
     return ctx.db.query.rateCourses(

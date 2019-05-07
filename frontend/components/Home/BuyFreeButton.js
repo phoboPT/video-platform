@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
+import PropTypes from 'prop-types';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
@@ -18,27 +19,27 @@ const ADD_FREE_COURSE_MUTATION = gql`
 
 class BuyFreeButton extends Component {
   render() {
-    const { id } = this.props;
+    const { id, skip } = this.props;
     return (
       <Mutation
         mutation={ADD_FREE_COURSE_MUTATION}
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
-            variables: { published: 'PUBLISHED', skip: this.props.skip },
+            variables: { published: 'PUBLISHED', skip },
           },
 
           {
             query: ALL_COURSES_ORDERED,
-            variables: { published: 'PUBLISHED', skip: this.props.skip },
+            variables: { published: 'PUBLISHED', skip },
           },
           {
             query: ALL_COURSE_INTERESTS,
-            variables: { published: 'PUBLISHED', skip: this.props.skip },
+            variables: { published: 'PUBLISHED', skip },
           },
           {
             query: ALL_COURSES_RATING,
-            variables: { published: 'PUBLISHED', skip: this.props.skip },
+            variables: { published: 'PUBLISHED', skip },
           },
         ]}
         variables={{
@@ -59,5 +60,8 @@ class BuyFreeButton extends Component {
     );
   }
 }
-
+BuyFreeButton.propTypes = {
+  id: PropTypes.string.isRequired,
+  skip: PropTypes.number.isRequired,
+};
 export default BuyFreeButton;

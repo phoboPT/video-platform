@@ -46,7 +46,17 @@ type Mutation {
     videoId: ID
     duration: String
   ): Video!
-  updateVideo(id: ID!, title: String, category: String): Video!
+  updateVideo(
+    id: ID!
+    title: String
+    category: String
+    watched: Boolean
+  ): Video!
+  updateVideoUser(
+    id: ID!
+
+    watched: Boolean
+  ): Video!
   deleteVideo(id: ID!): Video
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Video!
@@ -107,6 +117,9 @@ type Query {
     first: Int
   ): [Course]
 
+  videoUsers(where: VideoWhereInput): [VideoUser]
+  videoItems(where: VideoWhereInput): [VideoItem]
+
   # querys sellect all
   categories: [Category]!
   users: [User]!
@@ -124,12 +137,12 @@ type Query {
   coursesFilter(category: ID, author: ID): [UserCourse]
   ordersUser: [Order]!
   # querys selecionar tudo com argumentos
-  videosUser(
-    where: VideoWhereInput
-    orderBy: VideoOrderByInput
-    skip: Int
-    first: Int
-  ): [Video]
+  # videosUser(
+  #   where: VideoWhereInput
+  #   orderBy: VideoOrderByInput
+  #   skip: Int
+  #   first: Int
+  # ): [Video]
 
   videos(
     where: VideoWhereInput
