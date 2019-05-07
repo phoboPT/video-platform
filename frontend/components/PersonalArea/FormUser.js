@@ -10,6 +10,7 @@ import { Container } from '../styles/Container';
 import User from '../Authentication/User';
 
 const Style = styled.div`
+  margin-left: 2rem;
   button {
     color: #000000;
     background: none;
@@ -17,12 +18,14 @@ const Style = styled.div`
     padding-top: 10rem;
     padding-block-start: 10px;
     padding-block-end: 10px;
-    /* border-block-end: 1px solid #d6dbe1; */
-    /*border is optional*/
     cursor: pointer;
     width: auto;
     border: 0;
     text-align: center;
+  }
+  img {
+    width: 200px;
+    height: 250px;
   }
   #sidebar {
     border-left: none;
@@ -51,6 +54,7 @@ class UpdateUser extends Component {
 
   update = async (e, updateUserMutation, userID) => {
     e.preventDefault();
+    const { changeManualView } = this.props;
 
     const res = await updateUserMutation({
       variables: {
@@ -58,6 +62,9 @@ class UpdateUser extends Component {
         ...this.state,
       },
     });
+    if (res) {
+      changeManualView(1);
+    }
   };
 
   render() {
@@ -68,7 +75,7 @@ class UpdateUser extends Component {
             <Style>
               <Container className="container">
                 <section id="main">
-                  <img src="https://www.iamlivingit.com/front/images/user-img.jpg" />
+                  <img alt="User Default" src="../../static/userDefault.jpg" />
                 </section>
                 <Mutation
                   mutation={UPDATE_USER_MUTATION}
@@ -79,7 +86,7 @@ class UpdateUser extends Component {
                       <Error error={error} />
 
                       <fieldset disabled={loading} aria-busy={loading}>
-                        <h2>Information</h2>
+                        <h2>Edit My Account </h2>
                         <label htmlFor="Name">
                           Name
                           <input
@@ -91,6 +98,7 @@ class UpdateUser extends Component {
                           />
                         </label>
                         <label htmlFor="Email">
+                          Email
                           <input
                             type="text"
                             name="email"

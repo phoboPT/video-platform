@@ -24,7 +24,9 @@ const UPDATE_PASSWORD_MUTATION = gql`
     }
   }
 `;
+
 const Style = styled.div`
+  margin-left: 2rem;
   button {
     color: #000000;
     background: none;
@@ -32,8 +34,6 @@ const Style = styled.div`
     padding-top: 10rem;
     padding-block-start: 10px;
     padding-block-end: 10px;
-    /* border-block-end: 1px solid #d6dbe1; */
-    /*border is optional*/
     cursor: pointer;
     width: auto;
     border: 0;

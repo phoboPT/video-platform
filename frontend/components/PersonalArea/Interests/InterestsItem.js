@@ -14,7 +14,7 @@ const Border = styled.div`
   img {
     border-radius: ${props => props.theme.borderRadius};
     width: 100%;
-    height: 280px;
+    height: 200px;
     object-fit: cover;
   }
   border: 2px solid #dddddd;

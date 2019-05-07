@@ -123,7 +123,6 @@ type Query {
   # querys sellect all
   categories: [Category]!
   users: [User]!
-
   interests: [Interest!]!
   userInterests: [UserInterest]!
   courseInterests(where: CourseInterestWhereInput): [CourseInterest]!
@@ -136,6 +135,7 @@ type Query {
   course(where: CourseWhereUniqueInput!): Course!
   rateCourse(where: RateCourseWhereUniqueInput!): RateCourse
   coursesFilter(category: ID, author: ID): [UserCourse]
+  ordersUser: [Order]!
   # querys selecionar tudo com argumentos
   # videosUser(
   #   where: VideoWhereInput
