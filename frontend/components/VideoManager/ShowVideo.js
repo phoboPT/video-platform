@@ -20,7 +20,6 @@ const SINGLE_VIDEO_QUERY = gql`
           urlVideo
           file
           duration
-          watched
         }
       }
     }
@@ -36,11 +35,8 @@ const Grid = styled.div`
   white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
   word-break: break-all;
   white-space: normal;
-  margin: none;
-
   .container {
-    background-color: #fff;
-    margin: 40px auto 0 auto;
+    background-color: ${props => props.theme.blue};
     line-height: 1.65;
     display: flex;
   }
@@ -62,7 +58,7 @@ class ShowVideo extends Component {
 
   changeSelectedVideo = url => {
     const { videos } = this.state;
-    videos.map(item => {
+    videos.map(async item => {
       if (item.video.id === url) {
         return this.setState({
           selectedVideo: item.video.urlVideo,
@@ -93,7 +89,7 @@ class ShowVideo extends Component {
             <Grid>
               <div className="container">
                 <div className="video">
-                  <VideoPlayer url={selectedVideo} />
+                  <VideoPlayer url={selectedVideo} id={key} courseId={id} />
                 </div>
                 <div className="info">
                   {selectedVideo !== 0 && (

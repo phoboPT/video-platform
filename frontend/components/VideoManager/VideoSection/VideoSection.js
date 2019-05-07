@@ -45,10 +45,10 @@ const Container = styled.div`
 
 class VideoElement extends React.PureComponent {
   static propTypes = {
-    index: PropTypes.number.isRequired,
+    index: PropTypes.number,
     section: PropTypes.object.isRequired,
     videos: PropTypes.object.isRequired,
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string,
     files: PropTypes.object.isRequired,
     changeSelectedVideo: PropTypes.func.isRequired,
     localStorageId: PropTypes.string.isRequired,
@@ -148,7 +148,7 @@ class VideoSection extends Component {
 VideoSection.propTypes = {
   data: PropTypes.object.isRequired,
   changeSelectedVideo: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
 };
 
 export default VideoSection;

@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
+import Link from 'next/link';
 import SimpleUser from '../../Authentication/SimpleUser';
 import CommentForm from './Comments/CommentForm';
 import ListComments from './Comments/ListComments';
@@ -193,7 +194,17 @@ class ViewCourse extends Component {
                               </div>
                               <h2>{course.title}</h2>
                               <br />
-                              <button type="button"> Go to the Video 1 </button>
+                              <Link
+                                href={{
+                                  pathname: 'video',
+                                  query: { id },
+                                }}
+                              >
+                                <button type="button">
+                                  {' '}
+                                  Go to the Videos{' '}
+                                </button>
+                              </Link>
                             </div>
                           </CourseContainer>
                           <Bar>

@@ -40,20 +40,21 @@ export class RemoveFromCart extends Component {
   };
 
   render() {
+    const { id } = this.props;
     return (
       <Mutation
         mutation={REMOVE_FROM_CART_MUTATION}
-        variables={{ id: this.props.id }}
+        variables={{ id }}
         update={this.update}
         optimisticResponse={{
           __typename: 'Mutation',
           removeFromCart: {
             __typename: 'CartItem',
-            id: this.props.id,
+            id,
           },
         }}
       >
-        {(removeFromCart, { loading, error }) => (
+        {(removeFromCart, { loading }) => (
           <BigButton
             disabled={loading}
             onClick={() => {
