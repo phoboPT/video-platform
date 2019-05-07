@@ -4,32 +4,12 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Error from '../Static/ErrorMessage';
+import { CURRENT_USER_QUERY } from '../Authentication/SimpleUser';
 
 const UPDATE_VIDEO_MUTATION = gql`
   mutation UPDATE_VIDEO_MUTATION($id: ID!, $watched: Boolean) {
     updateVideoUser(id: $id, watched: $watched) {
       id
-    }
-  }
-`;
-
-const SINGLE_VIDEO_QUERY = gql`
-  query SINGLE_VIDEO_QUERY($id: ID!) {
-    course(where: { id: $id }) {
-      id
-      title
-      createdAt
-      section
-      videos {
-        video {
-          id
-          title
-          urlVideo
-          file
-          duration
-          watched
-        }
-      }
     }
   }
 `;
@@ -53,26 +33,6 @@ class UpdateVideo extends Component {
     }
   }
 
-  update = (cache, payload) => {
-    // manually update the cache on the client, so it matches the server
-    // 1. Read the cache for the items we want
-    const data = cache.readQuery({
-      query: SINGLE_VIDEO_QUERY,
-      variables: { id: this.props.id },
-    });
-
-    // 2. Filter the deleted itemout of the page
-    data.course = data.course.filter(
-      item => item.id !== payload.data.deleteRateCourse.id
-    );
-    // 3. Put the items back!
-    cache.writeQuery({
-      query: SINGLE_VIDEO_QUERY,
-      data,
-      variables: { id: this.props.id },
-    });
-  };
-
   updateState = async (e, mutation) => {
     e.preventDefault();
 
@@ -81,19 +41,16 @@ class UpdateVideo extends Component {
   };
 
   render() {
-    const { courseId: id } = this.props;
     return (
       <Mutation
         mutation={UPDATE_VIDEO_MUTATION}
         variables={this.props}
-        // update={this.update}
-        // optimisticResponse={{
-        //   __typename: 'Mutation',
-        //   updateVideo: {
-        //     __typename: 'Course',
-        //     id,
-        //   },
-        // }}
+        update={this.update}
+        refetchQueries={[
+          {
+            query: CURRENT_USER_QUERY,
+          },
+        ]}
       >
         {(updateVideo, { error, loading, called }) => (
           <>

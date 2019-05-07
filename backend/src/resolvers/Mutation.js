@@ -201,6 +201,7 @@ const Mutations = {
       video: { connect: { id: args.id } },
       watched: args.watched,
     };
+
     return ctx.db.mutation.createVideoUser(
       {
         data: {

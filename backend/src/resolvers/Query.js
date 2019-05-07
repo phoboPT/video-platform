@@ -21,6 +21,7 @@ const Query = {
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // checkar se tem um current ID
+    console.log('hi');
     if (!userId) {
       return null;
     }
@@ -53,26 +54,26 @@ const Query = {
     );
   },
 
-  // videosUser(parent, args, ctx, info) {
-  //   const { userId } = ctx.request;
+  videosFromUser(parent, args, ctx, info) {
+    const { userId } = ctx.request;
 
-  //   // Ver se esta logado
-  //   if (!userId) {
-  //     throw new Error('you must be signed in!');
-  //   }
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be signed in!');
+    }
 
-  //   // query o video atual com comparaçao de ids de user
-  //   return ctx.db.query.videos(
-  //     {
-  //       where: {
-  //         user: {
-  //           id: userId,
-  //         },
-  //       },
-  //     },
-  //     info
-  //   );
-  // },
+    // query o video atual com comparaçao de ids de user
+    return ctx.db.query.videos(
+      {
+        where: {
+          user: {
+            id: userId,
+          },
+        },
+      },
+      info
+    );
+  },
 
   rateCourseList(parent, args, ctx, info) {
     return ctx.db.query.rateCourses(
@@ -650,9 +651,7 @@ const Query = {
     return finalRes;
   },
   ordersUser(parent, args, ctx, info) {
-    const {
-      userId
-    } = ctx.request;
+    const { userId } = ctx.request;
 
     // Ver se esta logado
     if (!userId) {
@@ -660,7 +659,8 @@ const Query = {
     }
 
     // query o video atual com comparaçao de ids de user
-    return ctx.db.query.orders({
+    return ctx.db.query.orders(
+      {
         where: {
           user: {
             id: userId,

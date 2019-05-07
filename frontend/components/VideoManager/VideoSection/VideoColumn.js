@@ -66,23 +66,24 @@ class InnerList extends React.PureComponent {
     item: PropTypes.string.isRequired,
     changeSelectedVideo: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
+    videosWatched: PropTypes.array.isRequired,
   };
 
   componentWillMount() {
-    const { data, item } = this.props;
-    data.course.videos.map(video => {
+    const { videosWatched, item } = this.props;
+    videosWatched[0].videoItem.map(video => {
       if (video.video.id === item) {
-        if (video.video.watched) {
-          this.setState({ selected: true });
+        if (video.watched) {
+          return this.setState({ selected: true });
         }
       }
+      return null;
     });
   }
 
   render() {
     const { item, changeSelectedVideo, data } = this.props;
     const { selected } = this.state;
-    console.log('item', item);
     return (
       <div className="right">
         <input type="checkbox" defaultChecked={selected} disabled />
@@ -123,16 +124,16 @@ class VideoColumn extends Component {
       id,
       selected,
     } = this.state;
-    const { show, data } = this.props;
+    const { show, data, videosWatched } = this.props;
     return (
       <Container>
         {section.videoIds.map(item => {
           const video = videos[item];
           const file = files[item];
-          // console.log('section', sectionHided, section.id);
           if (show) {
             return (
               <InnerList
+                videosWatched={videosWatched}
                 key={item}
                 data={data}
                 selected={selected}
@@ -154,6 +155,7 @@ class VideoColumn extends Component {
 VideoColumn.propTypes = {
   data: PropTypes.object.isRequired,
   show: PropTypes.bool,
+  videosWatched: PropTypes.array.isRequired,
 };
 
 export default VideoColumn;

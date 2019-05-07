@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import VideoPlayer from './VideoPlayer';
 import VideoSection from './VideoSection/VideoSection';
+import SimpleUser from '../Authentication/SimpleUser';
 
 const SINGLE_VIDEO_QUERY = gql`
   query SINGLE_VIDEO_QUERY($id: ID!) {
@@ -73,39 +74,48 @@ class ShowVideo extends Component {
     const { selectedVideo, hasUpdated, id: key } = this.state;
     const { id } = this.props;
     return (
-      <Query query={SINGLE_VIDEO_QUERY} variables={{ id }}>
-        {({ data, loading }) => {
-          if (loading) return <p>Loading</p>;
-          if (!data.course) return <p>No Video Found for {id}</p>;
-          if (!hasUpdated) {
-            this.setState(data.course);
-            this.setState({
-              hasUpdated: !hasUpdated,
-              selectedVideo: data.course.videos[0].video.urlVideo,
-              id: data.course.videos[0].video.id,
-            });
-          }
-          return (
-            <Grid>
-              <div className="container">
-                <div className="video">
-                  <VideoPlayer url={selectedVideo} id={key} courseId={id} />
-                </div>
-                <div className="info">
-                  {selectedVideo !== 0 && (
-                    <VideoSection
-                      key={key}
-                      data={data}
-                      changeSelectedVideo={this.changeSelectedVideo}
-                      id={key}
-                    />
-                  )}
-                </div>
-              </div>
-            </Grid>
-          );
-        }}
-      </Query>
+      <SimpleUser>
+        {({
+          data: {
+            me: { videoUser },
+          },
+        }) => (
+          <Query query={SINGLE_VIDEO_QUERY} variables={{ id }}>
+            {({ data, loading }) => {
+              if (loading) return <p>Loading</p>;
+              if (!data.course) return <p>No Video Found for {id}</p>;
+              if (!hasUpdated) {
+                this.setState(data.course);
+                this.setState({
+                  hasUpdated: !hasUpdated,
+                  selectedVideo: data.course.videos[0].video.urlVideo,
+                  id: data.course.videos[0].video.id,
+                });
+              }
+              return (
+                <Grid>
+                  <div className="container">
+                    <div className="video">
+                      <VideoPlayer url={selectedVideo} id={key} courseId={id} />
+                    </div>
+                    <div className="info">
+                      {selectedVideo !== 0 && (
+                        <VideoSection
+                          videosWatched={videoUser}
+                          key={key}
+                          data={data}
+                          changeSelectedVideo={this.changeSelectedVideo}
+                          id={key}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </Grid>
+              );
+            }}
+          </Query>
+        )}
+      </SimpleUser>
     );
   }
 }

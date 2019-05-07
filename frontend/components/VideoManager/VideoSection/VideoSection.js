@@ -48,11 +48,12 @@ class VideoElement extends React.PureComponent {
     index: PropTypes.number,
     section: PropTypes.object.isRequired,
     videos: PropTypes.object.isRequired,
-    id: PropTypes.string,
+
     files: PropTypes.object.isRequired,
     changeSelectedVideo: PropTypes.func.isRequired,
     localStorageId: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
+    videosWatched: PropTypes.array.isRequired,
   };
 
   state = { selected: this.props.item === this.props.id };
@@ -63,7 +64,7 @@ class VideoElement extends React.PureComponent {
     this.setState({ show: value });
   }
 
-  expand = (e, section) => {
+  expand = () => {
     const { localStorageId } = this.props;
     const { show } = this.state;
     this.setState({ show: !show });
@@ -82,10 +83,11 @@ class VideoElement extends React.PureComponent {
       index,
       section,
       videos,
-      id,
+
       files,
       changeSelectedVideo,
       data,
+      videosWatched,
     } = this.props;
     const { show } = this.state;
     return (
@@ -99,6 +101,7 @@ class VideoElement extends React.PureComponent {
 
         <Fragment key={index}>
           <VideoColumn
+            videosWatched={videosWatched}
             data={data}
             id={section.id}
             section={section}
@@ -120,7 +123,7 @@ class VideoSection extends Component {
   };
 
   render() {
-    const { data, changeSelectedVideo, id } = this.props;
+    const { data, changeSelectedVideo, id, videosWatched } = this.props;
     const { columnOrder, sections, videos, files } = this.state.section;
     return (
       <Container>
@@ -129,6 +132,7 @@ class VideoSection extends Component {
           return (
             <VideoElement
               id={id}
+              videosWatched={videosWatched}
               section={section}
               key={section.id}
               localStorageId={section.id}
@@ -149,6 +153,7 @@ VideoSection.propTypes = {
   data: PropTypes.object.isRequired,
   changeSelectedVideo: PropTypes.func.isRequired,
   id: PropTypes.string,
+  videosWatched: PropTypes.array.isRequired,
 };
 
 export default VideoSection;

@@ -48,6 +48,7 @@ type User {
   wishlist: [Wishlist!]! @scalarList(strategy: RELATION)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  videoUser: [VideoUser]
 }
 
 type VideoUser {

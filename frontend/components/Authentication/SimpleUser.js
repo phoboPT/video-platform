@@ -7,6 +7,15 @@ const CURRENT_USER_QUERY = gql`
     me {
       id
       name
+      email
+      videoUser {
+        videoItem {
+          watched
+          video {
+            id
+          }
+        }
+      }
     }
   }
 `;

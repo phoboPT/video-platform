@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from 'styled-components';
 import ItemStyles from '../../styles/ItemStyles';
-import Title from '../../styles/Title';
 import formatDate from '../../../lib/formatDate';
 import DeleteVideo from './DeleteVideo';
 
@@ -46,7 +45,10 @@ class Video extends Component {
             query: { id: video.id },
           }}
         >
-          <img src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg" />
+          <img
+            alt={video.title}
+            src="https://media.wired.com/photos/5b74a1ca8a992b7a26e92da5/master/w_582,c_limit/comeout_videos-01.jpg"
+          />
         </Link>
 
         <br />
