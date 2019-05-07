@@ -16,6 +16,7 @@ const InfoStyle = styled.p`
 class WishItem extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
+    skip: PropTypes.number.isRequired,
   };
 
   state = {
@@ -25,7 +26,7 @@ class WishItem extends Component {
   };
 
   render() {
-    const { course } = this.props;
+    const { course, skip } = this.props;
     return (
       <>
         <ItemStyles>
@@ -35,7 +36,11 @@ class WishItem extends Component {
               query: { id: course.id },
             }}
           >
-            <img className="Thumbnail" src={course.thumbnail} />
+            <img
+              alt={course.title}
+              className="Thumbnail"
+              src={course.thumbnail}
+            />
           </Link>
 
           <InfoStyle>{course.title}</InfoStyle>
@@ -49,14 +54,14 @@ class WishItem extends Component {
           <div className="rating">
             <Rating
               readOnly
-              initialValue={course.totalRate / course.totalComments}
+              initialValue={course.totalRate / course.totalComments || 0}
               totalComments={course.totalComments}
               showTotal
             />
           </div>
           <div className="buttonList">
             {course.price === 0 ? (
-              <BuyFreeButton id={course.id} skip={this.props.skip} />
+              <BuyFreeButton id={course.id} skip={skip} />
             ) : (
               <AddToCart id={course.id} />
             )}

@@ -107,6 +107,13 @@ export class AddToWish extends Component {
           published: 'PUBLISHED',
           skip,
         }}
+        optimisticResponse={{
+          __typename: 'Mutation',
+          addToWish: {
+            __typename: 'Whislist',
+            id: data.id,
+          },
+        }}
       >
         {(addToWish, { loading }) => (
           <Img>

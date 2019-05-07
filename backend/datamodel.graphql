@@ -89,6 +89,7 @@ type Video {
   updatedAt: DateTime! @updatedAt
   duration: String
   watched: Boolean
+  freeToWatch: Boolean
 }
 
 type CourseVideos {
