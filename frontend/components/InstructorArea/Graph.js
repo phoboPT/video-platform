@@ -1,10 +1,8 @@
-/* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
-import PropTypes from 'prop-types';
-import SimpleUser from '../Authentication/SimpleUser';
 
-class Inner extends Component {
+export default React.createClass({
+  displayName: 'BubbleExample',
   render() {
     const { data } = this.props;
     const newData = {
@@ -23,30 +21,8 @@ class Inner extends Component {
         width={150}
         height={650}
         options={{ maintainAspectRatio: false }}
+        displayName="hi"
       />
     );
-  }
-}
-
-class Stats extends Component {
-  render() {
-    return (
-      <SimpleUser>
-        {({
-          data: {
-            me: { videoUser },
-          },
-        }) => (
-          <div>
-            <Inner data={videoUser} />
-          </div>
-        )}
-      </SimpleUser>
-    );
-  }
-}
-
-Inner.propTypes = {
-  data: PropTypes.array.isRequired,
-};
-export default Stats;
+  },
+});

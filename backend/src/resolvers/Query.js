@@ -21,7 +21,6 @@ const Query = {
   me(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // checkar se tem um current ID
-    console.log('hi');
     if (!userId) {
       return null;
     }
