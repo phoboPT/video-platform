@@ -35,6 +35,24 @@ const Style = styled.div`
       padding: 0.5rem 1.2rem;
       text-align: center;
     }
+    .graphs-container {
+      display: block;
+      .graphs {
+        display: flex;
+        .first {
+          border: 1px dotted red;
+          margin: 2rem;
+          order: 1;
+          flex: 1;
+        }
+        .second {
+          border: 1px dotted red;
+          margin: 2rem;
+          order: 2;
+          flex: 1;
+        }
+      }
+    }
   }
   .left-bar {
     order: 1;
@@ -64,7 +82,7 @@ const AddButon = styled.div`
   }
 `;
 
-class Courses extends Component {
+class InstrutorArea extends Component {
   state = {
     view: 3,
   };
@@ -123,7 +141,9 @@ class Courses extends Component {
                           saveToState={this.saveToState}
                         />
                       )}
-                      {view === 3 && <Stats />}
+                      <div className="graphs-container">
+                        <div className="graphs">{view === 3 && <Stats />}</div>
+                      </div>
                     </aside>
                   </div>
                 </Style>
@@ -138,4 +158,4 @@ class Courses extends Component {
   }
 }
 
-export default Courses;
+export default InstrutorArea;

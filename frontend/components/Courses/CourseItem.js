@@ -82,7 +82,6 @@ class ListCourses extends Component {
             </span>
           )}
           <span>
-            <p>hi</p>
             Created at:
             <State id="createdAt">{formatDate(course.createdAt)}</State>
           </span>

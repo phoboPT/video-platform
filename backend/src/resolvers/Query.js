@@ -157,8 +157,12 @@ const Query = {
     );
   },
   // Listagem Cursos Interests
-  async coursesUserInterestList(parent, args, ctx, info) {
+  async coursesUserInterestList(parent, args, ctx) {
     const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
     // Get user
     const user = await ctx.db.query.user(
       {
@@ -184,9 +188,7 @@ const Query = {
     // mapear os interesses do user
     const interestsIds = [];
     // foreach de cada elemento e fazer a query e guardar num array
-    user.interests.map(interest => {
-      interestsIds.push(interest.interest.id);
-    });
+    user.interests.map(interest => interestsIds.push(interest.interest.id));
     // Search all the courses that have the interests match wiith user
     const result = await Promise.all(
       interestsIds.map(async id => {
@@ -282,6 +284,10 @@ const Query = {
   },
   async coursesConnection(parent, args, ctx, info) {
     const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
     let user;
 
     if (userId) {
@@ -306,9 +312,7 @@ const Query = {
 
     // foreach de cada elemento e fazer a query e guardar num array
     if (user) {
-      await user.courses.map(user => {
-        coursesId.push(user.course.id);
-      });
+      await user.courses.map(user => coursesId.push(user.course.id));
     }
     return ctx.db.query.coursesConnection(
       {
@@ -329,6 +333,10 @@ const Query = {
   // Listagem cursos
   async coursesList(parent, args, ctx, info) {
     const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
 
     const { orderBy } = args;
     delete args.orderBy;
@@ -356,9 +364,7 @@ const Query = {
 
     // foreach de cada elemento e fazer a query e guardar num array
     if (user) {
-      await user.courses.map(user => {
-        coursesId.push(user.course.id);
-      });
+      await user.courses.map(user => coursesId.push(user.course.id));
     }
     // query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
@@ -424,6 +430,11 @@ const Query = {
   },
   coursesFilter(parent, args, ctx, info) {
     const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
+
     let categoryId = args.category;
     let authorId = args.author;
     if (args.category === 'a') {
@@ -464,8 +475,12 @@ const Query = {
     );
   },
 
-  async wishlists(parent, args, ctx, info) {
+  async wishlists(parent, args, ctx) {
     const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
 
     const res = await ctx.db.query.wishlists(
       {
@@ -495,7 +510,10 @@ const Query = {
   },
   async checkUserRated(parent, args, ctx, info) {
     const { userId } = ctx.request;
-
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
     const UserCourses = await ctx.db.query.userCourses(
       {
         where: {
@@ -545,8 +563,10 @@ const Query = {
   },
   async coursesRating(parent, args, ctx, info) {
     const { userId } = ctx.request;
-
-    const { orderBy } = args;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
     delete args.orderBy;
 
     let user;
@@ -572,9 +592,7 @@ const Query = {
 
     // foreach de cada elemento e fazer a query e guardar num array
     if (user) {
-      await user.courses.map(user => {
-        coursesId.push(user.course.id);
-      });
+      await user.courses.map(user => coursesId.push(user.course.id));
     }
     // query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
@@ -668,6 +686,68 @@ const Query = {
       },
       info
     );
+  },
+  async coursesStats(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
+    // get all the instrutor courses
+    const allInstrutorCourses = await ctx.db.query.courses(
+      {
+        where: {
+          user: { id: userId },
+        },
+      },
+      `{
+        id
+        title
+     }`
+    );
+
+    // get all the buys from the instrutor courses list
+    const courses = await Promise.all(
+      allInstrutorCourses.map(item =>
+        ctx.db.query.userCourses(
+          {
+            where: {
+              course: { id: item.id },
+            },
+          },
+          `{
+            id
+        course{
+          id
+          title
+        }
+        user{
+          id
+        }
+     }`
+        )
+      )
+    );
+
+    const res = courses.flat();
+
+    res.sort(function(a, b) {
+      if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
+      if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
+      return 0;
+    });
+
+    const result = [
+      ...res
+        .reduce((mp, o) => {
+          if (!mp.has(o.course.id)) mp.set(o.course.id, { ...o, count: 0 });
+          mp.get(o.course.id).count += 1;
+          return mp;
+        }, new Map())
+        .values(),
+    ];
+
+    return result;
   },
 };
 
