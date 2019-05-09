@@ -934,6 +934,7 @@ const Mutations = {
   },
 
   async addToWish(parent, args, ctx, info) {
+    console.time('wish');
     // Make sure they are signin
     const { userId } = ctx.request;
     // Query the users current cart
@@ -953,6 +954,8 @@ const Mutations = {
         info
       );
     }
+
+    console.timeEnd('wish');
     // If its not, create a fresh new item
     return ctx.db.mutation.createWishlist({
       data: {

@@ -16,7 +16,24 @@ type User {
   wishlist: [Wishlist!]
   videoUser: [VideoUser]
 }
+type Stats {
+  id: ID!
+  videos: [CourseVideos!]!
+  title: String
+  description: String!
+  thumbnail: String
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  state: State
+  price: Float!
+  totalRate: Float
+  totalComments: Int
+  # Variaveis nao definidas em datamodel mas necessarias backend
+  count: Int
 
+  course: Course
+}
 type Course {
   id: ID!
   videos: [CourseVideos!]!
@@ -177,6 +194,8 @@ type Query {
   rateCourseList(id: ID!, orderBy: RateCourseOrderByInput): [RateCourse]
   # Listar todos os cursos de um User
   coursesUser: [Course]
+
+  userCoursesConnection(orderBy: String, skip: Int, first: Int): [Course]
   # Information about actual user
   me: User
 
@@ -185,4 +204,8 @@ type Query {
 
   coursesConnection(data: String): CourseConnection!
   wishlists(where: WishlistWhereInput): [Wishlist]
+
+  #Stats
+  coursesStats: [Stats]
+  sellsByCourse(id: ID): [Stats]
 }

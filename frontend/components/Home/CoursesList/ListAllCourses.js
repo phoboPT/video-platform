@@ -219,10 +219,11 @@ class ListAllCourses extends Component {
   };
 
   render() {
+    const { query } = this.state;
     return (
       <>
         <Query
-          query={this.state.query}
+          query={query}
           variables={{
             published: 'PUBLISHED',
             skip: this.state.page * perPageCourse - perPageCourse,

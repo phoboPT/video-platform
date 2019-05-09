@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import User from '../Authentication/User';
 import ChangeCourse from './FormCourse/ChangeCourse';
 import MyCourses from './MyCourses';
-import Stats from './Stats';
+import StatsPage from './StatsPage';
 
 const Style = styled.div`
   .container {
@@ -64,7 +64,7 @@ const AddButon = styled.div`
   }
 `;
 
-class Courses extends Component {
+class InstrutorArea extends Component {
   state = {
     view: 1,
   };
@@ -79,7 +79,7 @@ class Courses extends Component {
   };
 
   render() {
-    const { view } = this.state;
+    const { view, courseId } = this.state;
     return (
       <User>
         {({ data: { me } }) => {
@@ -123,7 +123,7 @@ class Courses extends Component {
                           saveToState={this.saveToState}
                         />
                       )}
-                      {view === 3 && <Stats />}
+                      {view === 3 && <StatsPage courses={me.courses} />}
                     </aside>
                   </div>
                 </Style>
@@ -138,4 +138,4 @@ class Courses extends Component {
   }
 }
 
-export default Courses;
+export default InstrutorArea;
