@@ -6,6 +6,7 @@ type SuccessMessage {
 
 type User {
   id: ID!
+  thumbnail: String
   name: String!
   email: String!
   permission: [Permission]
@@ -66,7 +67,7 @@ type Mutation {
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
   updatePassword(id: ID!, password: String, confirmPassword: String): User!
-  updateUser(id: ID!, name: String, email: String): User!
+  updateUser(id: ID!, name: String, email: String, thumbnail: String): User!
   requestReset(email: String!): SuccessMessage
   resetPassword(
     resetToken: String!

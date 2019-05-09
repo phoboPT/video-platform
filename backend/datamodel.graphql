@@ -39,6 +39,7 @@ type User {
   name: String!
   email: String! @unique
   password: String!
+  thumbnail: String
   interests: [UserInterest]! @scalarList(strategy: RELATION)
   resetToken: String
   resetTokenExpiry: Float

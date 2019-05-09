@@ -43,7 +43,7 @@ export class Video extends Component {
           <List>
             <div className="left-side">
               <a>
-                <img src="../static/commentuser.png" />
+                <img src={me.thumbnail} />
               </a>
               <span id="name">{comments.user.name}</span>
               <p> Posted in: {formatDate(comments.createdAt)}</p>

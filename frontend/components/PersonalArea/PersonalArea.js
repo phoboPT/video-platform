@@ -6,6 +6,7 @@ import FormUser from './FormUser';
 import FormPassword from './FormPassword';
 import Interest from './Interests/Interest';
 import UserPurchases from './MyPurchases/UserPurchases';
+import Photograph from './Photograph';
 
 const Container = styled.div`
   display: flex;
@@ -47,7 +48,7 @@ const Container = styled.div`
 
 class PersonalArea extends Component {
   state = {
-    view: 5,
+    view: 1,
     selected: 1,
   };
 
@@ -88,6 +89,14 @@ class PersonalArea extends Component {
                     Change Password
                   </button>
                   <button
+                    type="button"
+                    id="6"
+                    disabled={selected == 6}
+                    onClick={this.changeView}
+                  >
+                    Photograph
+                  </button>
+                  <button
                     id="4"
                     type="button"
                     disabled={selected == 4}
@@ -114,6 +123,7 @@ class PersonalArea extends Component {
                   {view === 3 && <FormPassword />}
                   {view === 4 && <Interest view={0} />}
                   {view === 5 && <UserPurchases />}
+                  {view === 6 && <Photograph data={me} />}
                 </div>
               </Container>
             )}
@@ -123,13 +133,5 @@ class PersonalArea extends Component {
     );
   }
 }
-// {
-//   /* change informations passar a ser no information */
-// }
-// {
-//   /* <button id="2" onClick={this.changeView}>
-//                         Change Informations
-//                       </button> */
-// }
 
 export default PersonalArea;

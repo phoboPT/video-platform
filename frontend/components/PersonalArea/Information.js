@@ -43,8 +43,9 @@ class Information extends Component {
       <User>
         {({ data: { me } }) => (
           <>
+            {console.log('eu', me)}
             <Container>
-              <img alt="User Default" src="../../static/userDefault.jpg" />
+              <img alt="User Default" src={me.thumbnail} />
               <div id="information">
                 <p>Nome: {me.name}</p>
                 <p>Email: {me.email}</p>

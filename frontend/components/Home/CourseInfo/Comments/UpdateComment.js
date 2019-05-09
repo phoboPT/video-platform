@@ -72,7 +72,7 @@ const SINGLE_COMMENT_QUERY = gql`
   }
 `;
 
-export class UpdateComment extends Component {
+class UpdateComment extends Component {
   state = { rate: this.props.children.props.initialValue };
 
   handleChange = e => {

@@ -17,7 +17,7 @@ const DELETE_COMMENT_MUTATION = gql`
     }
   }
 `;
-export class DeleteComment extends Component {
+class DeleteComment extends Component {
   update = (cache, payload) => {
     // manually update the cache on the client, so it matches the server
     // 1. Read the cache for the comments we want

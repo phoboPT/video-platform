@@ -57,19 +57,6 @@ const Grid = styled.div`
 class ShowVideo extends Component {
   state = { hasUpdated: false, selectedVideo: '' };
 
-  changeSelectedVideo = url => {
-    const { videos } = this.state;
-    videos.map(async item => {
-      if (item.video.id === url) {
-        return this.setState({
-          selectedVideo: item.video.urlVideo,
-          id: item.video.id,
-        });
-      }
-      return item;
-    });
-  };
-
   render() {
     const { selectedVideo, hasUpdated, id: key } = this.state;
     const { id } = this.props;
@@ -125,3 +112,4 @@ ShowVideo.propTypes = {
 };
 
 export default ShowVideo;
+export { SINGLE_VIDEO_QUERY };

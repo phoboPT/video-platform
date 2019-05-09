@@ -200,10 +200,7 @@ class ViewCourse extends Component {
                                   query: { id },
                                 }}
                               >
-                                <button type="button">
-                                  {' '}
-                                  Go to the Videos{' '}
-                                </button>
+                                <button type="button">Go to the Videos</button>
                               </Link>
                             </div>
                           </CourseContainer>
@@ -215,13 +212,7 @@ class ViewCourse extends Component {
                             >
                               Overview
                             </button>
-                            <button
-                              id="2"
-                              type="button"
-                              onClick={this.changeView}
-                            >
-                              Course Content
-                            </button>
+
                             <button
                               id="3"
                               type="button"
@@ -233,15 +224,7 @@ class ViewCourse extends Component {
                           {this.state.view === 1 && (
                             <Overview data={course} key={course.id} />
                           )}
-                          {this.state.view === 2 &&
-                            course.videos.map((video, index) => (
-                              <VideoItem
-                                videos={video}
-                                data={parseInt(index)}
-                                key={video.video.id}
-                                courseId={course.id}
-                              />
-                            ))}
+
                           {this.state.view === 3 && (
                             <>
                               {showForm === 'true' && me ? (

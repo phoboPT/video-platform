@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
-import { Mutation, Query } from 'react-apollo';
-import Link from 'next/link';
+import { Mutation } from 'react-apollo';
 import Form from '../styles/Form';
 import Error from '../Static/ErrorMessage';
 import LinkStyle from '../styles/LinkStyle';

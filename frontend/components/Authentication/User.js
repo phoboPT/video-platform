@@ -8,6 +8,8 @@ const CURRENT_USER_QUERY = gql`
       id
       email
       name
+      thumbnail
+      permission
       wishlist {
         course {
           id
@@ -16,7 +18,6 @@ const CURRENT_USER_QUERY = gql`
       interests {
         id
       }
-      permission
       courses {
         course {
           id
