@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import User from '../Authentication/User';
 import ChangeCourse from './FormCourse/ChangeCourse';
 import MyCourses from './MyCourses';
-import Stats from './Stats';
+import StatsPage from './StatsPage';
 
 const Style = styled.div`
   .container {
@@ -34,24 +34,6 @@ const Style = styled.div`
       font-weight: 600;
       padding: 0.5rem 1.2rem;
       text-align: center;
-    }
-    .graphs-container {
-      display: block;
-      .graphs {
-        display: flex;
-        .first {
-          border: 1px dotted red;
-          margin: 2rem;
-          order: 1;
-          flex: 1;
-        }
-        .second {
-          border: 1px dotted red;
-          margin: 2rem;
-          order: 2;
-          flex: 1;
-        }
-      }
     }
   }
   .left-bar {
@@ -97,7 +79,7 @@ class InstrutorArea extends Component {
   };
 
   render() {
-    const { view } = this.state;
+    const { view, courseId } = this.state;
     return (
       <User>
         {({ data: { me } }) => {
@@ -141,9 +123,7 @@ class InstrutorArea extends Component {
                           saveToState={this.saveToState}
                         />
                       )}
-                      <div className="graphs-container">
-                        <div className="graphs">{view === 3 && <Stats />}</div>
-                      </div>
+                      {view === 3 && <StatsPage courses={me.courses} />}
                     </aside>
                   </div>
                 </Style>

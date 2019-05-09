@@ -1,5 +1,10 @@
 const { forwardTo } = require('prisma-binding');
 
+function formatDate(date) {
+  const regex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g;
+  const hi = date.match(regex, ' ')[0];
+  return hi;
+}
 const Query = {
   categories: forwardTo('db'),
   category: forwardTo('db'),
@@ -16,6 +21,7 @@ const Query = {
   rateCourses: forwardTo('db'),
   videoUsers: forwardTo('db'),
   videoItems: forwardTo('db'),
+  userCoursesConnection: forwardTo('db'),
 
   // videosConnection: forwardTo("db"),
   me(parent, args, ctx, info) {
@@ -90,9 +96,9 @@ const Query = {
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ve se esta logado
-    if (!userId) {
-      throw new Error('you must be signed in!');
-    }
+    // if (!userId) {
+    //   throw new Error('you must be signed in!');
+    // }
     // query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
@@ -285,9 +291,7 @@ const Query = {
   async coursesConnection(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
-    if (!userId) {
-      throw new Error('you must be ssigned in!');
-    }
+
     let user;
 
     if (userId) {
@@ -334,9 +338,6 @@ const Query = {
   async coursesList(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
-    if (!userId) {
-      throw new Error('you must be ssigned in!');
-    }
 
     const { orderBy } = args;
     delete args.orderBy;
@@ -431,9 +432,6 @@ const Query = {
   coursesFilter(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
-    if (!userId) {
-      throw new Error('you must be ssigned in!');
-    }
 
     let categoryId = args.category;
     let authorId = args.author;
@@ -688,6 +686,7 @@ const Query = {
     );
   },
   async coursesStats(parent, args, ctx, info) {
+    console.time('starting');
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
@@ -714,9 +713,11 @@ const Query = {
             where: {
               course: { id: item.id },
             },
+            orderBy: 'createdAt_DESC',
           },
           `{
             id
+            createdAt
         course{
           id
           title
@@ -747,6 +748,60 @@ const Query = {
         .values(),
     ];
 
+    console.timeEnd('starting');
+    return result;
+  },
+  async sellsByCourse(parent, args, ctx, info) {
+    console.time('starting');
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
+
+    // get all the buys from the instrutor courses list
+    const courses = await ctx.db.query.userCourses(
+      {
+        where: {
+          course: { id: args.id },
+        },
+        orderBy: 'createdAt_ASC',
+      },
+      `{
+            id
+            createdAt
+        course{
+          id
+          title
+        }
+        user{
+          id
+        }
+     }`
+    );
+
+    const res = courses.flat();
+
+    // res.sort(function(a, b) {
+    //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
+    //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
+    //   return 0;
+    // });
+
+    res[0].count = 0;
+
+    const result = [
+      ...res
+        .reduce((mp, o) => {
+          if (!mp.has(formatDate(o.createdAt)))
+            mp.set(formatDate(o.createdAt), { ...o, count: 0 });
+          mp.get(formatDate(o.createdAt)).count += 1;
+          return mp;
+        }, new Map())
+        .values(),
+    ];
+
+    console.timeEnd('starting');
     return result;
   },
 };

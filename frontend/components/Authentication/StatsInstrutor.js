@@ -7,6 +7,7 @@ const CURRENT_USER_QUERY = gql`
     coursesStats {
       id
       count
+      createdAt
       course {
         title
       }

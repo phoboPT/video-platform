@@ -193,6 +193,8 @@ type Query {
   rateCourseList(id: ID!, orderBy: RateCourseOrderByInput): [RateCourse]
   # Listar todos os cursos de um User
   coursesUser: [Course]
+
+  userCoursesConnection(orderBy: String, skip: Int, first: Int): [Course]
   # Information about actual user
   me: User
 
@@ -204,4 +206,5 @@ type Query {
 
   #Stats
   coursesStats: [Stats]
+  sellsByCourse(id: ID): [Stats]
 }
