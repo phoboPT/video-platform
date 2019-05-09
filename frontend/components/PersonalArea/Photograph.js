@@ -29,7 +29,7 @@ class Photograph extends Component {
     const { files } = e.target;
     const data = new FormData();
     data.append('file', files[0]);
-    data.append('upload_preset', 'profilePics');
+    data.append('upload_preset', 'profilePics4');
 
     const res = await fetch(
       'https://api.cloudinary.com/v1_1/deky2cxlm/image/upload',
