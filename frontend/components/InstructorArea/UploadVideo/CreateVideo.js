@@ -9,6 +9,7 @@ import { ALL_VIDEOS_USER } from '../MyVideos/Videos';
 import { ALL_COURSES_QUERY } from '../../Home/CoursesList/ListAllCourses';
 import validateExtension from '../../../lib/validateFileExtensions';
 import { SINGLE_VIDEO_QUERY } from '../MyVideos/UpdateVideo';
+import Loading from '../../Static/Loading';
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
@@ -183,72 +184,70 @@ class CreateVideo extends Component {
     return (
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id: video.id }}>
         {({ data, error, loading }) => {
-          if (loading) {
-            return <p>Loading...</p>;
-          }
-          if (error) {
-            return <p>Error:{error.message}</p>;
-          }
+          if (loading) return <Loading />;
 
-          return (
-            <Container>
-              <Mutation
-                mutation={CREATE_VIDEO_MUTATION}
-                variables={this.state}
-                refetchQueries={[
-                  { query: ALL_VIDEOS_USER },
-                  { query: ALL_COURSES_QUERY },
-                ]}
-              >
-                {(createVideo, { loading, error }) => (
-                  <Form>
-                    <Error error={error} />
-                    <h1>{header}</h1>
+          if (error) return <Error error={error} />;
+          if (!data) return <p>No Data</p>;
+          if (data)
+            return (
+              <Container>
+                <Mutation
+                  mutation={CREATE_VIDEO_MUTATION}
+                  variables={this.state}
+                  refetchQueries={[
+                    { query: ALL_VIDEOS_USER },
+                    { query: ALL_COURSES_QUERY },
+                  ]}
+                >
+                  {(createVideo, { loading, error }) => (
+                    <Form>
+                      <Error error={error} />
+                      <h1>{header}</h1>
 
-                    {show === 1 && (
-                      <label htmlFor="file">
-                        {isUploading === 0 && (
+                      {show === 1 && (
+                        <label htmlFor="file">
+                          {isUploading === 0 && (
+                            <input
+                              className="file"
+                              type="file"
+                              name="file"
+                              id="file"
+                              placeholder="Upload a Video"
+                              // required
+                              onChange={e => this.uploadVideo(e, createVideo)}
+                            />
+                          )}
+                        </label>
+                      )}
+
+                      {show === 2 && (
+                        <label htmlFor="file">
                           <input
-                            className="file"
                             type="file"
                             name="file"
                             id="file"
-                            placeholder="Upload a Video"
-                            // required
-                            onChange={e => this.uploadVideo(e, createVideo)}
+                            placeholder="file"
+                            onChange={e => this.uploadFile(e, createVideo)}
                           />
-                        )}
-                      </label>
-                    )}
+                        </label>
+                      )}
 
-                    {show === 2 && (
-                      <label htmlFor="file">
-                        <input
-                          type="file"
-                          name="file"
-                          id="file"
-                          placeholder="file"
-                          onChange={e => this.uploadFile(e, createVideo)}
-                        />
-                      </label>
-                    )}
-
-                    {isUploading === 1 && (
-                      <img src="../../static/loading.gif" alt="Loading" />
-                    )}
-                    {isUploading === 2 && (
-                      <>
-                        <img src="../../static/done.png" alt="done" />
-                        <button type="button" onClick={this.changeUpload}>
-                          Change Video
-                        </button>
-                      </>
-                    )}
-                  </Form>
-                )}
-              </Mutation>
-            </Container>
-          );
+                      {isUploading === 1 && (
+                        <img src="../../static/loading.gif" alt="Loading" />
+                      )}
+                      {isUploading === 2 && (
+                        <>
+                          <img src="../../static/done.png" alt="done" />
+                          <button type="button" onClick={this.changeUpload}>
+                            Change Video
+                          </button>
+                        </>
+                      )}
+                    </Form>
+                  )}
+                </Mutation>
+              </Container>
+            );
         }}
       </Query>
     );

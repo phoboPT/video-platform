@@ -43,7 +43,6 @@ class Information extends Component {
       <User>
         {({ data: { me } }) => (
           <>
-            {console.log('eu', me)}
             <Container>
               <img alt="User Default" src={me.thumbnail} />
               <div id="information">

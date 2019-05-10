@@ -2,8 +2,11 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import CourseByDate from './Graphs/CourseByDate';
 import AllCourses from './Graphs/AllCourses';
+import Loading from '../Static/Loading';
 
 const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY {
@@ -36,9 +39,21 @@ const COURSE_SELL_BY_TIME = gql`
     }
   }
 `;
+
+const LoadStyle = styled.div`
+  margin: auto;
+  width: 300px;
+  height: 200px;
+`;
+
+const Dooted = styled.div`
+  border: 1px dotted red;
+`;
 class Stats extends Component {
   componentWillMount() {
-    switch (this.props.query) {
+    const { query } = this.props;
+
+    switch (query) {
       case 'CURRENT_USER_QUERY': {
         this.setState({
           query: CURRENT_USER_QUERY,
@@ -62,56 +77,70 @@ class Stats extends Component {
   }
 
   render() {
-    const { query, variables, view } = this.state;
+    const { query, view } = this.state;
     const { courseId } = this.props;
-    console.log(courseId);
     return (
       <>
         {view === 1 && (
           <Query query={query}>
-            {({ data }) => (
-              <>
-                {console.log(data)}
-                <div>
-                  <AllCourses
-                    chartData={data}
-                    location="All Courses"
-                    legendPosition="top"
-                    displayTitle="Hello"
-                    label="Total Courses Selled"
-                    width={700}
-                    height={400}
-                    id={this.props.id}
-                  />
-                </div>
-              </>
-            )}
+            {({ data, loading }) => {
+              if (loading)
+                return (
+                  <LoadStyle>
+                    <Loading />
+                  </LoadStyle>
+                );
+              if (!data) return null;
+              if (data)
+                return (
+                  <Dooted>
+                    <AllCourses
+                      chartData={data}
+                      location="All Courses"
+                      legendPosition="top"
+                      displayTitle="Hello"
+                      label="Total Courses Selled"
+                      width={700}
+                      height={400}
+                    />
+                  </Dooted>
+                );
+            }}
           </Query>
         )}
         {view === 2 && (
           <Query query={query} variables={{ id: courseId }}>
-            {({ data }) => (
-              <>
-                {console.log(data)}
-                <div>
-                  <CourseByDate
-                    chartData={data}
-                    location="All Courses"
-                    legendPosition="top"
-                    displayTitle="Hello"
-                    label="Total Courses Selled"
-                    width={700}
-                    height={400}
-                    id={this.props.id}
-                  />
-                </div>
-              </>
-            )}
+            {({ data, loading }) => {
+              if (loading)
+                return (
+                  <LoadStyle>
+                    <Loading />
+                  </LoadStyle>
+                );
+              if (!data) return null;
+              if (data)
+                return (
+                  <Dooted>
+                    <CourseByDate
+                      chartData={data}
+                      location="All Courses"
+                      legendPosition="top"
+                      displayTitle="Hello"
+                      label="Total Courses Selled"
+                      width={700}
+                      height={400}
+                    />
+                  </Dooted>
+                );
+            }}
           </Query>
         )}
       </>
     );
   }
 }
-
+Stats.propTypes = {
+  courseId: PropTypes.string,
+  query: PropTypes.string.isRequired,
+};
 export default Stats;

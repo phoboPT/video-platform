@@ -3,7 +3,8 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
-import { Container } from '../../../styles/Home';
+import Loading from '../../../Static/Loading';
+import Error from '../../../Static/ErrorMessage';
 
 const ALL_COMMENTS_QUERY = gql`
   query ALL_COMMENTS_QUERY($id: ID!) {
@@ -81,8 +82,8 @@ class ListComments extends Component {
     return (
       <Query query={ALL_COMMENTS_QUERY} variables={{ id: this.props.data.id }}>
         {({ error, loading, data }) => {
-          if (error) return <p>Error!</p>;
-          if (loading) return <p>Loading...</p>;
+          if (loading) return <Loading />;
+          if (error) return <Error error={error} />;
           if (!data.rateCourseList) return <p>No Avaliations</p>;
           return (
             <>
@@ -97,7 +98,7 @@ class ListComments extends Component {
                 />
               ))}
               <Button>
-                <button id="myBtn" onClick={this.topFunction}>
+                <button type="button" id="myBtn" onClick={this.topFunction}>
                   Go Top
                 </button>
               </Button>

@@ -151,7 +151,7 @@ type Query {
   video(where: VideoWhereUniqueInput!): Video
   category(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
-  course(where: CourseWhereUniqueInput!): Course!
+  course(where: CourseWhereUniqueInput): Course
   rateCourse(where: RateCourseWhereUniqueInput!): RateCourse
   coursesFilter(category: ID, author: ID): [UserCourse]
   ordersUser: [Order]!

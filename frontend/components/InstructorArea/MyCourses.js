@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import ItemList from '../styles/ItemList';
 import CourseItemInstructor from './CourseItemInstructor';
+import Loading from '../Static/Loading';
+import Error from '../Static/ErrorMessage';
 
 const CURRENT_COURSES_QUERY = gql`
   query CURRENT_COURSES_QUERY {
@@ -36,9 +38,10 @@ class MyCourses extends Component {
     return (
       <Query query={CURRENT_COURSES_QUERY}>
         {({ data, error, loading }) => {
-          if (loading) return <p>Loading...</p>;
+          if (loading) return <Loading />;
 
-          if (error) return <p>Error:{error.message}</p>;
+          if (error) return <Error error={error} />;
+          if (!data) return <p>No Data</p>;
           if (data.coursesUser) {
             return (
               <>

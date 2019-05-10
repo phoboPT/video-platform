@@ -8,6 +8,7 @@ import CourseItem from './CourseItem';
 import FilterAuthor from './Filters/FilterAuthor';
 import FilterCategory from './Filters/FilterCategory';
 import Wishlist from './Wishlist';
+import Loading from '../Static/Loading';
 
 const COURSES_FILTER_QUERY = gql`
   query COURSES_FILTER_QUERY($category: ID, $author: ID) {
@@ -117,6 +118,9 @@ class UserCourses extends Component {
     return (
       <Query query={COURSES_FILTER_QUERY} variables={{ category, author }}>
         {({ data, loading }) => {
+          if (loading) return <Loading />;
+          if (!data) return <p>No Courses</p>;
+
           if (data) {
             const courses = orderCourse(data.coursesFilter);
 

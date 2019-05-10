@@ -10,6 +10,7 @@ import {
   ALL_COURSES_QUERY,
   ALL_COURSES_RATING,
 } from '../../CoursesList/ListAllCourses';
+import Loading from '../../../Static/Loading';
 
 const Style = styled.div`
   button {
@@ -120,48 +121,52 @@ class UpdateComment extends Component {
         ]}
       >
         {({ data, loading }) => {
-          if (loading) return <p>Loading</p>;
-          return (
-            <Style>
-              <Mutation
-                mutation={UPDATE_COMMENT_MUTATION}
-                refetchQueries={[
-                  {
-                    query: ALL_COMMENTS_QUERY,
-                    variables: { id: data.rateCourse.course.id },
-                  },
-                ]}
-              >
-                {(updateCommentMutation, { error, loading }) => (
-                  <form
-                    onSubmit={e => {
-                      this.update(e, updateCommentMutation);
-                      this.props.changeState();
-                    }}
-                  >
-                    <Error error={error} />
+          if (loading) return <Loading />;
+          if (!data) return <p>No Comments</p>;
+          if (data)
+            return (
+              <Style>
+                <Mutation
+                  mutation={UPDATE_COMMENT_MUTATION}
+                  refetchQueries={[
+                    {
+                      query: ALL_COMMENTS_QUERY,
+                      variables: { id: data.rateCourse.course.id },
+                    },
+                  ]}
+                >
+                  {(updateCommentMutation, { error, loading }) => (
+                    <form
+                      onSubmit={e => {
+                        this.update(e, updateCommentMutation);
+                        this.props.changeState();
+                      }}
+                    >
+                      <Error error={error} />
 
-                    {this.props.children}
-                    <fieldset aria-busy={loading} disabled={loading}>
-                      <label htmlFor="comment">
-                        <input
-                          defaultValue={data.rateCourse.comment}
-                          name="comment"
-                          onChange={this.handleChange}
-                          placeholder="comment"
-                          size="80"
-                          type="text"
-                          value={this.comment}
-                        />
-                      </label>
-                      <button type="submit">Save</button>
-                      <button onClick={this.props.changeState}>Cancelar</button>
-                    </fieldset>
-                  </form>
-                )}
-              </Mutation>
-            </Style>
-          );
+                      {this.props.children}
+                      <fieldset aria-busy={loading} disabled={loading}>
+                        <label htmlFor="comment">
+                          <input
+                            defaultValue={data.rateCourse.comment}
+                            name="comment"
+                            onChange={this.handleChange}
+                            placeholder="comment"
+                            size="80"
+                            type="text"
+                            value={this.comment}
+                          />
+                        </label>
+                        <button type="submit">Save</button>
+                        <button onClick={this.props.changeState}>
+                          Cancelar
+                        </button>
+                      </fieldset>
+                    </form>
+                  )}
+                </Mutation>
+              </Style>
+            );
         }}
       </Query>
     );

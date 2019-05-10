@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import Media from './Media';
 import FormCourse from './FormCourse';
 import Interest from './Interest/Interest';
+import Loading from '../../Static/Loading';
 
 const SINGLE_COURSE_QUERY = gql`
   query SINGLE_COURSE_QUERY($id: ID!) {
@@ -237,7 +238,7 @@ class ChangeCourse extends Component {
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
         {({ data, loading }) => {
-          if (loading) return <p>Loading</p>;
+          if (loading) return <Loading />;
           if (!createCourse) {
             if (!data.course) return <p>No Courses Found for {id}</p>;
             if (!hasUpdated && data.course) {
@@ -321,6 +322,7 @@ class ChangeCourse extends Component {
 
 ChangeCourse.propTypes = {
   id: PropTypes.string.isRequired,
+  changeIntructorView: PropTypes.func.isRequired,
 };
 
 export default ChangeCourse;

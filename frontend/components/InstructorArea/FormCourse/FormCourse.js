@@ -4,12 +4,13 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 // import ReactQuill from "react-quill"; // ES6
-import styled, { keyframes } from 'styled-components';
-import Error from '../../Static/ErrorMessage';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Published from '../CourseState/Published';
 import Unpublished from '../CourseState/Unpublished';
 import Editor from '../Editor';
 import SaveCourseButton from './SaveCourseButton';
+import Loading from '../../Static/Loading';
 
 const ALL_CATEGORIES_QUERY = gql`
   query ALL_CATEGORIES_QUERY {
@@ -73,18 +74,22 @@ class FormCourse extends Component {
   };
 
   changePublished = () => {
+    const { published, unpublished } = this.state;
+
     this.setState({
-      published: !this.state.published,
+      published: !published,
       state: 'PUBLISHED',
-      unpublished: !this.state.unpublished,
+      unpublished: !unpublished,
     });
   };
 
   changeUnpublished = () => {
+    const { published, unpublished } = this.state;
+
     this.setState({
-      published: !this.state.published,
+      published: !published,
       state: 'UNPUBLISHED',
-      unpublished: !this.state.unpublished,
+      unpublished: !unpublished,
     });
   };
 
@@ -110,11 +115,13 @@ class FormCourse extends Component {
   };
 
   changeCourse = async (e, updateCourseMutation) => {
+    const { id } = this.state;
+
     e.preventDefault();
 
     await updateCourseMutation({
       variables: {
-        id: this.props.id,
+        id,
         ...this.state,
       },
     });
@@ -168,118 +175,127 @@ class FormCourse extends Component {
     return (
       <Query query={ALL_CATEGORIES_QUERY}>
         {({ data, loading }) => {
-          if (loading) return <p> Loading </p>;
-          return (
-            <Form id="form">
-              <div className="info-container">
-                <p id="message">
-                  Here is where you enter basic information to your course, such
-                  as the title, description.
-                </p>
+          if (loading) return <Loading />;
+          if (!data) return <p>No Categories</p>;
+          if (data)
+            return (
+              <Form id="form">
+                <div className="info-container">
+                  <p id="message">
+                    Here is where you enter basic information to your course,
+                    such as the title, description.
+                  </p>
 
-                {/* {!createCourse ? <h2>Edit Course</h2> : <h2>Create Course</h2>} */}
-                <label htmlFor="Title">
-                  Title
-                  <input
-                    id="title"
-                    type="text"
-                    name="title"
-                    placeholder="title"
-                    defaultValue={!createCourse ? course.title : ''}
-                    onChange={this.handleChange}
+                  {/* {!createCourse ? <h2>Edit Course</h2> : <h2>Create Course</h2>} */}
+                  <label htmlFor="Title">
+                    Title
+                    <input
+                      id="title"
+                      type="text"
+                      name="title"
+                      placeholder="title"
+                      defaultValue={!createCourse ? course.title : ''}
+                      onChange={this.handleChange}
+                    />
+                  </label>
+                  <label htmlFor="description" id="description">
+                    Description
+                    <div className="description" id="description">
+                      <Editor
+                        id="description"
+                        data={!createCourse ? course.description : ''}
+                        changeQuill={this.changeQuill}
+                      />
+                    </div>
+                  </label>
+                </div>
+                {/* divisao  */}
+                <div className="actions-container">
+                  <SaveCourseButton
+                    createCourse={createCourse}
+                    data={this.state}
+                    id={id}
+                    changeToEdit={changeToEdit}
                   />
-                </label>
-                <label htmlFor="description" id="description">
-                  Description
-                  <div className="description" id="description">
-                    <Editor
-                      id="description"
-                      data={!createCourse ? course.description : ''}
-                      changeQuill={this.changeQuill}
+                  <label htmlFor="state">
+                    Course State
+                    <div id="courseState">
+                      <Published
+                        published={published}
+                        changePublished={this.changePublished}
+                      />
+                      <Unpublished
+                        unpublished={unpublished}
+                        changeUnpublished={this.changeUnpublished}
+                      />
+                    </div>
+                  </label>
+                  <label htmlFor="thumbnail">
+                    Thumbnail Preview {/* Thumbnail para o Edit */}
+                    {!createCourse &&
+                      (changeThumbnail ? (
+                        course.thumbnail && (
+                          <img alt="Placeholder" src={thumbnail} />
+                        )
+                      ) : (
+                        <img alt="Placeholder" src={course.thumbnail} />
+                      ))}
+                    {/* Thumbnail para o create */}
+                    {createCourse && <img alt="Placeholder" src={thumbnail} />}
+                    <input
+                      type="file"
+                      name="thumbnail"
+                      placeholder="thumbnail"
+                      value={!createCourse ? thumbnail : ''}
+                      onChange={this.uploadThumbnail}
                     />
-                  </div>
-                </label>
-              </div>
-              {/* divisao  */}
-              <div className="actions-container">
-                <SaveCourseButton
-                  createCourse={createCourse}
-                  data={this.state}
-                  id={id}
-                  changeToEdit={changeToEdit}
-                />
-                <label htmlFor="state">
-                  Course State
-                  <div id="courseState">
-                    <Published
-                      published={published}
-                      changePublished={this.changePublished}
+                  </label>
+                  <label htmlFor="price">
+                    Price
+                    <input
+                      type="number"
+                      min="0"
+                      step="any"
+                      name="price"
+                      defaultValue={!createCourse ? course.price : ''}
+                      placeholder="00.00"
+                      value={this.price}
+                      onChange={this.handleChange}
+                      required
                     />
-                    <Unpublished
-                      unpublished={unpublished}
-                      changeUnpublished={this.changeUnpublished}
-                    />
-                  </div>
-                </label>
-                <label htmlFor="thumbnail">
-                  Thumbnail Preview {/* Thumbnail para o Edit */}{' '}
-                  {!createCourse &&
-                    (changeThumbnail ? (
-                      course.thumbnail && (
-                        <img alt="Placeholder" src={thumbnail} />
-                      )
-                    ) : (
-                      <img alt="Placeholder" src={course.thumbnail} />
-                    ))}{' '}
-                  {/* Thumbnail para o create */}{' '}
-                  {createCourse && <img alt="Placeholder" src={thumbnail} />}{' '}
-                  <input
-                    type="file"
-                    name="thumbnail"
-                    placeholder="thumbnail"
-                    value={!createCourse ? thumbnail : ''}
-                    onChange={this.uploadThumbnail}
-                  />{' '}
-                </label>
-                <label htmlFor="price">
-                  Price
-                  <input
-                    type="number"
-                    min="0"
-                    step="any"
-                    name="price"
-                    defaultValue={!createCourse ? course.price : ''}
-                    placeholder="00.00"
-                    value={this.price}
-                    onChange={this.handleChange}
-                    required
-                  />
-                </label>
-                <label htmlFor="category">
-                  Category
-                  <select
-                    id="dropdownlist"
-                    onChange={this.handleChangeCategory}
-                    name="category"
-                    defaultValue={!createCourse ? course.category.id : 'a'}
-                  >
-                    <option value="a" disabled hidden>
-                      Select an Category
-                    </option>
-                    {data.categories.map(category => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
+                  </label>
+                  <label htmlFor="category">
+                    Category
+                    <select
+                      id="dropdownlist"
+                      onChange={this.handleChangeCategory}
+                      name="category"
+                      defaultValue={!createCourse ? course.category.id : 'a'}
+                    >
+                      <option value="a" disabled hidden>
+                        Select an Category
                       </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-            </Form>
-          );
+                      {data.categories.map(category => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </Form>
+            );
         }}
       </Query>
     );
   }
 }
+
+FormCourse.propTypes = {
+  course: PropTypes.object,
+  createCourse: PropTypes.bool.isRequired,
+  id: PropTypes.string,
+  changeToEdit: PropTypes.func.isRequired,
+};
 
 export default FormCourse;

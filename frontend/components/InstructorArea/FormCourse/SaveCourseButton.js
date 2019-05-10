@@ -128,9 +128,9 @@ class SaveCourseButton extends Component {
 }
 
 SaveCourseButton.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   changeToEdit: PropTypes.func.isRequired,
-  createCourse: PropTypes.func.isRequired,
+  createCourse: PropTypes.bool.isRequired,
 };
 
 export default SaveCourseButton;

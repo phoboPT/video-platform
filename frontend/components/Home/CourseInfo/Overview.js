@@ -5,6 +5,7 @@ import { Query } from 'react-apollo';
 import VideoSection from './VideoSection/VideoSection';
 import { SINGLE_VIDEO_QUERY } from '../../VideoManager/ShowVideo';
 import sumAll from '../../../lib/sumAll';
+import Loading from '../../Static/Loading';
 
 const Container = styled.div`
   width: 1000px;
@@ -72,7 +73,6 @@ class Overview extends Component {
   render() {
     const { data: propsData } = this.props;
     const { id } = this.state;
-    console.log(id);
     return (
       <Query
         query={SINGLE_VIDEO_QUERY}
@@ -80,41 +80,48 @@ class Overview extends Component {
           id,
         }}
       >
-        {({ data, loading }) => (
-          <>
-            {console.log('duration', data.course.videos)}
-            <Container>
-              <br />
-              <div id="title">
-                <p>About The Course</p>
-              </div>
-              <div id="description-container">
-                <div id="description-title">
-                  <p>Description</p>
+        {({ data, loading }) => {
+          if (loading) return <Loading />;
+          if (!data.course) return <p>No Data</p>;
+          if (data.course) console.log(data);
+          return (
+            <>
+              <Container>
+                <br />
+                <div id="title">
+                  <p>About The Course</p>
                 </div>
-                <div id="description">
-                  <Markdown escapeHtml={false} source={propsData.description} />
+                <div id="description-container">
+                  <div id="description-title">
+                    <p>Description</p>
+                  </div>
+                  <div id="description">
+                    <Markdown
+                      escapeHtml={false}
+                      source={propsData.description}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div id="author-container">
-                <div id="author-title">
-                  <p>Instructor</p>
+                <div id="author-container">
+                  <div id="author-title">
+                    <p>Instructor</p>
+                  </div>
+                  <div id="author">
+                    <p> {propsData.user.name} </p>
+                  </div>
                 </div>
-                <div id="author">
-                  <p> {propsData.user.name} </p>
+                <div id="course-content">
+                  <p id="title-content"> Course Content </p>
+                  <div id="top-bar">
+                    <p id="aulas"> {data.course.videos.length} aulas </p>
+                    <p id="horas"> Total Hours {sumAll(data.course.videos)} </p>
+                  </div>
+                  <VideoSection key={id} data={data} />
                 </div>
-              </div>
-              <div id="course-content">
-                <p id="title-content"> Course Content </p>
-                <div id="top-bar">
-                  <p id="aulas"> {data.course.videos.length} aulas </p>
-                  <p id="horas"> Total Hours {sumAll(data.course.videos)} </p>
-                </div>
-                <VideoSection key={id} data={data} />
-              </div>
-            </Container>
-          </>
-        )}
+              </Container>
+            </>
+          );
+        }}
       </Query>
     );
   }
