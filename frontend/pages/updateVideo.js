@@ -1,4 +1,4 @@
-import UpdateVideo from '../components/Courses/MyVideos/UpdateVideo';
+import UpdateVideo from '../components/InstructorArea/MyVideos/UpdateVideo';
 
 const Update = ({ query }) => (
   <div>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import CreateVideo from '../components/Courses/UploadVideo/CreateVideo';
+import CreateVideo from '../components/InstructorArea/UploadVideo/CreateVideo';
 
 const UploadPage = props => (
   <div>
