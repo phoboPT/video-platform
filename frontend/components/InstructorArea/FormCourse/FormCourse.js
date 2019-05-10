@@ -246,7 +246,6 @@ class FormCourse extends Component {
                       type="file"
                       name="thumbnail"
                       placeholder="thumbnail"
-                      value={!createCourse ? thumbnail : ''}
                       onChange={this.uploadThumbnail}
                     />
                   </label>
