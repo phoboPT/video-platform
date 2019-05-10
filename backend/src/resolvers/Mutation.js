@@ -971,17 +971,41 @@ const Mutations = {
       info,
     });
   },
-  buyCourseFree(parent, args, ctx) {
+  async buyCourseFree(parent, args, ctx) {
     const { userId } = ctx.request;
-
     if (!userId)
       throw new Error('You must be signed in to complete this order.');
 
-    return ctx.db.mutation.createUserCourse({
-      data: {
-        course: { connect: { id: args.id } },
-        user: { connect: { id: userId } },
+    const user = await ctx.db.query.user(
+      {
+        where: {
+          id: userId,
+        },
       },
+      `
+        {
+              courses {
+                course {
+                  id
+                }
+              }  
+          }
+        
+        `
+    );
+    const coursesIds = [];
+    await user.courses.map(course => coursesIds.push(course.course.id));
+
+    coursesIds.map(item => {
+      if (!args.id === item) {
+        return ctx.db.mutation.createUserCourse({
+          data: {
+            course: { connect: { id: args.id } },
+            user: { connect: { id: userId } },
+          },
+        });
+      }
+      console.log('Course Already added!');
     });
   },
   async removeTargetCourse(parent, args, ctx, info) {
