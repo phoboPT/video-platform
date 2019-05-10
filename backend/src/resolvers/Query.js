@@ -181,6 +181,11 @@ const Query = {
           id
           name
           email
+              courses {
+                course {
+                  id
+                }
+              }
           interests{
             id
             interest{
@@ -190,11 +195,14 @@ const Query = {
         }
         `
     );
-
+    const coursesIds = [];
+    await user.courses.map(course => coursesIds.push(course.course.id));
     // mapear os interesses do user
     const interestsIds = [];
     // foreach de cada elemento e fazer a query e guardar num array
-    user.interests.map(interest => interestsIds.push(interest.interest.id));
+    await user.interests.map(interest =>
+      interestsIds.push(interest.interest.id)
+    );
     // Search all the courses that have the interests match wiith user
     const result = await Promise.all(
       interestsIds.map(async id => {
@@ -210,6 +218,11 @@ const Query = {
                 {
                   course: {
                     state: 'PUBLISHED',
+                  },
+                },
+                {
+                  course: {
+                    id_not_in: coursesIds,
                   },
                 },
               ],
