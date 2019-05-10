@@ -12,7 +12,7 @@ const Container = styled.div`
   display: flex;
 
   #menu {
-    display: block;
+    display: grid;
     flex: 1;
     order: 1;
     border-right: 1.5px solid #959ba5;
