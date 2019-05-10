@@ -972,6 +972,8 @@ const Mutations = {
     });
   },
   async buyCourseFree(parent, args, ctx) {
+    console.time('buyCourseFree');
+
     const { userId } = ctx.request;
     if (!userId)
       throw new Error('You must be signed in to complete this order.');
@@ -995,6 +997,7 @@ const Mutations = {
     );
     const coursesIds = [];
     await user.courses.map(course => coursesIds.push(course.course.id));
+    console.timeEnd('buyCourseFree');
 
     coursesIds.map(item => {
       if (!args.id === item) {

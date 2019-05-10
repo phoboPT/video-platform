@@ -39,6 +39,7 @@ const Query = {
       },
       info
     );
+
     return res;
   },
   videosConnection(parent, args, ctx, info) {
@@ -166,6 +167,7 @@ const Query = {
   },
   // Listagem Cursos Interests
   async coursesUserInterestList(parent, args, ctx) {
+    console.time('coursesUserInterestList');
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
@@ -300,6 +302,7 @@ const Query = {
     });
 
     finalRes.map(item => item);
+    console.timeEnd('coursesUserInterestList');
 
     return finalRes;
   },
@@ -351,6 +354,8 @@ const Query = {
   },
   // Listagem cursos
   async coursesList(parent, args, ctx, info) {
+    console.time('coursesList');
+
     const { userId } = ctx.request;
     // Ver se esta logado
 
@@ -441,6 +446,7 @@ const Query = {
       });
       return item;
     });
+    console.timeEnd('coursesList');
 
     return finalRes;
   },
@@ -495,31 +501,31 @@ const Query = {
       throw new Error('you must be ssigned in!');
     }
 
-    const res = await ctx.db.query.wishlists(
+    return ctx.db.query.wishlists(
       {
         where: {
           user: { id: userId },
         },
       },
-      `{      course {
-  id
-  title
-  price
-  thumbnail
-  totalRate
-  totalComments
-  state
-  createdAt
-  category {
-    name
-  }
-  user {
-    name
-  }
-}}`
+      `{
+         course {
+          id
+          title
+          price
+          thumbnail
+          totalRate
+          totalComments
+          state
+          createdAt
+          category {
+            name
+          }
+          user {
+            name
+          }
+        }
+      }`
     );
-
-    return res;
   },
   async checkUserRated(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -778,7 +784,13 @@ const Query = {
     const courses = await ctx.db.query.userCourses(
       {
         where: {
-          course: { id: args.id },
+          AND: [
+            { course: { id: args.id } },
+            {
+              createdAt_gte: '2019-05-01',
+            },
+            { createdAt_lte: '2019-05-31' },
+          ],
         },
         orderBy: 'createdAt_ASC',
       },
@@ -815,7 +827,6 @@ const Query = {
         }, new Map())
         .values(),
     ];
-    console.table(result);
 
     console.timeEnd('sells');
     return result;
