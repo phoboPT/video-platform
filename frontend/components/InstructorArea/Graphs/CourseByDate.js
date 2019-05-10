@@ -48,7 +48,7 @@ class CourseByDate extends Component {
   componentWillMount() {
     const { chartData } = this.props;
 
-    if (chartData.sellsByCourse) {
+    if (chartData) {
       this.createData();
       this.setState({
         title: chartData.sellsByCourse[0].course.title,
@@ -113,9 +113,10 @@ class CourseByDate extends Component {
       height,
       displayLegend,
       legendPosition,
+      empty,
     } = this.props;
     const { totalCourses, title, defaultData } = this.state;
-    if (title === undefined) {
+    if (empty) {
       return (
         <Line
           data={defaultData}

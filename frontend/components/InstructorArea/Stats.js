@@ -117,7 +117,19 @@ class Stats extends Component {
                     <Loading />
                   </LoadStyle>
                 );
-              if (!data) return null;
+              if (!data) {
+                return (
+                  <CourseByDate
+                    empty
+                    location="All Courses"
+                    legendPosition="top"
+                    displayTitle="Hello"
+                    label="Total Courses Selled"
+                    width={700}
+                    height={400}
+                  />
+                );
+              }
               if (data)
                 return (
                   <Dooted>
