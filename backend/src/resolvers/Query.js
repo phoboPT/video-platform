@@ -24,13 +24,14 @@ const Query = {
   userCoursesConnection: forwardTo('db'),
 
   // videosConnection: forwardTo("db"),
-  me(parent, args, ctx, info) {
+  async me(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    // checkar se tem um current ID
+    // checkar se tem um current IDi
+
     if (!userId) {
       return null;
     }
-    return ctx.db.query.user(
+    const res = await ctx.db.query.user(
       {
         where: {
           id: userId,
@@ -38,6 +39,7 @@ const Query = {
       },
       info
     );
+    return res;
   },
   videosConnection(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -686,7 +688,7 @@ const Query = {
     );
   },
   async coursesStats(parent, args, ctx, info) {
-    console.time('starting');
+    console.time('courseStats');
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
@@ -748,11 +750,11 @@ const Query = {
         .values(),
     ];
 
-    console.timeEnd('starting');
+    console.timeEnd('courseStats');
     return result;
   },
   async sellsByCourse(parent, args, ctx, info) {
-    console.time('starting');
+    console.time('sells');
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
@@ -800,8 +802,9 @@ const Query = {
         }, new Map())
         .values(),
     ];
+    console.table(result);
 
-    console.timeEnd('starting');
+    console.timeEnd('sells');
     return result;
   },
 };

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import styled from 'styled-components';
 import InterestItem from './InterestItem';
+import Error from '../../../Static/ErrorMessage';
 
 const ALL_INTEREST_QUERY = gql`
   query ALL_INTEREST_QUERY {
@@ -71,33 +72,32 @@ class CreateCourse extends Component {
             return (
               <Query query={ALL_INTEREST_QUERY}>
                 {({ data, error, loading }) => {
-                  if (loading) {
-                    return <p>Loading...</p>;
-                  }
-                  if (error) {
-                    return <p>Error:{error.message}</p>;
-                  }
-                  return (
-                    <>
-                      <Container>
-                        <p id="message">
-                          Here you can Select the areas that this course is
-                          targeting 🎯
-                        </p>
-                      </Container>
-                      <InterestStyle>
-                        {data.interests.map((interest, index) => (
-                          <InterestItem
-                            key={interest.id}
-                            interest={interest}
-                            courseId={this.props.courseId}
-                            id={index}
-                            courseInterest={course.course.interest}
-                          />
-                        ))}
-                      </InterestStyle>
-                    </>
-                  );
+                  if (loading) return <Loading />;
+
+                  if (error) return <Error error={error} />;
+                  if (!data) return <p>No Data</p>;
+                  if (data)
+                    return (
+                      <>
+                        <Container>
+                          <p id="message">
+                            Here you can Select the areas that this course is
+                            targeting 🎯
+                          </p>
+                        </Container>
+                        <InterestStyle>
+                          {data.interests.map((interest, index) => (
+                            <InterestItem
+                              key={interest.id}
+                              interest={interest}
+                              courseId={this.props.courseId}
+                              id={index}
+                              courseInterest={course.course.interest}
+                            />
+                          ))}
+                        </InterestStyle>
+                      </>
+                    );
                 }}
               </Query>
             );

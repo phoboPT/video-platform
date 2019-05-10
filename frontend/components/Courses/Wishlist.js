@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { Container, CoursesList, Title } from '../styles/Home';
 import WishItem from './WishItem';
+import Loading from '../Static/Loading';
 
 const WISHLIST_QUERY = gql`
   query WISHLIST_QUERY {
@@ -32,7 +33,7 @@ class Wishlist extends Component {
     return (
       <Query query={WISHLIST_QUERY}>
         {({ data, error, loading }) => {
-          if (loading) return <p>loading</p>;
+          if (loading) return <Loading />;
 
           if (error) <Error error={error} />;
 

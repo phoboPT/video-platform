@@ -25,6 +25,8 @@ const Style = styled.div`
     flex: 7;
     padding-top: 30px;
     float: bottom;
+    margin: 0 0 0 5rem;
+
     .create-course {
       width: auto;
       background: red;
@@ -93,26 +95,52 @@ class InstrutorArea extends Component {
                   </section>
 
                   <div className="container">
-                    {view !== 2 && (
-                      <div className="left-bar">
-                        <AddButon>
-                          <button
-                            type="button"
-                            id="ButtonAdd"
-                            onClick={() => {
-                              this.changeView(2);
-                            }}
-                          >
-                            <img
-                              src="../../../static/addButton.png"
-                              alt="Add"
-                              width="48"
-                              height="48"
-                            />
-                          </button>
-                        </AddButon>
-                      </div>
-                    )}
+                    <div className="left-bar">
+                      <AddButon>
+                        <button
+                          type="button"
+                          id="ButtonAdd"
+                          onClick={() => {
+                            this.changeView(1);
+                          }}
+                        >
+                          <img
+                            src="../../../static/home.png"
+                            alt="Add"
+                            width="48"
+                            height="48"
+                          />
+                        </button>
+                        <button
+                          type="button"
+                          id="ButtonAdd"
+                          onClick={() => {
+                            this.changeView(2);
+                          }}
+                        >
+                          <img
+                            src="../../../static/addButton.png"
+                            alt="Add"
+                            width="48"
+                            height="48"
+                          />
+                        </button>
+                        <button
+                          type="button"
+                          id="ButtonAdd"
+                          onClick={() => {
+                            this.changeView(3);
+                          }}
+                        >
+                          <img
+                            src="../../../static/graph.png"
+                            alt="Stats"
+                            width="48"
+                            height="48"
+                          />
+                        </button>
+                      </AddButon>
+                    </div>
 
                     <aside id="sidebar" className="main-bar">
                       {view === 1 && <MyCourses changeView={this.changeView} />}
@@ -123,7 +151,9 @@ class InstrutorArea extends Component {
                           saveToState={this.saveToState}
                         />
                       )}
-                      {view === 3 && <StatsPage courses={me.courses} />}
+                      {view === 3 && (
+                        <StatsPage key={view} courses={me.courses} />
+                      )}
                     </aside>
                   </div>
                 </Style>

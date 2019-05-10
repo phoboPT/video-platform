@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import styled from 'styled-components';
 import InterestItem from './InterestsItem';
+import Loading from '../../Static/Loading';
+import Error from '../../Static/ErrorMessage';
 
 const Title = styled.p`
   font-size: 35px;
@@ -55,15 +57,13 @@ class Interest extends Component {
 
   render() {
     return (
-      <>
-        <Query query={ALL_INTEREST_QUERY}>
-          {({ data, error, loading }) => {
-            if (loading) {
-              return <p>Loading...</p>;
-            }
-            if (error) {
-              return <p>Error:{error.message}</p>;
-            }
+      <Query query={ALL_INTEREST_QUERY}>
+        {({ data, error, loading }) => {
+          if (loading) return <Loading />;
+
+          if (error) return <Error error={error} />;
+          if (!data) return <p>No data</p>;
+          if (data)
             return (
               <>
                 {this.state.view === 0 && <Title>Your Interests</Title>}
@@ -80,9 +80,8 @@ class Interest extends Component {
                 </InterestsList>
               </>
             );
-          }}
-        </Query>
-      </>
+        }}
+      </Query>
     );
   }
 }

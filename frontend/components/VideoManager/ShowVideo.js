@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import VideoPlayer from './VideoPlayer';
 import VideoSection from './VideoSection/VideoSection';
 import SimpleUser from '../Authentication/SimpleUser';
+import Loading from '../Static/Loading';
 
 const SINGLE_VIDEO_QUERY = gql`
-  query SINGLE_VIDEO_QUERY($id: ID!) {
+  query SINGLE_VIDEO_QUERY($id: ID) {
     course(where: { id: $id }) {
       id
       title
@@ -57,6 +58,19 @@ const Grid = styled.div`
 class ShowVideo extends Component {
   state = { hasUpdated: false, selectedVideo: '' };
 
+  changeSelectedVideo = url => {
+    const { videos } = this.state;
+
+    videos.map(item => {
+      if (item.video.id === url) {
+        return this.setState({
+          selectedVideo: item.video.urlVideo,
+          id: url,
+        });
+      }
+    });
+  };
+
   render() {
     const { selectedVideo, hasUpdated, id: key } = this.state;
     const { id } = this.props;
@@ -69,16 +83,19 @@ class ShowVideo extends Component {
         }) => (
           <Query query={SINGLE_VIDEO_QUERY} variables={{ id }}>
             {({ data, loading }) => {
-              if (loading) return <p>Loading</p>;
-              if (!data.course) return <p>No Video Found for {id}</p>;
-              if (!hasUpdated) {
-                this.setState(data.course);
-                this.setState({
-                  hasUpdated: !hasUpdated,
-                  selectedVideo: data.course.videos[0].video.urlVideo,
-                  id: data.course.videos[0].video.id,
-                });
+              if (loading) return <Loading />;
+              if (!data) return <p>`No Video Found for ${id}`</p>;
+              if (data.course.videos.length > 0) {
+                if (!hasUpdated) {
+                  this.setState(data.course);
+                  this.setState({
+                    hasUpdated: !hasUpdated,
+                    selectedVideo: data.course.videos[0].video.urlVideo,
+                    id: data.course.videos[0].video.id,
+                  });
+                }
               }
+
               return (
                 <Grid>
                   <div className="container">

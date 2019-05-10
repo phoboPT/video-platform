@@ -73,16 +73,8 @@ class VideoElement extends React.PureComponent {
   };
 
   render() {
-    const {
-      index,
-      section,
-      videos,
-
-      files,
-      data,
-    } = this.props;
+    const { index, section, videos, files, data } = this.props;
     const { show } = this.state;
-    console.log('sectionss');
     return (
       <Fragment key={index}>
         <button type="button" onClick={e => this.expand(e, section.id)}>
@@ -118,26 +110,28 @@ class VideoSection extends Component {
   };
 
   render() {
+    if (!this.state.section) return <p>No Content for this course</p>;
     const { data, id } = this.props;
     const { columnOrder, sections, videos, files } = this.state.section;
-    return (
-      <Container>
-        {columnOrder.map((columnId, index) => {
-          const section = sections[columnId];
-          return (
-            <VideoElement
-              section={section}
-              key={section.id}
-              localStorageId={section.id}
-              videos={videos}
-              files={files}
-              data={data}
-              expand={this.expand}
-            />
-          );
-        })}
-      </Container>
-    );
+    if (columnOrder)
+      return (
+        <Container>
+          {columnOrder.map((columnId, index) => {
+            const section = sections[columnId];
+            return (
+              <VideoElement
+                section={section}
+                key={section.id}
+                localStorageId={section.id}
+                videos={videos}
+                files={files}
+                data={data}
+                expand={this.expand}
+              />
+            );
+          })}
+        </Container>
+      );
   }
 }
 

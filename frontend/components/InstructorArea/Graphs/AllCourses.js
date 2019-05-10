@@ -21,7 +21,11 @@ class AllCourses extends Component {
   };
 
   componentWillMount() {
-    this.createData();
+    const { chartData } = this.props;
+
+    if (chartData.coursesStats) {
+      this.createData();
+    }
   }
 
   createData = async () => {
@@ -114,7 +118,6 @@ class AllCourses extends Component {
       legendPosition,
       width,
       height,
-      id,
     } = this.props;
     const { totalCourses, sellByDate } = this.state;
     return (
@@ -128,6 +131,10 @@ class AllCourses extends Component {
             text: `${location}`,
             fontSize: 25,
           },
+          legend: {
+            display: displayLegend,
+            position: legendPosition,
+          },
 
           maintainAspectRatio: false,
         }}
@@ -137,11 +144,13 @@ class AllCourses extends Component {
 }
 
 AllCourses.propTypes = {
-  chartData: PropTypes.array.isRequired,
+  chartData: PropTypes.object,
   displayTitle: PropTypes.string,
-  location: PropTypes.string,
-  displayLegend: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  displayLegend: PropTypes.bool,
   legendPosition: PropTypes.string,
+  location: PropTypes.string,
 };
 
 export default AllCourses;

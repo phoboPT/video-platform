@@ -6,6 +6,8 @@ import { Container, CoursesList, Title } from '../../styles/Home';
 import CourseItem from './CourseItem';
 import CourseItemNoUser from './CourseItemNoUser';
 import Pagination from './Pagination';
+import Error from '../../Static/ErrorMessage.js';
+import Loading from '../../Static/Loading';
 
 const RENDER_QUERY = gql`
   query RENDER_QUERY {
@@ -230,12 +232,11 @@ class ListAllCourses extends Component {
           }}
         >
           {({ data, error, loading }) => {
-            if (loading) {
-              return <p>Loading...</p>;
-            }
-            if (error) {
-              return <p>Error:{error.message}</p>;
-            }
+            if (loading) return <Loading />;
+
+            if (error) return <Error error={error} />;
+
+            if (!data) return <p>No Data</p>;
 
             if (data.courses) {
               return (

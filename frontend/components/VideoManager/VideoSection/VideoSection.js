@@ -123,6 +123,7 @@ class VideoSection extends Component {
   };
 
   render() {
+    if (!this.state.section) return <p>No Content for this course!</p>;
     const { data, changeSelectedVideo, id, videosWatched } = this.props;
     const { columnOrder, sections, videos, files } = this.state.section;
     return (

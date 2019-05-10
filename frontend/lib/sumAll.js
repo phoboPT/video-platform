@@ -3,10 +3,8 @@ export default function sumAll(videos) {
   let countM = 0;
   let countS = 0;
   videos.map((item, index) => {
-    console.log('item', item);
     const m = parseInt(item.video.duration.split(':')[0]);
     const s = parseInt(item.video.duration.split(':')[1]);
-    console.log(index, countS + s);
     if (countS + s > 59) {
       countM += 1;
       countS -= 60;
