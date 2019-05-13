@@ -10,7 +10,7 @@ import {
 } from './CoursesList/ListAllCourses';
 
 const ADD_FREE_COURSE_MUTATION = gql`
-  mutation ADD_FREE_COUSE_MUTATION($id: ID!) {
+  mutation ADD_FREE_COURSE_MUTATION($id: ID!) {
     buyCourseFree(id: $id) {
       id
     }
@@ -20,6 +20,7 @@ const ADD_FREE_COURSE_MUTATION = gql`
 class BuyFreeButton extends Component {
   update = (cache, payload) => {
     const { id } = this.props;
+    console.log('hi');
 
     // manually update the cache on the client, so it matches the server
     // 1. Read the cache for the comments we want
@@ -28,6 +29,7 @@ class BuyFreeButton extends Component {
       variables: { id },
     });
 
+    console.log('data', data);
     // 2. Filter the deleted itemout of the page
     data.buyCourseFree = data.buyCourseFree.filter(
       item => item.id !== payload.data.buyCourseFree.id
