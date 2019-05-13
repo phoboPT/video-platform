@@ -3,6 +3,7 @@ const { forwardTo } = require('prisma-binding');
 function formatDate(date) {
   const regex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g;
   const hi = date.match(regex, ' ')[0];
+
   return hi;
 }
 const Query = {
@@ -786,17 +787,15 @@ const Query = {
         where: {
           AND: [
             { course: { id: args.id } },
-            {
-              createdAt_gte: '2019-05-01',
-            },
+            { createdAt_gte: '2019-05-01' },
             { createdAt_lte: '2019-05-31' },
           ],
         },
         orderBy: 'createdAt_ASC',
       },
       `{
-            id
-            createdAt
+        id
+        createdAt
         course{
           id
           title
@@ -809,6 +808,7 @@ const Query = {
 
     const res = courses.flat();
 
+    console.table(res);
     // res.sort(function(a, b) {
     //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
     //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
