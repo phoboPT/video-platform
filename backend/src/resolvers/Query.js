@@ -3,8 +3,20 @@ const { forwardTo } = require('prisma-binding');
 function formatDate(date) {
   const regex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g;
   const hi = date.match(regex, ' ')[0];
+
   return hi;
 }
+
+function getDate() {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+  const yyyy = today.getFullYear();
+
+  const res = [yyyy, mm, dd];
+  return res;
+}
+
 const Query = {
   categories: forwardTo('db'),
   category: forwardTo('db'),
@@ -39,6 +51,7 @@ const Query = {
       },
       info
     );
+
     return res;
   },
   videosConnection(parent, args, ctx, info) {
@@ -166,6 +179,7 @@ const Query = {
   },
   // Listagem Cursos Interests
   async coursesUserInterestList(parent, args, ctx) {
+    console.time('coursesUserInterestList');
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
@@ -307,6 +321,7 @@ const Query = {
     });
 
     finalRes.map(item => item);
+    console.timeEnd('coursesUserInterestList');
 
     return finalRes;
   },
@@ -363,6 +378,8 @@ const Query = {
   },
   // Listagem cursos
   async coursesList(parent, args, ctx, info) {
+    console.time('coursesList');
+
     const { userId } = ctx.request;
     // Ver se esta logado
 
@@ -458,6 +475,7 @@ const Query = {
       });
       return item;
     });
+    console.timeEnd('coursesList');
 
     return finalRes;
   },
@@ -512,31 +530,31 @@ const Query = {
       throw new Error('you must be ssigned in!');
     }
 
-    const res = await ctx.db.query.wishlists(
+    return ctx.db.query.wishlists(
       {
         where: {
           user: { id: userId },
         },
       },
-      `{      course {
-  id
-  title
-  price
-  thumbnail
-  totalRate
-  totalComments
-  state
-  createdAt
-  category {
-    name
-  }
-  user {
-    name
-  }
-}}`
+      `{
+         course {
+          id
+          title
+          price
+          thumbnail
+          totalRate
+          totalComments
+          state
+          createdAt
+          category {
+            name
+          }
+          user {
+            name
+          }
+        }
+      }`
     );
-
-    return res;
   },
   async checkUserRated(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -755,25 +773,25 @@ const Query = {
           `{
             id
             createdAt
-        course{
-          id
-          title
-        }
-        user{
-          id
-        }
-     }`
+            course{
+              id
+              title
+            }
+            user{
+              id
+            }
+          }`
         )
       )
     );
 
     const res = courses.flat();
 
-    res.sort(function(a, b) {
-      if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
-      if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
-      return 0;
-    });
+    // res.sort(function(a, b) {
+    //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
+    //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
+    //   return 0;
+    // });
 
     const result = [
       ...res
@@ -789,24 +807,29 @@ const Query = {
     return result;
   },
   async sellsByCourse(parent, args, ctx, info) {
-    console.time('sells');
+    console.time('sellsByCourse');
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
       throw new Error('you must be ssigned in!');
     }
-
+    // Get the actual month and year to dinamycally set the date
+    const date = getDate();
     // get all the buys from the instrutor courses list
     const courses = await ctx.db.query.userCourses(
       {
         where: {
-          course: { id: args.id },
+          AND: [
+            { course: { id: args.id } },
+            { createdAt_gte: `${date[0]}-${date[1]}-01` },
+            { createdAt_lte: `${date[0]}-${date[1]}-31` },
+          ],
         },
         orderBy: 'createdAt_ASC',
       },
       `{
-            id
-            createdAt
+        id
+        createdAt
         course{
           id
           title
@@ -818,12 +841,6 @@ const Query = {
     );
 
     const res = courses.flat();
-
-    // res.sort(function(a, b) {
-    //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
-    //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
-    //   return 0;
-    // });
 
     res[0].count = 0;
 
@@ -837,9 +854,76 @@ const Query = {
         }, new Map())
         .values(),
     ];
-    console.table(result);
+    console.timeEnd('sellsByCourse');
+    return result;
+  },
+  async coursesStatsByDate(parent, args, ctx, info) {
+    console.time('courseStats');
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
+    // get all the instrutor courses
+    const allInstrutorCourses = await ctx.db.query.courses(
+      {
+        where: {
+          user: { id: userId },
+        },
+      },
+      `{
+        id
+        title
+     }`
+    );
 
-    console.timeEnd('sells');
+    // get all the buys from the instrutor courses list
+    const courses = await Promise.all(
+      allInstrutorCourses.map(item =>
+        ctx.db.query.userCourses(
+          {
+            where: {
+              AND: [
+                { course: { id: item.id } },
+                { createdAt: `${args.year}-${args.month}-${args.day}` },
+              ],
+            },
+            orderBy: 'createdAt_DESC',
+          },
+          `{
+            id
+            createdAt
+            course{
+              id
+              title
+            }
+            user{
+              id
+            }
+          }`
+        )
+      )
+    );
+
+    const res = courses.flat();
+
+    // res.sort(function(a, b) {
+    //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
+    //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
+    //   return 0;
+    // });
+
+    const result = [
+      ...res
+        .reduce((mp, o) => {
+          if (!mp.has(o.course.id)) mp.set(o.course.id, { ...o, count: 0 });
+          mp.get(o.course.id).count += 1;
+          return mp;
+        }, new Map())
+        .values(),
+    ];
+
+    console.timeEnd('courseStats');
     return result;
   },
 };

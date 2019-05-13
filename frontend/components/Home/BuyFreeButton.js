@@ -18,11 +18,41 @@ const ADD_FREE_COURSE_MUTATION = gql`
 `;
 
 class BuyFreeButton extends Component {
+  update = (cache, payload) => {
+    const { id } = this.props;
+
+    // manually update the cache on the client, so it matches the server
+    // 1. Read the cache for the comments we want
+    const data = cache.readQuery({
+      query: ADD_FREE_COURSE_MUTATION,
+      variables: { id },
+    });
+
+    // 2. Filter the deleted itemout of the page
+    data.buyCourseFree = data.buyCourseFree.filter(
+      item => item.id !== payload.data.buyCourseFree.id
+    );
+    // 3. Put the items back!
+    cache.writeQuery({
+      query: ADD_FREE_COURSE_MUTATION,
+      data,
+      variables: { id },
+    });
+  };
+
   render() {
     const { id, skip } = this.props;
     return (
       <Mutation
+        update={this.update}
         mutation={ADD_FREE_COURSE_MUTATION}
+        optimisticResponse={{
+          __typename: 'Mutation',
+          buyCourseFree: {
+            __typename: 'UserCourse',
+            id,
+          },
+        }}
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,

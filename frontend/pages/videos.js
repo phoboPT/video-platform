@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Videos from '../components/Courses/MyVideos/Videos';
+import Videos from '../components/InstructorArea/MyVideos/Videos';
 
 class videos extends Component {
   render() {

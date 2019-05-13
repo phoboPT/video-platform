@@ -954,6 +954,8 @@ const Mutations = {
     });
   },
   async buyCourseFree(parent, args, ctx) {
+    console.time('buyCourseFree');
+
     const { userId } = ctx.request;
     if (!userId) {
       throw new Error('You must be signed in to complete this order.');
