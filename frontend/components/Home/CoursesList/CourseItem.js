@@ -15,7 +15,7 @@ const InfoStyle = styled.p`
   padding: none;
 `;
 
-export class CourseItem extends Component {
+class CourseItem extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
   };

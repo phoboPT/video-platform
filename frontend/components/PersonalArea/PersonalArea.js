@@ -10,16 +10,16 @@ import Photograph from './Photograph';
 
 const Container = styled.div`
   display: flex;
-
   #menu {
     display: grid;
     flex: 1;
     order: 1;
-    border-right: 1.5px solid #959ba5;
+    max-height: 205px;
     margin-top: 1.5rem;
     padding-right: 0px;
     padding-left: 55px;
     button {
+      margin-right: 1rem;
       color: #293a44;
       background: none;
       font: inherit;
@@ -40,6 +40,7 @@ const Container = styled.div`
   }
 
   #content {
+    border-left: 1.5px solid #959ba5;
     padding-top: 2rem;
     flex: 4;
     order: 2;
@@ -48,7 +49,7 @@ const Container = styled.div`
 
 class PersonalArea extends Component {
   state = {
-    view: 6,
+    view: 1,
     selected: 1,
   };
 

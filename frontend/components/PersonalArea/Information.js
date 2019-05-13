@@ -4,6 +4,7 @@ import User from '../Authentication/User';
 
 const Container = styled.div`
   display: flex;
+
   padding: 0 !important;
   img {
     margin-left: 25px;

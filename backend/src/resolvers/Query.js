@@ -227,6 +227,13 @@ const Query = {
                     id_not_in: coursesIds,
                   },
                 },
+                {
+                  course: {
+                    user: {
+                      id_not: userId,
+                    },
+                  },
+                },
               ],
             },
           },
@@ -343,6 +350,11 @@ const Query = {
             {
               id_not_in: coursesId,
             },
+            {
+              user: {
+                id_not: userId,
+              },
+            },
           ],
         },
       },
@@ -392,6 +404,11 @@ const Query = {
             },
             {
               id_not_in: coursesId,
+            },
+            {
+              user: {
+                id_not: userId,
+              },
             },
           ],
         },
@@ -617,6 +634,11 @@ const Query = {
             },
             {
               id_not_in: coursesId,
+            },
+            {
+              user: {
+                id_not: userId,
+              },
             },
           ],
         },

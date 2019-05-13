@@ -531,24 +531,6 @@ const Mutations = {
       throw new Error('You must be logged in to do that!');
     }
 
-    // // 1.encontrar o curso
-    // const course = await ctx.db.query.course(
-    //   {
-    //     where:{
-    //       id: args.id
-    //     }
-    //   },
-    //   '{id}'
-    // );
-
-    // // 2.checkar se tem permissoes para o apagar
-    // const ownsCourse = course.user.id === ctx.request.userId;
-    // // falta verificar se é admin ou user (hasPermissions)
-    // if (!ownsCourse) {
-    //   throw new Error("You don't have permission to do that!");
-    // }
-
-    // delete relations
     await ctx.db.mutation.deleteManyWishlists({
       where: {
         course: {
@@ -973,39 +955,37 @@ const Mutations = {
   },
   async buyCourseFree(parent, args, ctx) {
     const { userId } = ctx.request;
-    if (!userId)
+    if (!userId) {
       throw new Error('You must be signed in to complete this order.');
-
-    const user = await ctx.db.query.user(
-      {
-        where: {
+    }
+    const [existingWhishItem] = await ctx.db.query.userCourses({
+      where: {
+        user: {
           id: userId,
         },
+        course: {
+          id: args.id,
+        },
       },
-      `
-        {
-              courses {
-                course {
-                  id
-                }
-              }  
-          }
-        
-        `
-    );
-    const coursesIds = [];
-    await user.courses.map(course => coursesIds.push(course.course.id));
+    });
 
-    coursesIds.map(item => {
-      if (!args.id === item) {
-        return ctx.db.mutation.createUserCourse({
-          data: {
-            course: { connect: { id: args.id } },
-            user: { connect: { id: userId } },
+    if (existingWhishItem) {
+      return console.log('Already Added');
+    }
+
+    return ctx.db.mutation.createUserCourse({
+      data: {
+        course: {
+          connect: {
+            id: args.id,
           },
-        });
-      }
-      console.log('Course Already added!');
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
     });
   },
   async removeTargetCourse(parent, args, ctx, info) {

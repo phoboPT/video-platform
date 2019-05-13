@@ -17,7 +17,7 @@ const UPDATE_USER_MUTATION = gql`
 const Container = styled.div`
   form {
     display: grid;
-    margin: 2rem;
+    margin-left: 1rem;
     border: 0.5px solid rgba(196, 196, 196, 0.7);
     #title {
       padding-top: 2rem;
@@ -33,15 +33,19 @@ const Container = styled.div`
       color: rgba(137, 137, 137, 0.5);
     }
     #title-form {
+      color: #333333;
       padding-top: 2rem;
       margin: auto;
       padding-bottom: 2rem;
     }
     #img {
+      img {
+        width: 250px;
+        height: 250px;
+      }
+      padding: 2rem;
       margin: auto;
       border: 2px solid black;
-      width: 250px;
-      height: 250px;
     }
     #input {
       padding-top: 2rem;
@@ -102,7 +106,9 @@ class Photograph extends Component {
                   <p id="title">Picture</p>
                   <p id="subtitle">Choose a Nice Picture to Your Profile</p>
                   <p id="title-form"> Image Preview </p>
-                  <img id="img" alt="Placeholder" src={thumbnail} />
+                  <div id="img">
+                    <img alt="Placeholder" src={thumbnail} />
+                  </div>
                   <input
                     id="input"
                     type="file"
