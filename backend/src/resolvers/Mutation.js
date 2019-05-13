@@ -531,24 +531,6 @@ const Mutations = {
       throw new Error('You must be logged in to do that!');
     }
 
-    // // 1.encontrar o curso
-    // const course = await ctx.db.query.course(
-    //   {
-    //     where:{
-    //       id: args.id
-    //     }
-    //   },
-    //   '{id}'
-    // );
-
-    // // 2.checkar se tem permissoes para o apagar
-    // const ownsCourse = course.user.id === ctx.request.userId;
-    // // falta verificar se é admin ou user (hasPermissions)
-    // if (!ownsCourse) {
-    //   throw new Error("You don't have permission to do that!");
-    // }
-
-    // delete relations
     await ctx.db.mutation.deleteManyWishlists({
       where: {
         course: {
@@ -975,25 +957,36 @@ const Mutations = {
     console.time('buyCourseFree');
 
     const { userId } = ctx.request;
-    if (!userId)
+    if (!userId) {
       throw new Error('You must be signed in to complete this order.');
-
+    }
     const [existingWhishItem] = await ctx.db.query.userCourses({
       where: {
-        user: { id: userId },
-        course: { id: args.id },
+        user: {
+          id: userId,
+        },
+        course: {
+          id: args.id,
+        },
       },
     });
 
     if (existingWhishItem) {
-      return console.log('Course Already added!');
+      return console.log('Already Added');
     }
-    console.timeEnd('buyCourseFree');
 
     return ctx.db.mutation.createUserCourse({
       data: {
-        course: { connect: { id: args.id } },
-        user: { connect: { id: userId } },
+        course: {
+          connect: {
+            id: args.id,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
       },
     });
   },

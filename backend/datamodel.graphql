@@ -38,6 +38,8 @@ type User {
   id: ID! @id
   name: String!
   email: String! @unique
+  profession: String
+  description: String
   password: String!
   thumbnail: String
   interests: [UserInterest]! @scalarList(strategy: RELATION)
