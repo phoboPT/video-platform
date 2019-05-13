@@ -17,7 +17,6 @@ class AllCourses extends Component {
 
   state = {
     totalCourses: {},
-    sellByDate: {},
   };
 
   componentWillMount() {
@@ -32,19 +31,13 @@ class AllCourses extends Component {
     const { chartData, label } = this.props;
     const data = [];
     const labels = [];
-    let dateData = 0;
 
     let initial = formatDate(chartData.coursesStats[0].createdAt).splice(0, 1);
     initial = initial[0];
 
     chartData.coursesStats.map((item, index) => {
-      let date = formatDate(item.createdAt);
-      date = date[0];
       data.push(item.count);
       labels.push(item.course.title);
-      if (date === initial) {
-        dateData += item.count;
-      }
     });
     data.push(6);
     data.push(0);
@@ -76,37 +69,9 @@ class AllCourses extends Component {
         },
       ],
     };
-    const sellData = {
-      labels: [...labels],
 
-      datasets: [
-        {
-          label,
-          fill: false,
-          lineTension: 0.1,
-          backgroundColor: 'rgba(75,192,192,0.4)',
-          borderColor: 'rgba(75,192,192,1)',
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: 'rgba(75,192,192,1)',
-          pointBackgroundColor: '#fff',
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-          pointHoverBorderColor: 'rgba(220,220,220,1)',
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
-          data: [dateData],
-          hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-        },
-      ],
-    };
     await this.setState({
       totalCourses: { ...newData },
-      sellByDate: { ...sellData },
     });
   };
 
@@ -119,7 +84,7 @@ class AllCourses extends Component {
       width,
       height,
     } = this.props;
-    const { totalCourses, sellByDate } = this.state;
+    const { totalCourses } = this.state;
     return (
       <Bar
         data={totalCourses}
@@ -150,7 +115,9 @@ AllCourses.propTypes = {
   height: PropTypes.number,
   displayLegend: PropTypes.bool,
   legendPosition: PropTypes.string,
+  title: PropTypes.string,
   location: PropTypes.string,
+  label: PropTypes.string,
 };
 
 export default AllCourses;

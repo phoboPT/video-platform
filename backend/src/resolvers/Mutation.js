@@ -978,37 +978,23 @@ const Mutations = {
     if (!userId)
       throw new Error('You must be signed in to complete this order.');
 
-    const user = await ctx.db.query.user(
-      {
-        where: {
-          id: userId,
-        },
+    const [existingWhishItem] = await ctx.db.query.userCourses({
+      where: {
+        user: { id: userId },
+        course: { id: args.id },
       },
-      `
-        {
-              courses {
-                course {
-                  id
-                }
-              }  
-          }
-        
-        `
-    );
-    const coursesIds = [];
-    await user.courses.map(course => coursesIds.push(course.course.id));
+    });
+
+    if (existingWhishItem) {
+      return console.log('Course Already added!');
+    }
     console.timeEnd('buyCourseFree');
 
-    coursesIds.map(item => {
-      if (!args.id === item) {
-        return ctx.db.mutation.createUserCourse({
-          data: {
-            course: { connect: { id: args.id } },
-            user: { connect: { id: userId } },
-          },
-        });
-      }
-      console.log('Course Already added!');
+    return ctx.db.mutation.createUserCourse({
+      data: {
+        course: { connect: { id: args.id } },
+        user: { connect: { id: userId } },
+      },
     });
   },
   async removeTargetCourse(parent, args, ctx, info) {

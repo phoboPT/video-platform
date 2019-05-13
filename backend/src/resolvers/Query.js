@@ -6,6 +6,17 @@ function formatDate(date) {
 
   return hi;
 }
+
+function getDate() {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+  const yyyy = today.getFullYear();
+
+  const res = [yyyy, mm, dd];
+  return res;
+}
+
 const Query = {
   categories: forwardTo('db'),
   category: forwardTo('db'),
@@ -740,25 +751,25 @@ const Query = {
           `{
             id
             createdAt
-        course{
-          id
-          title
-        }
-        user{
-          id
-        }
-     }`
+            course{
+              id
+              title
+            }
+            user{
+              id
+            }
+          }`
         )
       )
     );
 
     const res = courses.flat();
 
-    res.sort(function(a, b) {
-      if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
-      if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
-      return 0;
-    });
+    // res.sort(function(a, b) {
+    //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
+    //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
+    //   return 0;
+    // });
 
     const result = [
       ...res
@@ -774,21 +785,22 @@ const Query = {
     return result;
   },
   async sellsByCourse(parent, args, ctx, info) {
-    console.time('sells');
+    console.time('sellsByCourse');
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
       throw new Error('you must be ssigned in!');
     }
-
+    // Get the actual month and year to dinamycally set the date
+    const date = getDate();
     // get all the buys from the instrutor courses list
     const courses = await ctx.db.query.userCourses(
       {
         where: {
           AND: [
             { course: { id: args.id } },
-            { createdAt_gte: '2019-05-01' },
-            { createdAt_lte: '2019-05-31' },
+            { createdAt_gte: `${date[0]}-${date[1]}-01` },
+            { createdAt_lte: `${date[0]}-${date[1]}-31` },
           ],
         },
         orderBy: 'createdAt_ASC',
@@ -808,13 +820,6 @@ const Query = {
 
     const res = courses.flat();
 
-    console.table(res);
-    // res.sort(function(a, b) {
-    //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
-    //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
-    //   return 0;
-    // });
-
     res[0].count = 0;
 
     const result = [
@@ -827,8 +832,76 @@ const Query = {
         }, new Map())
         .values(),
     ];
+    console.timeEnd('sellsByCourse');
+    return result;
+  },
+  async coursesStatsByDate(parent, args, ctx, info) {
+    console.time('courseStats');
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('you must be ssigned in!');
+    }
+    // get all the instrutor courses
+    const allInstrutorCourses = await ctx.db.query.courses(
+      {
+        where: {
+          user: { id: userId },
+        },
+      },
+      `{
+        id
+        title
+     }`
+    );
 
-    console.timeEnd('sells');
+    // get all the buys from the instrutor courses list
+    const courses = await Promise.all(
+      allInstrutorCourses.map(item =>
+        ctx.db.query.userCourses(
+          {
+            where: {
+              AND: [
+                { course: { id: item.id } },
+                { createdAt: `${args.year}-${args.month}-${args.day}` },
+              ],
+            },
+            orderBy: 'createdAt_DESC',
+          },
+          `{
+            id
+            createdAt
+            course{
+              id
+              title
+            }
+            user{
+              id
+            }
+          }`
+        )
+      )
+    );
+
+    const res = courses.flat();
+
+    // res.sort(function(a, b) {
+    //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
+    //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
+    //   return 0;
+    // });
+
+    const result = [
+      ...res
+        .reduce((mp, o) => {
+          if (!mp.has(o.course.id)) mp.set(o.course.id, { ...o, count: 0 });
+          mp.get(o.course.id).count += 1;
+          return mp;
+        }, new Map())
+        .values(),
+    ];
+
+    console.timeEnd('courseStats');
     return result;
   },
 };
