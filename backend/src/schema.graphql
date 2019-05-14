@@ -208,5 +208,5 @@ type Query {
   #Stats
   coursesStats: [Stats]
   sellsByCourse(id: ID): [Stats]
-  coursesStatsByDate(id: ID, initialDate: String): [Stats]
+  coursesStatsByDate(initialDate: String): [Stats]
 }

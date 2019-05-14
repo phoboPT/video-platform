@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CourseByDate from './Graphs/CourseByDate';
 import AllCourses from './Graphs/AllCourses';
+import AllByDay from './Graphs/AllByDay';
 import Loading from '../Static/Loading';
 
 const CURRENT_USER_QUERY = gql`
@@ -15,6 +16,7 @@ const CURRENT_USER_QUERY = gql`
       count
       createdAt
       course {
+        id
         title
       }
       user {
@@ -23,7 +25,22 @@ const CURRENT_USER_QUERY = gql`
     }
   }
 `;
-
+const ALL_BY_DATE = gql`
+  query ALL_BY_DATE($initialDate: String) {
+    coursesStatsByDate(initialDate: $initialDate) {
+      id
+      count
+      createdAt
+      course {
+        id
+        title
+      }
+      user {
+        id
+      }
+    }
+  }
+`;
 const COURSE_SELL_BY_TIME = gql`
   query COURSE_SELL_BY_TIME($id: ID) {
     sellsByCourse(id: $id) {
@@ -31,6 +48,7 @@ const COURSE_SELL_BY_TIME = gql`
       count
       createdAt
       course {
+        id
         title
       }
       user {
@@ -50,21 +68,28 @@ const Dooted = styled.div`
   border: 1px dotted red;
 `;
 class Stats extends Component {
-  componentWillMount() {
+  async componentWillMount() {
     const { query } = this.props;
 
     switch (query) {
       case 'CURRENT_USER_QUERY': {
-        this.setState({
+        await this.setState({
           query: CURRENT_USER_QUERY,
           view: parseInt(1),
         });
         break;
       }
       case 'COURSE_SELL_BY_TIME': {
-        this.setState({
+        await this.setState({
           query: COURSE_SELL_BY_TIME,
           view: parseInt(2),
+        });
+        break;
+      }
+      case 'ALL_BY_DATE': {
+        await this.setState({
+          query: ALL_BY_DATE,
+          view: parseInt(3),
         });
         break;
       }
@@ -78,7 +103,7 @@ class Stats extends Component {
 
   render() {
     const { query, view } = this.state;
-    const { courseId } = this.props;
+    const { courseId, date } = this.props;
     return (
       <>
         {view === 1 && (
@@ -117,11 +142,12 @@ class Stats extends Component {
                     <Loading />
                   </LoadStyle>
                 );
+              console.log('data', data);
               if (!data) {
                 return (
                   <CourseByDate
                     empty
-                    location="All Courses"
+                    location=""
                     legendPosition="top"
                     displayTitle="Hello"
                     label="Total Courses Selled"
@@ -135,10 +161,50 @@ class Stats extends Component {
                   <Dooted>
                     <CourseByDate
                       chartData={data}
-                      location="All Courses"
+                      location=""
                       legendPosition="top"
                       displayTitle="Hello"
                       label="Total Courses Selled"
+                      width={700}
+                      height={400}
+                    />
+                  </Dooted>
+                );
+            }}
+          </Query>
+        )}
+        {view === 3 && (
+          <Query query={query} variables={{ initialDate: date }}>
+            {({ data, loading }) => {
+              if (loading)
+                return (
+                  <LoadStyle>
+                    <Loading />
+                  </LoadStyle>
+                );
+              console.log('data', data.coursesStatsByDate.length < 1);
+              if (!data) {
+                return (
+                  <AllByDay
+                    empty
+                    location="01-05-2019"
+                    legendPosition="top"
+                    displayTitle="Hello"
+                    label="Total Courses Selled"
+                    width={700}
+                    height={400}
+                  />
+                );
+              }
+              if (data)
+                return (
+                  <Dooted>
+                    <AllByDay
+                      chartData={data}
+                      location="01-05-2019"
+                      legendPosition="top"
+                      displayTitle="Hello"
+                      label="All Courses By Date"
                       width={700}
                       height={400}
                     />

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import formatDate from '../../../lib/formatDate';
 
@@ -47,10 +47,10 @@ class CourseByDate extends Component {
 
   componentWillMount() {
     const { chartData } = this.props;
-    if (chartData) {
+    if (chartData.coursesStatsByDate.length > 0) {
       this.createData();
       this.setState({
-        title: chartData.sellsByCourse[0].course.title,
+        title: chartData.coursesStatsByDate[0].course.title,
       });
     }
   }
@@ -60,10 +60,13 @@ class CourseByDate extends Component {
     const data = [];
     const labels = [];
 
-    let initial = formatDate(chartData.sellsByCourse[0].createdAt).splice(0, 1);
+    let initial = formatDate(chartData.coursesStatsByDate[0].createdAt).splice(
+      0,
+      1
+    );
     initial = initial[0];
 
-    chartData.sellsByCourse.map(item => {
+    chartData.coursesStatsByDate.map(item => {
       let date = formatDate(item.createdAt);
       date = date[0];
       data.push(item.count);
@@ -76,7 +79,7 @@ class CourseByDate extends Component {
 
       datasets: [
         {
-          label: chartData.sellsByCourse[0].course.title,
+          label: chartData.coursesStatsByDate[0].course.title,
           fill: false,
           lineTension: 0.1,
           backgroundColor: 'rgba(75,192,192,0.4)',
@@ -117,7 +120,7 @@ class CourseByDate extends Component {
     const { totalCourses, title, defaultData } = this.state;
     if (empty) {
       return (
-        <Line
+        <Bar
           data={defaultData}
           width={width}
           height={height}
@@ -138,7 +141,7 @@ class CourseByDate extends Component {
       );
     }
     return (
-      <Line
+      <Bar
         data={totalCourses}
         width={width}
         height={height}
@@ -166,6 +169,7 @@ CourseByDate.propTypes = {
   height: PropTypes.number,
   displayLegend: PropTypes.bool,
   legendPosition: PropTypes.string,
+  empty: PropTypes.bool,
 };
 
 export default CourseByDate;

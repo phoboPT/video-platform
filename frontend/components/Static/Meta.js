@@ -12,6 +12,7 @@ const Meta = () => (
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
       rel="stylesheet"
     />
+    <link href="../static/react-datepicker.css" rel="stylesheet" />
 
     <link
       crossOrigin="anonymous"

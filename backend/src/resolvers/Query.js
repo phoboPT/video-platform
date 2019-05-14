@@ -877,6 +877,9 @@ const Query = {
      }`
     );
 
+    console.log(args.initialDate);
+    const date = args.initialDate.split('-');
+    console.log('data', date);
     // get all the buys from the instrutor courses list
     const courses = await Promise.all(
       allInstrutorCourses.map(item =>
@@ -885,7 +888,13 @@ const Query = {
             where: {
               AND: [
                 { course: { id: item.id } },
-                { createdAt: `${args.year}-${args.month}-${args.day}` },
+                {
+                  createdAt_gte: `${date[0]}-${date[1]}-${parseInt(date[2])}`,
+                },
+                {
+                  createdAt_lte: `${date[0]}-${date[1]}-${parseInt(date[2]) +
+                    1}`,
+                },
               ],
             },
             orderBy: 'createdAt_DESC',
@@ -906,7 +915,6 @@ const Query = {
     );
 
     const res = courses.flat();
-
     // res.sort(function(a, b) {
     //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
     //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
@@ -924,6 +932,7 @@ const Query = {
     ];
 
     console.timeEnd('courseStats');
+    console.table(result);
     return result;
   },
 };
