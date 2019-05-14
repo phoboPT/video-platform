@@ -3,6 +3,7 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import swal from '@sweetalert/with-react';
 import Form from '../../styles/Form';
 import Error from '../../Static/ErrorMessage.js';
 import { ALL_VIDEOS_USER } from '../MyVideos/Videos';
@@ -10,6 +11,8 @@ import { ALL_COURSES_QUERY } from '../../Home/CoursesList/ListAllCourses';
 import validateExtension from '../../../lib/validateFileExtensions';
 import { SINGLE_VIDEO_QUERY } from '../MyVideos/UpdateVideo';
 import Loading from '../../Static/Loading';
+import { fileExtensions, videoExtensions } from '../../../lib/formatExtensions';
+import { Alert } from '../../styles/AlertStyles';
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
@@ -99,28 +102,49 @@ class CreateVideo extends Component {
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'video-platform');
-    const res = await fetch(
-      'https://api.cloudinary.com/v1_1/deky2cxlm/video/upload',
-      { method: 'POST', body: data }
-    );
-    const file = await res.json();
+    const fileName = files[0].name;
+    const isValid = validateExtension(fileName, 'video');
+    if (isValid) {
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/deky2cxlm/video/upload',
+        { method: 'POST', body: data }
+      );
+      const file = await res.json();
 
-    const s = parseInt(file.duration % 60);
-    const m = parseInt((file.duration / 60) % 60);
-    const duration = `${m}:${s}`;
-    this.setState({
-      urlVideo: file.secure_url,
-      isUploading: 2,
-      duration,
-    });
+      const s = parseInt(file.duration % 60);
+      const m = parseInt((file.duration / 60) % 60);
+      const duration = `${m}:${s}`;
+      this.setState({
+        urlVideo: file.secure_url,
+        isUploading: 2,
+        duration,
+      });
 
-    const {
-      data: {
-        createVideo: { id },
-      },
-    } = await createVideoMutation();
-    // change Video id
-    updateSections(video, id, section);
+      const {
+        data: {
+          createVideo: { id },
+        },
+      } = await createVideoMutation();
+      // change Video id
+      updateSections(video, id, section);
+    } else {
+      swal({
+        title: 'Filename not Supported',
+        content: (
+          <Alert>
+            <h3>List of Supported files</h3>
+            <div className="content">
+              {videoExtensions.map((item, index) => (
+                <p>{item}</p>
+              ))}
+            </div>
+          </Alert>
+        ),
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      });
+    }
   };
 
   uploadFile = async (e, createVideoMutation) => {
@@ -133,7 +157,7 @@ class CreateVideo extends Component {
     data.append('file', files[0]);
     data.append('upload_preset', 'fileUpload');
     const fileName = files[0].name;
-    const isValid = validateExtension(fileName);
+    const isValid = validateExtension(fileName, 'file');
 
     if (isValid) {
       const res = await fetch(
@@ -162,7 +186,22 @@ class CreateVideo extends Component {
 
       updateFiles(id, newFile);
     } else {
-      alert('File Format not supported');
+      swal({
+        title: 'Filename not Supported',
+        content: (
+          <Alert>
+            <h3>List of Supported files</h3>
+            <div className="content">
+              {fileExtensions.map((item, index) => (
+                <p>{item}</p>
+              ))}
+            </div>
+          </Alert>
+        ),
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      });
     }
   };
 

@@ -815,6 +815,7 @@ const Query = {
     }
     // Get the actual month and year to dinamycally set the date
     const date = getDate();
+    console.log(date);
     // get all the buys from the instrutor courses list
     const courses = await ctx.db.query.userCourses(
       {
@@ -855,6 +856,7 @@ const Query = {
         .values(),
     ];
     console.timeEnd('sellsByCourse');
+    console.table(result);
     return result;
   },
   async coursesStatsByDate(parent, args, ctx, info) {
@@ -877,9 +879,7 @@ const Query = {
      }`
     );
 
-    console.log(args.initialDate);
     const date = args.initialDate.split('-');
-    console.log('data', date);
     // get all the buys from the instrutor courses list
     const courses = await Promise.all(
       allInstrutorCourses.map(item =>

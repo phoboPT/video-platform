@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
+import PropTypes from 'prop-types';
 import { CURRENT_USER_QUERY } from '../../Authentication/User';
 
 const ADD_TO_CART_MUTATION = gql`
@@ -29,5 +30,9 @@ class AddToCart extends Component {
     );
   }
 }
+
+AddToCart.propTypes = {
+  id: PropTypes.string.isRequired,
+};
 
 export default AddToCart;

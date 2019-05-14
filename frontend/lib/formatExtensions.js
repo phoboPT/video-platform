@@ -1,4 +1,4 @@
-const supportedExtensions = [
+const fileExtensions = [
   'rar',
   'zip',
   's7z',
@@ -13,4 +13,21 @@ const supportedExtensions = [
   'pdf',
 ];
 
-export { supportedExtensions };
+const videoExtensions = [
+  'webm',
+  'mkv',
+  'flv',
+  'ogg',
+  'avi',
+  'mov',
+  'wmv',
+  'mp4',
+  'mpg',
+  'mp2',
+  'mpeg',
+  'mpv',
+  'm4v',
+];
+
+const imageExtensions = ['jpeg', 'jpg', 'png', 'webp', 'svg '];
+export { fileExtensions, videoExtensions, imageExtensions };

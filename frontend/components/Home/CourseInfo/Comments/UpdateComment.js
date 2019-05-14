@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Error from '../../../Static/ErrorMessage';
 import { ALL_COMMENTS_QUERY } from './ListComments';
 import {
@@ -10,6 +11,7 @@ import {
   ALL_COURSES_QUERY,
   ALL_COURSES_RATING,
 } from '../../CoursesList/ListAllCourses';
+
 import Loading from '../../../Static/Loading';
 
 const Style = styled.div`
@@ -83,24 +85,27 @@ class UpdateComment extends Component {
   };
 
   update = async (e, updateCommentMutation) => {
+    const { data } = this.props;
     e.preventDefault();
 
     const res = await updateCommentMutation({
       variables: {
-        id: this.props.data.id,
+        id: data.id,
         ...this.state,
       },
     });
   };
 
   render() {
-    if (this.state.rate !== this.props.children.props.initialValue) {
-      this.setState({ rate: this.props.children.props.initialValue });
+    const { rate } = this.state;
+    const { children, data, changeState } = this.props;
+    if (rate !== children.props.initialValue) {
+      this.setState({ rate: children.props.initialValue });
     }
     return (
       <Query
         query={SINGLE_COMMENT_QUERY}
-        variables={{ id: this.props.data.id }}
+        variables={{ id: data.id }}
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
@@ -120,10 +125,10 @@ class UpdateComment extends Component {
           },
         ]}
       >
-        {({ data, loading }) => {
+        {({ data: newData, loading }) => {
           if (loading) return <Loading />;
-          if (!data) return <p>No Comments</p>;
-          if (data)
+          if (!newData) return <p>No Comments</p>;
+          if (newData)
             return (
               <Style>
                 <Mutation
@@ -131,7 +136,7 @@ class UpdateComment extends Component {
                   refetchQueries={[
                     {
                       query: ALL_COMMENTS_QUERY,
-                      variables: { id: data.rateCourse.course.id },
+                      variables: { id: newData.rateCourse.course.id },
                     },
                   ]}
                 >
@@ -139,16 +144,16 @@ class UpdateComment extends Component {
                     <form
                       onSubmit={e => {
                         this.update(e, updateCommentMutation);
-                        this.props.changeState();
+                        changeState();
                       }}
                     >
                       <Error error={error} />
 
-                      {this.props.children}
+                      {children}
                       <fieldset aria-busy={loading} disabled={loading}>
                         <label htmlFor="comment">
                           <input
-                            defaultValue={data.rateCourse.comment}
+                            defaultValue={newData.rateCourse.comment}
                             name="comment"
                             onChange={this.handleChange}
                             placeholder="comment"
@@ -158,7 +163,7 @@ class UpdateComment extends Component {
                           />
                         </label>
                         <button type="submit">Save</button>
-                        <button onClick={this.props.changeState}>
+                        <button type="button" onClick={changeState}>
                           Cancelar
                         </button>
                       </fieldset>
@@ -172,5 +177,11 @@ class UpdateComment extends Component {
     );
   }
 }
+
+UpdateComment.propTypes = {
+  children: PropTypes.object.isRequired,
+  data: PropTypes.object,
+  changeState: PropTypes.func.isRequired,
+};
 
 export default UpdateComment;

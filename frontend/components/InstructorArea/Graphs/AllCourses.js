@@ -17,6 +17,27 @@ class AllCourses extends Component {
 
   state = {
     totalCourses: {},
+    options: {
+      title: {
+        display: this.props.displayTitle,
+        text: this.props.title,
+        fontSize: 25,
+      },
+      legend: {
+        display: this.props.displayLegend,
+        position: this.props.legendPosition,
+      },
+      maintainAspectRatio: false,
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
   };
 
   componentWillMount() {
@@ -39,8 +60,6 @@ class AllCourses extends Component {
       data.push(item.count);
       labels.push(item.course.title);
     });
-    data.push(6);
-    data.push(0);
     const newData = {
       labels: [...labels],
 
@@ -76,33 +95,14 @@ class AllCourses extends Component {
   };
 
   render() {
-    const {
-      displayTitle,
-      location,
-      displayLegend,
-      legendPosition,
-      width,
-      height,
-    } = this.props;
-    const { totalCourses } = this.state;
+    const { width, height } = this.props;
+    const { totalCourses, options } = this.state;
     return (
       <Bar
         data={totalCourses}
         width={width}
         height={height}
-        options={{
-          title: {
-            display: displayTitle,
-            text: `${location}`,
-            fontSize: 25,
-          },
-          legend: {
-            display: displayLegend,
-            position: legendPosition,
-          },
-
-          maintainAspectRatio: false,
-        }}
+        options={options}
       />
     );
   }

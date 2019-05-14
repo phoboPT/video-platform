@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import gql from 'graphql-tag';
 import Link from 'next/link';
 import React, { Component } from 'react';

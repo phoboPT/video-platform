@@ -11,10 +11,32 @@ class CourseByDate extends Component {
     legendPosition: 'right',
     height: 300,
     width: 600,
+    title: 'All Stats',
   };
 
   state = {
     totalCourses: {},
+    options: {
+      title: {
+        display: this.props.displayTitle,
+        text: this.props.title,
+        fontSize: 25,
+      },
+      legend: {
+        display: this.props.displayLegend,
+        position: this.props.legendPosition,
+      },
+      maintainAspectRatio: false,
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        ],
+      },
+    },
     defaultData: {
       labels: ['Zero', 'Ten'],
 
@@ -50,7 +72,7 @@ class CourseByDate extends Component {
     if (chartData.coursesStatsByDate.length > 0) {
       this.createData();
       this.setState({
-        title: chartData.coursesStatsByDate[0].course.title,
+        title: 'All Stats',
       });
     }
   }
@@ -59,7 +81,6 @@ class CourseByDate extends Component {
     const { chartData } = this.props;
     const data = [];
     const labels = [];
-
     let initial = formatDate(chartData.coursesStatsByDate[0].createdAt).splice(
       0,
       1
@@ -70,16 +91,14 @@ class CourseByDate extends Component {
       let date = formatDate(item.createdAt);
       date = date[0];
       data.push(item.count);
-      labels.push(formatDate(item.createdAt));
+      labels.push(item.course.title);
     });
-    data.push(6);
-    data.push(0);
     const newData = {
       labels: [...labels],
 
       datasets: [
         {
-          label: chartData.coursesStatsByDate[0].course.title,
+          label: 'All Stats',
           fill: false,
           lineTension: 0.1,
           backgroundColor: 'rgba(75,192,192,0.4)',
@@ -117,26 +136,14 @@ class CourseByDate extends Component {
       legendPosition,
       empty,
     } = this.props;
-    const { totalCourses, title, defaultData } = this.state;
+    const { totalCourses, title, defaultData, options } = this.state;
     if (empty) {
       return (
         <Bar
           data={defaultData}
           width={width}
           height={height}
-          options={{
-            title: {
-              display: displayTitle,
-              text: 'No Data Yet',
-              fontSize: 25,
-            },
-            legend: {
-              display: displayLegend,
-              position: legendPosition,
-            },
-
-            maintainAspectRatio: false,
-          }}
+          options={options}
         />
       );
     }
@@ -145,18 +152,7 @@ class CourseByDate extends Component {
         data={totalCourses}
         width={width}
         height={height}
-        options={{
-          title: {
-            display: displayTitle,
-            text: title,
-            fontSize: 25,
-          },
-          legend: {
-            display: displayLegend,
-            position: legendPosition,
-          },
-          maintainAspectRatio: false,
-        }}
+        options={options}
       />
     );
   }
@@ -170,6 +166,7 @@ CourseByDate.propTypes = {
   displayLegend: PropTypes.bool,
   legendPosition: PropTypes.string,
   empty: PropTypes.bool,
+  title: PropTypes.string.isRequired,
 };
 
 export default CourseByDate;

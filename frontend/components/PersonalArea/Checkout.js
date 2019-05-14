@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import StripeCheckout from 'react-stripe-checkout';
+import swal from '@sweetalert/with-react';
 import calcTotalPrice from '../../lib/calcTotalPrice';
 import User, { CURRENT_USER_QUERY } from '../Authentication/User';
-import Error from '../Static/ErrorMessage';
+import { Alert } from '../styles/AlertStyles';
 
 const CREATE_ORDER_MUTATION = gql`
   mutation createOrder($token: String!) {
@@ -26,12 +27,25 @@ const CREATE_ORDER_MUTATION = gql`
 export class Checkout extends Component {
   onToken = async (res, createOrder) => {
     NProgress.start();
-    const order = await createOrder({
+    await createOrder({
       variables: {
         token: res.id,
       },
     }).catch(err => {
-      alert(err.message);
+      swal({
+        title: 'Filename not Supported',
+        content: (
+          <Alert>
+            <h3>Something went wrong</h3>
+            <div className="content">
+              <p>{err.message}</p>
+            </div>
+          </Alert>
+        ),
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      });
     });
 
     Router.push({
@@ -40,6 +54,7 @@ export class Checkout extends Component {
   };
 
   render() {
+    const [children] = this.props;
     return (
       <User>
         {({ data: { me } }) => {
@@ -61,7 +76,7 @@ export class Checkout extends Component {
                   stripeKey="pk_test_puZklfwe9Fq1Cx4b25xqqJsU"
                   token={res => this.onToken(res, createOrder)}
                 >
-                  {this.props.children}
+                  {children}
                 </StripeCheckout>
               )}
             </Mutation>
@@ -71,5 +86,9 @@ export class Checkout extends Component {
     );
   }
 }
+
+Checkout.propTypes = {
+  children: PropTypes.object.isRequired,
+};
 
 export default Checkout;

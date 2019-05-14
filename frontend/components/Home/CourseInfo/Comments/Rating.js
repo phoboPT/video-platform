@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RatingComponent from 'react-rating';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   grid: flex;
@@ -32,15 +33,19 @@ class Rating extends Component {
   };
 
   change = e => {
+    const { getRating } = this.props;
     this.setState({ value: e });
-    this.props.getRating(e);
+    getRating(e);
   };
 
   componentDidMount = () => {
-    this.setState({ value: this.props.initialValue });
+    const { initialValue } = this.props;
+    this.setState({ value: initialValue });
   };
 
   render() {
+    const { value, readOnly } = this.state;
+    const { showTotal, totalComments } = this.props;
     return (
       <Container>
         <div className="left">
@@ -49,19 +54,26 @@ class Rating extends Component {
             emptySymbol="far fa-star fa-2x"
             fractions={2}
             fullSymbol="fa fa-star fa-2x"
-            initialRating={parseInt(this.state.value)}
+            initialRating={parseInt(value)}
             onClick={this.change}
             placeholderSymbol="fa fa-star fa-2x"
-            readonly={this.props.readOnly}
+            readonly={readOnly}
           />
         </div>
         <div className="rigth">
-          <strong>{Math.round(this.state.value * 10) / 10}</strong>{' '}
-          {this.props.showTotal && this.props.totalComments}
+          <strong>{Math.round(value * 10) / 10}</strong>{' '}
+          {showTotal && totalComments}
         </div>
       </Container>
     );
   }
 }
+
+Rating.propTypes = {
+  initialValue: PropTypes.number,
+  showTotal: PropTypes.bool,
+  totalComments: PropTypes.number,
+  getRating: PropTypes.func,
+};
 
 export default Rating;

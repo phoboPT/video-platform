@@ -27,8 +27,9 @@ class FilterCategory extends Component {
   };
 
   handleChange = e => {
+    const { changeCategory } = this.props;
     this.setState({ categoryId: e.target.value });
-    this.props.changeCategory(e.target.value);
+    changeCategory(e.target.value);
   };
 
   render() {

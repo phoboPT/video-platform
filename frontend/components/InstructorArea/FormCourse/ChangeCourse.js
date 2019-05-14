@@ -322,7 +322,7 @@ class ChangeCourse extends Component {
 
 ChangeCourse.propTypes = {
   id: PropTypes.string.isRequired,
-  changeIntructorView: PropTypes.func.isRequired,
+  changeIntructorView: PropTypes.func,
 };
 
 export default ChangeCourse;

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
@@ -37,29 +36,27 @@ export class Video extends Component {
 
   render() {
     const { comments } = this.props;
+    const { edit, rating } = this.state;
     return (
       <User>
         {({ data: { me } }) => (
           <List>
             <div className="left-side">
               <a>
-                <img src={me.thumbnail} />
+                <img src={me.thumbnail} alt="Profile Pic" />
               </a>
               <span id="name">{comments.user.name}</span>
               <p> Posted in: {formatDate(comments.createdAt)}</p>
             </div>
             <div className="middle">
-              {this.state.edit === true ? (
+              {edit === true ? (
                 <UpdateComment changeState={this.changeState} data={comments}>
-                  <Rating
-                    getRating={this.getRating}
-                    initialValue={this.state.rating}
-                  />
+                  <Rating getRating={this.getRating} initialValue={rating} />
                 </UpdateComment>
               ) : (
                 <>
                   <div id="rating">
-                    <Rating readOnly initialValue={this.state.rating} />
+                    <Rating readOnly initialValue={rating} />
                   </div>
                   <div id="updateComment">
                     <span id="comment">{comments.comment}</span>
@@ -74,11 +71,13 @@ export class Video extends Component {
                     <ul>
                       <li>
                         <a>
-                          <img src="../static/threedots.png" />
+                          <img src="../static/threedots.png" alt="Options" />
                         </a>
                         <ul className="dropdown">
                           <li className="item">
-                            <button onClick={this.changeEdit}>Edit</button>
+                            <button type="button" onClick={this.changeEdit}>
+                              Edit
+                            </button>
                           </li>
                           <li className="item">
                             <DeleteComment data={comments}>

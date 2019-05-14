@@ -22,6 +22,10 @@ class VideoPlayer extends Component {
     courseId: PropTypes.string.isRequired,
   };
 
+  state = {
+    ended: false,
+  };
+
   constructor(props) {
     super(props);
     // Don't call this.setState() here!

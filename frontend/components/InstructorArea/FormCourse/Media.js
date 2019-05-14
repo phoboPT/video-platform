@@ -34,7 +34,7 @@ const Container = styled.div`
 
 class Media extends Component {
   render() {
-    const { sections, updateState, courseId, children } = this.props;
+    const { sections, updateState, courseId } = this.props;
     return (
       <Container>
         <p id="message">
@@ -60,7 +60,6 @@ Media.propTypes = {
   sections: PropTypes.object.isRequired,
   updateState: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
-  children: PropTypes.object.isRequired,
 };
 
 export default Media;

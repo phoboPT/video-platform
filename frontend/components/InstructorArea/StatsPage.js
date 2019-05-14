@@ -59,7 +59,8 @@ class StatsPage extends Component {
   };
 
   changeView = e => {
-    this.setState({ view: parseInt(e.target.id) });
+    const { key } = this.state;
+    this.setState({ view: parseInt(e.target.id), key: key + 1 });
   };
 
   handleChange = date => {
@@ -125,7 +126,9 @@ class StatsPage extends Component {
 
                   <div className="graphs">
                     <div className="first">
-                      {view === 1 && <Stats query="CURRENT_USER_QUERY" />}
+                      {view === 1 && (
+                        <Stats key={key} query="CURRENT_USER_QUERY" />
+                      )}
                       {view === 2 && (
                         <Stats
                           key={key}
@@ -141,6 +144,9 @@ class StatsPage extends Component {
                             selected={new Date(startDate)}
                             onChange={this.handleChange}
                           />
+                          <br />
+                          <br />
+                          <br />
                           <Stats
                             key={key}
                             query="ALL_BY_DATE"

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
 import { ALL_COMMENTS_QUERY } from './ListComments';
 import {
   ALL_COURSE_INTERESTS,
@@ -19,11 +20,12 @@ const DELETE_COMMENT_MUTATION = gql`
 `;
 class DeleteComment extends Component {
   update = (cache, payload) => {
+    const { course } = this.props.data;
     // manually update the cache on the client, so it matches the server
     // 1. Read the cache for the comments we want
     const data = cache.readQuery({
       query: ALL_COMMENTS_QUERY,
-      variables: { id: this.props.data.course.id },
+      variables: { id: course.id },
     });
 
     // 2. Filter the deleted itemout of the page
@@ -34,7 +36,7 @@ class DeleteComment extends Component {
     cache.writeQuery({
       query: ALL_COMMENTS_QUERY,
       data,
-      variables: { id: this.props.data.course.id },
+      variables: { id: course.id },
     });
   };
 
@@ -67,7 +69,7 @@ class DeleteComment extends Component {
           },
           {
             query: CHECK_RATE_COURSE_QUERY,
-            variables: { courseId: this.props.data.course.id },
+            variables: { courseId: data.course.id },
           },
           {
             query: ALL_COURSES_RATING,
@@ -91,5 +93,10 @@ class DeleteComment extends Component {
     );
   }
 }
+
+DeleteComment.propTypes = {
+  data: PropTypes.object,
+  children: PropTypes.object.isRequired,
+};
 
 export default DeleteComment;

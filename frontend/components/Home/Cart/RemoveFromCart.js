@@ -3,6 +3,7 @@ import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import swal from '@sweetalert/with-react';
 import { CURRENT_USER_QUERY } from '../../Authentication/User';
 
 const REMOVE_FROM_CART_MUTATION = gql`
@@ -23,7 +24,7 @@ const BigButton = styled.button`
   }
 `;
 
-export class RemoveFromCart extends Component {
+class RemoveFromCart extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
   };
@@ -58,7 +59,14 @@ export class RemoveFromCart extends Component {
           <BigButton
             disabled={loading}
             onClick={() => {
-              removeFromCart().catch(err => alert(err.message));
+              removeFromCart().catch(err =>
+                swal(
+                  <div>
+                    <h1>Error</h1>
+                    <p>{err}</p>
+                  </div>
+                )
+              );
             }}
             title="Delete Item"
           >

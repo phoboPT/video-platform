@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
+import swal from '@sweetalert/with-react';
 import Error from '../../../Static/ErrorMessage';
 import { ALL_COMMENTS_QUERY } from './ListComments';
 import Rating from './Rating';
@@ -62,16 +63,24 @@ class CommentForm extends Component {
   };
 
   saveData = async (mutation, e) => {
+    const { rating } = this.state;
     e.preventDefault();
-    if (this.state.rating) {
+    if (rating) {
       const res = await mutation();
       this.setState({ comment: '' });
     } else {
-      alert('Please Add a Rating to Submit');
+      swal({
+        title: 'No Rating',
+        text: 'You have to give a rating to leave a comment!',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      });
     }
   };
 
   render() {
+    const { courseId, comment } = this.state;
     return (
       <Mutation
         mutation={ADD_RATING}
@@ -79,7 +88,7 @@ class CommentForm extends Component {
         refetchQueries={[
           {
             query: ALL_COMMENTS_QUERY,
-            variables: { id: this.state.courseId },
+            variables: { id: courseId },
           },
           {
             query: ALL_COURSES_QUERY,
@@ -95,7 +104,7 @@ class CommentForm extends Component {
           },
           {
             query: CHECK_RATE_COURSE_QUERY,
-            variables: { courseId: this.state.courseId },
+            variables: { courseId },
           },
           {
             query: ALL_COURSES_RATING,
@@ -129,7 +138,7 @@ class CommentForm extends Component {
                   placeholder="Write your comment"
                   required
                   rows="6"
-                  value={this.state.comment}
+                  value={comment}
                 />
                 <button type="submit">Comment</button>
               </fieldset>

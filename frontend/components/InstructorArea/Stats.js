@@ -142,7 +142,6 @@ class Stats extends Component {
                     <Loading />
                   </LoadStyle>
                 );
-              console.log('data', data);
               if (!data) {
                 return (
                   <CourseByDate
@@ -182,12 +181,10 @@ class Stats extends Component {
                     <Loading />
                   </LoadStyle>
                 );
-              console.log('data', data.coursesStatsByDate.length < 1);
               if (!data) {
                 return (
                   <AllByDay
                     empty
-                    location="01-05-2019"
                     legendPosition="top"
                     displayTitle="Hello"
                     label="Total Courses Selled"
@@ -201,7 +198,6 @@ class Stats extends Component {
                   <Dooted>
                     <AllByDay
                       chartData={data}
-                      location="01-05-2019"
                       legendPosition="top"
                       displayTitle="Hello"
                       label="All Courses By Date"
