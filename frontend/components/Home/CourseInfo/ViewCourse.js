@@ -198,7 +198,7 @@ class ViewCourse extends Component {
                                         : course.totalRate /
                                           course.totalComments
                                     }
-                                    totalComments={course.totalComments}
+                                    totalComments={course.totalComments || 0}
                                   />
                                 </div>
                                 <h2>{course.title}</h2>

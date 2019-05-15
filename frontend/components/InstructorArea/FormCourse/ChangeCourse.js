@@ -184,7 +184,7 @@ class ChangeCourse extends Component {
   state = {
     selected: 1,
     createCourse: this.props.createCourse,
-    view: 2,
+    view: 1,
     id: this.props.id,
     sections: {
       columnOrder: [],
