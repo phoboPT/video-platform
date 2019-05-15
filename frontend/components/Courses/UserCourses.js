@@ -165,7 +165,6 @@ class UserCourses extends Component {
                           <CourseItem
                             course={course.course}
                             key={course.course.id}
-                            update={false}
                           />
                         ))}
                       </ItemList>

@@ -7,7 +7,6 @@ import SimpleUser from '../../Authentication/SimpleUser';
 import CommentForm from './Comments/CommentForm';
 import ListComments from './Comments/ListComments';
 import Overview from './Overview';
-import VideoItem from './VideoItem';
 import Rating from './Comments/Rating';
 import Loading from '../../Static/Loading';
 
@@ -25,6 +24,8 @@ const SINGLE_COURSE_QUERY = gql`
       user {
         id
         name
+        thumbnail
+        profession
       }
       videos {
         video {

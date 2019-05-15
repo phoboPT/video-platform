@@ -7,6 +7,8 @@ import Error from '../Static/ErrorMessage';
 import LinkStyle from '../styles/LinkStyle';
 import { Container } from '../styles/Container';
 import User from '../Authentication/User';
+// import ReactQuill from "react-quill"; // ES6
+import Editor from '../InstructorArea/Editor';
 
 const Style = styled.div`
   margin-left: 2rem;
@@ -33,11 +35,25 @@ const Style = styled.div`
 `;
 
 const UPDATE_USER_MUTATION = gql`
-  mutation UPDATE_USER_MUTATION($id: ID!, $name: String, $email: String) {
-    updateUser(id: $id, name: $name, email: $email) {
+  mutation UPDATE_USER_MUTATION(
+    $id: ID!
+    $name: String
+    $email: String
+    $profession: String
+    $description: String
+  ) {
+    updateUser(
+      id: $id
+      name: $name
+      email: $email
+      profession: $profession
+      description: $description
+    ) {
       id
       name
       email
+      profession
+      description
     }
   }
 `;
@@ -49,6 +65,12 @@ class UpdateUser extends Component {
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
     this.setState({ [name]: val });
+  };
+
+  changeQuill = e => {
+    this.setState({
+      description: e,
+    });
   };
 
   update = async (e, updateUserMutation, userID) => {
@@ -72,48 +94,58 @@ class UpdateUser extends Component {
         {({ data: { me } }) => (
           <LinkStyle>
             <Style>
-              <Container className="container">
-                <section id="main">
-                  <img alt="User Default" src="../../static/userDefault.jpg" />
-                </section>
-                <Mutation
-                  mutation={UPDATE_USER_MUTATION}
-                  variables={this.state}
-                >
-                  {(updateUser, { loading, error }) => (
-                    <Form onSubmit={e => this.update(e, updateUser, me.id)}>
-                      <Error error={error} />
+              <Mutation mutation={UPDATE_USER_MUTATION} variables={this.state}>
+                {(updateUser, { loading, error }) => (
+                  <Form onSubmit={e => this.update(e, updateUser, me.id)}>
+                    <Error error={error} />
 
-                      <fieldset disabled={loading} aria-busy={loading}>
-                        <h2>Edit My Account </h2>
-                        <label htmlFor="Name">
-                          Name
-                          <input
-                            type="text"
-                            name="name"
-                            placeholder="name"
-                            defaultValue={me.name}
-                            onChange={this.handleChange}
-                          />
-                        </label>
-                        <label htmlFor="Email">
-                          Email
-                          <input
-                            type="text"
-                            name="email"
-                            placeholder="email"
-                            defaultValue={me.email}
-                            onChange={this.handleChange}
-                          />
-                        </label>
-                        <button type="submit">
-                          Sav{loading ? 'ing' : 'e'} Alterations
-                        </button>
-                      </fieldset>
-                    </Form>
-                  )}
-                </Mutation>
-              </Container>
+                    <fieldset disabled={loading} aria-busy={loading}>
+                      <h2>Edit My Account </h2>
+                      <label htmlFor="Name">
+                        Name
+                        <input
+                          type="text"
+                          name="name"
+                          placeholder="name"
+                          defaultValue={me.name}
+                          onChange={this.handleChange}
+                        />
+                      </label>
+                      <label htmlFor="Email">
+                        Email
+                        <input
+                          type="text"
+                          name="email"
+                          placeholder="email"
+                          defaultValue={me.email}
+                          onChange={this.handleChange}
+                        />
+                      </label>
+                      <label htmlFor="Profession">
+                        Ocupation or Title
+                        <input
+                          type="text"
+                          name="profession"
+                          placeholder="profession"
+                          defaultValue={me.profession}
+                          onChange={this.handleChange}
+                        />
+                      </label>
+                      <label htmlFor="description">
+                        Description
+                        <Editor
+                          id="description"
+                          data={me.description}
+                          changeQuill={this.changeQuill}
+                        />{' '}
+                      </label>
+                      <button type="submit">
+                        Sav{loading ? 'ing' : 'e'} Alterations
+                      </button>
+                    </fieldset>
+                  </Form>
+                )}
+              </Mutation>
             </Style>
           </LinkStyle>
         )}

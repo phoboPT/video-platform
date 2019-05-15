@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Markdown from 'react-markdown';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
+import Link from 'next/link';
 import VideoSection from './VideoSection/VideoSection';
 import { SINGLE_VIDEO_QUERY } from '../../VideoManager/ShowVideo';
 import sumAll from '../../../lib/sumAll';
@@ -11,9 +12,8 @@ const Container = styled.div`
   width: 1000px;
   margin: 0 auto;
   #title {
-    font-size: 24px;
+    font-size: 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid rgba(58, 58, 58, 0.6);
   }
 
   #description-title {
@@ -30,20 +30,34 @@ const Container = styled.div`
     border-bottom: 1px solid rgba(58, 58, 58, 0.6);
     padding-bottom: 10px;
   }
-  #author-title {
-    padding-top: 10px;
-    flex: 1;
-    order: 1;
-  }
-  #author {
-    order: 2;
-    flex: 3;
-  }
+
   #author-container {
     border-bottom: 1px solid rgba(58, 58, 58, 0.6);
+    #author-name {
+      display: flex;
+      padding-bottom: 10px;
+      #author-title {
+        order: 1;
+      }
+      #author {
+        padding-left: 2rem;
+        order: 2;
+        flex: 3;
+      }
+    }
 
-    display: flex;
-    padding-bottom: 10px;
+    #see-more {
+      cursor: pointer;
+      padding: 1rem;
+      border: none;
+      font-size: 15px;
+      margin: 2rem;
+      border-radius: 12px;
+      background: E7E7E7;
+    }
+    img {
+      height: 100px;
+    }
   }
   #course-content {
     #title-content {
@@ -65,6 +79,7 @@ const Container = styled.div`
     }
   }
 `;
+
 class Overview extends Component {
   state = {
     id: this.props.data.id,
@@ -103,12 +118,34 @@ class Overview extends Component {
                   </div>
                 </div>
                 <div id="author-container">
-                  <div id="author-title">
-                    <p>Instructor</p>
+                  <div id="title">
+                    <p>About The Instructor</p>
                   </div>
-                  <div id="author">
-                    <p> {propsData.user.name} </p>
+                  <div id="author-name">
+                    <div id="author-title">
+                      <img alt="thumbnail" src={propsData.user.thumbnail} />
+                    </div>
+                    <div id="author">
+                      <p> {propsData.user.name} </p>
+                      <p>
+                        {propsData.user.profession !== undefined
+                          ? propsData.user.profession
+                          : ''}
+                      </p>
+                    </div>
                   </div>
+                  <Link
+                    href={{
+                      pathname: '/instructor',
+                      query: {
+                        id: propsData.user.id,
+                      },
+                    }}
+                  >
+                    <button id="see-more" type="button">
+                      Know more about..
+                    </button>
+                  </Link>
                 </div>
                 <div id="course-content">
                   <p id="title-content"> Course Content </p>

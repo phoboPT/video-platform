@@ -8,6 +8,8 @@ const CURRENT_USER_QUERY = gql`
       id
       email
       name
+      profession
+      description
       thumbnail
       permission
       wishlist {

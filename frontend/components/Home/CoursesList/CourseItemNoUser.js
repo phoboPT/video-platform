@@ -2,17 +2,9 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import orderCourses from '../../../lib/orderCourses';
-import User from '../../Authentication/User';
-import ItemStyles from '../../styles/ItemStyles';
-import AddToCart from '../Cart/AddToCart';
 import Rating from '../CourseInfo/Comments/Rating';
-import WishButton from '../WishButton';
-
-const InfoStyle = styled.p`
-  text-align: left;
-  padding: none;
-`;
+import Container from '../../styles/CourseItemStyle';
+import formatMoney from '../../../lib/formatMoney';
 
 export class CourseItem extends Component {
   static propTypes = {
@@ -29,19 +21,24 @@ export class CourseItem extends Component {
     const { course } = this.props;
     return (
       <>
-        <ItemStyles>
+        <Container>
           <Link
             href={{
               pathname: '/course',
               query: { id: course.id },
             }}
           >
-            <img className="Thumbnail" src={course.thumbnail} />
+            <img alt="thumbnail" className="Thumbnail" src={course.thumbnail} />
           </Link>
-          <InfoStyle>{course.title}</InfoStyle>
-          <span>{course.user.name}</span>
-          <InfoStyle className="price">{course.price} €</InfoStyle>
-          <div className="rating">
+          <br />
+          <div id="title-card">
+            <p>{course.title}</p>
+          </div>
+          <div id="instructor-card">
+            <p>{course.user.name}</p>
+          </div>
+
+          <div id="rating">
             <Rating
               readOnly
               initialValue={
@@ -49,17 +46,21 @@ export class CourseItem extends Component {
                   ? 0
                   : course.totalRate / course.totalComments
               }
-              totalComments={course.totalComments}
+              totalComments={course.totalComments || 0}
               showTotal
             />
           </div>
-          <div className="buttonList">
+          <div id="price-card">
+            <p>
+              {course.price === 0 ? 'Free Course' : formatMoney(course.price)}
+            </p>
+          </div>
+          <div id="buttonList">
             <Link href="/signup">
               <a>Add to Cart</a>
             </Link>
-            {/* <WishButton id={course.id} data={course} skip={this.props.skip} /> */}
           </div>
-        </ItemStyles>
+        </Container>
       </>
     );
   }
