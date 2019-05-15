@@ -31,8 +31,9 @@ class FilterAuthor extends Component {
   };
 
   handleChange = e => {
+    const { changeAuthor } = this.props;
     this.setState({ authorId: e.target.value });
-    this.props.changeAuthor(e.target.value);
+    changeAuthor(e.target.value);
   };
 
   render() {

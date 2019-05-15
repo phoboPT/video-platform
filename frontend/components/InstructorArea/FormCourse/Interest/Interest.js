@@ -3,8 +3,10 @@ import Link from 'next/link';
 import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import InterestItem from './InterestItem';
 import Error from '../../../Static/ErrorMessage';
+import Loading from '../../../Static/Loading';
 
 const ALL_INTEREST_QUERY = gql`
   query ALL_INTEREST_QUERY {
@@ -58,25 +60,24 @@ class CreateCourse extends Component {
 
   render() {
     const { id } = this.state;
+    const { courseId } = this.props;
     return (
       <>
         <Query query={COURSE_QUERY} variables={{ id }}>
           {({ data, error, loading }) => {
             const course = data;
-            if (loading) {
-              return <p> Loading... </p>;
-            }
-            if (error) {
-              return <p> Error: {error.message} </p>;
-            }
+            if (loading) return <Loading />;
+
+            if (error) return <Error error={error} />;
+
             return (
               <Query query={ALL_INTEREST_QUERY}>
-                {({ data, error, loading }) => {
-                  if (loading) return <Loading />;
+                {({ data: newData, error: newError, loading: newLoading }) => {
+                  if (newLoading) return <Loading />;
 
-                  if (error) return <Error error={error} />;
-                  if (!data) return <p>No Data</p>;
-                  if (data)
+                  if (newError) return <Error error={newError} />;
+                  if (!newData) return <p>No Data</p>;
+                  if (newData)
                     return (
                       <>
                         <Container>
@@ -86,11 +87,11 @@ class CreateCourse extends Component {
                           </p>
                         </Container>
                         <InterestStyle>
-                          {data.interests.map((interest, index) => (
+                          {newData.interests.map((interest, index) => (
                             <InterestItem
                               key={interest.id}
                               interest={interest}
-                              courseId={this.props.courseId}
+                              courseId={courseId}
                               id={index}
                               courseInterest={course.course.interest}
                             />
@@ -107,6 +108,10 @@ class CreateCourse extends Component {
     );
   }
 }
+
+CreateCourse.propTypes = {
+  courseId: PropTypes.string.isRequired,
+};
 
 export default CreateCourse;
 export { ALL_INTEREST_QUERY, COURSE_QUERY };

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
+import DatePicker from 'react-datepicker';
 import Stats from './Stats';
 import { CURRENT_COURSES_QUERY } from './MyCourses';
+import Loading from '../Static/Loading';
 
 const Style = styled.div`
   .graphs-container {
@@ -37,26 +38,41 @@ const Style = styled.div`
 
 class StatsPage extends Component {
   state = {
-    courseId: 'asd',
     view: 1,
     courseId: '',
     key: 0,
   };
 
-  handleChangeCourse = e => {
-    const { key } = this.state;
+  componentWillMount() {
+    const date = new Date();
     this.setState({
+      startDate: date.toISOString().split('T')[0],
+    });
+  }
+
+  handleChangeCourse = async e => {
+    const { key } = this.state;
+    await this.setState({
       courseId: e.target.value,
       key: key + 1,
     });
   };
 
   changeView = e => {
-    this.setState({ view: parseInt(e.target.id) });
+    const { key } = this.state;
+    this.setState({ view: parseInt(e.target.id), key: key + 1 });
+  };
+
+  handleChange = date => {
+    const { key } = this.state;
+    this.setState({
+      startDate: date.toISOString().split('T')[0],
+      key: key + 1,
+    });
   };
 
   render() {
-    const { courseId, view, key } = this.state;
+    const { courseId, view, key, startDate } = this.state;
 
     return (
       <Query query={CURRENT_COURSES_QUERY}>
@@ -79,15 +95,20 @@ class StatsPage extends Component {
                         By Course
                       </button>
                     </div>
+                    <div className="col">
+                      <button type="button" id={3} onClick={this.changeView}>
+                        All By Date
+                      </button>
+                    </div>
                   </div>
                   <div className="category">
                     {view === 2 && (
-                      <label htmlFor="category">
+                      <label htmlFor="Course">
                         Category
                         <select
                           id="dropdownlist"
                           onChange={this.handleChangeCourse}
-                          name="category"
+                          name="Course"
                           defaultValue={courses[0].title || 'a'}
                         >
                           <option value="a" disabled hidden>
@@ -105,13 +126,32 @@ class StatsPage extends Component {
 
                   <div className="graphs">
                     <div className="first">
-                      {view === 1 && <Stats query="CURRENT_USER_QUERY" />}
+                      {view === 1 && (
+                        <Stats key={key} query="CURRENT_USER_QUERY" />
+                      )}
                       {view === 2 && (
+                        <Stats
+                          key={key}
+                          query="COURSE_SELL_BY_TIME"
+                          courseId={courseId}
+                        />
+                      )}
+                      {view === 3 && (
                         <>
+                          <DatePicker
+                            todayButton="Today"
+                            dateFormat="dd/MM/yyyy"
+                            selected={new Date(startDate)}
+                            onChange={this.handleChange}
+                          />
+                          <br />
+                          <br />
+                          <br />
                           <Stats
                             key={key}
-                            query="COURSE_SELL_BY_TIME"
+                            query="ALL_BY_DATE"
                             courseId={courseId}
+                            date={startDate}
                           />
                         </>
                       )}

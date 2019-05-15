@@ -45,6 +45,7 @@ const Mutations = {
       throw new Error('You must be logged in to do that!');
     }
 
+    console.log(args);
     const video = {
       ...args,
     };

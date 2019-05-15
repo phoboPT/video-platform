@@ -24,6 +24,7 @@ type User {
   wishlist: [Wishlist!]
   videoUser: [VideoUser]
 }
+
 type Stats {
   id: ID!
   videos: [CourseVideos!]!
@@ -39,9 +40,9 @@ type Stats {
   totalComments: Int
   # Variaveis nao definidas em datamodel mas necessarias backend
   count: Int
-
   course: Course
 }
+
 type Course {
   id: ID!
   videos: [CourseVideos!]!
@@ -226,5 +227,5 @@ type Query {
   #Stats
   coursesStats: [Stats]
   sellsByCourse(id: ID): [Stats]
-  coursesStatsByDate(id: ID, initialDate: String): [Stats]
+  coursesStatsByDate(initialDate: String): [Stats]
 }

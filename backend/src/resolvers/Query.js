@@ -836,6 +836,7 @@ const Query = {
     }
     // Get the actual month and year to dinamycally set the date
     const date = getDate();
+    console.log(date);
     // get all the buys from the instrutor courses list
     const courses = await ctx.db.query.userCourses(
       {
@@ -876,6 +877,7 @@ const Query = {
         .values(),
     ];
     console.timeEnd('sellsByCourse');
+    console.table(result);
     return result;
   },
   async coursesStatsByDate(parent, args, ctx, info) {
@@ -898,6 +900,7 @@ const Query = {
      }`
     );
 
+    const date = args.initialDate.split('-');
     // get all the buys from the instrutor courses list
     const courses = await Promise.all(
       allInstrutorCourses.map(item =>
@@ -906,7 +909,13 @@ const Query = {
             where: {
               AND: [
                 { course: { id: item.id } },
-                { createdAt: `${args.year}-${args.month}-${args.day}` },
+                {
+                  createdAt_gte: `${date[0]}-${date[1]}-${parseInt(date[2])}`,
+                },
+                {
+                  createdAt_lte: `${date[0]}-${date[1]}-${parseInt(date[2]) +
+                    1}`,
+                },
               ],
             },
             orderBy: 'createdAt_DESC',
@@ -939,6 +948,7 @@ const Query = {
     ];
 
     console.timeEnd('courseStats');
+    console.table(result);
     return result;
   },
   async instrutorStats(parent, args, ctx, info) {

@@ -6,11 +6,15 @@ import { Query } from 'react-apollo';
 // import ReactQuill from "react-quill"; // ES6
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import swal from '@sweetalert/with-react';
 import Published from '../CourseState/Published';
 import Unpublished from '../CourseState/Unpublished';
 import Editor from '../Editor';
 import SaveCourseButton from './SaveCourseButton';
 import Loading from '../../Static/Loading';
+import { imageExtensions } from '../../../lib/formatExtensions';
+import validateExtension from '../../../lib/validateFileExtensions';
+import { Alert } from '../../styles/AlertStyles';
 
 const ALL_CATEGORIES_QUERY = gql`
   query ALL_CATEGORIES_QUERY {
@@ -136,14 +140,35 @@ class FormCourse extends Component {
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'thumbnail');
+    const fileName = files[0].name;
 
-    const res = await fetch(
-      'https://api.cloudinary.com/v1_1/deky2cxlm/image/upload',
-      { method: 'POST', body: data }
-    );
+    const isValid = validateExtension(fileName, 'image');
+    if (isValid) {
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/deky2cxlm/image/upload',
+        { method: 'POST', body: data }
+      );
 
-    const file = await res.json();
-    this.setState({ changeThumbnail: true, thumbnail: file.secure_url });
+      const file = await res.json();
+      this.setState({ changeThumbnail: true, thumbnail: file.secure_url });
+    } else {
+      swal({
+        title: 'Filename not Supported',
+        content: (
+          <Alert>
+            <h3>List of Supported files</h3>
+            <div className="content">
+              {imageExtensions.map((item, index) => (
+                <p>{item}</p>
+              ))}
+            </div>
+          </Alert>
+        ),
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      });
+    }
   };
 
   render() {
@@ -292,9 +317,9 @@ class FormCourse extends Component {
 
 FormCourse.propTypes = {
   course: PropTypes.object,
-  createCourse: PropTypes.bool.isRequired,
+  createCourse: PropTypes.bool,
   id: PropTypes.string,
-  changeToEdit: PropTypes.func.isRequired,
+  changeToEdit: PropTypes.func,
 };
 
 export default FormCourse;

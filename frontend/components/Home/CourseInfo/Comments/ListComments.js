@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
+import PropTypes from 'prop-types'
 import CommentItem from './CommentItem';
 import Loading from '../../../Static/Loading';
 import Error from '../../../Static/ErrorMessage';
@@ -79,18 +80,19 @@ class ListComments extends Component {
   };
 
   render() {
+    const { data } = this.props;
     return (
-      <Query query={ALL_COMMENTS_QUERY} variables={{ id: this.props.data.id }}>
-        {({ error, loading, data }) => {
+      <Query query={ALL_COMMENTS_QUERY} variables={{ id: data.id }}>
+        {({ error, loading, data: newData }) => {
           if (loading) return <Loading />;
           if (error) return <Error error={error} />;
-          if (!data.rateCourseList) return <p>No Avaliations</p>;
+          if (!newData.rateCourseList) return <p>No Avaliations</p>;
           return (
             <>
               <Title>
                 <p>Reviews</p>
               </Title>
-              {data.rateCourseList.map(comments => (
+              {newData.rateCourseList.map(comments => (
                 <CommentItem
                   comments={comments}
                   rating={comments.rate}
@@ -109,6 +111,10 @@ class ListComments extends Component {
     );
   }
 }
+
+ListComments.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default ListComments;
 export { ALL_COMMENTS_QUERY };

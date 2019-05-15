@@ -52,9 +52,8 @@ class UpdateVideo extends Component {
           },
         ]}
       >
-        {(updateVideo, { error, loading, called }) => (
+        {updateVideo => (
           <>
-            <Error error={error} />
             <form onSubmit={e => this.updateState(e, updateVideo)}>
               <Style>
                 <button id="form" type="submit" />

@@ -14,6 +14,16 @@ const Container = styled.div`
   }
 `;
 
+const Button = styled.button`
+  width: auto;
+  background: red;
+  color: white;
+  border: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+`;
+
 class InnerList extends React.PureComponent {
   static propTypes = {
     videosMap: PropTypes.object.isRequired,
@@ -25,7 +35,8 @@ class InnerList extends React.PureComponent {
     updateSections: PropTypes.func.isRequired,
     courseId: PropTypes.string.isRequired,
     updateFiles: PropTypes.func.isRequired,
-    isShow: PropTypes.bool.isRequired,
+    isShow: PropTypes.bool,
+    removeSection: PropTypes.func.isRequired,
   };
 
   render() {
@@ -40,6 +51,7 @@ class InnerList extends React.PureComponent {
       updateSections,
       updateFiles,
       isShow,
+      removeSection,
     } = this.props;
     let videos;
     if (section.videoIds) {
@@ -47,6 +59,7 @@ class InnerList extends React.PureComponent {
     }
     return (
       <Column
+        removeSection={removeSection}
         addVideo={addVideo}
         handleChange={handleChange}
         handleVideo={handleVideo}
@@ -178,7 +191,6 @@ class Index extends Component {
     const { updateState } = this.props;
 
     video.content = title;
-
     const newState = {
       ...this.state,
       videos: {
@@ -202,13 +214,10 @@ class Index extends Component {
         index = i;
       }
     });
-
     section.videoIds[index] = id;
-
     if (id) {
       atualvideo.id = id;
     }
-
     const newState = {
       ...this.state,
       videos: {
@@ -221,23 +230,7 @@ class Index extends Component {
   };
 
   updateFiles = async (id, newFile) => {
-    const { files } = this.state;
-    const atualFile = files[id];
     const { updateState } = this.props;
-
-    // delete Object.assign(videos, { [id]: videos[video.id] })[video.id];
-    // let index = 0;
-    // section.videoIds.forEach((item, i) => {
-    //   if (item === video.id) {
-    //     index = i;
-    //   }
-    // });
-
-    // section.videoIds[index] = id;
-
-    // if (id) {
-    //   atualvideo.id = id;
-    // }
 
     const newState = {
       ...this.state,
@@ -300,6 +293,31 @@ class Index extends Component {
     updateState(this.state);
   };
 
+  removeSection = async sectionId => {
+    const { sections, videos, files } = this.state;
+    const { updateState } = this.props;
+
+    const videosIds = sections[sectionId].videoIds;
+    const { fileIds } = sections[sectionId].fileIds;
+    delete files[fileIds];
+    delete videos[videosIds];
+    delete sections[sectionId];
+    console.log('section', videos);
+
+    const newState = {
+      ...this.state,
+      sections: {
+        ...sections,
+      },
+      videos: { ...videos },
+      files: { ...files },
+    };
+
+    console.log(newState);
+    await this.setState(newState);
+    updateState(this.state);
+  };
+
   render() {
     const { columnOrder, sections, videos, key } = this.state;
     const { courseId, isShow } = this.props;
@@ -307,9 +325,13 @@ class Index extends Component {
     return (
       <div key={key}>
         {!isShow && (
-          <button type="button" onClick={this.addSection}>
+          <Button
+            type="button"
+            className="add-section"
+            onClick={this.addSection}
+          >
             + Add Section
-          </button>
+          </Button>
         )}
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable
@@ -329,6 +351,7 @@ class Index extends Component {
                     return (
                       <InnerList
                         addVideo={this.addVideo}
+                        removeSection={this.removeSection}
                         handleChange={this.handleChange}
                         handleVideo={this.handleVideo}
                         updateSections={this.updateSections}
@@ -356,7 +379,7 @@ Index.propTypes = {
   sections: PropTypes.object.isRequired,
   updateState: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
-  isShow: PropTypes.bool.isRequired,
+  isShow: PropTypes.bool,
 };
 
 export default Index;

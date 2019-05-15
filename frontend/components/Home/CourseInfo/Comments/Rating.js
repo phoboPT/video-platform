@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RatingComponent from 'react-rating';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   display: flex;
@@ -43,12 +44,14 @@ class Rating extends Component {
   };
 
   change = e => {
+    const { getRating } = this.props;
     this.setState({ value: e });
-    this.props.getRating(e);
+    getRating(e);
   };
 
   componentDidMount = () => {
-    this.setState({ value: this.props.initialValue });
+    const { initialValue } = this.props;
+    this.setState({ value: initialValue });
   };
 
   render() {
@@ -81,5 +84,12 @@ class Rating extends Component {
     );
   }
 }
+
+Rating.propTypes = {
+  initialValue: PropTypes.number,
+  showTotal: PropTypes.bool,
+  totalComments: PropTypes.number,
+  getRating: PropTypes.func,
+};
 
 export default Rating;

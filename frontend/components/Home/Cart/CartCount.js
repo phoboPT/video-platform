@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PorpTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -56,5 +56,9 @@ const CartCount = ({ count }) => (
     </TransitionGroup>
   </AnimatedStyles>
 );
+
+CartCount.propTypes = {
+  count: PropTypes.number,
+};
 
 export default CartCount;
