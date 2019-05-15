@@ -5,23 +5,29 @@ import PropTypes from 'prop-types';
 import Column from './Column';
 
 const Container = styled.div`
-  margin: 15px 15px;
-  border: 1px solid lightgrey;
-  border-radius: 2px;
-  background-color: lightgrey;
+  display: grid;
   button {
-    margin: 8px;
+    font-size: 1.5rem;
   }
-`;
-
-const Button = styled.button`
-  width: auto;
-  background: red;
-  color: white;
-  border: 0;
-  font-size: 2rem;
-  font-weight: 600;
-  padding: 0.5rem 1.2rem;
+  .add-section {
+    margin: 8px;
+    width: auto;
+    background: #4dcb5d;
+    color: white;
+    border: 0;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+  }
+  .head {
+    order: 1;
+    flex: 1;
+  }
+  .section {
+    order: 2;
+    margin: 15px 15px;
+    border-radius: 2px;
+    background-color: lightgrey;
+  }
 `;
 
 class InnerList extends React.PureComponent {
@@ -37,6 +43,7 @@ class InnerList extends React.PureComponent {
     updateFiles: PropTypes.func.isRequired,
     isShow: PropTypes.bool,
     removeSection: PropTypes.func.isRequired,
+    removeVideo: PropTypes.func.isRequired,
   };
 
   render() {
@@ -52,6 +59,7 @@ class InnerList extends React.PureComponent {
       updateFiles,
       isShow,
       removeSection,
+      removeVideo,
     } = this.props;
     let videos;
     if (section.videoIds) {
@@ -71,6 +79,7 @@ class InnerList extends React.PureComponent {
         courseId={courseId}
         updateSections={updateSections}
         updateFiles={updateFiles}
+        removeVideo={removeVideo}
       />
     );
   }
@@ -294,18 +303,33 @@ class Index extends Component {
   };
 
   removeSection = async sectionId => {
-    const { sections, videos, files } = this.state;
+    const { sections, videos, files, columnOrder } = this.state;
     const { updateState } = this.props;
 
     const videosIds = sections[sectionId].videoIds;
     const { fileIds } = sections[sectionId].fileIds;
-    delete files[fileIds];
-    delete videos[videosIds];
+
+    if (fileIds) {
+      fileIds.forEach(element => {
+        delete files[element];
+      });
+    }
+    if (videosIds) {
+      videosIds.forEach(element => {
+        delete videos[element];
+      });
+    }
+    if (columnOrder) {
+      columnOrder.forEach((element, index) => {
+        if (element === sectionId) {
+          columnOrder.splice(index, 1);
+        }
+      });
+    }
     delete sections[sectionId];
-    console.log('section', videos);
 
     const newState = {
-      ...this.state,
+      columnOrder: [...columnOrder],
       sections: {
         ...sections,
       },
@@ -313,26 +337,52 @@ class Index extends Component {
       files: { ...files },
     };
 
-    console.log(newState);
+    await this.setState(newState);
+    updateState(this.state);
+  };
+
+  removeVideo = async videoId => {
+    const { videos } = this.state;
+    const { updateState } = this.props;
+
+    delete videos[videoId];
+
+    const newState = {
+      ...this.state,
+      videos: { ...videos },
+    };
+
     await this.setState(newState);
     updateState(this.state);
   };
 
   render() {
     const { columnOrder, sections, videos, key } = this.state;
-    const { courseId, isShow } = this.props;
+    const { courseId, isShow, undoSections } = this.props;
 
     return (
-      <div key={key}>
-        {!isShow && (
-          <Button
-            type="button"
-            className="add-section"
-            onClick={this.addSection}
-          >
-            + Add Section
-          </Button>
-        )}
+      <Container key={key}>
+        <div className="head">
+          {!isShow && (
+            <>
+              <button
+                type="button"
+                className="add-section"
+                onClick={this.addSection}
+              >
+                ➕ Add Section
+              </button>
+
+              <button
+                type="button"
+                className="add-section"
+                onClick={undoSections}
+              >
+                🔙 Undo
+              </button>
+            </>
+          )}
+        </div>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable
             droppableId="all-columns"
@@ -340,14 +390,14 @@ class Index extends Component {
             type="section"
           >
             {provided => (
-              <Container
+              <div
+                className="section"
                 {...provided.droppableProps}
-                innerRef={provided.innerRef}
+                ref={provided.innerRef}
               >
                 {columnOrder &&
                   columnOrder.map((columnId, index) => {
                     const section = sections[columnId];
-
                     return (
                       <InnerList
                         addVideo={this.addVideo}
@@ -362,15 +412,16 @@ class Index extends Component {
                         videosMap={videos}
                         index={index}
                         courseId={courseId}
+                        removeVideo={this.removeVideo}
                       />
                     );
                   })}
                 {provided.placeholder}
-              </Container>
+              </div>
             )}
           </Droppable>
         </DragDropContext>
-      </div>
+      </Container>
     );
   }
 }
@@ -380,6 +431,7 @@ Index.propTypes = {
   updateState: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
   isShow: PropTypes.bool,
+  undoSections: PropTypes.func.isRequired,
 };
 
 export default Index;

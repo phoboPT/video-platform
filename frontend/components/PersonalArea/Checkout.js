@@ -54,7 +54,7 @@ export class Checkout extends Component {
   };
 
   render() {
-    const [children] = this.props;
+    const { children } = this.props;
     return (
       <User>
         {({ data: { me } }) => {

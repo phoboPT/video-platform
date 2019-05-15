@@ -5,29 +5,59 @@ import PropTypes from 'prop-types';
 import CreateVideo from '../../UploadVideo/CreateVideo';
 
 const Container = styled.div`
-  border: 1px solid lightgrey;
+  display: grid;
   padding: 8px;
   margin-bottom: 8px;
   border-radius: 2px;
+  border: 2px solid #0c92da;
   background-color: ${props => (props.isDragging ? 'lightgreen' : ' #5AC4F5')};
   .video {
-    float: right;
-    padding-right: 5rem;
+    display: flex;
+    order: 1;
     background: none;
-    border: none;
-    margin: auto;
-    cursor: pointer;
-    &:focus {
-      outline: none;
+    .first {
+      order: 1;
+      flex: 5;
     }
-    img {
-      height: 36px;
-      width: 36px;
+    .second {
+      order: 2;
+      flex: 1;
+      padding: auto;
+      margin: auto;
+      cursor: pointer;
+      &:focus {
+        outline: none;
+      }
+      .remove {
+        text-align: center;
+        width: 10rem;
+        height: 3.5rem;
+        background: red;
+        color: white;
+        border: 0;
+        font-weight: 600;
+        margin: auto;
+        padding: none !important;
+      }
+      .new-file {
+        background: none;
+
+        padding: 0 3rem 0 0;
+        float: right;
+        border: none;
+      }
+      img {
+        background: none;
+        height: 36px;
+        width: 36px;
+      }
     }
   }
   .upload {
-    text-align: right;
+    display: flex;
+    order: 2;
     padding-right: 2rem;
+
     button {
       background: none;
       border: none;
@@ -39,13 +69,38 @@ const Container = styled.div`
         width: 36px;
       }
     }
+    .first {
+      text-align: right;
+      order: 1;
+      flex: 1;
+    }
+    .second {
+      text-align: left;
+      order: 2;
+      flex: 1;
+    }
+  }
+  .file-upload {
+    order: 3;
+    display: flex;
+    .first {
+      order: 1;
+      flex: 1;
+    }
+    .second {
+      order: 2;
+      flex: 1;
+    }
+    .third {
+      order: 3;
+      flex: 1;
+    }
   }
 `;
 
 class Video extends Component {
   state = {
     ...this.props.video,
-    disabled: true,
     upload: 0,
   };
 
@@ -70,6 +125,12 @@ class Video extends Component {
     this.setState({ upload: parseInt(e.currentTarget.id) });
   };
 
+  handleRemove = e => {
+    const { removeVideo } = this.props;
+
+    removeVideo(e.target.id);
+  };
+
   render() {
     const {
       video,
@@ -79,7 +140,7 @@ class Video extends Component {
       section,
       updateFiles,
     } = this.props;
-    const { disabled, content, upload } = this.state;
+    const { content, upload } = this.state;
     return (
       <Draggable draggableId={video.id} index={index}>
         {(provided, snapshot) => (
@@ -89,67 +150,84 @@ class Video extends Component {
             innerRef={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
-            <label htmlFor="Content">
-              <input
-                disabled={disabled}
-                name="content"
-                onBlur={this.disableInput}
-                onChange={this.changeState}
-                placeholder="Video"
-                required
-                type="text"
-                value={content}
-              />
+            <div className="video">
+              <div className="first">
+                <input
+                  name="content"
+                  onChange={this.changeState}
+                  placeholder="Video"
+                  required
+                  type="text"
+                  value={content}
+                />
+              </div>
+              <div className="second">
+                <button
+                  type="button"
+                  className="new-file"
+                  id="1"
+                  onClick={this.changeUpload}
+                >
+                  <img src="../../static/upload.png" alt="Upload" />
+                </button>
 
-              <button type="button" onClick={this.disableInput}>
-                ✏️
-              </button>
-              <button
-                type="button"
-                className="video"
-                id="1"
-                onClick={this.changeUpload}
-              >
-                <img src="../../static/upload.png" alt="Upload" />
-              </button>
-              <br />
-              {upload !== 0 && (
+                <button
+                  type="button"
+                  id={video.id}
+                  className="remove"
+                  onClick={this.handleRemove}
+                >
+                  ➖ Remove
+                </button>
+              </div>
+            </div>
+            <br />
+            {upload !== 0 && (
+              <>
                 <div className="upload">
-                  <button type="button" id="2" onClick={this.changeUpload}>
-                    <img src="../../static/videoUpload.png" alt="Video" />
-                  </button>
-
-                  <button type="button" id="3" onClick={this.changeUpload}>
-                    <img src="../../static/fileIcon.png" alt="File" />
-                  </button>
-
-                  {upload === 2 && (
-                    <CreateVideo
-                      header="Video"
-                      show={1}
-                      video={video}
-                      courseId={courseId}
-                      updateSections={updateSections}
-                      updateFiles={updateFiles}
-                      isUpdate={video.id.length > 20}
-                      section={section}
-                    />
-                  )}
-                  {upload === 3 && (
-                    <CreateVideo
-                      header="File"
-                      show={2}
-                      video={video}
-                      courseId={courseId}
-                      updateFiles={updateFiles}
-                      updateSections={updateSections}
-                      isUpdate={video.id.length > 20}
-                      section={section}
-                    />
-                  )}
+                  <div className="first">
+                    <button type="button" id="2" onClick={this.changeUpload}>
+                      <img src="../../static/videoUpload.png" alt="Video" />
+                    </button>
+                  </div>
+                  <div className="second">
+                    <button type="button" id="3" onClick={this.changeUpload}>
+                      <img src="../../static/fileIcon.png" alt="File" />
+                    </button>
+                  </div>
                 </div>
-              )}
-            </label>
+                <div className="file-upload">
+                  <div className="first" />
+                  <div className="second">
+                    {upload === 2 && (
+                      <CreateVideo
+                        header="Video"
+                        show={1}
+                        video={video}
+                        courseId={courseId}
+                        updateSections={updateSections}
+                        updateFiles={updateFiles}
+                        isUpdate={video.id.length > 20}
+                        section={section}
+                      />
+                    )}
+                    {upload === 3 && (
+                      <CreateVideo
+                        header="File"
+                        show={2}
+                        video={video}
+                        courseId={courseId}
+                        updateFiles={updateFiles}
+                        updateSections={updateSections}
+                        isUpdate={video.id.length > 20}
+                        section={section}
+                      />
+                    )}
+                  </div>
+                  <div className="third" />
+                </div>
+              </>
+            )}
           </Container>
         )}
       </Draggable>
@@ -166,6 +244,7 @@ Video.propTypes = {
   section: PropTypes.object.isRequired,
   updateFiles: PropTypes.func.isRequired,
   handleVideo: PropTypes.func.isRequired,
+  removeVideo: PropTypes.func.isRequired,
 };
 
 export default Video;
