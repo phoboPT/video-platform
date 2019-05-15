@@ -19,6 +19,10 @@ const COURSES_FILTER_QUERY = gql`
         thumbnail
         state
         createdAt
+        user {
+          id
+          name
+        }
         category {
           id
           name

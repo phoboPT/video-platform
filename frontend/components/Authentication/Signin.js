@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import Router from 'next/router';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
+import styled from 'styled-components';
 import { ALL_VIDEOS_USER } from '../InstructorArea/MyVideos/Videos';
 import { CURRENT_USER_QUERY } from './User';
 import { CURRENT_COURSES_QUERY } from '../InstructorArea/MyCourses';
@@ -11,13 +12,54 @@ import {
   ALL_COURSES_QUERY,
 } from '../Home/CoursesList/ListAllCourses';
 import Error from '../Static/ErrorMessage';
-import Form from '../styles/Form';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
       id
       email
+    }
+  }
+`;
+
+const Style = styled.div`
+  display: grid;
+  form {
+    background-image: linear-gradient(
+      rgba(225, 239, 247, 0.7),
+      rgb(249, 253, 255)
+    );
+    border: 0.5px solid rgb(249, 253, 255);
+    border-radius: 25px;
+  }
+  #fieldset {
+    margin: auto;
+    border: none;
+    width: 80%;
+
+    display: grid;
+    #email {
+      margin: auto auto 1rem auto;
+    }
+    #h2 {
+      color: #c4c4c4;
+      font-size: 26px;
+      text-align: center;
+    }
+    #password {
+      margin: auto;
+    }
+    #login {
+      margin: 1rem auto;
+    }
+    #forgot {
+      text-align: right;
+    }
+  }
+  #register {
+    margin: 3rem;
+    width: 70%;
+    #register-button {
     }
   }
 `;
@@ -37,6 +79,7 @@ class Signin extends Component {
 
   render() {
     const { email, password } = this.state;
+    const { changeView } = this.props;
     return (
       <Mutation
         mutation={SIGNIN_MUTATION}
@@ -62,46 +105,64 @@ class Signin extends Component {
         variables={this.state}
       >
         {(signin, { error, loading }) => (
-          <Form
-            method="post"
-            onSubmit={async e => {
-              e.preventDefault();
-              await signin();
-              this.setState({ email: '', password: '' });
-              Router.push({
-                pathname: '/',
-              });
-            }}
-          >
-            <fieldset aria-busy={loading} disabled={loading}>
-              <h2>Sign In</h2>
-              <Error error={error} />
-              <label htmlFor="email">
-                Email
+          <Style>
+            <form
+              method="post"
+              onSubmit={async e => {
+                e.preventDefault();
+                await signin();
+                this.setState({ email: '', password: '' });
+                Router.push({
+                  pathname: '/',
+                });
+              }}
+            >
+              <fieldset id="fieldset" aria-busy={loading} disabled={loading}>
+                <h2 id="h2">Sign In</h2>
+                <Error error={error} />
+
                 <input
+                  id="email"
                   name="email"
+                  placeholder="Email"
                   onChange={this.saveToState}
-                  placeholder="email"
                   required
                   type="email"
                   value={email}
                 />
-              </label>
-              <label htmlFor="password">
-                Password
+
                 <input
+                  id="password"
+                  placeholder="Password"
                   name="password"
                   onChange={this.saveToState}
-                  placeholder="password"
                   required
                   type="password"
                   value={password}
                 />
-              </label>
 
-              <button type="submit">Sign In!</button>
-            </fieldset>
-          </Form>
+                <button id="login" type="submit">
+                  Login
+                </button>
+
+                <div id="forgot">
+                  <button type="button" onClick={() => changeView(2)}>
+                    Forgot Password?
+                  </button>
+                </div>
+              </fieldset>
+            </form>
+
+            <div id="register">
+              <button
+                id="register-button"
+                type="button"
+                onClick={() => changeView(3)}
+              >
+                You are not yet registered? Register now!
+              </button>
+            </div>
+          </Style>
         )}
       </Mutation>
     );

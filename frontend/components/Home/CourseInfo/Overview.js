@@ -32,31 +32,41 @@ const Container = styled.div`
   }
 
   #author-container {
+    display: flex;
     border-bottom: 1px solid rgba(58, 58, 58, 0.6);
-    #author-name {
-      display: flex;
-      padding-bottom: 10px;
-      #author-title {
-        order: 1;
+    #left-author {
+      flex: 1;
+      order: 1;
+      #author-name {
+        display: flex;
+        padding-bottom: 10px;
+        #author-title {
+          order: 1;
+        }
+        #author {
+          padding-left: 2rem;
+          order: 2;
+          flex: 3;
+        }
       }
-      #author {
-        padding-left: 2rem;
-        order: 2;
-        flex: 3;
-      }
-    }
 
-    #see-more {
-      cursor: pointer;
-      padding: 1rem;
-      border: none;
-      font-size: 15px;
-      margin: 2rem;
-      border-radius: 12px;
-      background: E7E7E7;
+      #see-more {
+        cursor: pointer;
+        padding: 1rem;
+        border: none;
+        font-size: 15px;
+        margin: 2rem;
+        border-radius: 12px;
+        background: E7E7E7;
+      }
+      img {
+        height: 100px;
+      }
     }
-    img {
-      height: 100px;
+    #right-author {
+      margin: 3rem;
+      flex: 1;
+      order: 2;
     }
   }
   #course-content {
@@ -118,34 +128,42 @@ class Overview extends Component {
                   </div>
                 </div>
                 <div id="author-container">
-                  <div id="title">
-                    <p>About The Instructor</p>
-                  </div>
-                  <div id="author-name">
-                    <div id="author-title">
-                      <img alt="thumbnail" src={propsData.user.thumbnail} />
+                  <div id="left-author">
+                    <div id="title">
+                      <p>About The Instructor</p>
                     </div>
-                    <div id="author">
-                      <p> {propsData.user.name} </p>
-                      <p>
-                        {propsData.user.profession !== undefined
-                          ? propsData.user.profession
-                          : ''}
-                      </p>
+                    <div id="author-name">
+                      <div id="author-title">
+                        <img alt="thumbnail" src={propsData.user.thumbnail} />
+                      </div>
+                      <div id="author">
+                        <p> {propsData.user.name} </p>
+                        <p>
+                          {propsData.user.profession !== undefined
+                            ? propsData.user.profession
+                            : ''}
+                        </p>
+                      </div>
                     </div>
+                    <Link
+                      href={{
+                        pathname: '/instructor',
+                        query: {
+                          id: propsData.user.id,
+                        },
+                      }}
+                    >
+                      <button id="see-more" type="button">
+                        Know more about..
+                      </button>
+                    </Link>
                   </div>
-                  <Link
-                    href={{
-                      pathname: '/instructor',
-                      query: {
-                        id: propsData.user.id,
-                      },
-                    }}
-                  >
-                    <button id="see-more" type="button">
-                      Know more about..
-                    </button>
-                  </Link>
+                  <div id="right-author">
+                    <Markdown
+                      escapeHtml={false}
+                      source={propsData.user.description}
+                    />
+                  </div>
                 </div>
                 <div id="course-content">
                   <p id="title-content"> Course Content </p>

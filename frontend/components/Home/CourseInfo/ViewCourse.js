@@ -26,6 +26,7 @@ const SINGLE_COURSE_QUERY = gql`
         name
         thumbnail
         profession
+        description
       }
       videos {
         video {
