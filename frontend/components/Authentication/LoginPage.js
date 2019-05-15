@@ -5,9 +5,17 @@ import RequestReset from './RequestReset';
 import Signup from './Signup';
 
 const Container = styled.div`
-  max-width: 600px;
-  max-height: 600px;
+  width: 80%;
+  height: 80%;
   margin: auto;
+  form {
+    background-image: linear-gradient(
+      rgba(225, 239, 247, 0.7),
+      rgb(249, 253, 255)
+    );
+    border: 0.5px solid rgb(249, 253, 255);
+    border-radius: 25px;
+  }
 `;
 
 class LoginPage extends Component {
