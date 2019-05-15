@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-const Me = props => (
+const Me = () => (
   <div>
     <p>Me</p>
   </div>

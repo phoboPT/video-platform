@@ -127,6 +127,27 @@ const Query = {
       info
     );
   },
+  async coursesInstructor(parent, args, ctx, info) {
+    const res = await ctx.db.query.courses(
+      {
+        where: {
+          AND: [
+            {
+              user: {
+                id: args.id,
+              },
+            },
+            {
+              title_contains: args.title_contains,
+            },
+          ],
+        },
+      },
+      info
+    );
+
+    return res;
+  },
   videosUserSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
 
@@ -142,11 +163,11 @@ const Query = {
           AND: [
             {
               user: {
-                id: userId,
+                id: args.id,
               },
             },
             {
-              title_contains: args.title_contains,
+              state: 'PUBLISHED',
             },
           ],
         },
@@ -915,11 +936,6 @@ const Query = {
     );
 
     const res = courses.flat();
-    // res.sort(function(a, b) {
-    //   if (a.course.id.toLowerCase() < b.course.id.toLowerCase()) return -1;
-    //   if (a.course.id.toLowerCase() > b.course.id.toLowerCase()) return 1;
-    //   return 0;
-    // });
 
     const result = [
       ...res
@@ -933,6 +949,43 @@ const Query = {
 
     console.timeEnd('courseStats');
     console.table(result);
+    return result;
+  },
+  async instrutorStats(parent, args, ctx, info) {
+    const allCourses = await ctx.db.query.courses(
+      {
+        where: {
+          user: { id: args.id },
+        },
+      },
+      `{
+        id
+        totalComments
+     }`
+    );
+    // allCourses.length
+    let totalComments = 0;
+    allCourses.map(course => (totalComments += course.totalComments));
+    // totalComments
+    const coursesId = [];
+    await allCourses.map(course => coursesId.push(course.id));
+
+    const userCourse = await ctx.db.query.userCourses(
+      {
+        where: {
+          course: { id_in: coursesId },
+        },
+      },
+      `{
+          id
+       }`
+    );
+
+    const result = {
+      cursos: allCourses.length,
+      alunos: userCourse.length,
+      avaliacoes: totalComments,
+    };
     return result;
   },
 };

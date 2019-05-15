@@ -4,9 +4,17 @@ type SuccessMessage {
   message: String
 }
 
+type StatsInstrutor {
+  cursos: Int
+  alunos: Int
+  avaliacoes: Int
+}
+
 type User {
   id: ID!
   thumbnail: String
+  profession: String
+  description: String
   name: String!
   email: String!
   permission: [Permission]
@@ -85,7 +93,14 @@ type Mutation {
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
   updatePassword(id: ID!, password: String, confirmPassword: String): User!
-  updateUser(id: ID!, name: String, email: String, thumbnail: String): User!
+  updateUser(
+    id: ID!
+    name: String
+    email: String
+    thumbnail: String
+    description: String
+    profession: String
+  ): User!
   requestReset(email: String!): SuccessMessage
   resetPassword(
     resetToken: String!
@@ -195,6 +210,7 @@ type Query {
   rateCourseList(id: ID!, orderBy: RateCourseOrderByInput): [RateCourse]
   # Listar todos os cursos de um User
   coursesUser: [Course]
+  coursesInstructor(id: ID!): [Course]
 
   userCoursesConnection(orderBy: String, skip: Int, first: Int): [Course]
   # Information about actual user
@@ -202,10 +218,12 @@ type Query {
 
   #pagination
   videosConnection(where: VideoWhereInput): VideoConnection!
-
   coursesConnection(data: String): CourseConnection!
+
   wishlists(where: WishlistWhereInput): [Wishlist]
 
+  #Stats Instrutor Page
+  instrutorStats(id: ID!): StatsInstrutor
   #Stats
   coursesStats: [Stats]
   sellsByCourse(id: ID): [Stats]

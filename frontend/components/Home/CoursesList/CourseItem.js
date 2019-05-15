@@ -1,19 +1,13 @@
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import formatMoney from '../../../lib/formatMoney';
 import User from '../../Authentication/User';
-import ItemStyles from '../../styles/ItemStyles';
 import BuyFreeButton from '../BuyFreeButton';
 import AddToCart from '../Cart/AddToCart';
 import Rating from '../CourseInfo/Comments/Rating';
 import WishButton from '../WishButton';
-
-const InfoStyle = styled.p`
-  text-align: left;
-  padding: none;
-`;
+import Container from '../../styles/CourseItemStyle';
 
 class CourseItem extends Component {
   static propTypes = {
@@ -36,7 +30,7 @@ class CourseItem extends Component {
 
           return (
             <>
-              <ItemStyles>
+              <Container>
                 <Link
                   href={{
                     pathname: '/course',
@@ -49,18 +43,15 @@ class CourseItem extends Component {
                     src={course.thumbnail}
                   />
                 </Link>
-                <InfoStyle id="title">{course.title}</InfoStyle>
-                <span id="user">{course.user.name}</span>
-                {course.price === 0 ? (
-                  <InfoStyle className="price" id="price">
-                    Free Course
-                  </InfoStyle>
-                ) : (
-                  <InfoStyle className="price" id="price">
-                    {formatMoney(course.price)}
-                  </InfoStyle>
-                )}
-                <div className="rating" id="rating">
+                <br />
+                <div id="title-card">
+                  <p>{course.title}</p>
+                </div>
+                <div id="instructor-card">
+                  <p>{course.user.name}</p>
+                </div>
+
+                <div id="rating">
                   <Rating
                     showTotal
                     readOnly
@@ -69,10 +60,18 @@ class CourseItem extends Component {
                         ? 0
                         : course.totalRate / course.totalComments
                     }
-                    totalComments={course.totalComments}
+                    totalComments={course.totalComments || 0}
                   />
                 </div>
-                <div className="buttonList">
+                <div id="price-card">
+                  <p>
+                    {course.price === 0
+                      ? 'Free Course'
+                      : formatMoney(course.price)}
+                  </p>
+                </div>
+
+                <div id="buttonList">
                   {course.price === 0 ? (
                     <BuyFreeButton id={course.id} skip={this.props.skip} />
                   ) : (
@@ -85,7 +84,7 @@ class CourseItem extends Component {
                     skip={this.props.skip}
                   />
                 </div>
-              </ItemStyles>
+              </Container>
             </>
           );
         }}

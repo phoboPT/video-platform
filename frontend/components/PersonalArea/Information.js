@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Markdown from 'react-markdown';
+
 import User from '../Authentication/User';
 
 const Container = styled.div`
@@ -49,6 +51,9 @@ class Information extends Component {
               <div id="information">
                 <p>Nome: {me.name}</p>
                 <p>Email: {me.email}</p>
+                <p> Occupation or title: {me.profession} </p>
+                <p>About Me:</p>
+                <Markdown escapeHtml={false} source={me.description} />
               </div>
               <div id="change-info">
                 <button type="submit" onClick={() => changeManualView(2)}>

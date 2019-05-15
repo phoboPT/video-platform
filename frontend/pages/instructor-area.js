@@ -1,6 +1,6 @@
 import InstructorArea from '../components/InstructorArea/InstructorArea';
 
-const InstructorAreaPage = props => (
+const InstructorAreaPage = () => (
   <div>
     <InstructorArea />
   </div>

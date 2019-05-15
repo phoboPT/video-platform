@@ -1,6 +1,6 @@
 import Courses from '../components/Courses/Courses';
 
-const CoursesPage = props => (
+const CoursesPage = () => (
   <div>
     <Courses />
   </div>
