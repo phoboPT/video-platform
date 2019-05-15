@@ -12,13 +12,13 @@ const Container = styled.div`
   display: flex;
   #menu {
     display: grid;
-    flex: 1;
     order: 1;
     max-height: 205px;
     margin-top: 1.5rem;
     padding-right: 0px;
     padding-left: 55px;
     button {
+      text-align: left;
       margin-right: 1rem;
       color: #293a44;
       background: none;

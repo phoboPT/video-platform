@@ -24,42 +24,82 @@ const SIGNIN_MUTATION = gql`
 
 const Style = styled.div`
   display: grid;
-  form {
-    background-image: linear-gradient(
-      rgba(225, 239, 247, 0.7),
-      rgb(249, 253, 255)
-    );
-    border: 0.5px solid rgb(249, 253, 255);
-    border-radius: 25px;
+
+  input,
+  input[placeholder] {
+    text-align: center;
+    font-size: 17px;
   }
   #fieldset {
     margin: auto;
     border: none;
     width: 80%;
-
     display: grid;
-    #email {
-      margin: auto auto 1rem auto;
+
+    input {
+      padding-left: 15px;
+      border-radius: 7px;
+      height: 40px;
+      width: 300px;
     }
     #h2 {
-      color: #c4c4c4;
+      color: #adadad;
       font-size: 26px;
       text-align: center;
     }
-    #password {
+    #img {
       margin: auto;
+      width: 25%;
+    }
+    #email {
+      background: url('../../static/icon-user.png') no-repeat left center;
+      margin: auto auto 1rem auto;
+      border: 0.5px solid rgba(225, 220, 220, 1);
+    }
+    #password {
+      background: url('../../static/password-icon.gif') no-repeat left;
+      margin: auto;
+      border: 0.5px solid rgba(225, 220, 220, 1);
     }
     #login {
       margin: 1rem auto;
+      height: 35px;
+      width: 250px;
+      font-size: 18px;
+      color: white;
+      background: #556080;
+      border-radius: 6px;
+      border: 0.5px solid rgba(225, 220, 220, 1);
     }
     #forgot {
+      #forgot-button {
+        color: #9787ff;
+        cursor: pointer;
+        background: none;
+        border: none;
+        &:hover {
+          color: #2c2363;
+        }
+      }
+      color: white;
       text-align: right;
     }
   }
   #register {
-    margin: 3rem;
-    width: 70%;
+    width: 95%;
+    margin: 4rem auto;
+    border-top: 1px solid #d7e4ed;
+    text-align: center;
     #register-button {
+      outline: none;
+      margin: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #9787ff;
+      &:hover {
+        color: #2c2363;
+      }
     }
   }
 `;
@@ -118,9 +158,9 @@ class Signin extends Component {
               }}
             >
               <fieldset id="fieldset" aria-busy={loading} disabled={loading}>
+                <img id="img" alt="user" src="../../static/user.png" />
                 <h2 id="h2">Sign In</h2>
                 <Error error={error} />
-
                 <input
                   id="email"
                   name="email"
@@ -146,7 +186,11 @@ class Signin extends Component {
                 </button>
 
                 <div id="forgot">
-                  <button type="button" onClick={() => changeView(2)}>
+                  <button
+                    id="forgot-button"
+                    type="button"
+                    onClick={() => changeView(2)}
+                  >
                     Forgot Password?
                   </button>
                 </div>
@@ -159,7 +203,7 @@ class Signin extends Component {
                 type="button"
                 onClick={() => changeView(3)}
               >
-                You are not yet registered? Register now!
+                You are not yet registered? REGISTER HERE!
               </button>
             </div>
           </Style>
