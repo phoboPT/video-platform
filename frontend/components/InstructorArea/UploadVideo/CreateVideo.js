@@ -39,8 +39,10 @@ const CREATE_VIDEO_MUTATION = gql`
 `;
 
 const Container = styled.div`
-  max-width: 40%;
   text-align: center;
+  h3 {
+    margin: none;
+  }
   label {
     text-align: left;
   }
@@ -53,7 +55,6 @@ const Container = styled.div`
     font-size: 2rem;
     font-weight: 600;
   }
-
   .false {
     width: auto;
     background: #d6887c;
@@ -241,7 +242,7 @@ class CreateVideo extends Component {
                   {(createVideo, { loading, error }) => (
                     <Form>
                       <Error error={error} />
-                      <h1>{header}</h1>
+                      <h3>{header}</h3>
 
                       {show === 1 && (
                         <label htmlFor="file">

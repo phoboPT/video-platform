@@ -7,24 +7,38 @@ import Video from './Video';
 
 const Container = styled.div`
   margin: 8px;
-  border: 1px solid lightgrey;
   border-radius: 2px;
   background-color: #23a3de;
+  border: 1px solid #0c92da;
   padding: 1rem 0 0 3rem;
-
+  .head {
+    display: flex;
+    .first {
+      order: 1;
+      flex: 2;
+      margin: auto;
+      input {
+      }
+    }
+    .second {
+      margin: 1rem 2rem 1rem 0;
+      order: 2;
+      flex: 1;
+      .remove {
+        float: right;
+        width: 10rem;
+        height: 3.5rem;
+        background: red;
+        color: white;
+        border: 0;
+        font-weight: 600;
+        margin: auto;
+      }
+    }
+  }
   input {
     margin: 10px 0px 5px 10px;
   }
-`;
-const Button = styled.button`
-  float: right;
-  width: auto;
-  background: red;
-  color: white;
-  border: 0;
-  font-size: 2rem;
-  font-weight: 600;
-  padding: 0.5rem 1.2rem;
 `;
 
 const VideoList = styled.div`
@@ -33,7 +47,7 @@ const VideoList = styled.div`
   background-color: ${props =>
     props.isDraggingOver ? 'ligthgrey' : 'inherit'};
   min-height: 100px;
-  padding: 0 1rem 0 5rem;
+  padding: 1rem 5rem 1rem 5rem;
 `;
 
 class InnerList extends React.PureComponent {
@@ -45,6 +59,7 @@ class InnerList extends React.PureComponent {
     section: PropTypes.object.isRequired,
     updateFiles: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
+    removeVideo: PropTypes.func.isRequired,
   };
 
   render() {
@@ -56,6 +71,7 @@ class InnerList extends React.PureComponent {
       section,
       updateFiles,
       title,
+      removeVideo,
     } = this.props;
 
     return videos.map(
@@ -71,6 +87,7 @@ class InnerList extends React.PureComponent {
             updateFiles={updateFiles}
             section={section}
             title={title}
+            removeVideo={removeVideo}
           />
         )
     );
@@ -82,7 +99,7 @@ class Column extends Component {
     super(props);
     const { section } = props;
 
-    this.state = { disabled: false, title: section.title };
+    this.state = { title: section.title };
   }
 
   changeState = async e => {
@@ -91,7 +108,7 @@ class Column extends Component {
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
     await this.setState({ [name]: val });
-    handleChange(this.state.title, section.id);
+    handleChange(title, section.id);
   };
 
   disableInput = () => {
@@ -106,7 +123,7 @@ class Column extends Component {
   };
 
   render() {
-    const { disabled, title } = this.state;
+    const { title } = this.state;
     const {
       addVideo,
       handleVideo,
@@ -116,8 +133,8 @@ class Column extends Component {
       courseId,
       updateSections,
       updateFiles,
-      isShow,
       removeSection,
+      removeVideo,
     } = this.props;
     return (
       <Draggable draggableId={section.id} index={index}>
@@ -127,32 +144,29 @@ class Column extends Component {
               {...provided.draggableProps}
               innerRef={provided.innerRef}
             >
-              <div {...provided.dragHandleProps}>
-                <Button
-                  type="button"
-                  className="add-section"
-                  onClick={this.handleRemove}
-                  id={section.id}
-                >
-                  - Remove
-                </Button>
-                <label htmlFor="Title">
-                  <input
-                    disabled={disabled}
-                    name="title"
-                    onBlur={() => this.disableInput()}
-                    onChange={this.changeState}
-                    placeholder="Section"
-                    required
-                    type="text"
-                    value={title}
-                  />
-                  {!isShow && (
-                    <button onClick={this.disableInput} type="button">
-                      ✏️
-                    </button>
-                  )}
-                </label>
+              <div {...provided.dragHandleProps} className="head">
+                <div className="first">
+                  <label htmlFor="Title">
+                    <input
+                      name="title"
+                      onChange={this.changeState}
+                      placeholder="Section"
+                      required
+                      type="text"
+                      value={title}
+                    />
+                  </label>
+                </div>
+                <div className="second">
+                  <button
+                    className="remove"
+                    type="button"
+                    onClick={this.handleRemove}
+                    id={section.id}
+                  >
+                    ➖ Remove
+                  </button>
+                </div>
               </div>
               <Droppable droppableId={section.id} type="video">
                 {(provided, snapshot) => (
@@ -161,10 +175,15 @@ class Column extends Component {
                     {...provided.droppableProps}
                     isDraggingOver={snapshot.isDraggingOver}
                   >
-                    <button type="button" onClick={() => addVideo(section)}>
-                      + Add Video
+                    <button
+                      type="button"
+                      className="add-section"
+                      onClick={() => addVideo(section)}
+                    >
+                      ➕ Add Video
                     </button>
                     <InnerList
+                      removeVideo={removeVideo}
                       removeSection={removeSection}
                       videos={videos}
                       handleVideo={handleVideo}
@@ -198,6 +217,7 @@ Column.propTypes = {
   updateFiles: PropTypes.func.isRequired,
   isShow: PropTypes.bool,
   removeSection: PropTypes.func.isRequired,
+  removeVideo: PropTypes.func.isRequired,
 };
 
 export default Column;

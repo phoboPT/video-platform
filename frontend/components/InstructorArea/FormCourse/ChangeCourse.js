@@ -184,7 +184,7 @@ class ChangeCourse extends Component {
   state = {
     selected: 1,
     createCourse: this.props.createCourse,
-    view: 1,
+    view: 2,
     id: this.props.id,
     sections: {
       columnOrder: [],
@@ -198,6 +198,7 @@ class ChangeCourse extends Component {
       },
     },
     hasUpdated: false,
+    key: 0,
   };
 
   changeView = e => {
@@ -225,6 +226,12 @@ class ChangeCourse extends Component {
     });
   };
 
+  applyInitialSection = () => {
+    const { initialSection, key } = this.state;
+    const newState = JSON.parse(JSON.stringify(initialSection));
+    this.setState({ sections: newState, key: key + 1 });
+  };
+
   render() {
     const {
       id,
@@ -233,6 +240,7 @@ class ChangeCourse extends Component {
       hasUpdated,
       createCourse,
       selected,
+      key,
     } = this.state;
     const { changeIntructorView } = this.props;
     return (
@@ -244,8 +252,11 @@ class ChangeCourse extends Component {
             if (!hasUpdated && data.course) {
               if (data.course.section) {
                 const newSection = JSON.parse(data.course.section);
-                this.setState({ sections: newSection });
-                this.setState({ hasUpdated: true });
+                const section = JSON.parse(data.course.section);
+                this.setState({ hasUpdated: true, sections: newSection });
+                this.setState({
+                  initialSection: section,
+                });
               }
             }
           }
@@ -305,9 +316,11 @@ class ChangeCourse extends Component {
                   ))}
                 {view === 2 && (
                   <Media
+                    key={key}
                     sections={sections}
                     updateState={this.updateState}
                     courseId={id}
+                    undoSections={this.applyInitialSection}
                   />
                 )}
                 {view === 3 && <Interest courseId={id} />}
