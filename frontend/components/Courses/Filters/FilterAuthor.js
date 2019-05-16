@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types'
 import User from '../../Authentication/User';
 import reduceData from '../../../lib/reduceData';
 
@@ -65,5 +66,9 @@ class FilterAuthor extends Component {
     );
   }
 }
+
+FilterAuthor.propTypes = {
+  changeAuthor: PropTypes.func.isRequired,
+};
 
 export default FilterAuthor;

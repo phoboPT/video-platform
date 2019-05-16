@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
+import swal from '@sweetalert/with-react';
 import { ALL_COMMENTS_QUERY } from './ListComments';
 import {
   ALL_COURSE_INTERESTS,
@@ -37,6 +38,25 @@ class DeleteComment extends Component {
       query: ALL_COMMENTS_QUERY,
       data,
       variables: { id: course.id },
+    });
+  };
+
+  deleteComment = mutation => {
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this comment!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(willDelete => {
+      if (willDelete) {
+        swal('Your comment has been deleted!', {
+          icon: 'success',
+        });
+        mutation();
+      } else {
+        swal('Your comment is safe!');
+      }
     });
   };
 
@@ -80,11 +100,7 @@ class DeleteComment extends Component {
         {(deleteRateCourse, { error }) => (
           <button
             type="button"
-            onClick={() => {
-              if (confirm('Are you sure you want to delete your comment?')) {
-                deleteRateCourse();
-              }
-            }}
+            onClick={() => this.deleteComment(deleteRateCourse)}
           >
             {children}
           </button>

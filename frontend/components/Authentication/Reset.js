@@ -47,7 +47,7 @@ class Reset extends Component {
           confirmPassword,
         }}
       >
-        {(reset, { called, error, loading }) => (
+        {(reset, { error, loading }) => (
           <Form
             method="post"
             onSubmit={async e => {

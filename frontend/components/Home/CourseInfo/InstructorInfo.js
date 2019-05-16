@@ -44,6 +44,23 @@ const ALL_COURSES_QUERY = gql`
       user {
         id
         name
+        videoUser {
+          videoItem {
+            watched
+            video {
+              id
+            }
+          }
+        }
+      }
+      videos {
+        video {
+          id
+          title
+          urlVideo
+          file
+          duration
+        }
       }
       category {
         id

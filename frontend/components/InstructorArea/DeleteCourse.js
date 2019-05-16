@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import swal from '@sweetalert/with-react';
+import PropTypes from 'prop-types';
 import { CURRENT_COURSES_QUERY } from './MyCourses';
+import Error from '../Static/ErrorMessage';
 
 const DELETE_COURSE_MUTATION = gql`
   mutation DELETE_COURSE_MUTATION($id: ID!) {
@@ -20,6 +23,27 @@ const ButtonStyle = styled.div`
   }
 `;
 class DeleteCourse extends Component {
+  deleteCourse = mutation => {
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this Course!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then(willDelete => {
+      if (willDelete) {
+        swal('Your Course has been deleted!', {
+          icon: 'success',
+        });
+        mutation();
+      } else {
+        swal('Your Course is safe!', {
+          icon: 'warning',
+        });
+      }
+    });
+  };
+
   render() {
     const { id, children } = this.props;
     return (
@@ -36,43 +60,25 @@ class DeleteCourse extends Component {
         }}
         refetchQueries={[{ query: CURRENT_COURSES_QUERY }]}
       >
-        {(deleteRateCourse, { error }) => (
-          <ButtonStyle>
-            <button
-              type="button"
-              onClick={() => {
-                // eslint-disable-next-line no-restricted-globals
-                if (confirm('Are you sure you want to delete your comment?')) {
-                  deleteRateCourse();
-                }
-              }}
-            >
-              {children}
-            </button>
-          </ButtonStyle>
-        )}
+        {(deleteCourse, { error }) => {
+          if (error) return <Error error={error} />;
+          return (
+            <ButtonStyle>
+              <button
+                type="button"
+                onClick={() => this.deleteCourse(deleteCourse)}
+              >
+                {children}
+              </button>
+            </ButtonStyle>
+          );
+        }}
       </Mutation>
     );
   }
 }
-
+DeleteCourse.propTypes = {
+  id: PropTypes.string.isRequired,
+  children: PropTypes.object.isRequired,
+};
 export default DeleteCourse;
-//   update = (cache, payload) => {
-//     // manually update the cache on the client, so it matches the server
-//     // 1. Read the cache for the comments we want
-//     const data = cache.readQuery({
-//       query: ALL_COMMENTS_QUERY,
-//       variables: { id: this.props.data.course.id }
-//     });
-
-//     // 2. Filter the deleted itemout of the page
-//     data.rateCourseList = data.rateCourseList.filter(
-//       comment => comment.id !== payload.data.deleteRateCourse.id
-//     );
-//     // 3. Put the items back!
-//     cache.writeQuery({
-//       query: ALL_COMMENTS_QUERY,
-//       data,
-//       variables: { id: this.props.data.course.id }
-//     });
-//   };

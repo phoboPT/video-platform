@@ -13,6 +13,7 @@ const Meta = () => (
       rel="stylesheet"
     />
     <link href="../static/react-datepicker.css" rel="stylesheet" />
+    <link href="../static/style.css" rel="stylesheet" />
 
     <link
       crossOrigin="anonymous"

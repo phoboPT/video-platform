@@ -83,7 +83,6 @@ class VideoElement extends React.PureComponent {
       index,
       section,
       videos,
-
       files,
       changeSelectedVideo,
       data,
