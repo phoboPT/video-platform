@@ -20,7 +20,7 @@ const Container = styled.div`
 
 class LoginPage extends Component {
   state = {
-    view: 1,
+    view: 3,
   };
 
   changeView = id => {
@@ -33,8 +33,8 @@ class LoginPage extends Component {
       <>
         <Container>
           {view === 1 && <Signin changeView={this.changeView} />}
-          {view === 2 && <RequestReset />}
-          {view === 3 && <Signup />}
+          {view === 2 && <RequestReset changeView={this.changeView} />}
+          {view === 3 && <Signup changeView={this.changeView} />}
         </Container>
       </>
     );
