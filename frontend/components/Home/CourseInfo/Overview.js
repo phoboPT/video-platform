@@ -3,6 +3,7 @@ import Markdown from 'react-markdown';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import VideoSection from './VideoSection/VideoSection';
 import { SINGLE_VIDEO_QUERY } from '../../VideoManager/ShowVideo';
 import sumAll from '../../../lib/sumAll';
@@ -64,7 +65,8 @@ const Container = styled.div`
       }
     }
     #right-author {
-      margin: 3rem;
+      line-height: 1.6;
+      margin: 1rem;
       flex: 1;
       order: 2;
     }
@@ -108,78 +110,78 @@ class Overview extends Component {
         {({ data, loading }) => {
           if (loading) return <Loading />;
           if (!data.course) return <p>No Data</p>;
-          if (data.course) console.log(data);
-          return (
-            <>
-              <Container>
-                <br />
-                <div id="title">
-                  <p>About The Course</p>
-                </div>
-                <div id="description-container">
-                  <div id="description-title">
-                    <p>Description</p>
+          if (data.course)
+            return (
+              <>
+                <Container>
+                  <br />
+                  <div id="title">
+                    <p>About The Course</p>
                   </div>
-                  <div id="description">
-                    <Markdown
-                      escapeHtml={false}
-                      source={propsData.description}
-                    />
-                  </div>
-                </div>
-                <div id="author-container">
-                  <div id="left-author">
-                    <div id="title">
-                      <p>About The Instructor</p>
+                  <div id="description-container">
+                    <div id="description-title">
+                      <p>Description</p>
                     </div>
-                    <div id="author-name">
-                      <div id="author-title">
-                        <img alt="thumbnail" src={propsData.user.thumbnail} />
-                      </div>
-                      <div id="author">
-                        <p> {propsData.user.name} </p>
-                        <p>
-                          {propsData.user.profession !== undefined
-                            ? propsData.user.profession
-                            : ''}
-                        </p>
-                      </div>
+                    <div id="description">
+                      <Markdown
+                        escapeHtml={false}
+                        source={propsData.description}
+                      />
                     </div>
-                    <Link
-                      href={{
-                        pathname: '/instructor',
-                        query: {
-                          id: propsData.user.id,
-                        },
-                      }}
-                    >
-                      <button id="see-more" type="button">
-                        Know more about..
-                      </button>
-                    </Link>
                   </div>
-                  <div id="right-author">
-                    <Markdown
-                      escapeHtml={false}
-                      source={propsData.user.description}
-                    />
+                  <div id="author-container">
+                    <div id="left-author">
+                      <div id="title">
+                        <p>About The Instructor</p>
+                      </div>
+                      <div id="author-name">
+                        <div id="author-title">
+                          <img alt="thumbnail" src={propsData.user.thumbnail} />
+                        </div>
+                        <div id="author">
+                          <p> {propsData.user.name} </p>
+                          <p>{propsData.user.profession || ''}</p>
+                        </div>
+                      </div>
+                      <Link
+                        href={{
+                          pathname: '/instructor',
+                          query: {
+                            id: propsData.user.id,
+                          },
+                        }}
+                      >
+                        <button id="see-more" type="button">
+                          Know more about..
+                        </button>
+                      </Link>
+                    </div>
+                    <div id="right-author">
+                      <Markdown
+                        escapeHtml={false}
+                        source={propsData.user.description}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div id="course-content">
-                  <p id="title-content"> Course Content </p>
-                  <div id="top-bar">
-                    <p id="aulas"> {data.course.videos.length} aulas </p>
-                    <p id="horas"> Total Hours {sumAll(data.course.videos)} </p>
+                  <div id="course-content">
+                    <p id="title-content"> Course Content </p>
+                    <div id="top-bar">
+                      <p id="aulas"> {data.course.videos.length} lessons </p>
+                      <p id="horas">Total Hours {sumAll(data.course.videos)}</p>
+                    </div>
+                    <VideoSection key={id} data={data} />
                   </div>
-                  <VideoSection key={id} data={data} />
-                </div>
-              </Container>
-            </>
-          );
+                </Container>
+              </>
+            );
         }}
       </Query>
     );
   }
 }
+
+Overview.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default Overview;

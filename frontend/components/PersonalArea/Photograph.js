@@ -77,7 +77,6 @@ class Photograph extends Component {
     );
 
     const file = await res.json();
-    console.log(file);
     this.setState({
       changeThumbnail: 'true',
       thumbnail: file.secure_url,
