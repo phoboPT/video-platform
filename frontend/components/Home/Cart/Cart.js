@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import gql from 'graphql-tag';
 import Link from 'next/link';
-import React, { Component } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
 import calcTotalPrice from '../../../lib/calcTotalPrice';
@@ -70,5 +70,6 @@ const Cart = () => (
     }}
   </Composed>
 );
+
 export default Cart;
 export { LOCAL_STATE_QUERY, TOGGLE_CART_MUTATION };

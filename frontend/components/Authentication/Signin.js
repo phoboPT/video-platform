@@ -3,6 +3,7 @@ import Router from 'next/router';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { ALL_VIDEOS_USER } from '../InstructorArea/MyVideos/Videos';
 import { CURRENT_USER_QUERY } from './User';
 import { CURRENT_COURSES_QUERY } from '../InstructorArea/MyCourses';
@@ -248,6 +249,10 @@ class Signin extends Component {
     );
   }
 }
+
+Signin.propTypes = {
+  changeView: PropTypes.func.isRequired,
+};
 
 export default Signin;
 export { SIGNIN_MUTATION };

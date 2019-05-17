@@ -59,7 +59,7 @@ const Query = {
 
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be signed in!');
+      throw new Error('You must be signed in!');
     }
     // query o video atual com comparaçao de ids de user
     return ctx.db.query.videosConnection(
@@ -79,7 +79,7 @@ const Query = {
 
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be signed in!');
+      throw new Error('You must be signed in!');
     }
 
     // query o video atual com comparaçao de ids de user
@@ -112,7 +112,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ve se esta logado
     // if (!userId) {
-    //   throw new Error('you must be signed in!');
+    //   throw new Error('You must be signed in!');
     // }
     // query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
@@ -153,7 +153,7 @@ const Query = {
 
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be signed in!');
+      throw new Error('You must be signed in!');
     }
 
     // query o video atual com comparaçao de ids de user
@@ -179,7 +179,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be ssigned in!');
+      throw new Error('You must be signed in!');
     }
     // query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
@@ -204,7 +204,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be ssigned in!');
+      throw new Error('You must be signed in!');
     }
     // Get user
     const user = await ctx.db.query.user(
@@ -493,6 +493,7 @@ const Query = {
         if (wish === item.id) {
           item.wished = true;
         }
+        return wish;
       });
       return item;
     });
@@ -548,7 +549,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be ssigned in!');
+      throw new Error('You must be signed in!');
     }
 
     return ctx.db.query.wishlists(
@@ -581,7 +582,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be ssigned in!');
+      throw new Error('You must be signed in!');
     }
     const UserCourses = await ctx.db.query.userCourses(
       {
@@ -634,7 +635,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be ssigned in!');
+      throw new Error('You must be signed in!');
     }
     delete args.orderBy;
 
@@ -746,7 +747,7 @@ const Query = {
 
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be signed in!');
+      throw new Error('You must be signed in!');
     }
 
     // query o video atual com comparaçao de ids de user
@@ -766,7 +767,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be ssigned in!');
+      throw new Error('You must be signed in!');
     }
     // get all the instrutor courses
     const allInstrutorCourses = await ctx.db.query.courses(
@@ -832,7 +833,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be ssigned in!');
+      throw new Error('You must be signed in!');
     }
     // Get the actual month and year to dinamycally set the date
     const date = getDate();
@@ -885,7 +886,7 @@ const Query = {
     const { userId } = ctx.request;
     // Ver se esta logado
     if (!userId) {
-      throw new Error('you must be ssigned in!');
+      throw new Error('You must be signed in!');
     }
     // get all the instrutor courses
     const allInstrutorCourses = await ctx.db.query.courses(

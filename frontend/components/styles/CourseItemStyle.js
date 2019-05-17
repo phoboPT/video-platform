@@ -24,7 +24,7 @@ const Container = styled.div`
   #title-card {
     min-height: 40px;
     font-size: 17px;
-    margin-bottom: 1.5rem;
+    margin: 0.5rem 0 0.5rem 0;
     width: 100%;
     text-align: center;
   }
@@ -46,13 +46,21 @@ const Container = styled.div`
   }
   #rating {
     text-align: left;
-    padding-left: 1rem;
+    padding: 1rem 0 1rem 0;
+    display: flex;
     span {
-      display: flex;
       color: #1f0063;
       padding: 0 0 0 0.2rem;
-
       font-size: 1.5rem;
+    }
+    .progress {
+      padding: 0 0 0 1rem;
+      margin: auto;
+
+      span {
+        color: rgba(85, 85, 85, 0.7);
+        font-size: 1.2rem;
+      }
     }
   }
   #buttonList {
