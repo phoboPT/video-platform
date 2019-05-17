@@ -80,7 +80,7 @@ class CourseItemInstructor extends Component {
           <span>
             State:
             <State
-              background={course.state === 'Published' ? 'green' : 'red'}
+              background={course.state === 'PUBLISHED' ? 'green' : 'red'}
               color="white"
               id="state"
             >

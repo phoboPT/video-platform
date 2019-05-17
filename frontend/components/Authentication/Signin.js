@@ -36,12 +36,6 @@ const Style = styled.div`
     width: 80%;
     display: grid;
 
-    input {
-      padding-left: 15px;
-      border-radius: 7px;
-      height: 40px;
-      width: 300px;
-    }
     #h2 {
       color: #adadad;
       font-size: 26px;
@@ -51,18 +45,52 @@ const Style = styled.div`
       margin: auto;
       width: 25%;
     }
-    #email {
-      background: url('../../static/icon-user.png') no-repeat left center;
-      margin: auto auto 1rem auto;
-      border: 0.5px solid rgba(225, 220, 220, 1);
+    #div-email {
+      display: flex;
+      #container {
+        display: flex;
+        margin: 2rem auto;
+
+        #span-email {
+          margin-top: 5px;
+          order: 1;
+          background-image: url('../../static/icon-user.png');
+          width: 30px;
+          height: 30px;
+          background-repeat: no-repeat;
+          background-position: center center;
+        }
+        #email {
+          float: left;
+          order: 2;
+          border: 0.5px solid rgba(225, 220, 220, 1);
+        }
+      }
     }
-    #password {
-      background: url('../../static/password-icon.gif') no-repeat left;
-      margin: auto;
-      border: 0.5px solid rgba(225, 220, 220, 1);
+    #div-password {
+      display: flex;
+      #container {
+        display: flex;
+        margin: auto;
+        #span-password {
+          margin-top: 5px;
+          order: 1;
+          background: url('../../static/password-icon.gif');
+          width: 30px;
+          height: 30px;
+          background-repeat: no-repeat;
+          background-position: center center;
+        }
+        #password {
+          order: 2;
+          margin: auto;
+          border: 0.5px solid rgba(225, 220, 220, 1);
+        }
+      }
     }
+
     #login {
-      margin: 1rem auto;
+      margin: 1rem 38rem auto auto;
       height: 35px;
       width: 250px;
       font-size: 18px;
@@ -71,6 +99,7 @@ const Style = styled.div`
       border-radius: 6px;
       border: 0.5px solid rgba(225, 220, 220, 1);
     }
+
     #forgot {
       #forgot-button {
         color: #9787ff;
@@ -117,6 +146,15 @@ class Signin extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  submitForm = async (e, mutation) => {
+    e.preventDefault();
+    await mutation();
+    this.setState({ email: '', password: '' });
+    Router.push({
+      pathname: '/',
+    });
+  };
+
   render() {
     const { email, password } = this.state;
     const { changeView } = this.props;
@@ -146,45 +184,43 @@ class Signin extends Component {
       >
         {(signin, { error, loading }) => (
           <Style>
-            <form
-              method="post"
-              onSubmit={async e => {
-                e.preventDefault();
-                await signin();
-                this.setState({ email: '', password: '' });
-                Router.push({
-                  pathname: '/',
-                });
-              }}
-            >
+            <form method="post" onSubmit={e => this.submitForm(e, signin)}>
               <fieldset id="fieldset" aria-busy={loading} disabled={loading}>
                 <img id="img" alt="user" src="../../static/user.png" />
                 <h2 id="h2">Sign In</h2>
                 <Error error={error} />
-                <input
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  onChange={this.saveToState}
-                  required
-                  type="email"
-                  value={email}
-                />
 
-                <input
-                  id="password"
-                  placeholder="Password"
-                  name="password"
-                  onChange={this.saveToState}
-                  required
-                  type="password"
-                  value={password}
-                />
-
+                <div id="div-email">
+                  <div id="container">
+                    <span id="span-email" />
+                    <input
+                      id="email"
+                      name="email"
+                      placeholder="Email"
+                      onChange={this.saveToState}
+                      required
+                      type="email"
+                      value={email}
+                    />
+                  </div>
+                </div>
+                <div id="div-password">
+                  <div id="container">
+                    <span id="span-password" />
+                    <input
+                      id="password"
+                      placeholder="Password"
+                      name="password"
+                      onChange={this.saveToState}
+                      required
+                      type="password"
+                      value={password}
+                    />
+                  </div>
+                </div>
                 <button id="login" type="submit">
                   Login
                 </button>
-
                 <div id="forgot">
                   <button
                     id="forgot-button"
