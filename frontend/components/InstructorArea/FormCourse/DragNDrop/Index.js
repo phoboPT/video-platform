@@ -304,7 +304,7 @@ class Index extends Component {
 
   removeSection = async sectionId => {
     const { sections, videos, files, columnOrder } = this.state;
-    const { updateState } = this.props;
+    const { updateState, updateFilesToDelete } = this.props;
 
     const videosIds = sections[sectionId].videoIds;
     const { fileIds } = sections[sectionId].fileIds;
@@ -338,12 +338,13 @@ class Index extends Component {
     };
 
     await this.setState(newState);
+
     updateState(this.state);
   };
 
   removeVideo = async videoId => {
     const { videos } = this.state;
-    const { updateState } = this.props;
+    const { updateState, updateFilesToDelete } = this.props;
 
     delete videos[videoId];
 
@@ -351,8 +352,9 @@ class Index extends Component {
       ...this.state,
       videos: { ...videos },
     };
-
+    await this.setState({});
     await this.setState(newState);
+    updateFilesToDelete('video', videoId);
     updateState(this.state);
   };
 
@@ -432,6 +434,7 @@ Index.propTypes = {
   courseId: PropTypes.string.isRequired,
   isShow: PropTypes.bool,
   undoSections: PropTypes.func.isRequired,
+  updateFilesToDelete: PropTypes.func.isRequired,
 };
 
 export default Index;

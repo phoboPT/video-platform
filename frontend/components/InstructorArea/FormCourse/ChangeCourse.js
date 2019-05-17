@@ -241,6 +241,7 @@ class ChangeCourse extends Component {
       createCourse,
       selected,
       key,
+      updateFilesToDelete,
     } = this.state;
     const { changeIntructorView } = this.props;
     return (
@@ -316,6 +317,7 @@ class ChangeCourse extends Component {
                   ))}
                 {view === 2 && (
                   <Media
+                    updateFilesToDelete={this.updateFilesToDelete}
                     key={key}
                     sections={sections}
                     updateState={this.updateState}

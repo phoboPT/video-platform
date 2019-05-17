@@ -85,6 +85,7 @@ class CreateVideo extends Component {
     isUploadingFile: 0,
     isUpdate: this.props.isUpdate,
     videoId: this.props.video.id || '',
+    hasUpdatedState: false,
   };
 
   handleChange = e => {
@@ -111,6 +112,7 @@ class CreateVideo extends Component {
         { method: 'POST', body: data }
       );
       const file = await res.json();
+      console.log(file);
 
       const s = parseInt(file.duration % 60);
       const m = parseInt((file.duration / 60) % 60);
@@ -193,7 +195,7 @@ class CreateVideo extends Component {
           <Alert>
             <h3>List of Supported files</h3>
             <div className="content">
-              {fileExtensions.map((item, index) => (
+              {fileExtensions.map(item => (
                 <p>{item}</p>
               ))}
             </div>
@@ -214,13 +216,19 @@ class CreateVideo extends Component {
     this.setState({ course: e.target.value });
   };
 
-  changeUpload = e => {
-    this.setState({ isUploading: 0 });
+  changeUpload = () => {
+    console.log('hi');
+    this.setState({ isUploading: 1 });
+  };
+
+  loadState = async data => {
+    await this.setState({ hasUpdatedState: true });
+    await this.setState({ data });
   };
 
   render() {
     const { header, show, video } = this.props;
-    const { isUploading } = this.state;
+    const { isUploading, hasUpdatedState } = this.state;
     return (
       <Query query={SINGLE_VIDEO_QUERY} variables={{ id: video.id }}>
         {({ data, error, loading }) => {
@@ -228,6 +236,9 @@ class CreateVideo extends Component {
 
           if (error) return <Error error={error} />;
           if (!data) return <p>No Data</p>;
+          if (data && !hasUpdatedState) {
+            this.loadState(data);
+          }
           if (data)
             return (
               <Container>
@@ -246,7 +257,7 @@ class CreateVideo extends Component {
 
                       {show === 1 && (
                         <label htmlFor="file">
-                          {isUploading === 0 && (
+                          {isUploading !== 0 && (
                             <input
                               className="file"
                               type="file"
@@ -272,16 +283,33 @@ class CreateVideo extends Component {
                         </label>
                       )}
 
-                      {isUploading === 1 && (
-                        <img src="../../static/loading.gif" alt="Loading" />
-                      )}
-                      {isUploading === 2 && (
-                        <>
-                          <img src="../../static/done.png" alt="done" />
-                          <button type="button" onClick={this.changeUpload}>
-                            Change Video
-                          </button>
-                        </>
+                      {/* {isUploading === 1 && (
+                        // <img src="../../static/loading.gif" alt="Loading" />
+                      )} */}
+                      {data.video ? (
+                        data.video.id === video.id &&
+                        (isUploading === 0 && (
+                          <>
+                            {/* <img src="../../static/done.png" alt="done" /> */}
+                            <button type="button" onClick={this.changeUpload}>
+                              Change Video
+                            </button>
+                          </>
+                        ))
+                      ) : (
+                        <label htmlFor="file">
+                          {isUploading === 0 && (
+                            <input
+                              className="file"
+                              type="file"
+                              name="file"
+                              id="file"
+                              placeholder="Upload a Video"
+                              // required
+                              onChange={e => this.uploadVideo(e, createVideo)}
+                            />
+                          )}
+                        </label>
                       )}
                     </Form>
                   )}

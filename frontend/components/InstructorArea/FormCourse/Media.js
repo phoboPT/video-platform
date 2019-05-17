@@ -33,6 +33,26 @@ const Container = styled.div`
 `;
 
 class Media extends Component {
+  state = {
+    videosToDelete: [],
+  };
+
+  updateFilesToDelete = (stateToUpdate, id) => {
+    const { videosToDelete } = this.state;
+
+    switch (stateToUpdate) {
+      case 'video': {
+        const newState = [...videosToDelete];
+        newState.push(id);
+        this.setState({ videosToDelete: [...newState] });
+        break;
+      }
+
+      default:
+        break;
+    }
+  };
+
   render() {
     const { sections, updateState, courseId, undoSections } = this.props;
     return (
@@ -42,11 +62,16 @@ class Media extends Component {
           your liking
         </p>
         <div className="button">
-          <SaveCourseButton sections={sections} id={courseId} />
+          <SaveCourseButton
+            sections={sections}
+            id={courseId}
+            data={this.state}
+          />
         </div>
         <br />
         <p>Sections</p>
         <Index
+          updateFilesToDelete={this.updateFilesToDelete}
           sections={sections}
           updateState={updateState}
           courseId={courseId}

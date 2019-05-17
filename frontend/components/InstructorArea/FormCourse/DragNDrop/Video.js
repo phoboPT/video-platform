@@ -109,6 +109,7 @@ class Video extends Component {
     const { value } = e.target;
 
     await this.setState({ content: value });
+    console.log(value);
     handleVideo(value, video.id);
   };
 

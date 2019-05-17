@@ -58,7 +58,7 @@ class ListCourses extends Component {
         {!showInfo && (
           <div id="rating">
             <div className="progress">
-              <Progress type="circle" width={40} percent={percent || 0} />
+              <Progress type="circle" width={40} percent={parseInt(percent)} />
               <span>{` Watched (${watched}) Total (${total})`}</span>
             </div>
           </div>

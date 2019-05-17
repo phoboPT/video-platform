@@ -68,6 +68,7 @@ const Grid = styled.div`
     flex: 1;
     order: 2;
     .progress {
+      word-break: normal;
       padding: 1rem;
       height: 50px;
       margin: 1rem;
@@ -155,7 +156,7 @@ class ShowVideo extends Component {
                     </div>
                     <div className="info">
                       <div className="progress">
-                        <Progress percent={percent} status="success" />
+                        <Progress percent={parseInt(percent)} width={50} />
                         <span className="progress">
                           {` Watched (${watched}) Total (${total})`}
                         </span>

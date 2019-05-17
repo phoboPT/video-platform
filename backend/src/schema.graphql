@@ -116,6 +116,7 @@ type Mutation {
     state: String
     section: String
     id: ID
+    idsToDelete: [String]
   ): Course!
   addTargetCourse(courseId: ID!, interestId: ID!): Course!
   removeFromCourse(id: ID!, courseId: ID!): Course

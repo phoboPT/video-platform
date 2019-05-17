@@ -77,28 +77,28 @@ class FormCourse extends Component {
     once: false,
   };
 
-  changePublished = () => {
+  changePublished = async () => {
     const { published, unpublished } = this.state;
 
-    this.setState({
+    await this.setState({
       published: !published,
       state: 'PUBLISHED',
       unpublished: !unpublished,
     });
   };
 
-  changeUnpublished = () => {
+  changeUnpublished = async () => {
     const { published, unpublished } = this.state;
 
-    this.setState({
+    await this.setState({
       published: !published,
       state: 'UNPUBLISHED',
       unpublished: !unpublished,
     });
   };
 
-  courseState = actualState => {
-    this.setState({
+  courseState = async actualState => {
+    await this.setState({
       alreadyExecuted: true,
       published: actualState === 'PUBLISHED',
       state: actualState,
@@ -106,16 +106,16 @@ class FormCourse extends Component {
     });
   };
 
-  handleChangeCategory = e => {
-    this.setState({
+  handleChangeCategory = async e => {
+    await this.setState({
       category: e.target.value,
     });
   };
 
-  handleChange = e => {
+  handleChange = async e => {
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
-    this.setState({ [name]: val });
+    await this.setState({ [name]: val });
   };
 
   changeCourse = async (e, updateCourseMutation) => {
@@ -131,8 +131,8 @@ class FormCourse extends Component {
     });
   };
 
-  changeQuill = e => {
-    this.setState({ description: e });
+  changeQuill = async e => {
+    await this.setState({ description: e });
   };
 
   uploadThumbnail = async e => {
@@ -150,7 +150,10 @@ class FormCourse extends Component {
       );
 
       const file = await res.json();
-      this.setState({ changeThumbnail: true, thumbnail: file.secure_url });
+      await this.setState({
+        changeThumbnail: true,
+        thumbnail: file.secure_url,
+      });
     } else {
       swal({
         title: 'Filename not Supported',

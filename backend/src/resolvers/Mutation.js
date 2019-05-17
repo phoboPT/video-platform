@@ -1,9 +1,36 @@
+require('dotenv').config({ path: 'variables.env' });
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
+const cloudinary = require('cloudinary');
 const { makeANiceEmail, transport } = require('../mail');
 const stripe = require('../stripe');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+const formatString = (type, string) => {
+  const video = /(video\/)\w{20}/g;
+  const file = /\w{20}/g;
+  let res = '';
+  switch (type) {
+    case 'video': {
+      res = string.match(video, '');
+      break;
+    }
+    case 'file': {
+      res = string.match(file, '');
+      break;
+    }
+    default:
+      break;
+  }
+
+  return res;
+};
 
 const updateRate = async (ctx, courseId, newRate, oldRate) => {
   const savedRate = await ctx.db.query.course(
@@ -454,77 +481,126 @@ const Mutations = {
     if (!userId) {
       throw new Error('You must be signed in soooon');
     }
-    const data = {
-      ...args,
-    };
-    console.table(args);
-    let existingCourse;
-    if (args.id) {
-      existingCourse = await ctx.db.query.course({
-        where: {
-          id: args.id,
-        },
+    // Get the video ids to delete if there is any
+    const videosToDelete = args.idsToDelete;
+
+    console.log(videosToDelete);
+    // delete the videos if there any
+    if (videosToDelete.length > 0) {
+      const publicId = await Promise.all(
+        videosToDelete.map(video =>
+          ctx.db.query.videos(
+            {
+              where: { id: video },
+            },
+            `{
+          urlVideo
+          file
+                  }`
+          )
+        )
+      );
+      publicId.flat();
+      console.table(publicId);
+      publicId.forEach(async id => {
+        const { urlVideo, file } = id[0];
+        console.log(file);
+        // if (urlVideo) {
+        //   const id = formatString("video",urlVideo)[0];
+
+        //   console.log(id);
+        //   await cloudinary.v2.uploader.destroy(
+        //     id,
+        //     { resource_type: 'video' },
+        //     function(error, result) {
+        //       console.log(result, error);
+        //     }
+        //   );
+        // }
+        if (file) {
+          const id = formatString('file', file)[0];
+
+          console.log('file id', id);
+          await cloudinary.v2.api.delete_resources(
+            formatString('file', file),
+            { resource_type: 'raw' },
+            function(error, result) {
+              console.log(result, error);
+            }
+          );
+        }
       });
     }
+    // const data = {
+    //   ...args,
+    // };
+    // let existingCourse;
+    // if (args.id) {
+    //   existingCourse = await ctx.db.query.course({
+    //     where: {
+    //       id: args.id,
+    //     },
+    //   });
+    // }
 
-    // elimina o id dos updates
-    delete data.category;
-    // 4. If its not, create a fresh CourseVideo for that Course!
-    if (existingCourse) {
-      const updates = {
-        ...args,
-      };
-      // elimina o id dos updates
-      delete updates.id;
-      delete updates.category;
-      // da run no update method
-      if (args.category) {
-        return ctx.db.mutation.updateCourse(
-          {
-            data: {
-              ...updates,
-              category: {
-                connect: { id: args.category },
-              },
-            },
-            where: {
-              id: args.id,
-            },
-          },
-          info
-        );
-      }
+    // // elimina o id dos updates
+    // delete data.category;
+    // // 4. If its not, create a fresh CourseVideo for that Course!
+    // if (existingCourse) {
+    //   const updates = {
+    //     ...args,
+    //   };
+    //   // elimina o id dos updates
+    //   delete updates.id;
+    //   delete updates.category;
+    //   // da run no update method
+    //   if (args.category) {
+    //     return ctx.db.mutation.updateCourse(
+    //       {
+    //         data: {
+    //           ...updates,
+    //           category: {
+    //             connect: { id: args.category },
+    //           },
+    //         },
+    //         where: {
+    //           id: args.id,
+    //         },
+    //       },
+    //       info
+    //     );
+    //   }
 
-      return ctx.db.mutation.updateCourse(
-        {
-          data: updates,
+    //   return ctx.db.mutation.updateCourse(
+    //     {
+    //       data: updates,
 
-          where: {
-            id: args.id,
-          },
-        },
-        info
-      );
-    }
+    //       where: {
+    //         id: args.id,
+    //       },
+    //     },
+    //     info
+    //   );
+    // }
 
-    return ctx.db.mutation.createCourse(
-      {
-        data: {
-          category: {
-            connect: {
-              id: args.category,
-            },
-          },
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
-          ...data,
-        },
-      },
-      info
-    );
+    // return ctx.db.mutation.createCourse(
+    //   {
+    //     data: {
+    //       category: {
+    //         connect: {
+    //           id: args.category,
+    //         },
+    //       },
+    //       user: {
+    //         connect: {
+    //           id: userId,
+    //         },
+    //       },
+    //       ...data,
+    //     },
+    //   },
+    //   info
+    // );
   },
 
   async deleteCourse(parent, args, ctx, info) {
