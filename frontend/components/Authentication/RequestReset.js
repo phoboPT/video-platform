@@ -26,12 +26,6 @@ const Style = styled.div`
     width: 80%;
     display: grid;
 
-    input {
-      padding-left: 15px;
-      border-radius: 7px;
-      height: 40px;
-      width: 300px;
-    }
     #h2 {
       border-bottom: 1px solid #c6dcff;
       padding-bottom: 2rem;

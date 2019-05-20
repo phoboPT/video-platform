@@ -8,6 +8,11 @@ const Container = styled.div`
   width: 80%;
   height: 80%;
   margin: auto;
+  input {
+    border-radius: 7px;
+    height: 40px;
+    width: 300px;
+  }
   form {
     background-image: linear-gradient(
       rgba(225, 239, 247, 0.7),
@@ -20,7 +25,7 @@ const Container = styled.div`
 
 class LoginPage extends Component {
   state = {
-    view: 3,
+    view: 1,
   };
 
   changeView = id => {
