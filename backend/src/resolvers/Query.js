@@ -34,6 +34,7 @@ const Query = {
   videoUsers: forwardTo('db'),
   videoItems: forwardTo('db'),
   userCoursesConnection: forwardTo('db'),
+  userCourses: forwardTo('db'),
 
   // videosConnection: forwardTo("db"),
   async me(parent, args, ctx, info) {
@@ -837,7 +838,6 @@ const Query = {
     }
     // Get the actual month and year to dinamycally set the date
     const date = getDate();
-    console.log(date);
     // get all the buys from the instrutor courses list
     const courses = await ctx.db.query.userCourses(
       {

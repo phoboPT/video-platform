@@ -34,7 +34,6 @@ const CURRENT_COURSES_QUERY = gql`
 
 class MyCourses extends Component {
   render() {
-    const { changeView } = this.props;
     return (
       <Query query={CURRENT_COURSES_QUERY}>
         {({ data, error, loading }) => {

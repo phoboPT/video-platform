@@ -57,7 +57,7 @@ class Information extends Component {
               </div>
               <div id="change-info">
                 <button type="submit" onClick={() => changeManualView(2)}>
-                  ✏️ Edit My Account{' '}
+                  ✏️ Edit My Account
                 </button>
               </div>
             </Container>

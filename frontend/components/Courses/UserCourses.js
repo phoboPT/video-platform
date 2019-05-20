@@ -143,7 +143,6 @@ class UserCourses extends Component {
 
           if (data) {
             const courses = orderCourse(data.coursesFilter);
-            console.log(courses);
             return (
               <>
                 <Bar>

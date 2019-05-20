@@ -42,8 +42,9 @@ class Media extends Component {
 
     switch (stateToUpdate) {
       case 'video': {
-        const newState = [...videosToDelete];
+        const newState = videosToDelete;
         newState.push(id);
+
         this.setState({ videosToDelete: [...newState] });
         break;
       }

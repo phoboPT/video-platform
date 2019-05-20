@@ -216,5 +216,8 @@ class Stats extends Component {
 Stats.propTypes = {
   courseId: PropTypes.string,
   query: PropTypes.string.isRequired,
+  date: PropTypes.string,
 };
 export default Stats;
+
+export { CURRENT_USER_QUERY };

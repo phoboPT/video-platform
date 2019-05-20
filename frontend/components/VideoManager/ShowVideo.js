@@ -24,6 +24,7 @@ const SINGLE_VIDEO_QUERY = gql`
           urlVideo
           file
           duration
+          freeToWatch
         }
       }
       user {

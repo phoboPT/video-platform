@@ -112,7 +112,6 @@ class CreateVideo extends Component {
         { method: 'POST', body: data }
       );
       const file = await res.json();
-      console.log(file);
 
       const s = parseInt(file.duration % 60);
       const m = parseInt((file.duration / 60) % 60);
@@ -217,7 +216,6 @@ class CreateVideo extends Component {
   };
 
   changeUpload = () => {
-    console.log('hi');
     this.setState({ isUploading: 1 });
   };
 

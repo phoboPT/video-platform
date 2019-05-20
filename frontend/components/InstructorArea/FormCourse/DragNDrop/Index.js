@@ -316,6 +316,7 @@ class Index extends Component {
     }
     if (videosIds) {
       videosIds.forEach(element => {
+        updateFilesToDelete('video', element);
         delete videos[element];
       });
     }

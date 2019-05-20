@@ -70,8 +70,8 @@ class Header extends Component {
         </Flex>
         {this.props.children}
         <FlexBottom>
-          <p id="items"> Total Orders {data.ordersUser.length} </p>{' '}
-          <p id="total"> Total Spent {formatMoney(amount / 100)} </p>{' '}
+          <p id="items"> Total Orders {data.ordersUser.length} </p>
+          <p id="total"> Total Spent {formatMoney(amount / 100)} </p>
         </FlexBottom>
       </>
     );

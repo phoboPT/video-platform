@@ -137,7 +137,7 @@ class UpdateUser extends Component {
                           id="description"
                           data={me.description}
                           changeQuill={this.changeQuill}
-                        />{' '}
+                        />
                       </label>
                       <button type="submit">
                         Sav{loading ? 'ing' : 'e'} Alterations

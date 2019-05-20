@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import InstructorInfo from '../components/Home/CourseInfo/InstructorInfo';
 
 const InstructorPage = ({ query }) => (
@@ -6,4 +7,7 @@ const InstructorPage = ({ query }) => (
   </div>
 );
 
+InstructorPage.propTypes = {
+  query: PropTypes.string.isRequired,
+};
 export default InstructorPage;

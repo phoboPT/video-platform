@@ -3,9 +3,21 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { formatDistance } from 'date-fns';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import formatString from '../../lib/formatString';
 import ItemStyles from '../styles/ItemStyles';
 import DeleteCourse from './DeleteCourse';
+import Loading from '../Static/Loading';
+import Error from '../Static/ErrorMessage';
+
+const CURRENT_COURSE_SELLS = gql`
+  query CURRENT_COURSE_SELLS($id: ID!) {
+    userCourses(where: { course: { id: $id } }) {
+      id
+    }
+  }
+`;
 
 const Div = styled.div`
   padding: none;
@@ -64,70 +76,93 @@ class CourseItemInstructor extends Component {
     const { course } = this.props;
 
     return (
-      <ItemStyles>
-        <Div>
-          <img alt={course.title} src={course.thumbnail} />
+      <Query query={CURRENT_COURSE_SELLS} variables={{ id: course.id }}>
+        {({ data, loading, error }) => {
+          if (loading) return <Loading />;
+          if (error) return <Error error={error} />;
 
-          <br />
-          <span>
-            Title: <State id="title">{formatString(course.title, 20)}</State>
-          </span>
+          console.log('course', data);
+          return (
+            <ItemStyles>
+              <Div>
+                <img alt={course.title} src={course.thumbnail} />
 
-          <span>
-            Category: <State id="category">{course.category.name} </State>
-          </span>
+                <br />
+                <span>
+                  Title:
+                  <State id="title">{formatString(course.title, 20)}</State>
+                </span>
 
-          <span>
-            State:
-            <State
-              background={course.state === 'PUBLISHED' ? 'green' : 'red'}
-              color="white"
-              id="state"
-            >
-              {course.state}
-            </State>
-          </span>
+                <span>
+                  Category: <State id="category">{course.category.name} </State>
+                </span>
 
-          <span>
-            Created at:
-            <State id="createdAt">
-              {' '}
-              {formatDistance(new Date(course.createdAt), new Date())}
-            </State>
-          </span>
+                <span>
+                  State:
+                  <State
+                    background={course.state === 'PUBLISHED' ? 'green' : 'red'}
+                    color="white"
+                    id="state"
+                  >
+                    {course.state}
+                  </State>
+                </span>
 
-          <span>
-            Price: <State id="price">{course.price} €</State>
-          </span>
-          <div id="bottom-bar">
-            <div id="preview">
-              <Link
-                href={{
-                  pathname: '/course',
-                  query: { id: course.id },
-                }}
-              >
-                <img alt={course.title} src="../../../static/previewIcon.png" />
-              </Link>
-            </div>
-            <div id="edit">
-              <Link
-                href={{
-                  pathname: '/updateCourse',
-                  query: { id: course.id },
-                }}
-              >
-                <img alt={course.title} src="../../../static/editIcon.png" />
-              </Link>
-            </div>
-            <div id="delete">
-              <DeleteCourse id={course.id}>
-                <img alt={course.title} src="../../../static/deleteIcon.png" />
-              </DeleteCourse>
-            </div>
-          </div>
-        </Div>
-      </ItemStyles>
+                <span>
+                  Created at:
+                  <State id="createdAt">
+                    {formatDistance(new Date(course.createdAt), new Date())}
+                  </State>
+                </span>
+
+                <span>
+                  Price: <State id="price">{course.price} €</State>
+                </span>
+                <span>
+                  Total sells: <State>{data.userCourses.length || 0}</State>
+                </span>
+
+                <div id="bottom-bar">
+                  <div id="preview">
+                    <Link
+                      href={{
+                        pathname: '/course',
+                        query: { id: course.id },
+                      }}
+                    >
+                      <img
+                        alt={course.title}
+                        src="../../../static/previewIcon.png"
+                      />
+                    </Link>
+                  </div>
+                  <div id="edit">
+                    <Link
+                      href={{
+                        pathname: '/updateCourse',
+                        query: { id: course.id },
+                      }}
+                    >
+                      <img
+                        alt={course.title}
+                        src="../../../static/editIcon.png"
+                      />
+                    </Link>
+                  </div>
+                  <div id="delete">
+                    <DeleteCourse id={course.id}>
+                      <img
+                        alt={course.title}
+                        src="../../../static/deleteIcon.png"
+                      />
+                    </DeleteCourse>
+                  </div>
+                </div>
+              </Div>
+            </ItemStyles>
+          );
+        }}
+      </Query>
     );
   }
 }

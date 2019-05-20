@@ -67,8 +67,8 @@ class PurchaseItem extends Component {
           <p id="total"> {formatMoney(order.total / 100)}</p>
           <div id="more">
             <button type="button" onClick={() => changeReceipt(order.id, 2)}>
-              {' '}
-              Receipt{' '}
+              
+              Receipt
             </button>
           </div>
         </Container>

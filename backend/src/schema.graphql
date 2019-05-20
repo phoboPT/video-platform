@@ -212,6 +212,7 @@ type Query {
   # Listar todos os cursos de um User
   coursesUser: [Course]
   coursesInstructor(id: ID!): [Course]
+  userCourses(where: UserCourseWhereInput): [UserCourse]
 
   userCoursesConnection(orderBy: String, skip: Int, first: Int): [Course]
   # Information about actual user

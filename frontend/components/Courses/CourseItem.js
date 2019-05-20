@@ -7,6 +7,7 @@ import Container from '../styles/CourseItemStyle';
 import calcProgress from '../../lib/calcProgress';
 import Rating from '../Home/CourseInfo/Comments/Rating';
 import formatMoney from '../../lib/formatMoney';
+import Loading from '../Static/Loading';
 
 class ListCourses extends Component {
   static propTypes = {
@@ -26,10 +27,7 @@ class ListCourses extends Component {
 
   render() {
     const { percent, watched, total } = this.state;
-    const {
-      course: { course },
-      showInfo,
-    } = this.props;
+    const { showInfo } = this.props;
     let data;
     if (showInfo) {
       data = this.props.course;
