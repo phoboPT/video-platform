@@ -76,16 +76,16 @@ class InnerList extends React.PureComponent {
     controller: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { videosWatched, item } = this.props;
     try {
-      videosWatched[0].videoItem.map(video => {
+      videosWatched[0].videoItem.forEach(async video => {
         if (video.video.id === item) {
           if (video.watched) {
-            return this.setState({ selected: true });
+            console.log(video.watched);
+            await this.setState({ selected: true });
           }
         }
-        return null;
       });
     } catch (e) {
       console.warn(e);

@@ -146,7 +146,7 @@ class VideoSection extends Component {
     const { columnOrder, sections, videos, files } = this.state.section;
     return (
       <Container>
-        {columnOrder.map((columnId, index) => {
+        {columnOrder.map(columnId => {
           const section = sections[columnId];
           return (
             <VideoElement

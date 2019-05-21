@@ -19,16 +19,16 @@ const COURSES_FILTER_QUERY = gql`
         thumbnail
         state
         createdAt
-        user {
-          id
-          name
-        }
         videos {
           video {
             id
           }
         }
         category {
+          id
+          name
+        }
+        user {
           id
           name
         }
@@ -146,7 +146,6 @@ class UserCourses extends Component {
 
           if (data) {
             const courses = orderCourse(data.coursesFilter);
-            console.log(courses);
             return (
               <>
                 <Bar>

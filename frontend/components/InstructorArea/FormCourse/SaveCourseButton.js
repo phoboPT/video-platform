@@ -17,6 +17,7 @@ const CREATE_COURSE_MUTATION = gql`
     $category: ID
     $id: ID
     $section: String
+    $idsToDelete: [String]
   ) {
     saveCourse(
       title: $title
@@ -27,6 +28,7 @@ const CREATE_COURSE_MUTATION = gql`
       state: $state
       id: $id
       section: $section
+      idsToDelete: $idsToDelete
     ) {
       id
     }
@@ -78,12 +80,16 @@ class SaveCourseButton extends Component {
   updateCourse = async (e, updateCourseMutation) => {
     e.preventDefault();
     const { createCourse, changeToEdit, id } = this.props;
+    await this.setState({
+      idsToDelete: [...this.props.data.videosToDelete],
+    });
     const res = await updateCourseMutation({
       variables: {
         id,
         ...this.state,
       },
     });
+
     if (createCourse) {
       changeToEdit(res);
     }

@@ -118,7 +118,7 @@ class Receipt extends Component {
         </Container>
         <InfoDown>
           <div id="quantity">
-            <p> Total courses purchased {receipt[0].items.length} </p>{' '}
+            <p> Total courses purchased {receipt[0].items.length} </p>
           </div>
           <div id="price">
             <p> Total Price {formatMoney(receipt[0].total / 100)} </p>

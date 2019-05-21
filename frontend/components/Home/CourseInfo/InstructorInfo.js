@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Markdown from 'react-markdown';
+import PropTypes from 'prop-types';
 import Loading from '../../Static/Loading';
 import ItemList from '../../styles/ItemList';
 import CourseItem from '../../Courses/CourseItem';
@@ -60,6 +61,7 @@ const ALL_COURSES_QUERY = gql`
           urlVideo
           file
           duration
+          freeToWatch
         }
       }
       category {
@@ -132,6 +134,7 @@ const Container = styled.div`
       flex: 1;
       #markdown {
         padding: 2rem;
+        line-height: 2rem;
       }
     }
   }
@@ -215,10 +218,7 @@ class InstructorInfo extends Component {
                             <div id="container-top">
                               <h1 id="name"> {data.user.name} </h1>
                               {data.user.profession !== undefined && (
-                                <h3 id="profession">
-                                  {' '}
-                                  {data.user.profession}{' '}
-                                </h3>
+                                <h3 id="profession">{data.user.profession}</h3>
                               )}
                             </div>
                             <div id="container-middle">
@@ -256,8 +256,7 @@ class InstructorInfo extends Component {
 
                             <div id="container-bottom">
                               <p id="title">
-                                {' '}
-                                Courses Taught by {data.user.name}{' '}
+                                Courses Taught by {data.user.name}
                               </p>
                               <ItemList>
                                 {courses.coursesInstructor.map(course => (
@@ -283,5 +282,9 @@ class InstructorInfo extends Component {
     );
   }
 }
+
+InstructorInfo.propTypes = {
+  id: PropTypes.string.isRequired,
+};
 
 export default InstructorInfo;

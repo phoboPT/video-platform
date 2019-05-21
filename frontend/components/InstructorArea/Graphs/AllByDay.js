@@ -128,15 +128,8 @@ class CourseByDate extends Component {
   };
 
   render() {
-    const {
-      displayTitle,
-      width,
-      height,
-      displayLegend,
-      legendPosition,
-      empty,
-    } = this.props;
-    const { totalCourses, title, defaultData, options } = this.state;
+    const { width, height, empty } = this.props;
+    const { totalCourses, defaultData, options } = this.state;
     if (empty) {
       return (
         <Bar

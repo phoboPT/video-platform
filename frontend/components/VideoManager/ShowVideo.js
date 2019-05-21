@@ -24,6 +24,7 @@ const SINGLE_VIDEO_QUERY = gql`
           urlVideo
           file
           duration
+          freeToWatch
         }
       }
       user {
@@ -167,9 +168,9 @@ class ShowVideo extends Component {
                     <div className="info">
                       <p id="title">Course Content</p>
                       <div className="progress">
-                        <Progress percent={percent} status="success" />
+                        <Progress percent={parseInt(percent)} width={50} />
                         <span className="progress">
-                          {` Watched (${watched}) Total (${total})`}
+                          {` Watched (${watched || 0}) Total (${total || 0})`}
                         </span>
                       </div>
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled, { injectGlobal, ThemeProvider } from 'styled-components';
 import Header from './Header';
 import Meta from './Meta';
+import Footer from './Footer';
 
 const theme = {
   black: '#2c2f33',
@@ -17,8 +18,14 @@ const theme = {
 };
 
 const StyledPage = styled.div`
-  background: white;
+  /* background: white; */
   color: ${props => props.theme.black};
+  .footer {
+    text-align: center;
+    opacity: 0.5;
+    width: 100%;
+    height: 60px; /* Height of the footer */
+  }
 `;
 
 const Inner = styled.div`
@@ -35,7 +42,7 @@ injectGlobal`
     font-style: normal;
   }
   html {
-   
+    height: 100%;
     box-sizing: border-box;
     font-size: 10px;
   }
@@ -43,6 +50,7 @@ injectGlobal`
     box-sizing: inherit;
   }
   body {
+    height: 100%;
     padding: 0;
     margin: 0;
     font-size: 1.5rem;
@@ -64,6 +72,7 @@ class Page extends Component {
           <Meta />
           <Header />
           <Inner>{children}</Inner>
+          <Footer />
         </StyledPage>
       </ThemeProvider>
     );

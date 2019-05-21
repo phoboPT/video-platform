@@ -1,9 +1,36 @@
+require('dotenv').config({ path: 'variables.env' });
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
+const cloudinary = require('cloudinary');
 const { makeANiceEmail, transport } = require('../mail');
 const stripe = require('../stripe');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+const formatString = (type, string) => {
+  const video = /(video\/)\w{20}/g;
+  const file = /\w{20}/g;
+  let res = '';
+  switch (type) {
+    case 'video': {
+      res = string.match(video, '');
+      break;
+    }
+    case 'file': {
+      res = string.match(file, '');
+      break;
+    }
+    default:
+      break;
+  }
+
+  return res;
+};
 
 const updateRate = async (ctx, courseId, newRate, oldRate) => {
   const savedRate = await ctx.db.query.course(
@@ -45,7 +72,6 @@ const Mutations = {
       throw new Error('You must be logged in to do that!');
     }
 
-    console.log(args);
     const video = {
       ...args,
     };
@@ -130,7 +156,6 @@ const Mutations = {
   },
   updateVideo(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    console.log(args);
     if (!userId) {
       throw new Error('You must be logged in to do that!');
     }
@@ -163,25 +188,41 @@ const Mutations = {
           user: { id: userId },
         },
       },
-      '{id}'
+      `{id
+        videoItem{
+          id
+          video{
+            id
+          }
+        }
+      }`
     );
+    console.log(videoUser.videoItem[0].video);
 
     // da run no update method
 
     const updatedItem = {
       video: { connect: { id: args.id } },
-      watched: args.watched,
+      watched: true,
     };
 
     if (videoUser) {
-      const [video] = await ctx.db.query.videoItems(
-        {
-          where: {
-            video: { id: args.id },
-          },
-        },
-        `{id}`
-      );
+      let video = false;
+
+      console.log(args.id);
+      videoUser.videoItem.forEach(item => {
+        if (item.video.id === args.id) {
+          video = true;
+        }
+      });
+      //   await ctx.db.query.videoItems(
+      //   {
+      //     where: {
+      //       video: { id: args.id },
+      //     },
+      //   },
+      //   `{id}`
+      // );
 
       if (video) {
         console.log('already exists');
@@ -273,33 +314,49 @@ const Mutations = {
     args.email = args.email.toLowerCase();
     // hash password
     const password = await bcrypt.hash(args.password, 10);
-    // create user
-    const user = await ctx.db.mutation.createUser(
+
+    const checkEmail = await ctx.db.query.user(
       {
-        data: {
-          ...args,
-          password,
-          permission: {
-            set: ['USER'],
-          },
+        where: {
+          email: args.email,
         },
       },
-      info
+      `{
+        id
+     }`
     );
-    // create jwt token for them
-    const token = jwt.sign(
-      {
-        userId: user.id,
-      },
-      process.env.APP_SECRET
-    );
-    // we set the jwt as a cookie on the ctx
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 24 * 365 * 60 * 60, // 1 year cookie
-    });
-    // finally we return the user to the browser
-    return user;
+
+    if (checkEmail) {
+      throw new Error(`Email already in use`);
+    } else {
+      // create user
+      const user = await ctx.db.mutation.createUser(
+        {
+          data: {
+            ...args,
+            password,
+            permission: {
+              set: ['USER'],
+            },
+          },
+        },
+        info
+      );
+      // create jwt token for them
+      const token = jwt.sign(
+        {
+          userId: user.id,
+        },
+        process.env.APP_SECRET
+      );
+      // we set the jwt as a cookie on the ctx
+      ctx.response.cookie('token', token, {
+        httpOnly: true,
+        maxAge: 1000 * 24 * 365 * 60 * 60, // 1 year cookie
+      });
+      // finally we return the user to the browser
+      return user;
+    }
   },
   async signin(parent, { email, password }, ctx) {
     // check if there is a user
@@ -454,10 +511,91 @@ const Mutations = {
     if (!userId) {
       throw new Error('You must be signed in soooon');
     }
+    // Get the video ids to delete if there is any
+    const videosToDelete = args.idsToDelete;
+
+    // delete the videos if there any
+    if (videosToDelete.length > 0) {
+      const publicId = await Promise.all(
+        videosToDelete.map(video =>
+          ctx.db.query.videos(
+            {
+              where: { id: video },
+            },
+            `{
+              urlVideo
+              file
+            }`
+          )
+        )
+      );
+
+      publicId.flat();
+
+      // Delete the files on the server
+      publicId.forEach(async id => {
+        const { urlVideo, file } = id[0];
+        if (urlVideo) {
+          const videoId = formatString('video', urlVideo)[0];
+
+          await cloudinary.v2.uploader.destroy(
+            videoId,
+            { resource_type: 'video' },
+            function(error, result) {
+              console.log(result, error);
+            }
+          );
+        }
+        if (file) {
+          await cloudinary.v2.api.delete_resources(
+            formatString('file', file),
+            { resource_type: 'raw' },
+            function(error, result) {
+              console.log(result, error);
+            }
+          );
+        }
+      });
+
+      // CourseVideo ids to delete
+      const courseVideoId = await Promise.all(
+        videosToDelete.map(video =>
+          ctx.db.query.courseVideoses(
+            {
+              where: { video: { id: video } },
+            },
+            `{
+          id
+                  }`
+          )
+        )
+      );
+      courseVideoId.flat();
+      // Delete the course reference to the video
+      await ctx.db.mutation
+        .deleteManyCourseVideoses(
+          {
+            where: {
+              id: courseVideoId[0].id,
+            },
+          },
+          info
+        )
+        .catch(err => {
+          console.log(err);
+        });
+
+      // Delete Videos
+      videosToDelete.forEach(id => {
+        ctx.db.mutation.deleteVideo({
+          where: { id },
+        });
+      });
+    }
+
     const data = {
       ...args,
     };
-    console.table(args);
     let existingCourse;
     if (args.id) {
       existingCourse = await ctx.db.query.course({
@@ -475,6 +613,7 @@ const Mutations = {
         ...args,
       };
       // elimina o id dos updates
+      delete updates.idsToDelete;
       delete updates.id;
       delete updates.category;
       // da run no update method
@@ -498,7 +637,6 @@ const Mutations = {
       return ctx.db.mutation.updateCourse(
         {
           data: updates,
-
           where: {
             id: args.id,
           },

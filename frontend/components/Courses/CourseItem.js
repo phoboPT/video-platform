@@ -50,14 +50,12 @@ class ListCourses extends Component {
         </div>
 
         <div id="instructor-card">
-          <p>
-            {showInfo ? data.user.name : this.props.course.course.user.name}
-          </p>
+          <p>{data.user.name}</p>
         </div>
         {!showInfo && (
           <div id="rating">
             <div className="progress">
-              <Progress type="circle" width={40} percent={percent || 0} />
+              <Progress type="circle" width={40} percent={parseInt(percent)} />
               <span>{` Watched (${watched}) Total (${total})`}</span>
             </div>
           </div>
