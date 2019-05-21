@@ -159,7 +159,7 @@ class ShowVideo extends Component {
                       <div className="progress">
                         <Progress percent={parseInt(percent)} width={50} />
                         <span className="progress">
-                          {` Watched (${watched}) Total (${total})`}
+                          {` Watched (${watched || 0}) Total (${total || 0})`}
                         </span>
                       </div>
 

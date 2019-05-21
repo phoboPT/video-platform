@@ -3,7 +3,6 @@ import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import swal from '@sweetalert/with-react';
 import PropTypes from 'prop-types';
-import Loading from '../../../Static/Loading';
 import VideoPlayer from '../../../VideoManager/VideoPlayer';
 
 const Container = styled.div`
@@ -42,16 +41,21 @@ class InnerList extends React.PureComponent {
     data: PropTypes.object.isRequired,
   };
 
+  state = { pause: false };
+
   openSwal = url => {
+    const { pause } = this.state;
+    const { title } = this.props.data.course;
     swal({
-      text: 'How was your experience getting help with this issue?',
+      text: `Preview of the course ${title}`,
       buttons: {
-        cancel: 'Close',
+        cancel: 'OK',
       },
-      content: <VideoPlayer url={url} />,
+      content: <VideoPlayer url={url} pause={pause} />,
     }).then(willDelete => {
       if (!willDelete) {
-        swal('Your imaginary file is safe!');
+        swal('');
+        // await this.setState({ pause: true });
       }
     });
   };
@@ -62,7 +66,6 @@ class InnerList extends React.PureComponent {
       <div id="right">
         {data.course.videos.map(video => {
           if (video.video.id === item) {
-            console.log('video', video);
             return (
               <Fragment key={item}>
                 <p id="p">{video.video.title}</p>

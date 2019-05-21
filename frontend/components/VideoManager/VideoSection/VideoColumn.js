@@ -69,16 +69,16 @@ class InnerList extends React.PureComponent {
     videosWatched: PropTypes.array.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { videosWatched, item } = this.props;
     try {
-      videosWatched[0].videoItem.map(video => {
+      videosWatched[0].videoItem.forEach(async video => {
         if (video.video.id === item) {
           if (video.watched) {
-            return this.setState({ selected: true });
+            console.log(video.watched);
+            await this.setState({ selected: true });
           }
         }
-        return null;
       });
     } catch (e) {
       console.warn(e);
@@ -90,7 +90,7 @@ class InnerList extends React.PureComponent {
     const { selected } = this.state;
     return (
       <div className="right">
-        <input type="checkbox" defaultChecked={selected} disabled />
+        <input type="checkbox" checked={selected} disabled />
         <button type="button" onClick={() => changeSelectedVideo(item)}>
           {data.course.videos.map(video => {
             if (video.video.id === item) {

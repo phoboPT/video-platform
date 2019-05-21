@@ -19,13 +19,16 @@ const COURSES_FILTER_QUERY = gql`
         thumbnail
         state
         createdAt
-
         videos {
           video {
             id
           }
         }
         category {
+          id
+          name
+        }
+        user {
           id
           name
         }

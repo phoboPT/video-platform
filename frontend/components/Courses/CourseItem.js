@@ -7,7 +7,6 @@ import Container from '../styles/CourseItemStyle';
 import calcProgress from '../../lib/calcProgress';
 import Rating from '../Home/CourseInfo/Comments/Rating';
 import formatMoney from '../../lib/formatMoney';
-import Loading from '../Static/Loading';
 
 class ListCourses extends Component {
   static propTypes = {
@@ -51,7 +50,7 @@ class ListCourses extends Component {
         </div>
 
         <div id="instructor-card">
-          <p>{showInfo ? data.user.name : this.props.course.user.name}</p>
+          <p>{data.user.name}</p>
         </div>
         {!showInfo && (
           <div id="rating">

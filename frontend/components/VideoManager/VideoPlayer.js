@@ -46,15 +46,18 @@ class VideoPlayer extends Component {
     }
   }
 
-  handleStateChange(state, prevState) {
+  handleStateChange(state) {
     // copy player state to this component's state
     this.setState({ ...state });
   }
 
   render() {
-    const { url, id, courseId } = this.props;
+    const { url, id, courseId, pause } = this.props;
+    const { player } = this;
     const { ended } = this.state;
-
+    if (pause) {
+      player.pause();
+    }
     return (
       <Div>
         <>
@@ -81,5 +84,8 @@ class VideoPlayer extends Component {
     );
   }
 }
+VideoPlayer.propTypes = {
+  pause: PropTypes.bool,
+};
 
 export default VideoPlayer;

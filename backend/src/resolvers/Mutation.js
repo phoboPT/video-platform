@@ -188,25 +188,41 @@ const Mutations = {
           user: { id: userId },
         },
       },
-      '{id}'
+      `{id
+        videoItem{
+          id
+          video{
+            id
+          }
+        }
+      }`
     );
+    console.log(videoUser.videoItem[0].video);
 
     // da run no update method
 
     const updatedItem = {
       video: { connect: { id: args.id } },
-      watched: args.watched,
+      watched: true,
     };
 
     if (videoUser) {
-      const [video] = await ctx.db.query.videoItems(
-        {
-          where: {
-            video: { id: args.id },
-          },
-        },
-        `{id}`
-      );
+      let video = false;
+
+      console.log(args.id);
+      videoUser.videoItem.forEach(item => {
+        if (item.video.id === args.id) {
+          video = true;
+        }
+      });
+      //   await ctx.db.query.videoItems(
+      //   {
+      //     where: {
+      //       video: { id: args.id },
+      //     },
+      //   },
+      //   `{id}`
+      // );
 
       if (video) {
         console.log('already exists');
@@ -298,33 +314,49 @@ const Mutations = {
     args.email = args.email.toLowerCase();
     // hash password
     const password = await bcrypt.hash(args.password, 10);
-    // create user
-    const user = await ctx.db.mutation.createUser(
+
+    const checkEmail = await ctx.db.query.user(
       {
-        data: {
-          ...args,
-          password,
-          permission: {
-            set: ['USER'],
-          },
+        where: {
+          email: args.email,
         },
       },
-      info
+      `{
+        id
+     }`
     );
-    // create jwt token for them
-    const token = jwt.sign(
-      {
-        userId: user.id,
-      },
-      process.env.APP_SECRET
-    );
-    // we set the jwt as a cookie on the ctx
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 24 * 365 * 60 * 60, // 1 year cookie
-    });
-    // finally we return the user to the browser
-    return user;
+
+    if (checkEmail) {
+      throw new Error(`Email already in use`);
+    } else {
+      // create user
+      const user = await ctx.db.mutation.createUser(
+        {
+          data: {
+            ...args,
+            password,
+            permission: {
+              set: ['USER'],
+            },
+          },
+        },
+        info
+      );
+      // create jwt token for them
+      const token = jwt.sign(
+        {
+          userId: user.id,
+        },
+        process.env.APP_SECRET
+      );
+      // we set the jwt as a cookie on the ctx
+      ctx.response.cookie('token', token, {
+        httpOnly: true,
+        maxAge: 1000 * 24 * 365 * 60 * 60, // 1 year cookie
+      });
+      // finally we return the user to the browser
+      return user;
+    }
   },
   async signin(parent, { email, password }, ctx) {
     // check if there is a user

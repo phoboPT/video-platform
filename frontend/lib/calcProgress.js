@@ -21,8 +21,11 @@ export default function calcProgress(data, isShowVideo) {
     const { videoUser } = user;
     videoUser.forEach(video => {
       video.videoItem.forEach(videoItem => {
-        if (videoItem.watched) {
-          videosWatched.push(videoItem.video.id);
+        console.log(videoItem);
+        if (videoItem.video.id) {
+          if (videoItem.watched) {
+            videosWatched.push(videoItem.video.id);
+          }
         }
       });
     });
@@ -31,8 +34,10 @@ export default function calcProgress(data, isShowVideo) {
   if (isShowVideo === 2) {
     const videoUser = user;
     videoUser.forEach(video => {
-      if (video.watched) {
-        videosWatched.push(video.video.id);
+      if (video.video.id) {
+        if (video.watched) {
+          videosWatched.push(video.video.id);
+        }
       }
     });
   }
