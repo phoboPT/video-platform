@@ -6,21 +6,24 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 
 const Container = styled.div`
-  margin: 1.5rem;
-  border-radius: 2px;
-  div {
-    display: flex;
-    background-color: #1f8fc2;
-    margin-block-end: 1.5rem;
-  }
+  max-width: 100%;
+  margin-bottom: 2rem;
+  border: 1.5px solid #d8d8d8;
+  border-top: 0;
 
   input {
     margin: auto auto auto 5px;
   }
   .right {
-    margin: 1rem;
     text-align: left;
     width: 100%;
+    margin: auto;
+    display: flex;
+    border-bottom: 1.5px solid #ededed;
+
+    &:hover {
+      background-color: #edeaea;
+    }
   }
 
   button {
@@ -37,6 +40,8 @@ const Container = styled.div`
       flex: 1;
       order: 3;
       margin: auto;
+      text-align: right;
+      padding-right: 1rem;
     }
     p {
       padding-left: 6px;
@@ -55,7 +60,8 @@ const Container = styled.div`
       }
     }
   }
-  .selected {
+  #selected {
+    background-color: rgba(4, 38, 9, 0.4);
   }
 `;
 
@@ -67,6 +73,7 @@ class InnerList extends React.PureComponent {
     changeSelectedVideo: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     videosWatched: PropTypes.array.isRequired,
+    controller: PropTypes.object.isRequired,
   };
 
   componentWillMount() {
@@ -85,13 +92,27 @@ class InnerList extends React.PureComponent {
     }
   }
 
+  componentDidMount() {
+    const { controller, id, index } = this.props;
+    if (id === controller.section) {
+      if (controller.active === index) {
+        this.setState({ active: true });
+      }
+    }
+  }
+
+  changeSelected = (item, selected) => {
+    const { changeSelectedVideo, id } = this.props;
+    changeSelectedVideo(item, selected, id);
+  };
+
   render() {
-    const { item, changeSelectedVideo, data } = this.props;
-    const { selected } = this.state;
+    const { item, data, index } = this.props;
+    const { selected, active } = this.state;
     return (
-      <div className="right">
+      <div className="right" id={active ? 'selected' : ''}>
         <input type="checkbox" defaultChecked={selected} disabled />
-        <button type="button" onClick={() => changeSelectedVideo(item)}>
+        <button type="button" onClick={() => this.changeSelected(item, index)}>
           {data.course.videos.map(video => {
             if (video.video.id === item) {
               return (
@@ -128,15 +149,16 @@ class VideoColumn extends Component {
       id,
       selected,
     } = this.state;
-    const { show, data, videosWatched } = this.props;
+    const { show, data, videosWatched, controller } = this.props;
     return (
       <Container>
-        {section.videoIds.map(item => {
+        {section.videoIds.map((item, index) => {
           const video = videos[item];
           const file = files[item];
           if (show) {
             return (
               <InnerList
+                controller={controller}
                 videosWatched={videosWatched}
                 key={item}
                 data={data}
@@ -146,6 +168,7 @@ class VideoColumn extends Component {
                 file={file}
                 item={item}
                 id={id}
+                index={index}
               />
             );
           }
@@ -160,6 +183,7 @@ VideoColumn.propTypes = {
   data: PropTypes.object.isRequired,
   show: PropTypes.bool,
   videosWatched: PropTypes.array.isRequired,
+  controller: PropTypes.object.isRequired,
 };
 
 export default VideoColumn;

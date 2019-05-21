@@ -10,7 +10,6 @@ const Container = styled.div`
     order: 1;
     margin: auto;
     font-size: 1.3rem;
-    color: red;
   }
   .rigth {
     order: 2;
@@ -59,18 +58,16 @@ class Rating extends Component {
     const { value } = this.state;
     return (
       <Container>
-        <div className="left">
-          <RatingComponent
-            className="ratingDisplay"
-            emptySymbol="far fa-star fa-2x"
-            fractions={2}
-            fullSymbol="fa fa-star fa-2x"
-            initialRating={parseInt(value)}
-            onClick={this.change}
-            placeholderSymbol="fa fa-star fa-2x"
-            readonly={readOnly}
-          />
-        </div>
+        <RatingComponent
+          className="ratingDisplay"
+          emptySymbol="far fa-star fa-2x"
+          fractions={2}
+          fullSymbol="fa fa-star fa-2x"
+          initialRating={value || 0}
+          onClick={this.change}
+          placeholderSymbol="fa fa-star fa-2x"
+          readonly={readOnly}
+        />
         <div className="rigth">
           <div id="media">
             <p>{Math.round(value * 10) / 10}</p>

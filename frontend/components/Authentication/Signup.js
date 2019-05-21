@@ -11,8 +11,14 @@ const SIGNUP_MUTATION = gql`
     $email: String!
     $name: String!
     $password: String!
+    $thumbnail: String!
   ) {
-    signup(email: $email, name: $name, password: $password) {
+    signup(
+      email: $email
+      name: $name
+      password: $password
+      thumbnail: $thumbnail
+    ) {
       id
       email
       name
@@ -110,7 +116,7 @@ const Style = styled.div`
     }
 
     #register {
-      margin: 4rem 36rem auto auto;
+      margin: 4rem auto;
       height: 45px;
       width: 300px;
       font-size: 18px;
@@ -146,6 +152,7 @@ class Signup extends Component {
     email: '',
     name: '',
     password: '',
+    thumbnail: '../../static/userDefault.jpg',
   };
 
   saveToState = e => {

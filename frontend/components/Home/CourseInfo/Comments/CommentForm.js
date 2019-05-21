@@ -15,7 +15,9 @@ import {
 import { CHECK_RATE_COURSE_QUERY } from '../ViewCourse';
 
 const Style = styled.div`
-  text-align: right;
+  width: 60%;
+  margin: auto;
+  border: 0.5px solid #dddddd;
   textarea {
     resize: none;
     overflow: auto;
@@ -27,16 +29,30 @@ const Style = styled.div`
   fieldset {
     border: none;
   }
-  button {
-    color: #ffffff;
-    font-size: 17px;
-    padding: 15px;
-    padding-right: 2rem;
-    background-color: #161616;
-    text-decoration: none;
-    cursor: pointer;
+  #text {
+    margin: 2rem;
   }
-  span {
+  #rating-container {
+    .left {
+      font-size: 2rem;
+    }
+    width: 40%;
+    margin: auto;
+  }
+
+  #button-container {
+    text-align: center;
+    #comment {
+      color: #ffffff;
+      font-size: 18px;
+      border-radius: 5px;
+      width: 250px;
+      padding: 15px;
+      padding-right: 2rem;
+      background-color: #161616;
+      cursor: pointer;
+      margin: auto;
+    }
   }
 `;
 
@@ -81,6 +97,7 @@ class CommentForm extends Component {
 
   render() {
     const { courseId, comment } = this.state;
+
     return (
       <Mutation
         mutation={ADD_RATING}
@@ -113,37 +130,47 @@ class CommentForm extends Component {
         ]}
       >
         {(createComCourse, { error, loading }) => (
-          <Style>
-            <form
-              onSubmit={async e => {
-                e.preventDefault();
-                this.saveData(createComCourse, e);
-              }}
-            >
-              <Error error={error} />
+          <>
+            <Error error={error} />
+            <Style>
+              <form
+                onSubmit={async e => {
+                  e.preventDefault();
+                  this.saveData(createComCourse, e);
+                }}
+              >
+                <div id="top-bar">
+                  <p id="text">
+                    Here You can Give an opinion and rate this course!
+                  </p>
+                </div>
+                <div id="rating-container">
+                  <Rating
+                    getRating={this.getRating}
+                    initialValue="0"
+                    readOnly={false}
+                  />
+                </div>
 
-              <div className="rating">
-                <Rating
-                  getRating={this.getRating}
-                  initialValue="0"
-                  readOnly={false}
-                />
-              </div>
-
-              <fieldset aria-busy={loading} disabled={loading}>
-                <textarea
-                  id="comment"
-                  name="comment"
-                  onChange={this.saveState}
-                  placeholder="Write your comment"
-                  required
-                  rows="6"
-                  value={comment}
-                />
-                <button type="submit">Comment</button>
-              </fieldset>
-            </form>
-          </Style>
+                <fieldset aria-busy={loading} disabled={loading}>
+                  <textarea
+                    id="comment"
+                    name="comment"
+                    onChange={this.saveState}
+                    placeholder="Write your comment"
+                    required
+                    rows="6"
+                    value={comment}
+                  />
+                  <div id="button-container">
+                    <button id="comment" type="submit">
+                      Comment
+                    </button>
+                  </div>
+                </fieldset>
+              </form>
+            </Style>
+          </>
         )}
       </Mutation>
     );

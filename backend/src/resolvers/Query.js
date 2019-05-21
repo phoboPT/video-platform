@@ -175,14 +175,44 @@ const Query = {
       info
     );
   },
-  coursesSearch(parent, args, ctx, info) {
+  async coursesSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
+
     if (!userId) {
       throw new Error('You must be signed in!');
     }
+    const user = await ctx.db.query.user(
+      {
+        where: {
+          id: userId,
+        },
+      },
+      `
+        {
+          id
+          name
+          email
+              courses {
+                course {
+                  id
+                }
+              }
+          interests{
+            id
+            interest{
+              id
+            }
+          }
+        }
+        `
+    );
+
+    const coursesIds = [];
+
+    user.courses.map(course => coursesIds.push(course.course.id));
     // query o video atual com comparaçao de ids de user
-    return ctx.db.query.courses(
+    const finalRes = await ctx.db.query.courses(
       {
         where: {
           AND: [
@@ -190,13 +220,18 @@ const Query = {
               state: 'PUBLISHED',
             },
             {
-              title_contains: args.title_contains,
+              title_contains: args.where.title,
+            },
+            {
+              id_not_in: coursesIds,
             },
           ],
         },
       },
       info
     );
+
+    return finalRes;
   },
   // Listagem Cursos Interests
   async coursesUserInterestList(parent, args, ctx) {

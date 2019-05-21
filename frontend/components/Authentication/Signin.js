@@ -12,6 +12,7 @@ import {
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
 } from '../Home/CoursesList/ListAllCourses';
+import { COURSES_FILTER_QUERY } from '../Courses/UserCourses';
 import Error from '../Static/ErrorMessage';
 
 const SIGNIN_MUTATION = gql`
@@ -91,7 +92,7 @@ const Style = styled.div`
     }
 
     #login {
-      margin: 1rem 38rem auto auto;
+      margin: 1rem auto;
       height: 35px;
       width: 250px;
       font-size: 18px;
@@ -165,6 +166,10 @@ class Signin extends Component {
         refetchQueries={[
           {
             query: CURRENT_USER_QUERY,
+          },
+          {
+            query: COURSES_FILTER_QUERY,
+            variables: { author: 'a', category: 'a' },
           },
           { query: CURRENT_COURSES_QUERY },
           {

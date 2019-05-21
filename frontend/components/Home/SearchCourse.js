@@ -8,7 +8,7 @@ import { DropDown, DropDownItem, SearchStyles } from '../styles/DropDown';
 
 const SEARCH_COURSES_QUERY = gql`
   query SEARCH_COURSES_QUERY($searchTerm: String!) {
-    coursesSearch(where: { title_contains: $searchTerm }) {
+    coursesSearch(where: { title: $searchTerm }) {
       id
       title
       description
@@ -41,7 +41,7 @@ export class AutoComplete extends Component {
       courses: res.data.coursesSearch,
       loading: false,
     });
-  }, 400);
+  }, 300);
 
   render() {
     resetIdCounter();

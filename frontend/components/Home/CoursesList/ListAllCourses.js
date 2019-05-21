@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import React, { Component } from 'react';
-import { Mutation, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { perPageCourse } from '../../../config';
 import { Container, CoursesList, Title } from '../../styles/Home';
 import CourseItem from './CourseItem';
@@ -242,26 +242,33 @@ class ListAllCourses extends Component {
               return (
                 <Container>
                   {data.courses && <Title>{this.state.title}</Title>}
-                  <CoursesList className={this.state.classe}>
-                    {data.courses &&
-                      data.courses.map(course => (
-                        <CourseItemNoUser
-                          course={course}
-                          key={course.id}
-                          skip={this.state.page * perPageCourse - perPageCourse}
-                        />
-                      ))}
-                  </CoursesList>
-                  <Pagination
-                    page={this.state.page}
-                    animationSliderControlForward={
-                      this.animationSliderControlForward
-                    }
-                    animationSliderControlBackward={
-                      this.animationSliderControlBackward
-                    }
-                    isInterest={false}
-                  />
+                  <div id="content-container">
+                    <CoursesList
+                      id="courses-list"
+                      className={this.state.classe}
+                    >
+                      {data.courses &&
+                        data.courses.map(course => (
+                          <CourseItemNoUser
+                            course={course}
+                            key={course.id}
+                            skip={
+                              this.state.page * perPageCourse - perPageCourse
+                            }
+                          />
+                        ))}
+                    </CoursesList>
+                    <Pagination
+                      page={this.state.page}
+                      animationSliderControlForward={
+                        this.animationSliderControlForward
+                      }
+                      animationSliderControlBackward={
+                        this.animationSliderControlBackward
+                      }
+                      isInterest={false}
+                    />
+                  </div>
                 </Container>
               );
             }
@@ -270,26 +277,33 @@ class ListAllCourses extends Component {
               return (
                 <Container>
                   {data.coursesList && <Title>{this.state.title}</Title>}
-                  <CoursesList className={this.state.classe}>
-                    {data.coursesList &&
-                      data.coursesList.map(course => (
-                        <CourseItem
-                          course={course}
-                          key={course.id}
-                          skip={this.state.page * perPageCourse - perPageCourse}
-                        />
-                      ))}
-                  </CoursesList>
-                  <Pagination
-                    page={this.state.page}
-                    animationSliderControlForward={
-                      this.animationSliderControlForward
-                    }
-                    animationSliderControlBackward={
-                      this.animationSliderControlBackward
-                    }
-                    isInterest={false}
-                  />
+                  <div id="content-container">
+                    <CoursesList
+                      id="courses-list"
+                      className={this.state.classe}
+                    >
+                      {data.coursesList &&
+                        data.coursesList.map(course => (
+                          <CourseItem
+                            course={course}
+                            key={course.id}
+                            skip={
+                              this.state.page * perPageCourse - perPageCourse
+                            }
+                          />
+                        ))}
+                    </CoursesList>
+                    <Pagination
+                      page={this.state.page}
+                      animationSliderControlForward={
+                        this.animationSliderControlForward
+                      }
+                      animationSliderControlBackward={
+                        this.animationSliderControlBackward
+                      }
+                      isInterest={false}
+                    />
+                  </div>
                 </Container>
               );
             }
@@ -302,38 +316,43 @@ class ListAllCourses extends Component {
                         <Title>{this.state.title}</Title>
                       ))}
                     {/* Filtering the data to show the correct list */}
-                    <CoursesList className={this.state.classe}>
-                      {data.coursesUserInterestList &&
-                        data.coursesUserInterestList.map(course => (
-                          <CourseItem
-                            course={course}
-                            key={course.id}
-                            skip={
-                              this.state.page * perPageCourse - perPageCourse
-                            }
-                          />
-                        ))}
-                    </CoursesList>
+                    <div id="content-container">
+                      <CoursesList
+                        id="courses-list"
+                        className={this.state.classe}
+                      >
+                        {data.coursesUserInterestList &&
+                          data.coursesUserInterestList.map(course => (
+                            <CourseItem
+                              course={course}
+                              key={course.id}
+                              skip={
+                                this.state.page * perPageCourse - perPageCourse
+                              }
+                            />
+                          ))}
+                      </CoursesList>
 
-                    {/* Check what pagination to render ( count gives the total of items of the interest list) */}
+                      {/* Check what pagination to render ( count gives the total of items of the interest list) */}
 
-                    {data.coursesUserInterestList[0] !== undefined && (
-                      <Pagination
-                        page={this.state.page}
-                        animationSliderControlForward={
-                          this.animationSliderControlForward
-                        }
-                        animationSliderControlBackward={
-                          this.animationSliderControlBackward
-                        }
-                        isInterest
-                        count={
-                          data.coursesUserInterestList
-                            ? data.coursesUserInterestList[0].count
-                            : 0
-                        }
-                      />
-                    )}
+                      {data.coursesUserInterestList[0] !== undefined && (
+                        <Pagination
+                          page={this.state.page}
+                          animationSliderControlForward={
+                            this.animationSliderControlForward
+                          }
+                          animationSliderControlBackward={
+                            this.animationSliderControlBackward
+                          }
+                          isInterest
+                          count={
+                            data.coursesUserInterestList
+                              ? data.coursesUserInterestList[0].count
+                              : 0
+                          }
+                        />
+                      )}
+                    </div>
                   </Container>
                 </>
               );
@@ -346,35 +365,40 @@ class ListAllCourses extends Component {
                         <Title>{this.state.title}</Title>
                       ))}
                     {/* Filtering the data to show the correct list */}
-                    <CoursesList className={this.state.classe}>
-                      {data.coursesRating &&
-                        data.coursesRating.map(course => (
-                          <CourseItem
-                            course={course}
-                            key={course.id}
-                            skip={
-                              this.state.page * perPageCourse - perPageCourse
-                            }
-                          />
-                        ))}
-                    </CoursesList>
+                    <div id="content-container">
+                      <CoursesList
+                        id="courses-list"
+                        className={this.state.classe}
+                      >
+                        {data.coursesRating &&
+                          data.coursesRating.map(course => (
+                            <CourseItem
+                              course={course}
+                              key={course.id}
+                              skip={
+                                this.state.page * perPageCourse - perPageCourse
+                              }
+                            />
+                          ))}
+                      </CoursesList>
 
-                    {/* Check what pagination to render ( count gives the total of items of the interest list) */}
+                      {/* Check what pagination to render ( count gives the total of items of the interest list) */}
 
-                    {data.coursesRating[0] !== undefined && (
-                      <Pagination
-                        page={this.state.page}
-                        animationSliderControlForward={
-                          this.animationSliderControlForward
-                        }
-                        animationSliderControlBackward={
-                          this.animationSliderControlBackward
-                        }
-                        count={
-                          data.coursesRating ? data.coursesRating[0].count : 0
-                        }
-                      />
-                    )}
+                      {data.coursesRating[0] !== undefined && (
+                        <Pagination
+                          page={this.state.page}
+                          animationSliderControlForward={
+                            this.animationSliderControlForward
+                          }
+                          animationSliderControlBackward={
+                            this.animationSliderControlBackward
+                          }
+                          count={
+                            data.coursesRating ? data.coursesRating[0].count : 0
+                          }
+                        />
+                      )}
+                    </div>
                   </Container>
                 </>
               );

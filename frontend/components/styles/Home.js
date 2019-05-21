@@ -51,6 +51,22 @@ const Container = styled.div`
   .animation {
     ${animationReady}
   }
+  #content-container {
+    display: flex;
+    .Left {
+      float: left;
+      order: 1;
+    }
+    .Right {
+      float: right;
+      order: 3;
+    }
+    #courses-list {
+      flex: 2;
+      order: 2;
+    }
+  }
+
   #arrow {
     width: 40px;
     height: 40px;
@@ -69,14 +85,6 @@ const Container = styled.div`
   button:disabled {
     opacity: 0.45;
     cursor: not-allowed;
-  }
-  .Left {
-    float: left;
-    position: relative;
-  }
-  .Right {
-    float: right;
-    position: relative;
   }
 `;
 export { Container, CoursesList, Title };

@@ -26,10 +26,7 @@ class ListCourses extends Component {
 
   render() {
     const { percent, watched, total } = this.state;
-    const {
-      course: { course },
-      showInfo,
-    } = this.props;
+    const { showInfo } = this.props;
     let data;
     if (showInfo) {
       data = this.props.course;
@@ -53,7 +50,9 @@ class ListCourses extends Component {
         </div>
 
         <div id="instructor-card">
-          <p>{showInfo ? data.user.name : this.props.course.user.name}</p>
+          <p>
+            {showInfo ? data.user.name : this.props.course.course.user.name}
+          </p>
         </div>
         {!showInfo && (
           <div id="rating">

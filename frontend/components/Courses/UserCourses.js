@@ -19,7 +19,10 @@ const COURSES_FILTER_QUERY = gql`
         thumbnail
         state
         createdAt
-
+        user {
+          id
+          name
+        }
         videos {
           video {
             id
@@ -99,7 +102,7 @@ const Container = styled.div`
     font-weight: 100 !important;
     word-spacing: 2px;
     margin-left: 5rem;
-    margin-top: 3rem;
+    margin-top: COURSES_FILTER_QUERY3rem;
     margin-bottom: 0;
   }
 `;
@@ -202,3 +205,4 @@ class UserCourses extends Component {
 }
 
 export default UserCourses;
+export { COURSES_FILTER_QUERY };

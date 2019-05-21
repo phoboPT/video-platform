@@ -45,6 +45,7 @@ const CURRENT_USER_QUERY = gql`
           price
           thumbnail
           category {
+            id
             name
           }
           user {

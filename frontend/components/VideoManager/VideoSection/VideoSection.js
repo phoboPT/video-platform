@@ -6,29 +6,37 @@ import VideoColumn from './VideoColumn';
 
 const Container = styled.div`
   margin: 15px 15px;
-  border: 1px solid #d4d8da;
-  border-radius: 2px;
-  background-color: #d4d8da;
   max-height: 630px;
   overflow-x: auto;
+  border-radius: 4px;
+  #container-top {
+    cursor: pointer;
+    height: 80px;
+    border: 1.5px solid #d8d8d8;
+    border-bottom: 0;
+    box-shadow: 0 8px 6px -6px #a8a8a8;
+    &:hover {
+      box-shadow: 0 0 20px #a8a8a8;
+    }
 
-  h4 {
-    margin: 1rem;
-    background-color: #c2c6c8;
-  }
-  .left {
-    text-align: left;
-    flex: 9;
-    order: 1;
-    background-color: #c2c6c8;
-  }
-  .rigth {
-    order: 2;
-    flex: 1;
-    width: 100%;
-    background-color: #c2c6c8;
-    text-align: right;
-    padding: 1rem 2rem 1rem 0;
+    .left {
+      padding-top: 1rem;
+      height: 80px;
+      padding-left: 2rem;
+      text-align: left;
+      margin: auto;
+      flex: 9;
+      order: 1;
+      width: 100%;
+    }
+    .rigth {
+      order: 2;
+      flex: 1;
+      width: 100%;
+      margin: auto;
+      text-align: right;
+      padding: 1rem 2rem 1rem 0;
+    }
   }
   button {
     display: flex;
@@ -54,6 +62,7 @@ class VideoElement extends React.PureComponent {
     localStorageId: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
     videosWatched: PropTypes.array.isRequired,
+    controller: PropTypes.object.isRequired,
   };
 
   state = { selected: this.props.item === this.props.id };
@@ -87,19 +96,23 @@ class VideoElement extends React.PureComponent {
       changeSelectedVideo,
       data,
       videosWatched,
+      controller,
     } = this.props;
     const { show } = this.state;
     return (
       <Fragment key={index}>
-        <button type="button" onClick={e => this.expand(e, section.id)}>
-          <div className="left">
-            <h4>{section.title}</h4>
-          </div>
-          <div className="rigth">🔽</div>
-        </button>
+        <div id="container-top">
+          <button type="button" onClick={e => this.expand(e, section.id)}>
+            <div className="left">
+              <h4>{section.title}</h4>
+            </div>
+            <div className="rigth">🔽</div>
+          </button>
+        </div>
 
         <Fragment key={index}>
           <VideoColumn
+            controller={controller}
             videosWatched={videosWatched}
             data={data}
             id={section.id}
@@ -123,7 +136,13 @@ class VideoSection extends Component {
 
   render() {
     if (!this.state.section) return <p>No Content for this course!</p>;
-    const { data, changeSelectedVideo, id, videosWatched } = this.props;
+    const {
+      data,
+      changeSelectedVideo,
+      id,
+      videosWatched,
+      controller,
+    } = this.props;
     const { columnOrder, sections, videos, files } = this.state.section;
     return (
       <Container>
@@ -132,6 +151,7 @@ class VideoSection extends Component {
           return (
             <VideoElement
               id={id}
+              controller={controller}
               videosWatched={videosWatched}
               section={section}
               key={section.id}
@@ -154,6 +174,7 @@ VideoSection.propTypes = {
   changeSelectedVideo: PropTypes.func.isRequired,
   id: PropTypes.string,
   videosWatched: PropTypes.array.isRequired,
+  controller: PropTypes.object.isRequired,
 };
 
 export default VideoSection;

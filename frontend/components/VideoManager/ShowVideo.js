@@ -52,7 +52,6 @@ const Grid = styled.div`
   word-break: break-all;
   white-space: normal;
   .container {
-    background-color: ${props => props.theme.blue};
     line-height: 1.65;
     display: flex;
   }
@@ -65,29 +64,40 @@ const Grid = styled.div`
 
   .info {
     display: inline-block;
+    margin-top: 2rem;
     flex: 1;
+    border-radius: 10px;
+    background-color: #f7f7f7;
     order: 2;
     .progress {
-      padding: 1rem;
       height: 50px;
-      margin: 1rem;
+      margin: 2rem;
     }
     .section {
+    }
+    #title {
+      font-size: 20px;
+      text-align: center;
     }
   }
 `;
 
 class ShowVideo extends Component {
-  state = { hasUpdated: false, selectedVideo: '', percent: 0 };
+  state = {
+    hasUpdated: false,
+    selectedVideo: '',
+    percent: 0,
+    controller: { active: 0, section: 'section-1' },
+  };
 
-  changeSelectedVideo = url => {
+  changeSelectedVideo = (url, selected, section) => {
     const { videos } = this.state.course;
-
     videos.map(item => {
       if (item.video.id === url) {
         return this.setState({
           selectedVideo: item.video.urlVideo,
           id: url,
+          controller: { active: selected, section },
         });
       }
     });
@@ -129,6 +139,7 @@ class ShowVideo extends Component {
       percent,
       watched,
       total,
+      controller,
     } = this.state;
     const { id } = this.props;
     return (
@@ -154,6 +165,7 @@ class ShowVideo extends Component {
                       <VideoPlayer url={selectedVideo} id={key} courseId={id} />
                     </div>
                     <div className="info">
+                      <p id="title">Course Content</p>
                       <div className="progress">
                         <Progress percent={percent} status="success" />
                         <span className="progress">
@@ -164,6 +176,8 @@ class ShowVideo extends Component {
                       <div className="section">
                         {selectedVideo !== 0 && (
                           <VideoSection
+                            controller={controller}
+                            selected={selectedVideo}
                             videosWatched={videoUser}
                             key={key}
                             data={data}
