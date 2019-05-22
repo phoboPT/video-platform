@@ -52,7 +52,7 @@ class VideoPlayer extends Component {
   }
 
   render() {
-    const { url, id, courseId, pause } = this.props;
+    const { url, id, courseId, pause, changeIndex } = this.props;
     const { player } = this;
     const { ended } = this.state;
     if (pause) {
@@ -78,7 +78,14 @@ class VideoPlayer extends Component {
               <ForwardControl seconds={30} order={3.3} />
             </ControlBar>
           </Player>
-          {ended && <UpdateVideo id={id} watched={ended} courseId={courseId} />}
+          {ended && (
+            <UpdateVideo
+              id={id}
+              watched={ended}
+              courseId={courseId}
+              changeIndex={changeIndex}
+            />
+          )}
         </>
       </Div>
     );

@@ -4,7 +4,9 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Error from '../Static/ErrorMessage';
-import { CURRENT_USER_QUERY } from '../Authentication/SimpleUser';
+import { CURRENT_USER_QUERY } from '../Authentication/User';
+import { SIMPLE_USER_QUERY } from '../Authentication/SimpleUser';
+import { SINGLE_VIDEO_QUERY } from './ShowVideo';
 
 const UPDATE_VIDEO_MUTATION = gql`
   mutation UPDATE_VIDEO_MUTATION($id: ID!, $watched: Boolean) {
@@ -35,20 +37,37 @@ class UpdateVideo extends Component {
 
   updateState = async (e, mutation) => {
     e.preventDefault();
+    const { changeIndex } = this.props;
 
     await this.setState({ hasUpdated: true });
     await mutation();
+    changeIndex();
   };
 
   render() {
+    const { courseId } = this.props;
     return (
       <Mutation
         mutation={UPDATE_VIDEO_MUTATION}
         variables={this.props}
-        update={this.update}
+        optimisticResponse={{
+          __typename: 'Mutation',
+          updateVideoUser: {
+            __typename: 'VideoUser',
+            id: this.props.id,
+            watched: this.props.watched,
+          },
+        }}
         refetchQueries={[
           {
             query: CURRENT_USER_QUERY,
+          },
+          {
+            query: SIMPLE_USER_QUERY,
+          },
+          {
+            query: SINGLE_VIDEO_QUERY,
+            variables: { id: courseId },
           },
         ]}
       >

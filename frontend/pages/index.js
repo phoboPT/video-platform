@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import SimpleUser from '../components/Authentication/SimpleUser';
 import Home from './home';
+import Loading from '../components/Static/Loading';
 
 const Container = styled.div`
   .img-area {
     -webkit-background-size: cover;
     width: 100%;
+    height: 80%;
     background-size: cover;
     background-position: center center;
     position: fixed;
@@ -41,22 +43,24 @@ export class index extends Component {
   render() {
     return (
       <SimpleUser>
-        {({ data }) => {
+        {({ data, loading }) => {
+          if (loading) return <Loading />;
           if (data.me) return <Home />;
-          return (
-            <Container>
-              <div>
-                <img
-                  className="img-area"
-                  src="../static/backgroud.jpeg"
-                  alt="background"
-                />
-              </div>
-              <div className="text">
-                <h1>Picus Creative Video Platform</h1>
-              </div>
-            </Container>
-          );
+          if (!data.me)
+            return (
+              <Container>
+                <div>
+                  <img
+                    className="img-area"
+                    src="../static/backgroud.jpeg"
+                    alt="background"
+                  />
+                </div>
+                <div className="text">
+                  <h1>Picus Creative Video Platform</h1>
+                </div>
+              </Container>
+            );
         }}
       </SimpleUser>
     );

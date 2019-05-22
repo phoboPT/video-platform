@@ -50,7 +50,6 @@ const Grid = styled.div`
   white-space: pre-wrap; /* css-3 */
   word-wrap: break-word; /* Internet Explorer 5.5+ */
   white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
-  word-break: break-all;
   white-space: normal;
   .container {
     line-height: 1.65;
@@ -71,6 +70,7 @@ const Grid = styled.div`
     background-color: #f7f7f7;
     order: 2;
     .progress {
+      word-break: normal;
       height: 50px;
       margin: 2rem;
     }
@@ -89,13 +89,14 @@ class ShowVideo extends Component {
     selectedVideo: '',
     percent: 0,
     controller: { active: 0, section: 'section-1' },
+    index: 0,
   };
 
-  changeSelectedVideo = (url, selected, section) => {
+  changeSelectedVideo = async (url, selected, section) => {
     const { videos } = this.state.course;
-    videos.map(item => {
+    videos.map(async item => {
       if (item.video.id === url) {
-        return this.setState({
+        this.setState({
           selectedVideo: item.video.urlVideo,
           id: url,
           controller: { active: selected, section },
@@ -104,7 +105,7 @@ class ShowVideo extends Component {
     });
   };
 
-  updateState = () => {
+  updateState = async () => {
     const { course, videoItem } = this.state;
     if (videoItem) {
       const newCourse = {
@@ -112,7 +113,7 @@ class ShowVideo extends Component {
         user: [...videoItem],
       };
       const res = calcProgress(newCourse, 2);
-      this.setState(res);
+      await this.setState(res);
     }
   };
 
@@ -122,14 +123,33 @@ class ShowVideo extends Component {
     await this.setState({
       hasUpdated: !hasUpdated,
     });
+
+    const section = JSON.parse(data.course.section);
+    const firstVideoId = section.sections['section-1'].videoIds[0];
+    let url;
+    let id;
+    data.course.videos.map(item => {
+      if (item.video.id === firstVideoId) {
+        url = item.video.urlVideo;
+        id = item.video.id;
+      }
+    });
+    console.log(url);
     await this.setState({
-      selectedVideo: data.course.videos[0].video.urlVideo,
-      id: data.course.videos[0].video.id,
+      selectedVideo: url,
+      id,
     });
     if (videoUser) {
       await this.setState({ ...data, ...videoUser[0] });
     }
-    this.updateState();
+    await this.updateState();
+  };
+
+  changeIndex = async () => {
+    const { total, watched } = this.state;
+
+    const newPercent = ((watched + 1) * 100) / total;
+    await this.setState({ percent: newPercent, watched: watched + 1 });
   };
 
   render() {
@@ -141,6 +161,7 @@ class ShowVideo extends Component {
       watched,
       total,
       controller,
+      index,
     } = this.state;
     const { id } = this.props;
     return (
@@ -163,14 +184,24 @@ class ShowVideo extends Component {
                 <Grid>
                   <div className="container">
                     <div className="video">
-                      <VideoPlayer url={selectedVideo} id={key} courseId={id} />
+                      <VideoPlayer
+                        url={selectedVideo}
+                        id={key}
+                        courseId={id}
+                        changeIndex={this.changeIndex}
+                        key={key}
+                      />
                     </div>
                     <div className="info">
                       <p id="title">Course Content</p>
                       <div className="progress">
-                        <Progress percent={parseInt(percent)} width={50} />
+                        <Progress
+                          percent={parseInt(percent)}
+                          width={50}
+                          key={key}
+                        />
                         <span className="progress">
-                          {` Watched (${watched || 0}) Total (${total || 0})`}
+                          {`Watched (${watched || 0}) Total (${total || 0})`}
                         </span>
                       </div>
 

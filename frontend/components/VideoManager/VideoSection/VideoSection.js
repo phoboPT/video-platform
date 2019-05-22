@@ -1,8 +1,11 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable react/no-multi-comp */
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import VideoColumn from './VideoColumn';
+import { sumAllDuration } from '../../../lib/sumAll';
 
 const Container = styled.div`
   margin: 15px 15px;
@@ -10,6 +13,7 @@ const Container = styled.div`
   overflow-x: auto;
   border-radius: 4px;
   #container-top {
+    background-color: rgba(22, 115, 115, 0.5);
     cursor: pointer;
     height: 80px;
     border: 1.5px solid #d8d8d8;
@@ -20,6 +24,7 @@ const Container = styled.div`
     }
 
     .left {
+      display: flex;
       padding-top: 1rem;
       height: 80px;
       padding-left: 2rem;
@@ -28,6 +33,15 @@ const Container = styled.div`
       flex: 9;
       order: 1;
       width: 100%;
+      h4 {
+        order: 1;
+        flex: 9;
+      }
+      span {
+        margin: auto;
+        flex: 1;
+        order: 2;
+      }
     }
     .rigth {
       order: 2;
@@ -51,12 +65,11 @@ const Container = styled.div`
   }
 `;
 
-class VideoElement extends React.PureComponent {
+class VideoElement extends React.Component {
   static propTypes = {
     index: PropTypes.number,
     section: PropTypes.object.isRequired,
     videos: PropTypes.object.isRequired,
-
     files: PropTypes.object.isRequired,
     changeSelectedVideo: PropTypes.func.isRequired,
     localStorageId: PropTypes.string.isRequired,
@@ -71,6 +84,7 @@ class VideoElement extends React.PureComponent {
     const { localStorageId } = this.props;
     const value = JSON.parse(localStorage.getItem(localStorageId));
     this.setState({ show: value });
+    this.calculateTotalTime();
   }
 
   expand = () => {
@@ -87,6 +101,20 @@ class VideoElement extends React.PureComponent {
     localStorage.setItem(localStorageId, show);
   };
 
+  calculateTotalTime = () => {
+    const { section, data } = this.props;
+    const videoIds = section.videoIds.map(item => item, []);
+
+    const total = [];
+    data.course.videos.map(item => {
+      videoIds.forEach(id => {
+        if (id === item.video.id) total.push(item.video.duration);
+      });
+    });
+
+    this.setState({ duration: sumAllDuration(total) });
+  };
+
   render() {
     const {
       index,
@@ -98,13 +126,15 @@ class VideoElement extends React.PureComponent {
       videosWatched,
       controller,
     } = this.props;
-    const { show } = this.state;
+    const { show, duration } = this.state;
     return (
       <Fragment key={index}>
         <div id="container-top">
           <button type="button" onClick={e => this.expand(e, section.id)}>
             <div className="left">
               <h4>{section.title}</h4>
+
+              <span>{duration}</span>
             </div>
             <div className="rigth">🔽</div>
           </button>

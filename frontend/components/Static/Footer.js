@@ -1,7 +1,3 @@
-const Footer = () => (
-  <div className="footer">
-    <p>i am a footer</p>
-  </div>
-);
+const Footer = () => <footer>i am a footer</footer>;
 
 export default Footer;

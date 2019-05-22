@@ -1,9 +1,9 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import { formatTime } from '../../../lib/sumAll';
 
 const Container = styled.div`
   max-width: 100%;
@@ -76,13 +76,12 @@ class InnerList extends React.PureComponent {
     controller: PropTypes.object.isRequired,
   };
 
-  componentDidMount() {
-    const { videosWatched, item } = this.props;
+  async componentDidMount() {
+    const { videosWatched, item, controller, id, index } = this.props;
     try {
       videosWatched[0].videoItem.forEach(async video => {
         if (video.video.id === item) {
           if (video.watched) {
-            console.log(video.watched);
             await this.setState({ selected: true });
           }
         }
@@ -90,19 +89,19 @@ class InnerList extends React.PureComponent {
     } catch (e) {
       console.warn(e);
     }
-  }
-
-  componentDidMount() {
-    const { controller, id, index } = this.props;
     if (id === controller.section) {
       if (controller.active === index) {
-        this.setState({ active: true });
+        await this.setState({ active: true });
       }
     }
   }
 
+  // componentWillMount() {}
+
   changeSelected = (item, selected) => {
+    console.log('hi', selected);
     const { changeSelectedVideo, id } = this.props;
+
     changeSelectedVideo(item, selected, id);
   };
 
@@ -111,14 +110,14 @@ class InnerList extends React.PureComponent {
     const { selected, active } = this.state;
     return (
       <div className="right" id={active ? 'selected' : ''}>
-        <input type="checkbox" defaultChecked={selected} disabled />
+        <input type="checkbox" checked={selected} disabled />
         <button type="button" onClick={() => this.changeSelected(item, index)}>
           {data.course.videos.map(video => {
             if (video.video.id === item) {
               return (
                 <Fragment key={item}>
                   <p>{video.video.title}</p>
-                  <span>{video.video.duration}</span>
+                  <span>{formatTime(video.video.duration, 2)}</span>
                   {video.video.file && (
                     <Link href={video.video.file}>
                       <a>

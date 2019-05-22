@@ -197,7 +197,7 @@ const Mutations = {
         }
       }`
     );
-    console.log(videoUser.videoItem[0].video);
+    // console.log(videoUser.videoItem[0].video);
 
     // da run no update method
 
@@ -209,20 +209,11 @@ const Mutations = {
     if (videoUser) {
       let video = false;
 
-      console.log(args.id);
       videoUser.videoItem.forEach(item => {
         if (item.video.id === args.id) {
           video = true;
         }
       });
-      //   await ctx.db.query.videoItems(
-      //   {
-      //     where: {
-      //       video: { id: args.id },
-      //     },
-      //   },
-      //   `{id}`
-      // );
 
       if (video) {
         console.log('already exists');

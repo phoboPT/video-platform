@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import Link from 'next/link';
-import { Mutation } from 'react-apollo';
+import { Mutation, withApollo } from 'react-apollo';
 import { ALL_COURSES_NOUSER } from '../Home/CoursesList/ListAllCourses';
 import { CURRENT_USER_QUERY } from './User';
 
@@ -12,8 +12,14 @@ const SIGN_OUT_MUTATION = gql`
   }
 `;
 
-const Signout = () => (
+const Signout = ({ client }) => (
   <Mutation
+    onCompleted={() => {
+      sessionStorage.clear(); // or localStorage
+      client.resetStore().then(() => {
+        client.resetStore();
+      });
+    }}
     mutation={SIGN_OUT_MUTATION}
     refetchQueries={[
       { query: CURRENT_USER_QUERY },
@@ -33,4 +39,4 @@ const Signout = () => (
   </Mutation>
 );
 
-export default Signout;
+export default withApollo(Signout);

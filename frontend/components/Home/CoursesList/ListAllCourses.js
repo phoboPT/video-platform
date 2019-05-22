@@ -16,9 +16,8 @@ const RENDER_QUERY = gql`
 `;
 
 const ALL_COURSES_QUERY = gql`
-  query ALL_COURSES_QUERY(
-          $skip: Int = 0, $first: Int = ${perPageCourse}, $orderBy: String = "title_ASC") {
-           coursesList(first: $first, skip: $skip,orderBy: $orderBy ,) {
+  query ALL_COURSES_QUERY($skip: Int = 0, $first: Int = ${perPageCourse}, $orderBy: String = "title_ASC") {
+    coursesList(first: $first, skip: $skip,orderBy: $orderBy ,) {
       id
       title
       description
@@ -38,7 +37,7 @@ const ALL_COURSES_QUERY = gql`
 
 const ALL_COURSES_NOUSER = gql`
   query ALL_COURSES_NOUSER($skip: Int = 0, $first: Int = ${perPageCourse} ) {
-           courses(first: $first, skip: $skip ,orderBy: title_ASC) {
+    courses(first: $first, skip: $skip ,orderBy: title_ASC) {
       id
       title
       description
@@ -79,14 +78,14 @@ const ALL_COURSES_ORDERED_NOUSER = gql`
 const ALL_COURSES_ORDERED = gql`
   query ALL_COURSES_ORDERED($skip: Int = 0, $first: Int = ${perPageCourse} $orderBy: String = "createdAt_DESC") {
     coursesList(first: $first, skip: $skip ,orderBy: $orderBy) {
-             id
+      id
       title
       description
       thumbnail
       createdAt
       price
-totalComments
-totalRate
+      totalComments
+      totalRate
       user {
         id
         name
@@ -221,14 +220,14 @@ class ListAllCourses extends Component {
   };
 
   render() {
-    const { query } = this.state;
+    const { query, page, title, classe } = this.state;
     return (
       <>
         <Query
           query={query}
           variables={{
             published: 'PUBLISHED',
-            skip: this.state.page * perPageCourse - perPageCourse,
+            skip: page * perPageCourse - perPageCourse,
           }}
         >
           {({ data, error, loading }) => {
@@ -241,25 +240,20 @@ class ListAllCourses extends Component {
             if (data.courses) {
               return (
                 <Container>
-                  {data.courses && <Title>{this.state.title}</Title>}
+                  {data.courses && <Title>{title}</Title>}
                   <div id="content-container">
-                    <CoursesList
-                      id="courses-list"
-                      className={this.state.classe}
-                    >
+                    <CoursesList id="courses-list" className={classe}>
                       {data.courses &&
                         data.courses.map(course => (
                           <CourseItemNoUser
                             course={course}
                             key={course.id}
-                            skip={
-                              this.state.page * perPageCourse - perPageCourse
-                            }
+                            skip={page * perPageCourse - perPageCourse}
                           />
                         ))}
                     </CoursesList>
                     <Pagination
-                      page={this.state.page}
+                      page={page}
                       animationSliderControlForward={
                         this.animationSliderControlForward
                       }
@@ -276,25 +270,20 @@ class ListAllCourses extends Component {
             if (data.coursesList) {
               return (
                 <Container>
-                  {data.coursesList && <Title>{this.state.title}</Title>}
+                  {data.coursesList && <Title>{title}</Title>}
                   <div id="content-container">
-                    <CoursesList
-                      id="courses-list"
-                      className={this.state.classe}
-                    >
+                    <CoursesList id="courses-list" className={classe}>
                       {data.coursesList &&
                         data.coursesList.map(course => (
                           <CourseItem
                             course={course}
                             key={course.id}
-                            skip={
-                              this.state.page * perPageCourse - perPageCourse
-                            }
+                            skip={page * perPageCourse - perPageCourse}
                           />
                         ))}
                     </CoursesList>
                     <Pagination
-                      page={this.state.page}
+                      page={page}
                       animationSliderControlForward={
                         this.animationSliderControlForward
                       }
@@ -313,22 +302,17 @@ class ListAllCourses extends Component {
                   <Container>
                     {data.coursesUserInterestList &&
                       (data.coursesUserInterestList[0] !== undefined && (
-                        <Title>{this.state.title}</Title>
+                        <Title>{title}</Title>
                       ))}
                     {/* Filtering the data to show the correct list */}
                     <div id="content-container">
-                      <CoursesList
-                        id="courses-list"
-                        className={this.state.classe}
-                      >
+                      <CoursesList id="courses-list" className={classe}>
                         {data.coursesUserInterestList &&
                           data.coursesUserInterestList.map(course => (
                             <CourseItem
                               course={course}
                               key={course.id}
-                              skip={
-                                this.state.page * perPageCourse - perPageCourse
-                              }
+                              skip={page * perPageCourse - perPageCourse}
                             />
                           ))}
                       </CoursesList>
@@ -337,7 +321,7 @@ class ListAllCourses extends Component {
 
                       {data.coursesUserInterestList[0] !== undefined && (
                         <Pagination
-                          page={this.state.page}
+                          page={page}
                           animationSliderControlForward={
                             this.animationSliderControlForward
                           }
@@ -362,22 +346,17 @@ class ListAllCourses extends Component {
                   <Container>
                     {data.coursesRating &&
                       (data.coursesRating[0] !== undefined && (
-                        <Title>{this.state.title}</Title>
+                        <Title>{title}</Title>
                       ))}
                     {/* Filtering the data to show the correct list */}
                     <div id="content-container">
-                      <CoursesList
-                        id="courses-list"
-                        className={this.state.classe}
-                      >
+                      <CoursesList id="courses-list" className={classe}>
                         {data.coursesRating &&
                           data.coursesRating.map(course => (
                             <CourseItem
                               course={course}
                               key={course.id}
-                              skip={
-                                this.state.page * perPageCourse - perPageCourse
-                              }
+                              skip={page * perPageCourse - perPageCourse}
                             />
                           ))}
                       </CoursesList>
@@ -386,7 +365,7 @@ class ListAllCourses extends Component {
 
                       {data.coursesRating[0] !== undefined && (
                         <Pagination
-                          page={this.state.page}
+                          page={page}
                           animationSliderControlForward={
                             this.animationSliderControlForward
                           }

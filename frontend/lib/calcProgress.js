@@ -21,7 +21,6 @@ export default function calcProgress(data, isShowVideo) {
     const { videoUser } = user;
     videoUser.forEach(video => {
       video.videoItem.forEach(videoItem => {
-        console.log(videoItem);
         if (videoItem.video.id) {
           if (videoItem.watched) {
             videosWatched.push(videoItem.video.id);

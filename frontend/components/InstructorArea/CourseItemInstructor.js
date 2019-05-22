@@ -81,7 +81,6 @@ class CourseItemInstructor extends Component {
           if (loading) return <Loading />;
           if (error) return <Error error={error} />;
 
-          console.log('course', data);
           return (
             <ItemStyles>
               <Div>
