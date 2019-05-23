@@ -71,31 +71,22 @@ const Courses = styled.div`
 export class index extends Component {
   render() {
     return (
-      <SimpleUser>
-        {({ data, loading }) => {
-          if (loading) return <Loading />;
-          if (data.me) return <Home />;
-          if (!data.me)
-            return (
-              <>
-                <Container>
-                  <div className="title">
-                    <h1>Picus Creative Video Platform</h1>
-                  </div>
-                </Container>
+      <>
+        <Container>
+          <div className="title">
+            <h1>Picus Creative Video Platform</h1>
+          </div>
+        </Container>
 
-                <Info>
-                  <div className="first">The Best</div>
-                  <div className="second">100+ Topics</div>
-                  <div className="third">Try now</div>
-                </Info>
-                <Courses>
-                  <ListAllCourses query="ALL_COURSES_RATING" />
-                </Courses>
-              </>
-            );
-        }}
-      </SimpleUser>
+        <Info>
+          <div className="first">The Best</div>
+          <div className="second">100+ Topics</div>
+          <div className="third">Try now</div>
+        </Info>
+        <Courses>
+          <ListAllCourses query="ALL_COURSES_RATING" />
+        </Courses>
+      </>
     );
   }
 }

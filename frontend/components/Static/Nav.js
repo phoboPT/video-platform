@@ -11,7 +11,7 @@ const Nav = () => (
     {({ data: { me } }) => (
       <>
         <NavStyle>
-          <Link href="/">
+          <Link href="/home">
             <a>Home</a>
           </Link>
           {me && (
@@ -36,9 +36,7 @@ const Nav = () => (
                       </Link>
                     </li>
                     <li>
-                      <a href="#">
-                        <Signout />
-                      </a>
+                      <Signout />
                     </li>
                   </ul>
                 </li>

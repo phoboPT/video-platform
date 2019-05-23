@@ -2,6 +2,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import Router from 'next/router';
 import NProgress from 'nprogress';
+import React, { Component } from 'react';
 import Nav from './Nav';
 import Cart from '../Home/Cart/Cart';
 
@@ -53,22 +54,33 @@ const StyledHeader = styled.header`
   }
 `;
 
-const Header = () => (
-  <StyledHeader>
-    <div className="bar">
-      <Logo>
-        <Link href="/">
-          <a>
-            <img src="/static/logo.png" />
-          </a>
-        </Link>
-      </Logo>
-      <Nav />
-    </div>
-    <div className="sub-bar" />
-    <Cart />
-    <div />
-  </StyledHeader>
-);
+class Header extends Component {
+  state = { link: '/index' };
+
+  changeLink = link => {
+    this.setState({ link });
+  };
+
+  render() {
+    const { link, changeLink } = this.state;
+    return (
+      <StyledHeader>
+        <div className="bar">
+          <Logo>
+            <Link href={link}>
+              <a>
+                <img src="/static/logo.png" />
+              </a>
+            </Link>
+          </Logo>
+          <Nav changeLink={changeLink} />
+        </div>
+        <div className="sub-bar" />
+        <Cart />
+        <div />
+      </StyledHeader>
+    );
+  }
+}
 
 export default Header;

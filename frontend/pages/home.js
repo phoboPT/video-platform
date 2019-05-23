@@ -4,25 +4,30 @@ import ListAllCourses, {
   RENDER_QUERY,
 } from '../components/Home/CoursesList/ListAllCourses';
 import Search from '../components/Home/Search';
+import Loading from '../components/Static/Loading';
 
 class Home extends Component {
   render() {
     return (
       <User>
-        {({ data: { me } }) => {
-          if (!me)
+        {({ data, loading }) => {
+          if (loading) return <Loading />;
+          if (!data.me) {
+            return <p>You need to login first</p>;
+          }
+          if (data.me) {
             return (
               <>
                 <Search />
-
                 <ListAllCourses query="ALL_COURSES_NOUSER" />
                 <ListAllCourses query="ALL_COURSES_ORDERED_NOUSER" />
               </>
             );
+          }
           return (
-            <div key={me.id}>
+            <div key={data.me.id}>
               <Search />
-              {me.interests.length > 0 && (
+              {data.me.interests.length > 0 && (
                 <ListAllCourses query="ALL_COURSE_INTERESTS" />
               )}
               <ListAllCourses query="ALL_COURSES_QUERY" />

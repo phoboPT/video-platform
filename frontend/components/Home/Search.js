@@ -24,7 +24,7 @@ function routeToCourse(item) {
   });
 }
 
-export class Search extends Component {
+class Search extends Component {
   state = {
     courses: [],
     loading: false,

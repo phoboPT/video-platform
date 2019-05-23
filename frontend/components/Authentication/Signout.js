@@ -1,8 +1,6 @@
 import gql from 'graphql-tag';
 import Router from 'next/router';
 import { Mutation, withApollo } from 'react-apollo';
-import { ALL_COURSES_NOUSER } from '../Home/CoursesList/ListAllCourses';
-import { CURRENT_USER_QUERY } from './User';
 
 const SIGN_OUT_MUTATION = gql`
   mutation SIGN_OUT_MUTATION {
@@ -12,23 +10,25 @@ const SIGN_OUT_MUTATION = gql`
   }
 `;
 
+const logout = async mutation => {
+  mutation();
+  Router.push({
+    pathname: '/index',
+  });
+};
+
 const Signout = ({ client }) => (
   <Mutation
-    onCompleted={data => {
+    onCompleted={async data => {
       if (data) {
-        sessionStorage.clear(); // or localStorage
-        client.resetStore().then(() => {
-          client.resetStore();
-          Router.push({
-            pathname: '/',
-          });
-        });
+        client.cache.reset();
+        await client.reFetchObservableQueries();
       }
     }}
     mutation={SIGN_OUT_MUTATION}
   >
     {signout => (
-      <button type="button" onClick={signout} tag="a">
+      <button type="button" onClick={() => logout(signout)} tag="a">
         Sign Out
       </button>
     )}

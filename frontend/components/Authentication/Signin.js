@@ -153,25 +153,17 @@ class Signin extends Component {
     e.preventDefault();
     await mutation();
     this.setState({ email: '', password: '' });
+    Router.push({
+      pathname: '/home',
+    });
   };
 
   render() {
     const { email, password } = this.state;
-    const { changeView, client } = this.props;
+    const { changeView } = this.props;
     return (
       <Mutation
         mutation={SIGNIN_MUTATION}
-        onCompleted={data => {
-          if (data) {
-            sessionStorage.clear(); // or localStorage
-            client.resetStore().then(() => {
-              client.resetStore();
-              Router.push({
-                pathname: '/',
-              });
-            });
-          }
-        }}
         refetchQueries={[
           {
             query: CURRENT_USER_QUERY,
@@ -180,7 +172,9 @@ class Signin extends Component {
             query: COURSES_FILTER_QUERY,
             variables: { author: 'a', category: 'a' },
           },
-          { query: CURRENT_COURSES_QUERY },
+          {
+            query: CURRENT_COURSES_QUERY,
+          },
           {
             query: ALL_VIDEOS_USER,
           },
