@@ -3,42 +3,71 @@ import styled from 'styled-components';
 import SimpleUser from '../components/Authentication/SimpleUser';
 import Home from './home';
 import Loading from '../components/Static/Loading';
+import ListAllCourses, {
+  RENDER_QUERY,
+} from '../components/Home/CoursesList/ListAllCourses';
 
 const Container = styled.div`
-  .img-area {
-    -webkit-background-size: cover;
-    width: 100%;
-    height: 80%;
-    background-size: cover;
-    background-position: center center;
-    position: fixed;
-    left: 0;
-    right: 0;
-    filter: blur(5px);
-    -webkit-filter: blur(5px);
-    /* 
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    */
-    z-index: -1;
-  }
-  .text {
-    padding: none;
-    margin: none;
+  background-image: url('../static/backgroud.jpeg');
+  width: 100%;
+  height: 500px;
+  background-size: cover;
+  -webkit-background-size: cover;
+  background-position: center center;
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  z-index: -2;
+  .title {
     text-align: center;
     color: #fff;
-    padding-top: 0.1%;
     font-size: 3rem;
     z-index: 2;
-
     h1 {
     }
   }
 `;
 
+const Info = styled.div`
+  display: flex;
+  min-height: 70px;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background-image: linear-gradient(
+    to right bottom,
+    #e91010,
+    #e82825,
+    #e63835,
+    #e34544,
+    #df5151
+  );
+  margin: 500px auto 0 auto;
+  border: 1px solid black;
+  text-align: center;
+
+  .first {
+    margin: auto;
+    order: 1;
+    flex: 1;
+  }
+  .second {
+    margin: auto;
+    order: 2;
+    flex: 1;
+  }
+  .third {
+    margin: auto;
+    order: 3;
+    flex: 1;
+  }
+`;
+
+const Courses = styled.div`
+  margin: 500px auto 0 auto;
+  border: 1px solid white;
+`;
 export class index extends Component {
   render() {
     return (
@@ -48,18 +77,22 @@ export class index extends Component {
           if (data.me) return <Home />;
           if (!data.me)
             return (
-              <Container>
-                <div>
-                  <img
-                    className="img-area"
-                    src="../static/backgroud.jpeg"
-                    alt="background"
-                  />
-                </div>
-                <div className="text">
-                  <h1>Picus Creative Video Platform</h1>
-                </div>
-              </Container>
+              <>
+                <Container>
+                  <div className="title">
+                    <h1>Picus Creative Video Platform</h1>
+                  </div>
+                </Container>
+
+                <Info>
+                  <div className="first">The Best</div>
+                  <div className="second">100+ Topics</div>
+                  <div className="third">Try now</div>
+                </Info>
+                <Courses>
+                  <ListAllCourses query="ALL_COURSES_RATING" />
+                </Courses>
+              </>
             );
         }}
       </SimpleUser>

@@ -22,7 +22,6 @@ function formatTime(time) {
     countS = parseInt(time.split(':')[0]);
   }
 
-  // console.log(splitTime);
   return `${zeroPad(countH, 2)}:${zeroPad(countM, 2)}:${zeroPad(countS, 2)}`;
 }
 

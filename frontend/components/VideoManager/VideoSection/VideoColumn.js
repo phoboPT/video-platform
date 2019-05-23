@@ -99,7 +99,6 @@ class InnerList extends React.PureComponent {
   // componentWillMount() {}
 
   changeSelected = (item, selected) => {
-    console.log('hi', selected);
     const { changeSelectedVideo, id } = this.props;
 
     changeSelectedVideo(item, selected, id);

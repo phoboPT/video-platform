@@ -21,7 +21,7 @@ class CourseItem extends Component {
   };
 
   render() {
-    const { course } = this.props;
+    const { course, skip } = this.props;
     return (
       <User>
         {({ data: { me } }) => {
@@ -73,16 +73,12 @@ class CourseItem extends Component {
 
                 <div id="buttonList">
                   {course.price === 0 ? (
-                    <BuyFreeButton id={course.id} skip={this.props.skip} />
+                    <BuyFreeButton id={course.id} skip={skip} />
                   ) : (
                     <AddToCart id={course.id} />
                   )}
 
-                  <WishButton
-                    id={course.id}
-                    data={course}
-                    skip={this.props.skip}
-                  />
+                  <WishButton id={course.id} data={course} skip={skip} />
                 </div>
               </Container>
             </>
@@ -92,5 +88,9 @@ class CourseItem extends Component {
     );
   }
 }
+
+CourseItem.propTypes = {
+  skip: PropTypes.number.isRequired,
+};
 
 export default CourseItem;

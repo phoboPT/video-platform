@@ -150,10 +150,15 @@ class ViewCourse extends Component {
     return (
       <SimpleUser>
         {({ data: { me } }) => (
-          <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
-            {({ data, error, loading }) => {
+          <Query
+            query={SINGLE_COURSE_QUERY}
+            variables={{ id }}
+            notifyOnNetworkStatusChange
+          >
+            {({ data, error, loading, refetch }) => {
               if (loading) return <Loading />;
               if (error) return <p>Error</p>;
+
               if (!data.course) {
                 return <p>No Courses Found for {id}</p>;
               }
@@ -164,91 +169,85 @@ class ViewCourse extends Component {
                     query={CHECK_RATE_COURSE_QUERY}
                     variables={{ courseId: course.id }}
                   >
-                    {({ data, error, loading }) => {
+                    {({ data: newData, error, loading }) => {
                       if (loading) return <Loading />;
                       if (error) return <p>Error</p>;
 
-                      const showForm = data.checkUserRated.message;
-                      if (!data) return <p>No Course</p>;
-                      if (data)
-                        return (
-                          <>
-                            <ButtonStyle>
-                              <button type="button" onClick={this.goBack}>
-                                ⬅ Go Back
-                              </button>
-                            </ButtonStyle>
-                            <CourseContainer>
-                              <div className="video-bar">
-                                <img
-                                  alt={course.title}
-                                  src={course.thumbnail}
+                      const showForm = newData.checkUserRated.message;
+                      if (!newData) return <p>No Course</p>;
+
+                      return (
+                        <>
+                          <ButtonStyle>
+                            <button type="button" onClick={this.goBack}>
+                              ⬅ Go Back
+                            </button>
+                          </ButtonStyle>
+                          <CourseContainer>
+                            <div className="video-bar">
+                              <img alt={course.title} src={course.thumbnail} />
+                            </div>
+                            <div className="info-bar">
+                              <div className="rating">
+                                <Rating
+                                  showTotal
+                                  readOnly
+                                  initialValue={
+                                    Number.isNaN(
+                                      course.totalRate / course.totalComments
+                                    )
+                                      ? 0
+                                      : course.totalRate / course.totalComments
+                                  }
+                                  totalComments={course.totalComments || 0}
                                 />
                               </div>
-                              <div className="info-bar">
-                                <div className="rating">
-                                  <Rating
-                                    showTotal
-                                    readOnly
-                                    initialValue={
-                                      Number.isNaN(
-                                        course.totalRate / course.totalComments
-                                      )
-                                        ? 0
-                                        : course.totalRate /
-                                          course.totalComments
-                                    }
-                                    totalComments={course.totalComments || 0}
-                                  />
-                                </div>
-                                <h2>{course.title}</h2>
-                                <br />
-                                <Link
-                                  href={{
-                                    pathname: 'video',
-                                    query: { id },
-                                  }}
-                                >
-                                  <button type="button">
-                                    Go to the Videos
-                                  </button>
-                                </Link>
-                              </div>
-                            </CourseContainer>
-                            <Bar>
-                              <button
-                                id="1"
-                                type="button"
-                                onClick={this.changeView}
+                              <h2>{course.title}</h2>
+                              <br />
+                              <Link
+                                href={{
+                                  pathname: 'video',
+                                  query: { id },
+                                }}
                               >
-                                Overview
-                              </button>
+                                <button type="button">Go to the Videos</button>
+                              </Link>
+                            </div>
+                          </CourseContainer>
+                          <Bar>
+                            <button
+                              id="1"
+                              type="button"
+                              onClick={this.changeView}
+                            >
+                              Overview
+                            </button>
 
-                              <button
-                                id="3"
-                                type="button"
-                                onClick={this.changeView}
-                              >
-                                Review
-                              </button>
-                            </Bar>
-                            {this.state.view === 1 && (
-                              <Overview data={course} key={course.id} />
-                            )}
+                            <button
+                              id="3"
+                              type="button"
+                              onClick={this.changeView}
+                            >
+                              Review
+                            </button>
+                          </Bar>
+                          {view === 1 && (
+                            <Overview data={course} key={course.id} />
+                          )}
 
-                            {this.state.view === 3 && (
-                              <>
-                                {showForm === 'true' && me ? (
-                                  <CommentForm data={course} />
-                                ) : (
-                                  <></>
-                                )}
+                          {view === 3 && (
+                            <>
+                              {showForm === 'true' && me ? (
+                                <CommentForm data={course} />
+                              ) : (
+                                <></>
+                              )}
 
-                                <ListComments data={course} />
-                              </>
-                            )}
-                          </>
-                        );
+                              <ListComments data={course} refetch={refetch} />
+                            </>
+                          )}
+                        </>
+                      );
                     }}
                   </Query>
                 );

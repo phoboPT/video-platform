@@ -24,7 +24,6 @@ const SINGLE_VIDEO_QUERY = gql`
           urlVideo
           file
           duration
-          freeToWatch
         }
       }
       user {
@@ -134,7 +133,6 @@ class ShowVideo extends Component {
         id = item.video.id;
       }
     });
-    console.log(url);
     await this.setState({
       selectedVideo: url,
       id,

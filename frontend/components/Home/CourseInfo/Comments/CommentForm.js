@@ -12,7 +12,7 @@ import {
   ALL_COURSES_QUERY,
   ALL_COURSES_RATING,
 } from '../../CoursesList/ListAllCourses';
-import { CHECK_RATE_COURSE_QUERY } from '../ViewCourse';
+import { CHECK_RATE_COURSE_QUERY, SINGLE_COURSE_QUERY } from '../ViewCourse';
 
 const Style = styled.div`
   width: 60%;
@@ -80,10 +80,11 @@ class CommentForm extends Component {
 
   saveData = async (mutation, e) => {
     const { rating } = this.state;
-    e.preventDefault();
     if (rating) {
       const res = await mutation();
-      this.setState({ comment: '' });
+      if (res) {
+        this.setState({ comment: '' });
+      }
     } else {
       swal({
         title: 'No Rating',
@@ -105,6 +106,10 @@ class CommentForm extends Component {
         refetchQueries={[
           {
             query: ALL_COMMENTS_QUERY,
+            variables: { id: courseId },
+          },
+          {
+            query: SINGLE_COURSE_QUERY,
             variables: { id: courseId },
           },
           {

@@ -241,7 +241,6 @@ class ChangeCourse extends Component {
       createCourse,
       selected,
       key,
-      updateFilesToDelete,
     } = this.state;
     const { changeIntructorView } = this.props;
     return (

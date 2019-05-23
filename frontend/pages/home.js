@@ -3,7 +3,7 @@ import User from '../components/Authentication/User';
 import ListAllCourses, {
   RENDER_QUERY,
 } from '../components/Home/CoursesList/ListAllCourses';
-import Search from '../components/Home/SearchCourse';
+import Search from '../components/Home/Search';
 
 class Home extends Component {
   render() {

@@ -54,6 +54,8 @@ class Media extends Component {
     }
   };
 
+  updateFree = () => {};
+
   render() {
     const { sections, updateState, courseId, undoSections } = this.props;
     return (

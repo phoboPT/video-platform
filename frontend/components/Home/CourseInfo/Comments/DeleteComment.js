@@ -112,7 +112,7 @@ class DeleteComment extends Component {
 
 DeleteComment.propTypes = {
   data: PropTypes.object,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.string.isRequired,
 };
 
 export default DeleteComment;

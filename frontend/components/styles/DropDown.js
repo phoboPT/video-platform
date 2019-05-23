@@ -41,6 +41,7 @@ const glow = keyframes`
 const SearchStyles = styled.div`
   position: relative;
   input {
+    background-color: rgba(211, 211, 211, 0.8);
     width: 100%;
     padding: 10px;
     border: 0;

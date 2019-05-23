@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import CommentItem from './CommentItem';
 import Loading from '../../../Static/Loading';
 import Error from '../../../Static/ErrorMessage';
@@ -80,7 +80,7 @@ class ListComments extends Component {
   };
 
   render() {
-    const { data } = this.props;
+    const { data, refetch } = this.props;
     return (
       <Query query={ALL_COMMENTS_QUERY} variables={{ id: data.id }}>
         {({ error, loading, data: newData }) => {
@@ -94,6 +94,8 @@ class ListComments extends Component {
               </Title>
               {newData.rateCourseList.map(comments => (
                 <CommentItem
+                  refetch={refetch}
+                  courseId={data.id}
                   comments={comments}
                   rating={comments.rate}
                   key={comments.id}
@@ -114,6 +116,7 @@ class ListComments extends Component {
 
 ListComments.propTypes = {
   data: PropTypes.object.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default ListComments;

@@ -11,6 +11,7 @@ import {
   ALL_COURSES_QUERY,
   ALL_COURSES_RATING,
 } from '../../CoursesList/ListAllCourses';
+import { SINGLE_COURSE_QUERY } from '../ViewCourse';
 
 import Loading from '../../../Static/Loading';
 
@@ -85,6 +86,7 @@ class UpdateComment extends Component {
   };
 
   update = async (e, updateCommentMutation) => {
+    const { changeState, refetch } = this.props;
     const { data } = this.props;
     e.preventDefault();
 
@@ -94,37 +96,20 @@ class UpdateComment extends Component {
         ...this.state,
       },
     });
+    if (res) {
+      changeState();
+      refetch();
+    }
   };
 
   render() {
     const { rate } = this.state;
-    const { children, data, changeState } = this.props;
+    const { children, data, courseId, changeState } = this.props;
     if (rate !== children.props.initialValue) {
       this.setState({ rate: children.props.initialValue });
     }
     return (
-      <Query
-        query={SINGLE_COMMENT_QUERY}
-        variables={{ id: data.id }}
-        refetchQueries={[
-          {
-            query: ALL_COURSES_QUERY,
-            variables: { published: 'PUBLISHED', skip: 0 },
-          },
-          {
-            query: ALL_COURSES_ORDERED,
-            variables: { published: 'PUBLISHED', skip: 0 },
-          },
-          {
-            query: ALL_COURSE_INTERESTS,
-            variables: { published: 'PUBLISHED', skip: 0 },
-          },
-          {
-            query: ALL_COURSES_RATING,
-            variables: { published: 'PUBLISHED', skip: 0 },
-          },
-        ]}
-      >
+      <Query query={SINGLE_COMMENT_QUERY} variables={{ id: data.id }}>
         {({ data: newData, loading }) => {
           if (loading) return <Loading />;
           if (!newData) return <p>No Comments</p>;
@@ -138,13 +123,32 @@ class UpdateComment extends Component {
                       query: ALL_COMMENTS_QUERY,
                       variables: { id: newData.rateCourse.course.id },
                     },
+                    {
+                      query: ALL_COURSES_QUERY,
+                      variables: { published: 'PUBLISHED', skip: 0 },
+                    },
+                    {
+                      query: SINGLE_COURSE_QUERY,
+                      variables: { id: courseId },
+                    },
+                    {
+                      query: ALL_COURSES_ORDERED,
+                      variables: { published: 'PUBLISHED', skip: 0 },
+                    },
+                    {
+                      query: ALL_COURSE_INTERESTS,
+                      variables: { published: 'PUBLISHED', skip: 0 },
+                    },
+                    {
+                      query: ALL_COURSES_RATING,
+                      variables: { published: 'PUBLISHED', skip: 0 },
+                    },
                   ]}
                 >
                   {(updateCommentMutation, { error, loading }) => (
                     <form
                       onSubmit={e => {
                         this.update(e, updateCommentMutation);
-                        changeState();
                       }}
                     >
                       <Error error={error} />

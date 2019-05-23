@@ -22,8 +22,11 @@ const Container = styled.div`
       order: 3;
       float: left;
       margin: auto 1rem;
-      width: 30px;
-      height: 30px;
+      min-width: 30px;
+      img {
+        width: 30px;
+        height: 30px;
+      }
     }
     #watch {
       order: 2;
@@ -61,20 +64,26 @@ class InnerList extends React.PureComponent {
   };
 
   render() {
-    const { item, data } = this.props;
+    const {
+      item,
+      data,
+      video: { freeToWatch },
+    } = this.props;
     return (
       <div id="right">
         {data.course.videos.map(video => {
           if (video.video.id === item) {
+            console.log(item);
             return (
               <Fragment key={item}>
                 <p id="p">{video.video.title}</p>
-
-                {video.video.file && (
-                  <img id="img" src="../../static/fileIcon.png" alt="file" />
-                )}
+                <div id="img">
+                  {video.video.file && (
+                    <img src="../../static/fileIcon.png" alt="file" />
+                  )}
+                </div>
                 <div id="watch">
-                  {video.video.freeToWatch && (
+                  {freeToWatch && (
                     <button
                       type="button"
                       onClick={() => this.openSwal(video.video.urlVideo)}

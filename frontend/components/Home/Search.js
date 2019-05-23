@@ -24,7 +24,7 @@ function routeToCourse(item) {
   });
 }
 
-export class AutoComplete extends Component {
+export class Search extends Component {
   state = {
     courses: [],
     loading: false,
@@ -45,6 +45,7 @@ export class AutoComplete extends Component {
 
   render() {
     resetIdCounter();
+    const { courses, loading } = this.state;
     return (
       <SearchStyles>
         <Downshift
@@ -66,7 +67,7 @@ export class AutoComplete extends Component {
                       type: 'search',
                       placeholder: 'Search For An Course',
                       id: 'search',
-                      className: this.state.loading ? 'loading' : '',
+                      className: loading ? 'loading' : '',
                       onChange: e => {
                         e.persist();
                         this.onChange(e, client);
@@ -77,7 +78,7 @@ export class AutoComplete extends Component {
               </ApolloConsumer>
               {isOpen && (
                 <DropDown>
-                  {this.state.courses.map((item, index) => (
+                  {courses.map((item, index) => (
                     <DropDownItem
                       {...getItemProps({ item })}
                       key={item.id}
@@ -86,7 +87,7 @@ export class AutoComplete extends Component {
                       {item.title}
                     </DropDownItem>
                   ))}
-                  {!this.state.courses.length && !this.state.loading && (
+                  {!courses.length && !loading && (
                     <DropDownItem> No course called {inputValue}</DropDownItem>
                   )}
                 </DropDown>
@@ -99,4 +100,4 @@ export class AutoComplete extends Component {
   }
 }
 
-export default AutoComplete;
+export default Search;

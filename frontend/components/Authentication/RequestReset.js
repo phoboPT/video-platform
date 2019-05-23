@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Error from '../Static/ErrorMessage';
 
 const REQUEST_RESET_MUTATION = gql`
@@ -126,5 +127,9 @@ class RequestReset extends Component {
     );
   }
 }
+
+RequestReset.propTypes = {
+  changeView: PropTypes.func.isRequired,
+};
 
 export default RequestReset;

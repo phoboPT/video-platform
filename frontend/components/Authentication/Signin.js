@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
 import Router from 'next/router';
 import React, { Component } from 'react';
-import { Mutation, withApollo, graphql } from 'react-apollo';
+import { Mutation, withApollo } from 'react-apollo';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { ApolloClient } from 'apollo-client';
+
 import { ALL_VIDEOS_USER } from '../InstructorArea/MyVideos/Videos';
 import { CURRENT_USER_QUERY } from './User';
 import { CURRENT_COURSES_QUERY } from '../InstructorArea/MyCourses';
@@ -153,9 +153,6 @@ class Signin extends Component {
     e.preventDefault();
     await mutation();
     this.setState({ email: '', password: '' });
-    Router.push({
-      pathname: '/',
-    });
   };
 
   render() {
@@ -163,13 +160,18 @@ class Signin extends Component {
     const { changeView, client } = this.props;
     return (
       <Mutation
-        onCompleted={() => {
-          sessionStorage.clear(); // or localStorage
-          client.resetStore().then(() => {
-            client.resetStore();
-          });
-        }}
         mutation={SIGNIN_MUTATION}
+        onCompleted={data => {
+          if (data) {
+            sessionStorage.clear(); // or localStorage
+            client.resetStore().then(() => {
+              client.resetStore();
+              Router.push({
+                pathname: '/',
+              });
+            });
+          }
+        }}
         refetchQueries={[
           {
             query: CURRENT_USER_QUERY,

@@ -39,8 +39,8 @@ const Query = {
   // videosConnection: forwardTo("db"),
   async me(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    // checkar se tem um current ID
     console.log('hi');
+    // checkar se tem um current ID
     if (!userId) {
       return null;
     }
@@ -620,6 +620,7 @@ const Query = {
     if (!userId) {
       throw new Error('You must be signed in!');
     }
+
     const UserCourses = await ctx.db.query.userCourses(
       {
         where: {
@@ -670,9 +671,9 @@ const Query = {
   async coursesRating(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
-    if (!userId) {
-      throw new Error('You must be signed in!');
-    }
+    // if (!userId) {
+    //   throw new Error('You must be signed in!');
+    // }
     delete args.orderBy;
 
     let user;
@@ -741,7 +742,9 @@ const Query = {
 
     // fazer a media
     const coursesAverage = await res.map(item => {
-      item.average = item.totalRate / item.totalComments;
+      item.average = isNaN(item.totalRate / item.totalComments)
+        ? 0
+        : item.totalRate / item.totalComments;
       return item;
     });
 

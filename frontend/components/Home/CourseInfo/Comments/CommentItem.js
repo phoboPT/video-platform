@@ -12,7 +12,7 @@ const Style = styled.p`
   min-width: 150px;
 `;
 
-export class Video extends Component {
+class CommentItem extends Component {
   static propTypes = {
     comments: PropTypes.object.isRequired,
   };
@@ -35,7 +35,7 @@ export class Video extends Component {
   };
 
   render() {
-    const { comments } = this.props;
+    const { comments, courseId, refetch } = this.props;
     const { edit, rating } = this.state;
     return (
       <User>
@@ -50,7 +50,12 @@ export class Video extends Component {
             </div>
             <div className="middle">
               {edit === true ? (
-                <UpdateComment changeState={this.changeState} data={comments}>
+                <UpdateComment
+                  refetch={refetch}
+                  changeState={this.changeState}
+                  data={comments}
+                  courseId={courseId}
+                >
                   <Rating getRating={this.getRating} initialValue={rating} />
                 </UpdateComment>
               ) : (
@@ -97,4 +102,8 @@ export class Video extends Component {
   }
 }
 
-export default Video;
+CommentItem.propTypes = {
+  refetch: PropTypes.func.isRequired,
+};
+
+export default CommentItem;

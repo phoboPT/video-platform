@@ -104,7 +104,6 @@ type Video {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   duration: String
-  freeToWatch: Boolean
 }
 
 type CourseVideos {

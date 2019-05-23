@@ -8,7 +8,7 @@ import calcProgress from '../../lib/calcProgress';
 import Rating from '../Home/CourseInfo/Comments/Rating';
 import formatMoney from '../../lib/formatMoney';
 
-class ListCourses extends Component {
+class CourseItem extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
   };
@@ -86,7 +86,7 @@ class ListCourses extends Component {
     );
   }
 }
-ListCourses.propTypes = {
+CourseItem.propTypes = {
   showInfo: PropTypes.bool,
 };
-export default ListCourses;
+export default CourseItem;

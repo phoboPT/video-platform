@@ -194,19 +194,20 @@ class Index extends Component {
     updateState(this.state);
   };
 
-  handleVideo = async (title, sectionId) => {
+  handleVideo = async (data, sectionId) => {
     const { videos } = this.state;
     const video = videos[sectionId];
     const { updateState } = this.props;
 
-    video.content = title;
+    video.content = data.content;
+    video.freeToWatch = data.freeToWatch;
     const newState = {
       ...this.state,
       videos: {
         ...videos,
       },
     };
-
+    console.log('state', newState);
     await this.setState(newState);
     updateState(this.state);
   };
@@ -283,6 +284,7 @@ class Index extends Component {
     const newVideo = {
       content: '',
       id: `video-${sizeVideos}`,
+      freeToWatch: false,
     };
 
     e.videoIds.push(`video-${sizeVideos}`);

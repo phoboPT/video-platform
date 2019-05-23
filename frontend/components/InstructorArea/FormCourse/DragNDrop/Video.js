@@ -18,6 +18,19 @@ const Container = styled.div`
     .first {
       order: 1;
       flex: 5;
+      display: flex;
+      #text-box {
+        flex: 1;
+        order: 1;
+      }
+      #check-box {
+        flex: 1;
+        order: 2;
+      }
+
+      input[type='text'] {
+        width: 90%;
+      }
     }
     .second {
       order: 2;
@@ -105,11 +118,24 @@ class Video extends Component {
   };
 
   changeState = async e => {
+    const { content, freeToWatch } = this.state;
     const { handleVideo, video } = this.props;
-    const { value } = e.target;
+    const { value, id, checked } = e.target;
+    console.log('checked', id, checked);
 
-    await this.setState({ content: value });
-    handleVideo(value, video.id);
+    await this.setState({ [id]: id === 'content' ? value : checked });
+    const data = {
+      content,
+      freeToWatch,
+    };
+    console.log('data', data);
+    handleVideo(data, video.id);
+  };
+
+  changeFree = () => {
+    const { freeToWatch } = this.state;
+
+    this.setState({ freeToWatch: !freeToWatch });
   };
 
   disableInput = () => {
@@ -152,14 +178,29 @@ class Video extends Component {
           >
             <div className="video">
               <div className="first">
-                <input
-                  name="content"
-                  onChange={this.changeState}
-                  placeholder="Video"
-                  required
-                  type="text"
-                  value={content}
-                />
+                <div id="text-box">
+                  <input
+                    id="content"
+                    name="content"
+                    onChange={this.changeState}
+                    placeholder="Video"
+                    required
+                    type="text"
+                    value={content}
+                  />
+                </div>
+                <div id="check-box">
+                  Free
+                  <input
+                    id="freeToWatch"
+                    name="freeToWatch"
+                    onChange={this.changeState}
+                    placeholder="free"
+                    required
+                    type="checkbox"
+                    checked={video.freeToWatch}
+                  />
+                </div>
               </div>
               <div className="second">
                 <button

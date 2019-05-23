@@ -87,6 +87,7 @@ Rating.propTypes = {
   showTotal: PropTypes.bool,
   totalComments: PropTypes.number,
   getRating: PropTypes.func,
+  readOnly: PropTypes.bool,
 };
 
 export default Rating;

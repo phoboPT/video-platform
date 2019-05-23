@@ -62,6 +62,8 @@ const updateRate = async (ctx, courseId, newRate, oldRate) => {
       data: { totalRate: updatedRate, totalComments: allCoursesRate.length },
     });
   }
+
+  return true;
 };
 
 const Mutations = {
@@ -739,8 +741,7 @@ const Mutations = {
       info
     );
 
-    updateRate(ctx, args.courseId, args.rating, 0);
-
+    const res = await updateRate(ctx, args.courseId, args.rating, 0);
     return rateCourse;
   },
   async deleteRateCourse(parent, args, ctx, info) {
@@ -807,7 +808,12 @@ const Mutations = {
       }}`
     );
 
-    updateRate(ctx, courseId.course.id, args.rate, courseId.rate);
+    const res = await updateRate(
+      ctx,
+      courseId.course.id,
+      args.rate,
+      courseId.rate
+    );
 
     // da run no update method
     return ctx.db.mutation.updateRateCourse(
