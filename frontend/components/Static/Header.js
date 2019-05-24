@@ -62,7 +62,7 @@ class Header extends Component {
   };
 
   render() {
-    const { link, changeLink } = this.state;
+    const { link } = this.state;
     return (
       <StyledHeader>
         <div className="bar">
@@ -73,7 +73,7 @@ class Header extends Component {
               </a>
             </Link>
           </Logo>
-          <Nav changeLink={changeLink} />
+          <Nav changeLink={this.changeLink} />
         </div>
         <div className="sub-bar" />
         <Cart />

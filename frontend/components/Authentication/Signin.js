@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Mutation, withApollo } from 'react-apollo';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
 import { ALL_VIDEOS_USER } from '../InstructorArea/MyVideos/Videos';
 import { CURRENT_USER_QUERY } from './User';
 import { CURRENT_COURSES_QUERY } from '../InstructorArea/MyCourses';
@@ -12,6 +11,7 @@ import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
   ALL_COURSES_QUERY,
+  ALL_COURSES_RATING,
 } from '../Home/CoursesList/ListAllCourses';
 import { COURSES_FILTER_QUERY } from '../Courses/UserCourses';
 import Error from '../Static/ErrorMessage';
@@ -187,6 +187,9 @@ class Signin extends Component {
           },
           {
             query: ALL_COURSES_QUERY,
+          },
+          {
+            query: ALL_COURSES_RATING,
           },
         ]}
         variables={this.state}

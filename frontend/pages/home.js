@@ -5,6 +5,7 @@ import ListAllCourses, {
 } from '../components/Home/CoursesList/ListAllCourses';
 import Search from '../components/Home/Search';
 import Loading from '../components/Static/Loading';
+import InitialPage from '../components/InitialPage';
 
 class Home extends Component {
   render() {
@@ -13,16 +14,7 @@ class Home extends Component {
         {({ data, loading }) => {
           if (loading) return <Loading />;
           if (!data.me) {
-            return <p>You need to login first</p>;
-          }
-          if (data.me) {
-            return (
-              <>
-                <Search />
-                <ListAllCourses query="ALL_COURSES_NOUSER" />
-                <ListAllCourses query="ALL_COURSES_ORDERED_NOUSER" />
-              </>
-            );
+            return <InitialPage />;
           }
           return (
             <div key={data.me.id}>

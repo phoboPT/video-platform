@@ -50,7 +50,7 @@ const Img = styled.div`
   }
 
   .animate {
-    animation: pulse 1s ease forwards;
+    animation: pulse 1.3s ease forwards;
 
     @keyframes pulse {
       0% {
@@ -66,7 +66,7 @@ const Img = styled.div`
   }
 `;
 
-export class AddToWish extends Component {
+export class WishButton extends Component {
   state = {
     ...this.props.data.user,
     courseId: this.props.id,
@@ -74,16 +74,42 @@ export class AddToWish extends Component {
 
   changeClass = async mutation => {
     this.setState({ className: 'animate' });
-    const res = await mutation();
+    await mutation();
     this.setState({ classButton: 'added' });
   };
 
+  // this gets called as soon as we get a responde back from the server after a mutation
+  update = (cache, payload) => {
+    console.time('wish');
+    // read the cache
+    const data = cache.readQuery({ query: ALL_COURSES_QUERY });
+    // remove item from cart
+    const courseId = payload.data.addToWish.id;
+
+    data.coursesList = data.coursesList.map(item => {
+      if (item.id === courseId) {
+        item.wished = !item.wished;
+      }
+      return item;
+    });
+
+    // console.table(data.coursesList);
+    // write back to the cache
+    cache.writeQuery({ query: ALL_COURSES_QUERY, data });
+    // cache.writeQuery({ query: ALL_COURSES_ORDERED, data });
+
+    // this.updateRating(cache, payload);
+
+    console.timeEnd('wish');
+  };
+
   render() {
-    const { data, skip } = this.props;
+    const { data } = this.props;
     const { className } = this.state;
     return (
       <Mutation
         mutation={ADD_TO_WISHLIST_MUTATION}
+        update={this.update}
         refetchQueries={[
           {
             query: ALL_COURSES_QUERY,
@@ -136,4 +162,4 @@ export class AddToWish extends Component {
   }
 }
 
-export default AddToWish;
+export default WishButton;

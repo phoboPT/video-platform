@@ -18,18 +18,19 @@ const RENDER_QUERY = gql`
 const ALL_COURSES_QUERY = gql`
   query ALL_COURSES_QUERY($skip: Int = 0, $first: Int = ${perPageCourse}, $orderBy: String = "title_ASC") {
     coursesList(first: $first, skip: $skip,orderBy: $orderBy ,) {
-      id
+         id
       title
       description
       thumbnail
       createdAt
-      price
       totalComments
+      price
       totalRate
       user {
         id
         name
-             }
+      }
+      count
       wished
     }
   }
@@ -43,13 +44,15 @@ const ALL_COURSES_NOUSER = gql`
       description
       thumbnail
       createdAt
-      price
       totalComments
+      price
       totalRate
       user {
         id
         name
-             }
+      }
+      count
+      wished
     }
   }
 `;
@@ -57,19 +60,20 @@ const ALL_COURSES_NOUSER = gql`
 const ALL_COURSES_ORDERED_NOUSER = gql`
   query ALL_COURSES_ORDERED_NOUSER($skip: Int = 0, $first: Int = ${perPageCourse}  ) {
     courses(first: $first, skip: $skip ,orderBy: createdAt_DESC) {
+            id
+      title
+      description
+      thumbnail
+      createdAt
+      totalComments
+      price
+      totalRate
+      user {
         id
-        title
-        description
-        thumbnail
-        createdAt
-        price
-        totalComments
-        user {
-          id
-          name
-        }
-        wished
-        totalRate
+        name
+      }
+      count
+      wished
       }
     }
 `;
@@ -78,19 +82,20 @@ const ALL_COURSES_ORDERED_NOUSER = gql`
 const ALL_COURSES_ORDERED = gql`
   query ALL_COURSES_ORDERED($skip: Int = 0, $first: Int = ${perPageCourse} $orderBy: String = "createdAt_DESC") {
     coursesList(first: $first, skip: $skip ,orderBy: $orderBy) {
-      id
+       id
       title
       description
       thumbnail
       createdAt
-      price
       totalComments
+      price
       totalRate
       user {
         id
         name
-        }
-        wished
+      }
+      count
+      wished
       }
     }
 `;
@@ -224,6 +229,7 @@ class ListAllCourses extends Component {
 
   render() {
     const { query, page, title, classe } = this.state;
+    const { noUser } = this.props;
     return (
       <>
         <Query
@@ -301,9 +307,7 @@ class ListAllCourses extends Component {
               return (
                 <>
                   <Container>
-                    {data.coursesUserInterestList[0] !== undefined && (
-                      <Title>{title}</Title>
-                    )}
+                    {<Title>{title}</Title>}
                     {/* Filtering the data to show the correct list */}
                     <div id="content-container">
                       <CoursesList id="courses-list" className={classe}>
@@ -348,13 +352,21 @@ class ListAllCourses extends Component {
                     {/* Filtering the data to show the correct list */}
                     <div id="content-container">
                       <CoursesList id="courses-list" className={classe}>
-                        {data.coursesRating.map(course => (
-                          <CourseItemNoUser
-                            course={course}
-                            key={course.id}
-                            skip={page * perPageCourse - perPageCourse}
-                          />
-                        ))}
+                        {data.coursesRating.map(course =>
+                          noUser ? (
+                            <CourseItemNoUser
+                              course={course}
+                              key={course.id}
+                              skip={page * perPageCourse - perPageCourse}
+                            />
+                          ) : (
+                            <CourseItem
+                              course={course}
+                              key={course.id}
+                              skip={page * perPageCourse - perPageCourse}
+                            />
+                          )
+                        )}
                       </CoursesList>
 
                       {/* Check what pagination to render ( count gives the total of items of the interest list) */}
