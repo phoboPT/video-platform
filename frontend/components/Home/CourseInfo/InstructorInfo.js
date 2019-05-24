@@ -61,7 +61,6 @@ const ALL_COURSES_QUERY = gql`
           urlVideo
           file
           duration
-          freeToWatch
         }
       }
       category {

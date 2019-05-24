@@ -249,7 +249,7 @@ class ListAllCourses extends Component {
             if (data.courses) {
               return (
                 <Container>
-                  <Title>{title}</Title>
+                  {data.courses[0] !== undefined && <Title>{title}</Title>}
                   <div id="content-container">
                     <CoursesList id="courses-list" className={classe}>
                       {data.courses.map(course => (
@@ -260,16 +260,18 @@ class ListAllCourses extends Component {
                         />
                       ))}
                     </CoursesList>
-                    <Pagination
-                      page={page}
-                      animationSliderControlForward={
-                        this.animationSliderControlForward
-                      }
-                      animationSliderControlBackward={
-                        this.animationSliderControlBackward
-                      }
-                      isInterest={false}
-                    />
+                    {data.courses[0] !== undefined && (
+                      <Pagination
+                        page={page}
+                        animationSliderControlForward={
+                          this.animationSliderControlForward
+                        }
+                        animationSliderControlBackward={
+                          this.animationSliderControlBackward
+                        }
+                        isInterest={false}
+                      />
+                    )}
                   </div>
                 </Container>
               );
@@ -278,7 +280,7 @@ class ListAllCourses extends Component {
             if (data.coursesList) {
               return (
                 <Container>
-                  <Title>{title}</Title>
+                  {data.coursesList[0] !== undefined && <Title>{title}</Title>}
                   <div id="content-container">
                     <CoursesList id="courses-list" className={classe}>
                       {data.coursesList.map(course => (
@@ -289,16 +291,19 @@ class ListAllCourses extends Component {
                         />
                       ))}
                     </CoursesList>
-                    <Pagination
-                      page={page}
-                      animationSliderControlForward={
-                        this.animationSliderControlForward
-                      }
-                      animationSliderControlBackward={
-                        this.animationSliderControlBackward
-                      }
-                      isInterest={false}
-                    />
+
+                    {data.coursesList[0] !== undefined && (
+                      <Pagination
+                        page={page}
+                        animationSliderControlForward={
+                          this.animationSliderControlForward
+                        }
+                        animationSliderControlBackward={
+                          this.animationSliderControlBackward
+                        }
+                        isInterest={false}
+                      />
+                    )}
                   </div>
                 </Container>
               );
@@ -307,7 +312,9 @@ class ListAllCourses extends Component {
               return (
                 <>
                   <Container>
-                    {<Title>{title}</Title>}
+                    {data.coursesUserInterestList[0] !== undefined && (
+                      <Title>{title}</Title>
+                    )}
                     {/* Filtering the data to show the correct list */}
                     <div id="content-container">
                       <CoursesList id="courses-list" className={classe}>
@@ -347,7 +354,9 @@ class ListAllCourses extends Component {
               return (
                 <>
                   <Container>
-                    <Title>{title}</Title>
+                    {data.coursesRating[0] !== undefined && (
+                      <Title>{title}</Title>
+                    )}
 
                     {/* Filtering the data to show the correct list */}
                     <div id="content-container">
