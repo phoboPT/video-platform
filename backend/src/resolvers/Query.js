@@ -534,7 +534,7 @@ const Query = {
       return item;
     });
     console.timeEnd('coursesList');
-
+    console.table(finalRes);
     return finalRes;
   },
   coursesFilter(parent, args, ctx, info) {

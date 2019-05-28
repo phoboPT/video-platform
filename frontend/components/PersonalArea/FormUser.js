@@ -12,17 +12,48 @@ import Editor from '../InstructorArea/Editor';
 
 const Style = styled.div`
   margin-left: 2rem;
+  .container {
+    padding: 5rem;
+    .fields {
+      border: 1px solid red;
+      margin: auto;
+      padding: auto;
+
+      text-align: center;
+      label {
+        text-align: left;
+        p {
+          padding: 0 0 0 1rem;
+          margin: 0.2rem;
+        }
+      }
+      input {
+        max-width: 50%;
+      }
+    }
+
+    .editor {
+      text-align: left;
+      margin: none;
+    }
+  }
   button {
-    color: #000000;
-    background: none;
-    font: inherit;
-    padding-top: 10rem;
-    padding-block-start: 10px;
-    padding-block-end: 10px;
-    cursor: pointer;
-    width: auto;
-    border: 0;
+    border-radius: 5px;
+    height: 50px;
+    width: 200px;
     text-align: center;
+    margin: 2rem;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    font-weight: 400;
+    border: none;
+    background: #27ad39;
+    margin-top: 40px;
+    cursor: pointer;
+    color: white;
+    :focus {
+      outline: none;
+    }
   }
   img {
     width: 200px;
@@ -98,51 +129,57 @@ class UpdateUser extends Component {
                 {(updateUser, { loading, error }) => (
                   <Form onSubmit={e => this.update(e, updateUser, me.id)}>
                     <Error error={error} />
+                    <div className="container">
+                      <fieldset disabled={loading} aria-busy={loading}>
+                        <h2>Edit My Account </h2>
+                        <div className="fields">
+                          <label htmlFor="Name">
+                            <p>Name</p>
+                            <input
+                              type="text"
+                              name="name"
+                              placeholder="name"
+                              defaultValue={me.name}
+                              onChange={this.handleChange}
+                            />
+                          </label>
+                          <label htmlFor="Email">
+                            <p>Email</p>
+                            <input
+                              type="text"
+                              name="email"
+                              placeholder="email"
+                              defaultValue={me.email}
+                              onChange={this.handleChange}
+                            />
+                          </label>
+                          <label htmlFor="Profession">
+                            <p>Ocupation or Title</p>
+                            <input
+                              type="text"
+                              name="profession"
+                              placeholder="profession"
+                              defaultValue={me.profession}
+                              onChange={this.handleChange}
+                            />
+                          </label>
+                        </div>
 
-                    <fieldset disabled={loading} aria-busy={loading}>
-                      <h2>Edit My Account </h2>
-                      <label htmlFor="Name">
-                        Name
-                        <input
-                          type="text"
-                          name="name"
-                          placeholder="name"
-                          defaultValue={me.name}
-                          onChange={this.handleChange}
-                        />
-                      </label>
-                      <label htmlFor="Email">
-                        Email
-                        <input
-                          type="text"
-                          name="email"
-                          placeholder="email"
-                          defaultValue={me.email}
-                          onChange={this.handleChange}
-                        />
-                      </label>
-                      <label htmlFor="Profession">
-                        Ocupation or Title
-                        <input
-                          type="text"
-                          name="profession"
-                          placeholder="profession"
-                          defaultValue={me.profession}
-                          onChange={this.handleChange}
-                        />
-                      </label>
-                      <label htmlFor="description">
-                        Description
-                        <Editor
-                          id="description"
-                          data={me.description}
-                          changeQuill={this.changeQuill}
-                        />
-                      </label>
-                      <button type="submit">
-                        Sav{loading ? 'ing' : 'e'} Alterations
-                      </button>
-                    </fieldset>
+                        <div className="editor">
+                          <label htmlFor="description">
+                            <p>Description</p>
+                            <Editor
+                              id="description"
+                              data={me.description}
+                              changeQuill={this.changeQuill}
+                            />
+                          </label>
+                          <button type="submit">
+                            Sav{loading ? 'ing' : 'e'} Alterations
+                          </button>
+                        </div>
+                      </fieldset>
+                    </div>
                   </Form>
                 )}
               </Mutation>

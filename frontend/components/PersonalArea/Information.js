@@ -21,6 +21,12 @@ const Container = styled.div`
     flex: 3;
     order: 2;
     color: #56595b !important;
+    #strong {
+      color: black;
+    }
+    span {
+      line-height: 2.3rem;
+    }
   }
   #change-info {
     flex: 1;
@@ -48,11 +54,22 @@ class Information extends Component {
             <Container>
               <img alt="User Default" src={me.thumbnail} />
               <div id="information">
-                <p>Nome: {me.name}</p>
-                <p>Email: {me.email}</p>
-                <p> Occupation or title: {me.profession} </p>
-                <p>About Me:</p>
-                <Markdown escapeHtml={false} source={me.description} />
+                <p>
+                  <strong id="strong">Nome: </strong>
+                  <span> {me.name}</span>
+                </p>
+                <p>
+                  <strong id="strong">Email: </strong>
+                  <span> {me.email}</span>
+                </p>
+                <p>
+                  <strong id="strong">Occupation or title: </strong>
+                  <span> {me.profession || 'Profession'}</span>
+                </p>
+                <p>
+                  <strong id="strong">About Me:</strong>
+                  <Markdown escapeHtml={false} source={me.description} />
+                </p>
               </div>
               <div id="change-info">
                 <button type="submit" onClick={() => changeManualView(2)}>
