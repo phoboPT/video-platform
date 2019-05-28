@@ -112,9 +112,9 @@ const Query = {
   coursesUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ve se esta logado
-    // if (!userId) {
-    //   throw new Error('You must be signed in!');
-    // }
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
     // query o video atual com comparaçao de ids de user
     return ctx.db.query.courses(
       {
@@ -124,6 +124,23 @@ const Query = {
           },
         },
         ...args,
+      },
+      info
+    );
+  },
+  async coursesUserConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+    return ctx.db.query.coursesConnection(
+      {
+        where: {
+          user: {
+            id: userId,
+          },
+        },
       },
       info
     );

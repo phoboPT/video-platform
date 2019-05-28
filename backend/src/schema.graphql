@@ -215,7 +215,7 @@ type Query {
   # listar todos os comentarios de um curso
   rateCourseList(id: ID!, orderBy: RateCourseOrderByInput): [RateCourse]
   # Listar todos os cursos de um User
-  coursesUser: [Course]
+  coursesUser(orderBy: CourseOrderByInput, skip: Int, first: Int): [Course]
   coursesInstructor(id: ID!): [Course]
   userCourses(where: UserCourseWhereInput): [UserCourse]
 
@@ -226,6 +226,7 @@ type Query {
   #pagination
   videosConnection(where: VideoWhereInput): VideoConnection!
   coursesConnection(data: String): CourseConnection!
+  coursesUserConnection(data: String): CourseConnection!
 
   wishlists(where: WishlistWhereInput): [Wishlist]
 
