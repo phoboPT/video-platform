@@ -49,7 +49,7 @@ const Container = styled.div`
 
 class PersonalArea extends Component {
   state = {
-    view: 1,
+    view: 5,
     selected: 1,
   };
 

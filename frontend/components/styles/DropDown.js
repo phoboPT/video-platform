@@ -34,13 +34,15 @@ const glow = keyframes`
   }
 
   to {
-    box-shadow: 0 0 10px 1px yellow;
+    box-shadow: 0 0 10px 1px ;
   }
 `;
 
 const SearchStyles = styled.div`
   position: relative;
+
   input {
+    border-radius: 5px;
     background-color: rgba(211, 211, 211, 0.8);
     width: 100%;
     padding: 10px;
