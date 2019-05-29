@@ -5,13 +5,29 @@ import PropTypes from 'prop-types';
 import Column from './Column';
 
 const Container = styled.div`
+  width: 100%;
   display: grid;
-  button {
-    font-size: 1.5rem;
+  #top-sections {
+    display: flex;
+    #left {
+      order: 1;
+      display: flex;
+      #1 {
+        order: 1;
+      }
+      #2 {
+        order: 2;
+      }
+    }
+    #right {
+      text-align: right;
+      flex: 1;
+      order: 2;
+    }
   }
   .add-section {
-    margin: 8px;
-    width: auto;
+    font-size: 1.5rem;
+    margin: auto 2rem;
     background: #4dcb5d;
     color: white;
     border: 0;
@@ -26,7 +42,6 @@ const Container = styled.div`
     order: 2;
     margin: 15px 15px;
     border-radius: 2px;
-    background-color: lightgrey;
   }
 `;
 
@@ -363,29 +378,34 @@ class Index extends Component {
 
   render() {
     const { columnOrder, sections, videos, key } = this.state;
-    const { courseId, isShow, undoSections } = this.props;
+    const { courseId, isShow, undoSections, children } = this.props;
 
     return (
       <Container key={key}>
         <div className="head">
           {!isShow && (
-            <>
-              <button
-                type="button"
-                className="add-section"
-                onClick={this.addSection}
-              >
-                ➕ Add Section
-              </button>
+            <div id="top-sections">
+              <div id="left">
+                <button
+                  type="button"
+                  id=""
+                  className="add-section"
+                  onClick={this.addSection}
+                >
+                  ➕ Add Section
+                </button>
+                <button
+                  id="2"
+                  type="button"
+                  className="add-section"
+                  onClick={undoSections}
+                >
+                  🔙 Undo
+                </button>
+              </div>
 
-              <button
-                type="button"
-                className="add-section"
-                onClick={undoSections}
-              >
-                🔙 Undo
-              </button>
-            </>
+              {children}
+            </div>
           )}
         </div>
         <DragDropContext onDragEnd={this.onDragEnd}>

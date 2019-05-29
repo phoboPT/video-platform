@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import Video from './Video';
 
 const Container = styled.div`
-  margin: 8px;
+  margin: 2rem auto 3rem auto;
   border-radius: 2px;
-  background-color: #23a3de;
-  border: 1px solid #0c92da;
-  padding: 1rem 0 0 3rem;
+  background-color: ${props => (props.isDragging ? '#c9d2d6' : '#e3eced')};
+  border: 1.5px solid #cbd9db;
+
   .head {
     display: flex;
     .first {
@@ -43,9 +43,7 @@ const Container = styled.div`
 
 const VideoList = styled.div`
   padding: 8px;
-  transition: background-color 0.2s ease;
-  background-color: ${props =>
-    props.isDraggingOver ? 'ligthgrey' : 'inherit'};
+
   min-height: 100px;
   padding: 1rem 5rem 1rem 5rem;
 `;
@@ -103,11 +101,12 @@ class Column extends Component {
   }
 
   changeState = async e => {
+    const { title } = this.state;
     const { handleChange, section } = this.props;
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
     await this.setState({ [name]: val });
-    handleChange(this.state.title, section.id);
+    handleChange(title, section.id);
   };
 
   disableInput = () => {
@@ -137,11 +136,12 @@ class Column extends Component {
     } = this.props;
     return (
       <Draggable draggableId={section.id} index={index}>
-        {provided => (
+        {(provided, snapshot) => (
           <>
             <Container
               {...provided.draggableProps}
               innerRef={provided.innerRef}
+              isDragging={snapshot.isDragging}
             >
               <div {...provided.dragHandleProps} className="head">
                 <div className="first">

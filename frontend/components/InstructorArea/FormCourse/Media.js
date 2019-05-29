@@ -5,23 +5,24 @@ import Index from './DragNDrop/Index';
 import SaveCourseButton from './SaveCourseButton';
 
 const Container = styled.div`
-  width: 90%;
-  margin-left: 2rem;
+  width: 100%;
   h2 {
     padding-top: 2.5rem;
     padding-left: 1rem;
     margin: 0;
   }
-  .button {
-    float: right;
-    .save {
-      width: auto;
-      background: red;
-      color: white;
-      border: 0;
-      font-size: 2rem;
-      font-weight: 600;
-      padding: 0.5rem 1.2rem;
+  form {
+    .button {
+      margin: auto;
+      .save {
+        width: auto;
+        background: red;
+        color: white;
+        border: 0;
+        font-size: 2rem;
+        font-weight: 600;
+        padding: 0.5rem 1.2rem;
+      }
     }
   }
   #message {
@@ -64,22 +65,24 @@ class Media extends Component {
           In this area you can add content to your course and customize it to
           your liking
         </p>
-        <div className="button">
-          <SaveCourseButton
-            sections={sections}
-            id={courseId}
-            data={this.state}
-          />
-        </div>
+
         <br />
-        <p>Sections</p>
+
         <Index
           updateFilesToDelete={this.updateFilesToDelete}
           sections={sections}
           updateState={updateState}
           courseId={courseId}
           undoSections={undoSections}
-        />
+        >
+          <div className="button" id="right">
+            <SaveCourseButton
+              sections={sections}
+              id={courseId}
+              data={this.state}
+            />
+          </div>
+        </Index>
       </Container>
     );
   }

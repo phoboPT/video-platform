@@ -37,15 +37,15 @@ class MyApp extends App {
     const { Component, apollo, pageProps } = this.props;
     return (
       <AnimationStyle>
-        <PageTransition timeout={250} classNames="page-transition">
-          <Container>
-            <ApolloProvider client={apollo}>
-              <Page>
+        <Container>
+          <ApolloProvider client={apollo}>
+            <PageTransition timeout={250} classNames="page-transition">
+              <Page key={Math.floor(Math.random() * 100 + 1)}>
                 <Component {...pageProps} />
               </Page>
-            </ApolloProvider>
-          </Container>
-        </PageTransition>
+            </PageTransition>
+          </ApolloProvider>
+        </Container>
       </AnimationStyle>
     );
   }

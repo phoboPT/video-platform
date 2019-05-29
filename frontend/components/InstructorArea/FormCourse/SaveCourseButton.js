@@ -40,13 +40,11 @@ const Style = styled.button`
   height: 50px;
   width: 200px;
   text-align: center;
-  margin-top: 40px;
-  margin: 0 auto;
+  margin: auto 2rem;
   font-size: 25px;
   font-weight: 400;
   border: none;
   background: #27ad39;
-  margin-top: 40px;
   cursor: pointer;
   color: white;
   :focus {

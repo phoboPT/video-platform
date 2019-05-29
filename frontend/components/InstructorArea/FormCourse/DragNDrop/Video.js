@@ -9,8 +9,8 @@ const Container = styled.div`
   padding: 8px;
   margin-bottom: 8px;
   border-radius: 2px;
-  border: 2px solid #0c92da;
-  background-color: ${props => (props.isDragging ? 'lightgreen' : ' #5AC4F5')};
+  border: 2.5px solid #d1d1d1;
+  background-color: ${props => (props.isDragging ? 'lightgreen' : ' #fcf9f9')};
   .video {
     display: flex;
     order: 1;
