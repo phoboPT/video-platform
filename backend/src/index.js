@@ -1,6 +1,8 @@
 require('dotenv').config({ path: 'variables.env' });
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+// const path = require('path');
+// const paypal = require('paypal-rest-sdk');
 const createServer = require('./createServer');
 const db = require('./db');
 

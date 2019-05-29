@@ -143,7 +143,11 @@ class InstrutorArea extends Component {
                     </div>
 
                     <aside id="sidebar" className="main-bar">
-                      {view === 1 && <MyCourses changeView={this.changeView} />}
+                      {view === 1 && (
+                        <>
+                          <MyCourses changeView={this.changeView} />
+                        </>
+                      )}
                       {view === 2 && (
                         <ChangeCourse
                           changeIntructorView={this.changeView}

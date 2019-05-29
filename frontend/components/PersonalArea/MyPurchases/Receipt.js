@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import html2canvas from 'html2canvas';
 import formatDate from '../../../lib/formatDate';
 import formatMoney from '../../../lib/formatMoney';
 
 const BackButton = styled.div`
-  margin: 2rem;
+  padding-left: 6rem;
   button {
     font-size: 16px;
     cursor: pointer;
@@ -17,6 +18,7 @@ const BackButton = styled.div`
 `;
 
 const Title = styled.h1`
+  padding-top: 2rem;
   text-align: center;
 `;
 const SelledStyle = styled.div`
@@ -63,6 +65,11 @@ const Table = styled.div`
 const H2 = styled.h3`
   text-align: center;
 `;
+const ContainerAll = styled.div`
+  border: 1px solid #aaaaaa;
+  max-width: 800px;
+  margin: 2rem auto auto auto;
+`;
 const InfoDown = styled.div`
   display: flex;
   margin: 2rem;
@@ -82,8 +89,44 @@ const InfoDown = styled.div`
     flex: 2;
   }
 `;
+const ExportButton = styled.div`
+  text-align: right;
+  margin: 2rem auto;
+  max-width: 800px;
+
+  button {
+    height: 35px;
+    font-size: 15px;
+    width: 150px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background: #f7f7f7;
+    }
+  }
+`;
 
 class Receipt extends Component {
+  componentDidMount() {
+    if (typeof window !== 'undefined') {
+      this.JsPDF = require('jspdf');
+    }
+  }
+
+  printDocument = () => {
+    const { JsPDF } = this;
+    const { data, idReceipt } = this.props;
+    const receipt = data.ordersUser.filter(item => item.id === idReceipt);
+    const input = document.getElementById('receipt');
+    html2canvas(input).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new JsPDF();
+      pdf.addImage(imgData, 'JPEG', 0, 0);
+      pdf.save(`Receipt_${formatDate(receipt[0].createdAt)}.pdf`);
+    });
+  };
+
   render() {
     const { changeReceipt, data, idReceipt } = this.props;
     const receipt = data.ordersUser.filter(item => item.id === idReceipt);
@@ -94,36 +137,44 @@ class Receipt extends Component {
             ⬅ Go Back
           </button>
         </BackButton>
-        <Title>Receipt</Title>
-        <SelledStyle>
-          <p>Selled to {receipt[0].user.name}</p>
-          <p>Purchase date {formatDate(receipt[0].createdAt)} </p>
-        </SelledStyle>
-        <H2> Purchase Contents </H2>
-        <Table>
-          <p id="item">Item</p>
-          <p id="price"> Price</p>
-        </Table>
+        <ContainerAll id="receipt">
+          <Title>Receipt</Title>
+          <SelledStyle>
+            <p>Selled to {receipt[0].user.name}</p>
+            <p>Purchase date {formatDate(receipt[0].createdAt)} </p>
+          </SelledStyle>
+          <H2> Purchase Contents </H2>
+          <Table>
+            <p id="item">Item</p>
+            <p id="price"> Price</p>
+          </Table>
 
-        <Container>
-          {receipt[0].items.map((item, index) => (
-            <div id="all" key={item.id}>
-              <div id="item">
-                <p id="index">{index + 1}. </p>
-                <p>{item.title}</p>
+          <Container>
+            {receipt[0].items.map((item, index) => (
+              <div id="all" key={item.id}>
+                <div id="item">
+                  <p id="index">{index + 1}. </p>
+                  <p>{item.title}</p>
+                </div>
+                <p id="price"> {item.price}€ </p>
               </div>
-              <p id="price"> {item.price}€ </p>
+            ))}
+          </Container>
+          <InfoDown>
+            <div id="quantity">
+              <p> Total courses purchased {receipt[0].items.length} </p>
             </div>
-          ))}
-        </Container>
-        <InfoDown>
-          <div id="quantity">
-            <p> Total courses purchased {receipt[0].items.length} </p>
-          </div>
-          <div id="price">
-            <p> Total Price {formatMoney(receipt[0].total / 100)} </p>
-          </div>
-        </InfoDown>
+            <div id="price">
+              <p> Total Price {formatMoney(receipt[0].total / 100)} </p>
+            </div>
+          </InfoDown>
+        </ContainerAll>
+
+        <ExportButton>
+          <button type="button" onClick={this.printDocument}>
+            Export to Pdf
+          </button>
+        </ExportButton>
       </>
     );
   }

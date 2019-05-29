@@ -198,7 +198,6 @@ class UserCourses extends Component {
     return (
       <Query query={COURSES_FILTER_QUERY} variables={{ category, author }}>
         {({ data, loading }) => {
-          if (loading) return <Loading />;
           if (!data) return <p>No Courses</p>;
 
           if (data) {

@@ -232,7 +232,11 @@ class ViewCourse extends Component {
                             </button>
                           </Bar>
                           {view === 1 && (
-                            <Overview data={course} key={course.id} />
+                            <Overview
+                              view={view}
+                              data={course}
+                              key={course.id}
+                            />
                           )}
 
                           {view === 3 && (

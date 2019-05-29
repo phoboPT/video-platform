@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Markdown from 'react-markdown';
-
 import User from '../Authentication/User';
 
 const Container = styled.div`

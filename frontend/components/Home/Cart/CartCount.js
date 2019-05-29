@@ -6,9 +6,9 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 const Dot = styled.div`
   background: ${props => props.theme.red};
   color: white;
-  border-radius: 50%;
+  border-radius: 100%;
   padding: 0, 5rem;
-  line-height: 2rem;
+  line-height: 3rem;
   min-width: 3rem;
   margin-left: 1rem;
   font-weight: 100;
