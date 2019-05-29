@@ -54,8 +54,6 @@ class Media extends Component {
     }
   };
 
-  updateFree = () => {};
-
   render() {
     const { sections, updateState, courseId, undoSections } = this.props;
     return (
@@ -70,6 +68,8 @@ class Media extends Component {
             id={courseId}
             data={this.state}
           />
+
+          <button type="button"> Save</button>
         </div>
         <br />
         <p>Sections</p>

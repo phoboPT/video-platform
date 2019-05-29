@@ -22,6 +22,9 @@ const Meta = () => (
       integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
       rel="stylesheet"
     />
+
+    <script src="https://www.paypal.com/sdk/js?client-id=Ac9EwIFTT1nfSdcGkZQG3dAb8Tf0f2ZjBj-czNFoFC2tS3eFsPOB-jKX9zVBEENUEFLZb6aQZ9wy1m7K" />
+
     <script src="https://cdn.quilljs.com/1.3.6/quill.js" />
     <title>Picus</title>
   </Head>

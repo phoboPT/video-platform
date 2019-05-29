@@ -94,6 +94,11 @@ class CreateVideo extends Component {
     this.setState({ [name]: val });
   };
 
+  teste = e => {
+    const { files } = e.target;
+    console.log(files);
+  };
+
   uploadVideo = async (e, createVideoMutation) => {
     this.setState({
       isUploading: 1,
@@ -205,14 +210,6 @@ class CreateVideo extends Component {
         dangerMode: true,
       });
     }
-  };
-
-  saveCategory = e => {
-    this.setState({ category: e.target.value });
-  };
-
-  saveCourse = e => {
-    this.setState({ course: e.target.value });
   };
 
   changeUpload = () => {

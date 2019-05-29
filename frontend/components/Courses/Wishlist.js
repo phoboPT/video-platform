@@ -19,9 +19,11 @@ const WISHLIST_QUERY = gql`
         totalComments
         totalRate
         category {
+          id
           name
         }
         user {
+          id
           name
         }
       }

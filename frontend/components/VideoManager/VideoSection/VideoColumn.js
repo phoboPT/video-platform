@@ -74,6 +74,8 @@ class InnerList extends React.PureComponent {
     data: PropTypes.object.isRequired,
     videosWatched: PropTypes.array.isRequired,
     controller: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
   };
 
   async componentDidMount() {
@@ -95,8 +97,6 @@ class InnerList extends React.PureComponent {
       }
     }
   }
-
-  // componentWillMount() {}
 
   changeSelected = (item, selected) => {
     const { changeSelectedVideo, id } = this.props;

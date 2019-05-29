@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 const cloudinary = require('cloudinary');
+const paypal = require('paypal-rest-sdk');
 const { makeANiceEmail, transport } = require('../mail');
 const stripe = require('../stripe');
 
@@ -11,6 +12,14 @@ cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
+});
+
+paypal.configure({
+  mode: 'sandbox', // sandbox or live
+  client_id:
+    'Ac9EwIFTT1nfSdcGkZQG3dAb8Tf0f2ZjBj-czNFoFC2tS3eFsPOB-jKX9zVBEENUEFLZb6aQZ9wy1m7K',
+  client_secret:
+    'EIO33DXgnT_Y4pyf-D4aD5JoK_IykRuz7HWgOlip-Bk3oNfE6Vr4mw8elI18-QOjqFEqnQYRYniAQEn_',
 });
 const formatString = (type, string) => {
   const video = /(video\/)\w{20}/g;
@@ -1011,6 +1020,7 @@ const Mutations = {
       currency: 'EUR',
       source: args.token,
     });
+
     // convert the cartitems in orderitems
     const orderItems = user.cart.map(cartItem => {
       const orderItem = {
@@ -1042,10 +1052,18 @@ const Mutations = {
         },
       });
     });
+
     // clean up - clear the users cart, delete cartitems
     const cartItemIds = user.cart.map(cartItem => cartItem.id);
+    const courseIdsToDelete = user.cart.map(cartItem => cartItem.course.id);
     await ctx.db.mutation.deleteManyCartItems({
       where: { id_in: cartItemIds },
+    });
+
+    await ctx.db.mutation.deleteManyWishlists({
+      where: {
+        course: { id_in: courseIdsToDelete },
+      },
     });
     // return the Order to the client
     return order;
@@ -1142,12 +1160,203 @@ const Mutations = {
       info
     );
   },
+  async paypalCheckout(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error('You must be signed in soooon');
+    }
+
+    const user = await ctx.db.query.user(
+      { where: { id: userId } },
+      `
+        {
+          id
+          name
+          email
+          cart{
+            id
+            course{
+              title
+              price
+              id
+              description
+              thumbnail
+              category{
+                id
+              }
+            }
+          }
+        }
+        `
+    );
+    // recalculate the total for the price
+    const amount = await user.cart.reduce(
+      (tally, cartItem) => tally + cartItem.course.price,
+      0
+    );
+    const create_payment_json = {
+      intent: 'sale',
+      payer: {
+        payment_method: 'paypal',
+      },
+      redirect_urls: {
+        return_url: 'http://localhost:7777/success',
+        cancel_url: 'http://localhost:7777/fail',
+      },
+      transactions: [
+        {
+          item_list: {
+            items: [
+              {
+                name: 'item',
+                sku: 'item',
+                price: amount,
+                currency: 'EUR',
+                quantity: 1,
+              },
+            ],
+          },
+          amount: {
+            currency: 'EUR',
+            total: amount,
+          },
+          description: 'This is the payment description.',
+        },
+      ],
+    };
+
+    function getLink() {
+      return new Promise(function(fulfilled, rejected) {
+        paypal.payment.create(create_payment_json, function(error, payment) {
+          if (error) {
+            rejected(error);
+          } else {
+            console.log('Create Payment Response');
+            payment.links.forEach(link => {
+              if (link.rel === 'approval_url') {
+                const res = {
+                  charge: link.href,
+                };
+
+                fulfilled(res);
+              }
+            });
+          }
+        });
+      });
+    }
+
+    return getLink().then(function(name) {
+      return name;
+    });
+  },
+  async executePaypal(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    if (!userId) {
+      throw new Error('You must be signed in soooon');
+    }
+
+    const user = await ctx.db.query.user(
+      { where: { id: userId } },
+      `
+        {
+          id
+          name
+          email
+          cart{
+            id
+            course{
+              title
+              price
+              id
+              description
+              thumbnail
+              category{
+                id
+              }
+            }
+          }
+        }
+        `
+    );
+    // recalculate the total for the price
+    const amount = await user.cart.reduce(
+      (tally, cartItem) => tally + cartItem.course.price,
+      0
+    );
+
+    const execute_payment_json = {
+      payer_id: args.payerId,
+      transactions: [
+        {
+          amount: {
+            currency: 'EUR',
+            total: amount,
+          },
+        },
+      ],
+    };
+
+    const { paymentId } = args;
+    function getOrder() {
+      return new Promise(function(fulfilled, rejected) {
+        paypal.payment.execute(paymentId, execute_payment_json, async function(
+          error,
+          payment
+        ) {
+          if (error) {
+            rejected(error);
+          } else {
+            // convert the cartitems in orderitems
+            const orderItems = user.cart.map(cartItem => {
+              const orderItem = {
+                ...cartItem.course,
+                category: { connect: { id: cartItem.course.category.id } },
+                user: { connect: { id: userId } },
+              };
+              delete orderItem.id;
+              return orderItem;
+            });
+
+            // create the order
+            const order = await ctx.db.mutation.createOrder({
+              data: {
+                total: amount,
+                charge: args.paymentId,
+                items: { create: orderItems },
+                user: { connect: { id: userId } },
+              },
+            });
+
+            const courseIds = user.cart.map(cartItem => cartItem.course.id);
+
+            courseIds.forEach(async id => {
+              await ctx.db.mutation.createUserCourse({
+                data: {
+                  course: { connect: { id } },
+                  user: { connect: { id: userId } },
+                },
+              });
+            });
+            // clean up - clear the users cart, delete cartitems
+            const cartItemIds = user.cart.map(cartItem => cartItem.id);
+            await ctx.db.mutation.deleteManyCartItems({
+              where: { id_in: cartItemIds },
+            });
+            // return the Order to the client
+            fulfilled(order);
+          }
+        });
+      });
+    }
+
+    return getOrder().then(function(res) {
+      return res;
+    });
+  },
   // async removeFromWish(parent, args, ctx, info) {
   //   //Make sure they are signin
-  //   const { userId } = ctx.request;
-  //   if (!userId) {
-  //     throw new Error("You must be signed in soooon");
-  //   }
   //   const [existingWhishItem] = await ctx.db.query.wishlists({
   //     where: {
   //       user: { id: userId },

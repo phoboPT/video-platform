@@ -11,10 +11,13 @@ const SIGN_OUT_MUTATION = gql`
 `;
 
 const logout = async mutation => {
-  mutation();
   Router.push({
     pathname: '/index',
   });
+
+  setTimeout(() => {
+    mutation();
+  }, 500);
 };
 
 const Signout = ({ client }) => (

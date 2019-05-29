@@ -39,7 +39,6 @@ const Query = {
   // videosConnection: forwardTo("db"),
   async me(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    console.log('hi');
     // checkar se tem um current ID
     if (!userId) {
       return null;
@@ -534,7 +533,6 @@ const Query = {
       return item;
     });
     console.timeEnd('coursesList');
-    console.table(finalRes);
     return finalRes;
   },
   coursesFilter(parent, args, ctx, info) {
@@ -605,9 +603,11 @@ const Query = {
           state
           createdAt
           category {
+            id
             name
           }
           user {
+            id
             name
           }
         }
@@ -916,7 +916,6 @@ const Query = {
         .values(),
     ];
     console.timeEnd('sellsByCourse');
-    console.table(result);
     return result;
   },
   async coursesStatsByDate(parent, args, ctx, info) {

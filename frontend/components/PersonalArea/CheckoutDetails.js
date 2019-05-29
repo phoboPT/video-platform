@@ -6,6 +6,7 @@ import formatMoney from '../../lib/formatMoney';
 import User from '../Authentication/User';
 import Checkout from './Checkout';
 import CheckoutItems from './CheckoutItems';
+import Paypal from './Paypal';
 
 const Main = styled.div`
   max-width: 1300px;
@@ -49,6 +50,7 @@ const Button = styled.button`
   font-weight: 600;
   padding: 0.5rem 1.2rem;
   text-align: center;
+  min-width: 15rem;
 
   &:hover {
     background-color: #eb675e;
@@ -59,30 +61,44 @@ const Button = styled.button`
   }
 `;
 
-export class CheckoutDetails extends Component {
+class CheckoutDetails extends Component {
   render() {
     return (
       <User>
-        {({ data: { me } }) => (
-          <>
-            <Main>
-              <div className="cartItems">
-                <h3>Total {me.cart.length} items in your cart </h3>
-                <div className="items" />
-                {me.cart.map(item => (
-                  <CheckoutItems cartItem={item} key={item.id} />
-                ))}
-              </div>
-              <div className="cartDetails">
-                <span> Total: </span>
-                <h1>{formatMoney(calcTotalPrice(me.cart))}</h1>
-                <Checkout>
-                  <Button>Finish purchase</Button>
-                </Checkout>
-              </div>
-            </Main>
-          </>
-        )}
+        {({ data: { me } }) => {
+          console.log('data', me);
+          if (!me) return <p>hi</p>;
+          if (me) {
+            return (
+              <>
+                <Main>
+                  <div className="cartItems">
+                    <h3>Total {me.cart.length} items in your cart </h3>
+                    <div className="items" />
+                    {me.cart.map(item => (
+                      <CheckoutItems cartItem={item} key={item.id} />
+                    ))}
+                  </div>
+                  <div className="cartDetails">
+                    <span> Total: </span>
+                    <h1>{formatMoney(calcTotalPrice(me.cart))}</h1>
+                    {console.log(me.cart.length)}
+                    {me.cart.length > 0 && (
+                      <>
+                        <Checkout>
+                          <Button>Stripe</Button>
+                        </Checkout>
+                        <br />
+                        <br />
+                        <Paypal />
+                      </>
+                    )}
+                  </div>
+                </Main>
+              </>
+            );
+          }
+        }}
       </User>
     );
   }

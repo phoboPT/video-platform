@@ -75,13 +75,13 @@ injectGlobal`
     color: ${theme.black};
   }
 
-  footer {
+  /* footer {
    position:absolute;
    bottom:0;
    width:100%;
    height:60px;   /* Height of the footer */
    background:#6cf;
-}
+} */
 `;
 
 class Page extends Component {

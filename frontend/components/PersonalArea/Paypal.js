@@ -1,74 +1,91 @@
-// import the required packages
-const express = require('express');
-const path = require('path');
+import React, { Component } from 'react';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import styled from 'styled-components';
+// import swal from '@sweetalert/with-react';
+import NProgress from 'nprogress';
 
-const app = express();
-const paypal = require('paypal-rest-sdk');
+const PAYPAL_CHECKOUT = gql`
+  mutation PAYPAL_CHECKOUT {
+    paypalCheckout {
+      charge
+    }
+  }
+`;
 
-// configure paypal with the credentials you got when you created your paypal app
-paypal.configure({
-  mode: 'sandbox', // sandbox or live
-  client_id: 'YOUR_CLIENT_ID_HERE', // please provide your client id here
-  client_secret: 'YOUR_CLIENT_SECRET_HERE', // provide your client secret here
-});
+const Button = styled.button`
+  width: auto;
+  background: red;
+  color: white;
+  border: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  text-align: center;
+  min-width: 15rem;
 
-// set public directory to serve static html files
-app.use('/', express.static(path.join(__dirname, 'public')));
-
-// redirect to store when user hits http://localhost:3000
-app.get('/', (req, res) => {
-  res.redirect('/index.html');
-});
-
-// start payment process
-app.get('/buy', (req, res) => {
-  // create payment object
-  const payment = {
-    intent: 'authorize',
-    payer: {
-      payment_method: 'paypal',
-    },
-    redirect_urls: {
-      return_url: 'http://127.0.0.1:3000/success',
-      cancel_url: 'http://127.0.0.1:3000/err',
-    },
-    transactions: [
-      {
-        amount: {
-          total: 39.0,
-          currency: 'USD',
-        },
-        description: ' a book on mean stack ',
-      },
-    ],
+  &:hover {
+    background-color: #eb675e;
+  }
+  &:active {
+    position: relative;
+    top: 1px;
+  }
+`;
+class Paypal extends Component {
+  submit = async mutation => {
+    const res = await mutation();
+    // const win = window.open(
+    //   res.data.paypalCheckout.charge,
+    //   'MsgWindow',
+    //   'width=200,height=100,margin=auto'
+    // );
+    this.popupCenter(res.data.paypalCheckout.charge, 'PayPal', '900', '500');
+    // win.focus();
   };
 
-  // call the create Pay method
-  createPay(payment)
-    .then(transaction => {
-      const { id } = transaction;
-      const { links } = transaction;
-      let counter = links.length;
-      while (counter--) {
-        if (links[counter].method == 'REDIRECT') {
-          // redirect to paypal where user approves the transaction
-          return res.redirect(links[counter].href);
-        }
-      }
-    })
-    .catch(err => {
-      res.redirect('/err');
-    });
-});
+  popupCenter = (url, title, w, h) => {
+    // Fixes dual-screen position                         Most browsers      Firefox
+    const dualScreenLeft =
+      window.screenLeft != undefined ? window.screenLeft : window.screenX;
+    const dualScreenTop =
+      window.screenTop != undefined ? window.screenTop : window.screenY;
 
-// helper functions
-var createPay = payment =>
-  new Promise((resolve, reject) => {
-    paypal.payment.create(payment, function(err, payment) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(payment);
-      }
-    });
-  });
+    const width = window.innerWidth
+      ? window.innerWidth
+      : document.documentElement.clientWidth
+      ? document.documentElement.clientWidth
+      : screen.width;
+    const height = window.innerHeight
+      ? window.innerHeight
+      : document.documentElement.clientHeight
+      ? document.documentElement.clientHeight
+      : screen.height;
+
+    const systemZoom = width / window.screen.availWidth;
+    const left = (width - w) / 2 / systemZoom + dualScreenLeft;
+    const top = (height - h) / 2 / systemZoom + dualScreenTop;
+    const newWindow = window.open(
+      url,
+      title,
+      `scrollbars=yes, width=1000, height=900, top=${top}, left=${left}`
+    );
+
+    // Puts focus on the newWindow
+    if (window.focus) newWindow.focus();
+  };
+
+  render() {
+    return (
+      <Mutation mutation={PAYPAL_CHECKOUT}>
+        {paypalCheckout => (
+          <Button type="button" onClick={() => this.submit(paypalCheckout)}>
+            PayPal
+          </Button>
+        )}
+      </Mutation>
+    );
+  }
+}
+
+export default Paypal;
