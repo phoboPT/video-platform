@@ -57,7 +57,7 @@ const Style = styled.div`
         #span-email {
           margin-top: 5px;
           order: 1;
-          background-image: url('../../static/icon-user.png');
+          background-image: url('../../static/icon-user.webp');
           width: 30px;
           height: 30px;
           background-repeat: no-repeat;
@@ -198,7 +198,7 @@ class Signin extends Component {
           <Style>
             <form method="post" onSubmit={e => this.submitForm(e, signin)}>
               <fieldset id="fieldset" aria-busy={loading} disabled={loading}>
-                <img id="img" alt="user" src="../../static/user.png" />
+                <img id="img" alt="user" src="../../static/user.webp" />
                 <h2 id="h2">Sign In</h2>
                 <Error error={error} />
 
@@ -230,7 +230,7 @@ class Signin extends Component {
                     />
                   </div>
                 </div>
-                <button id="login" type="submit">
+                <button id="login" type="submit" name="login to your account">
                   Login
                 </button>
                 <div id="forgot">
@@ -238,6 +238,7 @@ class Signin extends Component {
                     id="forgot-button"
                     type="button"
                     onClick={() => changeView(2)}
+                    name="forgot your password"
                   >
                     Forgot Password?
                   </button>
@@ -250,6 +251,7 @@ class Signin extends Component {
                 id="register-button"
                 type="button"
                 onClick={() => changeView(3)}
+                name="register a new account"
               >
                 You are not yet registered? REGISTER HERE!
               </button>

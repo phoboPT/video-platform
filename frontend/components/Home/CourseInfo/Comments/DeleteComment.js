@@ -101,6 +101,7 @@ class DeleteComment extends Component {
           <button
             type="button"
             onClick={() => this.deleteComment(deleteRateCourse)}
+            name="delete the comment"
           >
             {children}
           </button>

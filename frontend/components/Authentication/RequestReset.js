@@ -83,7 +83,12 @@ class RequestReset extends Component {
         {(reset, { error, loading, called }) => (
           <>
             <ButtonStyle>
-              <button id="back" onClick={() => changeView(1)} type="button">
+              <button
+                id="back"
+                onClick={() => changeView(1)}
+                type="button"
+                name="go back to the last page"
+              >
                 ⬅ Go Back
               </button>
             </ButtonStyle>
@@ -115,7 +120,11 @@ class RequestReset extends Component {
                     value={email}
                     onChange={this.saveToState}
                   />
-                  <button id="reset" type="submit">
+                  <button
+                    id="reset"
+                    type="submit"
+                    name="submit the form to request a password change"
+                  >
                     Request Reset
                   </button>
                 </fieldset>

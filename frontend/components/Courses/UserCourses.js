@@ -52,6 +52,9 @@ const COURSES_FILTER_QUERY = gql`
 `;
 
 const Bar = styled.div`
+  .active {
+    border-bottom: 3px solid red;
+  }
   text-align: center;
   padding: 8px 0px;
   background: #333350;
@@ -65,16 +68,59 @@ const Bar = styled.div`
     padding: 0.5rem 1.2rem;
     text-align: center;
     cursor: pointer;
-    &:hover {
+    /* &:hover {
       border-bottom: 3px solid red;
-    }
+    } */
 
-    &:active {
-      border-bottom: 3px solid red;
+    &:focus {
+      outline: none;
     }
   }
 `;
 const Container = styled.div`
+  @keyframes yourAnimation {
+    0% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .animation {
+    animation: yourAnimation 8s forwards 0s linear;
+  }
+
+  .success {
+    display: flex;
+    .icon {
+      border-radius: 0 0 0 8px;
+      background-color: rgba(77, 187, 79, 0.66);
+      order: 1;
+      flex: 0.4;
+      border: 1px solid rgba(77, 187, 79, 0.66);
+      text-align: center;
+
+      p {
+        margin: none;
+      }
+    }
+    .message {
+      border-radius: 0 0 8px 0;
+      border: 1px solid rgba(77, 187, 79, 0.66);
+      order: 2;
+      flex: 10;
+      h3 {
+        padding: 0 3rem;
+      }
+    }
+  }
   .reset {
     color: #515151;
     font-size: 12px;
@@ -113,6 +159,7 @@ class UserCourses extends Component {
     category: 'a',
     isDisabled: true,
     view: 1,
+    showMessage: this.props.query.afterBuyed === 'true',
   };
 
   changeView = e => {
@@ -136,8 +183,18 @@ class UserCourses extends Component {
     this.setState({ author: 'a', category: 'a', isDisabled: true });
   };
 
+  async componentDidMount() {
+    const { showMessage } = this.state;
+    if (showMessage) {
+      setTimeout(async () => {
+        await this.setState({ showMessage: !showMessage });
+      }, 8000);
+    }
+  }
+
   render() {
-    const { category, author, view, isDisabled } = this.state;
+    const { category, author, view, isDisabled, showMessage } = this.state;
+
     return (
       <Query query={COURSES_FILTER_QUERY} variables={{ category, author }}>
         {({ data, loading }) => {
@@ -149,10 +206,22 @@ class UserCourses extends Component {
               <>
                 <Bar>
                   <div className="info-bar">
-                    <button type="button" id={1} onClick={this.changeView}>
+                    <button
+                      type="button"
+                      id={1}
+                      onClick={this.changeView}
+                      className={view === 1 ? 'active' : ''}
+                      name="my courses view"
+                    >
                       My Courses
                     </button>
-                    <button type="button" id={2} onClick={this.changeView}>
+                    <button
+                      type="button"
+                      id={2}
+                      onClick={this.changeView}
+                      className={view === 2 ? 'active' : ''}
+                      name="wishlist view"
+                    >
                       Whish List
                     </button>
                   </div>
@@ -161,32 +230,52 @@ class UserCourses extends Component {
                   (view === 1 && <p>No Courses Found </p>)}
                 {data.coursesFilter.length > 0 &&
                   (view === 1 && (
-                    <Container>
-                      <p className="filter">Filtrar Por</p>
-                      <div id="flex">
-                        <FilterCategory
-                          changeCategory={this.changeCategory}
-                          state="a"
-                        />
-                        <FilterAuthor
-                          changeAuthor={this.changeAuthor}
-                          state="a"
-                        />
-                        <button
-                          type="button"
-                          disabled={isDisabled}
-                          className="reset"
-                          onClick={this.reset}
-                        >
-                          Reset
-                        </button>
-                      </div>
-                      <ItemList>
-                        {courses.map(course => (
-                          <CourseItem course={course} key={course.course.id} />
-                        ))}
-                      </ItemList>
-                    </Container>
+                    <>
+                      <Container>
+                        {showMessage && (
+                          <div className="success animation">
+                            <div className="icon">
+                              <p> ✅</p>
+                            </div>
+                            <div className="message">
+                              <h3>
+                                Congratulations for buying a course. Have a nice
+                                learning
+                              </h3>
+                            </div>
+                          </div>
+                        )}
+                        <p className="filter">Filtrar Por</p>
+                        <div id="flex">
+                          <FilterCategory
+                            changeCategory={this.changeCategory}
+                            state="a"
+                          />
+                          <FilterAuthor
+                            changeAuthor={this.changeAuthor}
+                            state="a"
+                          />
+                          <button
+                            type="button"
+                            disabled={isDisabled}
+                            className="reset"
+                            onClick={this.reset}
+                            name="reset the filters"
+                          >
+                            Reset
+                          </button>
+                        </div>
+
+                        <ItemList>
+                          {courses.map(course => (
+                            <CourseItem
+                              course={course}
+                              key={course.course.id}
+                            />
+                          ))}
+                        </ItemList>
+                      </Container>
+                    </>
                   ))}
                 {view === 2 && (
                   <>

@@ -55,8 +55,6 @@ class Media extends Component {
     }
   };
 
-  updateFree = () => {};
-
   render() {
     const { sections, updateState, courseId, undoSections } = this.props;
     return (
@@ -65,7 +63,6 @@ class Media extends Component {
           In this area you can add content to your course and customize it to
           your liking
         </p>
-
         <br />
 
         <Index

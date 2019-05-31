@@ -46,7 +46,7 @@ class AddButton extends Component {
             >
               <input
                 type="image"
-                src="../../../static/right.png"
+                src="../../../static/right.webp"
                 alt="Submit"
                 width="48"
                 height="48"

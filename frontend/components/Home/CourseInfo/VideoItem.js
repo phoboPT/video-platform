@@ -67,7 +67,7 @@ export class Video extends Component {
             }}
           >
             <a>
-              <img src="../static/play-button.png" />
+              <img src="../static/play-button.webp" />
             </a>
           </Link>
         </div>
@@ -83,7 +83,7 @@ export class Video extends Component {
           {videos.video.file && (
             <Link href={videos.video.file}>
               <a>
-                <img className="file" src="../../../static/fileIcon.png" />
+                <img className="file" src="../../../static/fileIcon.webp" />
               </a>
             </Link>
           )}

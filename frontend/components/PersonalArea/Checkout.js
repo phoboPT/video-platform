@@ -33,7 +33,7 @@ export class Checkout extends Component {
       },
     }).catch(err => {
       swal({
-        title: 'Filename not Supported',
+        title: 'Error',
         content: (
           <Alert>
             <h3>Something went wrong</h3>
@@ -49,7 +49,7 @@ export class Checkout extends Component {
     });
 
     Router.push({
-      pathname: '/courses',
+      pathname: '/courses?afterBuyed=true',
     });
   };
 
@@ -57,31 +57,27 @@ export class Checkout extends Component {
     const { children } = this.props;
     return (
       <User>
-        {({ data: { me } }) => {
-          if (me.cart.length < 1) return null;
-
-          return (
-            <Mutation
-              mutation={CREATE_ORDER_MUTATION}
-              refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-            >
-              {createOrder => (
-                <StripeCheckout
-                  amount={calcTotalPrice(me.cart) * 100}
-                  currency="EUR"
-                  description={`Order of ${me.cart.length} items!`}
-                  email={me.email}
-                  image={me.cart[0].course && me.cart[0].course.thumbnail}
-                  name="Picus"
-                  stripeKey="pk_test_puZklfwe9Fq1Cx4b25xqqJsU"
-                  token={res => this.onToken(res, createOrder)}
-                >
-                  {children}
-                </StripeCheckout>
-              )}
-            </Mutation>
-          );
-        }}
+        {({ data: { me } }) => (
+          <Mutation
+            mutation={CREATE_ORDER_MUTATION}
+            refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+          >
+            {createOrder => (
+              <StripeCheckout
+                amount={calcTotalPrice(me.cart) * 100}
+                currency="EUR"
+                description={`Order of ${me.cart.length} items!`}
+                email={me.email}
+                image={me.cart[0].course && me.cart[0].course.thumbnail}
+                name="Picus"
+                stripeKey="pk_test_puZklfwe9Fq1Cx4b25xqqJsU"
+                token={res => this.onToken(res, createOrder)}
+              >
+                {children}
+              </StripeCheckout>
+            )}
+          </Mutation>
+        )}
       </User>
     );
   }

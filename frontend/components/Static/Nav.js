@@ -27,7 +27,7 @@ class Nav extends Component {
 
           return (
             <>
-              <NavStyle>
+              <NavStyle role="navigation">
                 <Link href="/home">
                   <a>Home</a>
                 </Link>

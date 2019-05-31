@@ -59,7 +59,7 @@ const Style = styled.div`
         #span-email {
           margin-top: 5px;
           order: 1;
-          background-image: url('../../static/email-icon.png');
+          background-image: url('../../static/email-icon.webp');
           width: 30px;
           height: 30px;
           background-repeat: no-repeat;
@@ -81,7 +81,7 @@ const Style = styled.div`
         #span-name {
           margin-top: 5px;
           order: 1;
-          background-image: url('../../static/icon-user.png');
+          background-image: url('../../static/icon-user.webp');
           width: 30px;
           height: 30px;
           background-repeat: no-repeat;
@@ -152,7 +152,7 @@ class Signup extends Component {
     email: '',
     name: '',
     password: '',
-    thumbnail: '../../static/userDefault.jpg',
+    thumbnail: '../../static/userDefault.webp',
   };
 
   saveToState = e => {
@@ -187,7 +187,12 @@ class Signup extends Component {
         {(signup, { error, loading }) => (
           <>
             <ButtonStyle>
-              <button id="back" onClick={() => changeView(1)} type="button">
+              <button
+                id="back"
+                onClick={() => changeView(1)}
+                type="button"
+                name="go back"
+              >
                 ⬅ Go Back
               </button>
             </ButtonStyle>
@@ -199,7 +204,7 @@ class Signup extends Component {
                 }}
               >
                 <fieldset id="fieldset" aria-busy={loading} disabled={loading}>
-                  <img id="img" alt="user" src="../../static/register.png" />
+                  <img id="img" alt="user" src="../../static/register.webp" />
                   <h2 id="h2">Sign Up for An Account</h2>
                   <Error error={error} />
                   <Error error={this.state.error} />
@@ -247,7 +252,7 @@ class Signup extends Component {
                       />
                     </div>
                   </div>
-                  <button id="register" type="submit">
+                  <button id="register" type="submit" name="submit the form">
                     Register
                   </button>
                 </fieldset>

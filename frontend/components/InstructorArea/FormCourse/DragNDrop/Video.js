@@ -262,7 +262,7 @@ class Video extends Component {
                   id="1"
                   onClick={this.changeUpload}
                 >
-                  <img src="../../static/upload.png" alt="Upload" />
+                  <img src="../../static/upload.webp" alt="Upload" />
                 </button>
 
                 <button
@@ -281,12 +281,12 @@ class Video extends Component {
                 <div className="upload">
                   <div className="first">
                     <button type="button" id="2" onClick={this.changeUpload}>
-                      <img src="../../static/videoUpload.png" alt="Video" />
+                      <img src="../../static/videoUpload.webp" alt="Video" />
                     </button>
                   </div>
                   <div className="second">
                     <button type="button" id="3" onClick={this.changeUpload}>
-                      <img src="../../static/fileIcon.png" alt="File" />
+                      <img src="../../static/fileIcon.webp" alt="File" />
                     </button>
                   </div>
                 </div>

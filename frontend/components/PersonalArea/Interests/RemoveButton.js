@@ -48,7 +48,7 @@ class RemoveButton extends Component {
                 <input
                   alt="Wrong"
                   type="image"
-                  src="../../../static/wrong.png"
+                  src="../../../static/wrong.webp"
                   width="48"
                   height="48"
                 />

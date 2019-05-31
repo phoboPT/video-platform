@@ -105,7 +105,7 @@ class InstrutorArea extends Component {
                           }}
                         >
                           <img
-                            src="../../../static/home.png"
+                            src="../../../static/home.webp"
                             alt="Add"
                             width="48"
                             height="48"
@@ -119,7 +119,7 @@ class InstrutorArea extends Component {
                           }}
                         >
                           <img
-                            src="../../../static/addButton.png"
+                            src="../../../static/addButton.webp"
                             alt="Add"
                             width="48"
                             height="48"
@@ -133,7 +133,7 @@ class InstrutorArea extends Component {
                           }}
                         >
                           <img
-                            src="../../../static/graph.png"
+                            src="../../../static/graph.webp"
                             alt="Stats"
                             width="48"
                             height="48"

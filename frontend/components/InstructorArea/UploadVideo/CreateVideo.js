@@ -94,6 +94,11 @@ class CreateVideo extends Component {
     this.setState({ [name]: val });
   };
 
+  teste = e => {
+    const { files } = e.target;
+    console.log(files);
+  };
+
   uploadVideo = async (e, createVideoMutation) => {
     this.setState({
       isUploading: 1,
@@ -207,14 +212,6 @@ class CreateVideo extends Component {
     }
   };
 
-  saveCategory = e => {
-    this.setState({ category: e.target.value });
-  };
-
-  saveCourse = e => {
-    this.setState({ course: e.target.value });
-  };
-
   changeUpload = () => {
     this.setState({ isUploading: 1 });
   };
@@ -288,7 +285,7 @@ class CreateVideo extends Component {
                         data.video.id === video.id &&
                         (isUploading === 0 && (
                           <>
-                            {/* <img src="../../static/done.png" alt="done" /> */}
+                            {/* <img src="../../static/done.webp" alt="done" /> */}
                             <button type="button" onClick={this.changeUpload}>
                               Change Video
                             </button>

@@ -61,7 +61,7 @@ class PurchaseItem extends Component {
     if (view === 1) {
       return (
         <Container>
-          <img alt="cart" src="../../../static/cart.png" />
+          <img alt="cart" src="../../../static/cart.webp" />
           <p id="count"> {order.items.length} purchased courses</p>
           <p id="data"> {formatDate(order.createdAt)} </p>
           <p id="total"> {formatMoney(order.total / 100)}</p>

@@ -131,7 +131,7 @@ class CourseItemInstructor extends Component {
                     >
                       <img
                         alt={course.title}
-                        src="../../../static/previewIcon.png"
+                        src="../../../static/previewIcon.webp"
                       />
                     </Link>
                   </div>
@@ -144,7 +144,7 @@ class CourseItemInstructor extends Component {
                     >
                       <img
                         alt={course.title}
-                        src="../../../static/editIcon.png"
+                        src="../../../static/editIcon.webp"
                       />
                     </Link>
                   </div>
@@ -152,7 +152,7 @@ class CourseItemInstructor extends Component {
                     <DeleteCourse id={course.id}>
                       <img
                         alt={course.title}
-                        src="../../../static/deleteIcon.png"
+                        src="../../../static/deleteIcon.webp"
                       />
                     </DeleteCourse>
                   </div>

@@ -37,35 +37,31 @@ const Cart = () => (
       const { me } = user.data;
       if (!me) return null;
       return (
-        <Query query={LOCAL_STATE_QUERY}>
-          {({ data }) => (
-            <CartStyles open={localState.data.cartOpen}>
-              <header>
-                <CloseButton onClick={toggleCart} title="close">
-                  &times;
-                </CloseButton>
-                <Supreme>{me.name}'s Cart</Supreme>
-                <p>
-                  You Have {me.cart.length} Item
-                  {me.cart.length === 1 ? '' : 's'} in your cart.
-                </p>
-              </header>
-              <ul>
-                {me.cart.map(cartItem => (
-                  <CartItem cartItem={cartItem} key={cartItem.id} />
-                ))}
-              </ul>
-              <footer>
-                <p>{formatMoney(calcTotalPrice(me.cart))} </p>
-                {me.cart.length && (
-                  <Link href="/chekout">
-                    <SickButton onClick={toggleCart}>Checkout</SickButton>
-                  </Link>
-                )}
-              </footer>
-            </CartStyles>
-          )}
-        </Query>
+        <CartStyles open={localState.data.cartOpen}>
+          <header>
+            <CloseButton onClick={toggleCart} title="close">
+              &times;
+            </CloseButton>
+            <Supreme>{me.name}'s Cart</Supreme>
+            <p>
+              You Have {me.cart.length} Item
+              {me.cart.length === 1 ? '' : 's'} in your cart.
+            </p>
+          </header>
+          <ul>
+            {me.cart.map(cartItem => (
+              <CartItem cartItem={cartItem} key={cartItem.id} />
+            ))}
+          </ul>
+          <footer>
+            <p>{formatMoney(calcTotalPrice(me.cart))} </p>
+            {me.cart.length && (
+              <Link href="/checkout">
+                <SickButton onClick={toggleCart}>Checkout</SickButton>
+              </Link>
+            )}
+          </footer>
+        </CartStyles>
       );
     }}
   </Composed>

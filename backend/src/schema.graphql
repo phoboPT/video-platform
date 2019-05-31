@@ -138,6 +138,12 @@ type Mutation {
   addToWish(id: ID!): Wishlist!
   removeFromWish(id: ID!): Wishlist!
   buyCourseFree(id: ID!): UserCourse
+  paypalCheckout: Order
+  executePaypal(
+    paymentId: String
+    token: String
+    payerId: String
+  ): SuccessMessage
 }
 
 type Query {

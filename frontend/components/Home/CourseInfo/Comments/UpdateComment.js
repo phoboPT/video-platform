@@ -166,7 +166,9 @@ class UpdateComment extends Component {
                             value={this.comment}
                           />
                         </label>
-                        <button type="submit">Save</button>
+                        <button type="submit" name="">
+                          Save
+                        </button>
                         <button type="button" onClick={changeState}>
                           Cancelar
                         </button>

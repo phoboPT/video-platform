@@ -1,9 +1,14 @@
+import PropTypes from 'prop-types';
 import Courses from '../components/Courses/Courses';
 
-const CoursesPage = () => (
+const CoursesPage = ({ query }) => (
   <div>
-    <Courses />
+    <Courses query={query} />
   </div>
 );
+
+CoursesPage.propTypes = {
+  query: PropTypes.object.isRequired,
+};
 
 export default CoursesPage;

@@ -59,7 +59,7 @@ const Pagination = props => (
                 <img
                   alt="arrow"
                   id="arrow"
-                  src="../../../static/arrowleft.png"
+                  src="../../../static/arrowleft.webp"
                 />
               </button>
             )}
@@ -75,7 +75,7 @@ const Pagination = props => (
                 <img
                   alt="arrow"
                   id="arrow"
-                  src="../../../static/arrowright.png"
+                  src="../../../static/arrowright.webp"
                 />
               </button>
             )}
