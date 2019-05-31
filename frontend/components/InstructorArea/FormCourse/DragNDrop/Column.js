@@ -10,26 +10,44 @@ const Container = styled.div`
   border-radius: 2px;
   background-color: ${props => (props.isDragging ? '#c9d2d6' : '#e3eced')};
   border: 1.5px solid #cbd9db;
+  button:focus {
+    outline: none;
+  }
+  .add-Video {
+    background: none;
+    border: none;
+    cursor: pointer;
 
+    img {
+      width: 90px;
+      height: 55px;
+    }
+  }
   .head {
     display: flex;
     .first {
       order: 1;
       flex: 2;
       margin: auto;
+      text-align: left;
       input {
       }
     }
     .second {
       margin: 1rem 2rem 1rem 0;
       order: 2;
-      flex: 1;
+      display: flex;
+
       .remove {
+        img {
+          width: 5rem;
+          height: 5rem;
+        }
+        background: none;
+        cursor: pointer;
         float: right;
-        width: 10rem;
-        height: 3.5rem;
-        background: red;
-        color: white;
+        width: 7rem;
+        height: 5rem;
         border: 0;
         font-weight: 600;
         margin: auto;
@@ -163,37 +181,42 @@ class Column extends Component {
                     onClick={this.handleRemove}
                     id={section.id}
                   >
-                    ➖ Remove
+                    <img alt="remove" src="../../../../static/deleteIcon.png" />
                   </button>
                 </div>
               </div>
               <Droppable droppableId={section.id} type="video">
                 {(provided, snapshot) => (
-                  <VideoList
-                    innerRef={provided.innerRef}
-                    {...provided.droppableProps}
-                    isDraggingOver={snapshot.isDraggingOver}
-                  >
+                  <>
+                    <VideoList
+                      innerRef={provided.innerRef}
+                      {...provided.droppableProps}
+                      isDraggingOver={snapshot.isDraggingOver}
+                    >
+                      <InnerList
+                        removeVideo={removeVideo}
+                        removeSection={removeSection}
+                        videos={videos}
+                        handleVideo={handleVideo}
+                        courseId={courseId}
+                        updateSections={updateSections}
+                        updateFiles={updateFiles}
+                        section={section}
+                        title={title}
+                      />
+                      {provided.placeholder}
+                    </VideoList>
                     <button
                       type="button"
-                      className="add-section"
+                      className="add-Video"
                       onClick={() => addVideo(section)}
                     >
-                      ➕ Add Video
+                      <img
+                        alt="add-Video"
+                        src="../../../../static/addVideo.svg"
+                      />
                     </button>
-                    <InnerList
-                      removeVideo={removeVideo}
-                      removeSection={removeSection}
-                      videos={videos}
-                      handleVideo={handleVideo}
-                      courseId={courseId}
-                      updateSections={updateSections}
-                      updateFiles={updateFiles}
-                      section={section}
-                      title={title}
-                    />
-                    {provided.placeholder}
-                  </VideoList>
+                  </>
                 )}
               </Droppable>
             </Container>

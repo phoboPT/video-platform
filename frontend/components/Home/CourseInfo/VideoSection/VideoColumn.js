@@ -49,16 +49,16 @@ class InnerList extends React.PureComponent {
   openSwal = url => {
     const { pause } = this.state;
     const { title } = this.props.data.course;
+
     swal({
       text: `Preview of the course ${title}`,
       buttons: {
         cancel: 'OK',
       },
-      content: <VideoPlayer url={url} pause={pause} />,
+      content: <VideoPlayer url={url} />,
     }).then(willDelete => {
       if (!willDelete) {
-        swal('');
-        // await this.setState({ pause: true });
+        this.setState({ pause: true });
       }
     });
   };

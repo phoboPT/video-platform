@@ -1,0 +1,21 @@
+<svg width="380" height="230" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="382" height="232" id="canvas_background" fill="none"/>
+  <g id="canvasGrid" display="none">
+   <rect id="svg_2" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <line fill="none" stroke="#000" stroke-width="5" x1="17.5" y1="26.421875" x2="18.5" y2="213.421875" id="svg_1" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-dasharray="5,5"/>
+  <line fill="none" stroke="#000" stroke-width="5" stroke-opacity="null" fill-opacity="null" x1="16.5" y1="26.421875" x2="284.5" y2="28.421875" id="svg_19" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-dasharray="5,5"/>
+  <line fill="none" stroke-width="5" stroke-dasharray="5,5" stroke-opacity="null" fill-opacity="null" x1="17.5" y1="213.421875" x2="292.49999" y2="213.421875" id="svg_20" stroke-linejoin="undefined" stroke-linecap="undefined" stroke="#000"/>
+  <line fill="none" stroke="#000" stroke-width="5" stroke-opacity="null" fill-opacity="null" x1="282.5" y1="27.421875" x2="375.5" y2="123.421875" id="svg_21" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-dasharray="5,5"/>
+  <line fill="none" stroke-width="5" stroke-opacity="null" fill-opacity="null" x1="289.5" y1="214.421875" x2="374.499998" y2="122.421879" id="svg_22" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-dasharray="5,5" stroke="#000"/>
+  <line fill="none" stroke="#000" stroke-width="5" stroke-opacity="null" fill-opacity="null" x1="169.5" y1="75.421875" x2="170.5" y2="173.421875" id="svg_25" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+  <line fill="none" stroke="#000" stroke-width="5" stroke-opacity="null" fill-opacity="null" x1="129.5" y1="124.421875" x2="210.5" y2="123.421875" id="svg_27" stroke-linejoin="undefined" stroke-linecap="undefined"/>
+ </g>
+</svg>

@@ -9,8 +9,8 @@ const Container = styled.div`
   padding: 8px;
   margin-bottom: 8px;
   border-radius: 2px;
-  border: 2.5px solid #d1d1d1;
-  background-color: ${props => (props.isDragging ? 'lightgreen' : ' #fcf9f9')};
+  border: 1.5px solid #d1d1d1;
+  background-color: ${props => (props.isDragging ? '#f7f7f7' : ' #ffffff')};
   .video {
     display: flex;
     order: 1;
@@ -20,11 +20,13 @@ const Container = styled.div`
       flex: 5;
       display: flex;
       #text-box {
-        flex: 1;
+        width: 40%;
         order: 1;
+        input {
+          width: 80%;
+        }
       }
       #check-box {
-        flex: 1;
         order: 2;
       }
 
@@ -38,25 +40,28 @@ const Container = styled.div`
       padding: auto;
       margin: auto;
       cursor: pointer;
+      display: flex;
       &:focus {
         outline: none;
       }
+
       .remove {
+        margin-right: 1rem;
+        top: 0;
+        order: 2;
+        cursor: pointer;
         text-align: center;
-        width: 10rem;
-        height: 3.5rem;
-        background: red;
-        color: white;
+        background: none;
         border: 0;
-        font-weight: 600;
-        margin: auto;
-        padding: none !important;
+      }
+      .remove:focus {
+        outline: none;
       }
       .new-file {
+        flex: 1;
+        order: 1;
         background: none;
-
         padding: 0 3rem 0 0;
-        float: right;
         border: none;
       }
       img {
@@ -64,6 +69,50 @@ const Container = styled.div`
         height: 36px;
         width: 36px;
       }
+    }
+    .tooltip {
+      list-style: none;
+      position: relative;
+    }
+    .tooltip:before,
+    .tooltip:after {
+      display: block;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+    .tooltip:after {
+      border-right: 6px solid transparent;
+      border-bottom: 14px solid rgba(0, 0, 0, 0.75);
+      border-left: 6px solid transparent;
+      content: '';
+      height: 0;
+      top: 20px;
+      left: 20px;
+      width: 0;
+    }
+    .tooltip:before {
+      background: rgba(0, 0, 0, 0.75);
+      border-radius: 2px;
+      color: #fff;
+      content: attr(data-title);
+      font-size: 14px;
+      padding: 6px 10px;
+      top: 26px;
+      white-space: nowrap;
+    }
+
+    /* the animations */
+    /* fade */
+    .tooltip.fade:after,
+    .tooltip.fade:before {
+      transform: translate3d(0, -10px, 0);
+      transition: all 0.15s ease-in-out;
+    }
+    .tooltip.fade:hover:after,
+    .tooltip.fade:hover:before {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
     }
   }
   .upload {
@@ -128,7 +177,6 @@ class Video extends Component {
       content,
       freeToWatch,
     };
-    console.log('data', data);
     handleVideo(data, video.id);
   };
 
@@ -190,16 +238,21 @@ class Video extends Component {
                   />
                 </div>
                 <div id="check-box">
-                  Free
-                  <input
-                    id="freeToWatch"
-                    name="freeToWatch"
-                    onChange={this.changeState}
-                    placeholder="free"
-                    required
-                    type="checkbox"
-                    checked={video.freeToWatch}
-                  />
+                  <li
+                    className="tooltip fade"
+                    data-title="Select If the Video is Free to Watch"
+                  >
+                    Free
+                    <input
+                      id="freeToWatch"
+                      name="freeToWatch"
+                      onChange={this.changeState}
+                      placeholder="free"
+                      required
+                      type="checkbox"
+                      checked={video.freeToWatch}
+                    />
+                  </li>
                 </div>
               </div>
               <div className="second">
@@ -218,7 +271,7 @@ class Video extends Component {
                   className="remove"
                   onClick={this.handleRemove}
                 >
-                  ➖ Remove
+                  ➖
                 </button>
               </div>
             </div>

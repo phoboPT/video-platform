@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import Column from './Column';
 
 const Container = styled.div`
-  width: 100%;
+  width: 80%;
+  margin: 2rem auto;
   display: grid;
   #top-sections {
     display: flex;
@@ -27,12 +28,21 @@ const Container = styled.div`
   }
   .add-section {
     font-size: 1.5rem;
-    margin: auto 2rem;
+    margin: 2rem;
     background: #4dcb5d;
     color: white;
     border: 0;
     font-weight: 600;
-    padding: 0.5rem 1.2rem;
+  }
+
+  .undo {
+    height: 30px;
+    font-size: 1.5rem;
+    margin: 2rem;
+    background: #b2b2b2;
+    color: white;
+    border: 0;
+    font-weight: 600;
   }
   .head {
     order: 1;
@@ -392,15 +402,15 @@ class Index extends Component {
                   className="add-section"
                   onClick={this.addSection}
                 >
-                  ➕ Add Section
+                  ➕ New Section
                 </button>
                 <button
                   id="2"
                   type="button"
-                  className="add-section"
+                  className="undo"
                   onClick={undoSections}
                 >
-                  🔙 Undo
+                  ↩️ Undo
                 </button>
               </div>
 
