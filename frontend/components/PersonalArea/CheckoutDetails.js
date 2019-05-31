@@ -86,7 +86,7 @@ class CheckoutDetails extends Component {
                     {me.cart.length > 0 && (
                       <>
                         <Checkout>
-                          <Button>Stripe</Button>
+                          <Button name="buy with stripe">Stripe</Button>
                         </Checkout>
                         <br />
                         <br />

@@ -7,6 +7,7 @@ import BuyFreeButton from '../Home/BuyFreeButton';
 import AddToCart from '../Home/Cart/AddToCart';
 import Rating from '../Home/CourseInfo/Comments/Rating';
 import ItemStyles from '../styles/ItemStyles';
+import DeleteItemWishList from './DeleteItemWishList';
 
 const InfoStyle = styled.p`
   text-align: left;
@@ -16,7 +17,7 @@ const InfoStyle = styled.p`
 class WishItem extends Component {
   static propTypes = {
     course: PropTypes.object.isRequired,
-    skip: PropTypes.number.isRequired,
+    skip: PropTypes.number,
   };
 
   state = {
@@ -26,7 +27,7 @@ class WishItem extends Component {
   };
 
   render() {
-    const { course, skip } = this.props;
+    const { course, skip, refetch } = this.props;
     return (
       <>
         <ItemStyles>
@@ -65,6 +66,7 @@ class WishItem extends Component {
             ) : (
               <AddToCart id={course.id} />
             )}
+            <DeleteItemWishList id={course.id} refetch={refetch} skip={skip} />
             <p />
           </div>
         </ItemStyles>

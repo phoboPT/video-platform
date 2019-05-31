@@ -452,10 +452,9 @@ const Query = {
   // Listagem cursos
   async coursesList(parent, args, ctx, info) {
     console.time('coursesList');
-
+    console.log('coursesList Init');
     const { userId } = ctx.request;
     // Ver se esta logado
-
     const { orderBy } = args;
     delete args.orderBy;
 
@@ -482,7 +481,7 @@ const Query = {
 
     // foreach de cada elemento e fazer a query e guardar num array
     if (user) {
-      await user.courses.map(user => coursesId.push(user.course.id));
+      await user.courses.map(course => coursesId.push(course.course.id));
     }
     // query o video atual com comparaçao de ids de user
     const res = await ctx.db.query.courses(
@@ -595,7 +594,6 @@ const Query = {
       info
     );
   },
-
   async wishlists(parent, args, ctx) {
     const { userId } = ctx.request;
     // Ver se esta logado
@@ -638,7 +636,7 @@ const Query = {
       throw new Error('You must be signed in!');
     }
 
-    const UserCourses = await ctx.db.query.userCourses(
+    const userCourses = await ctx.db.query.userCourses(
       {
         where: {
           AND: [
@@ -677,7 +675,7 @@ const Query = {
       },
       info
     );
-    if (UserCourses.length === 0) {
+    if (userCourses.length === 0) {
       return { message: false };
     }
     if (checked.length > 0) {

@@ -81,7 +81,9 @@ class Reset extends Component {
                   value={confirmPassword}
                 />
               </label>
-              <button type="submit">Confirm</button>
+              <button type="submit" name="submit the new password">
+                Confirm
+              </button>
             </fieldset>
           </Form>
         )}

@@ -44,21 +44,18 @@ class InnerList extends React.PureComponent {
     data: PropTypes.object.isRequired,
   };
 
-  state = { pause: false };
-
   openSwal = url => {
-    const { pause } = this.state;
     const { title } = this.props.data.course;
     swal({
       text: `Preview of the course ${title}`,
       buttons: {
         cancel: 'OK',
       },
-      content: <VideoPlayer url={url} pause={pause} />,
+      content: <VideoPlayer url={url} />,
     }).then(willDelete => {
       if (!willDelete) {
-        swal('');
-        // await this.setState({ pause: true });
+        const element = document.getElementsByClassName('video-react-video')[0];
+        element.pause();
       }
     });
   };
@@ -79,7 +76,7 @@ class InnerList extends React.PureComponent {
                 <p id="p">{video.video.title}</p>
                 <div id="img">
                   {video.video.file && (
-                    <img src="../../static/fileIcon.png" alt="file" />
+                    <img src="../../static/fileIcon.webp" alt="file" />
                   )}
                 </div>
                 <div id="watch">

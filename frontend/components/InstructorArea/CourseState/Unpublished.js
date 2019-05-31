@@ -16,7 +16,7 @@ class Unpublished extends Component {
         disabled={this.props.unpublished}
         onClick={() => this.props.changeUnpublished()}
       >
-        <img src="../../../static/forbidden.png" /> Unpublished
+        <img src="../../../static/forbidden.webp" /> Unpublished
       </Button>
     );
   }

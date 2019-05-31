@@ -92,8 +92,8 @@ class Page extends Component {
         <StyledPage>
           <Meta />
           <Header />
-          <Inner>{children}</Inner>
-          {/* <Footer /> */}
+          <Inner role="main">{children}</Inner>
+          {/* <Footer role="contentinfo"/> */}
         </StyledPage>
       </ThemeProvider>
     );

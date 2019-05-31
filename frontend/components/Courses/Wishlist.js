@@ -35,7 +35,7 @@ class Wishlist extends Component {
   render() {
     return (
       <Query query={WISHLIST_QUERY}>
-        {({ data, error, loading }) => {
+        {({ data, error, loading, refetch }) => {
           if (loading) return <Loading />;
 
           if (error) return <Error error={error} />;
@@ -47,7 +47,11 @@ class Wishlist extends Component {
                 <h1>WishList</h1>
                 <CoursesList>
                   {data.wishlists.map(course => (
-                    <WishItem course={course.course} key={course.course.id} />
+                    <WishItem
+                      course={course.course}
+                      key={course.course.id}
+                      refetch={refetch}
+                    />
                   ))}
                 </CoursesList>
               </Container>

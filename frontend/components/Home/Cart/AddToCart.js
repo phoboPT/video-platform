@@ -22,7 +22,12 @@ class AddToCart extends Component {
         variables={{ id }}
       >
         {(addToCart, { loading }) => (
-          <button type="button" disabled={loading} onClick={addToCart}>
+          <button
+            type="button"
+            disabled={loading}
+            onClick={addToCart}
+            name="add the course to the cart"
+          >
             Add{loading && 'ing'} To Cart
           </button>
         )}

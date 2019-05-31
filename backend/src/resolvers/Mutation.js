@@ -1355,24 +1355,32 @@ const Mutations = {
       return res;
     });
   },
-  // async removeFromWish(parent, args, ctx, info) {
-  //   //Make sure they are signin
-  //   const [existingWhishItem] = await ctx.db.query.wishlists({
-  //     where: {
-  //       user: { id: userId },
-  //       course: { id: args.id },
-  //     },
-  //   });
-  //   if (existingWhishItem) {
-  //     console.log("remove");
-  //     return ctx.db.mutation.deleteWishlist(
-  //       {
-  //         where: { id: existingWhishItem.id },
-  //       },
-  //       info,
-  //     );
-  //   }
-  // },
+  async removeFromWish(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    if (!userId) {
+      throw new Error('You must be signed in soooon');
+    }
+    // Make sure they are signin
+    const [existingWhishItem] = await ctx.db.query.wishlists({
+      where: {
+        user: { id: userId },
+        course: { id: args.id },
+      },
+    });
+
+    console.log(existingWhishItem);
+
+    if (existingWhishItem) {
+      console.log('remove');
+      return ctx.db.mutation.deleteWishlist(
+        {
+          where: { id: existingWhishItem.id },
+        },
+        info
+      );
+    }
+  },
 };
 
 module.exports = Mutations;

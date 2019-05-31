@@ -77,8 +77,8 @@ class BuyFreeButton extends Component {
           <button
             type="button"
             disabled={loading}
-            id="search-button"
             onClick={buyCourseFree}
+            name="add the free course to your account"
           >
             Add To Your Courses
           </button>
@@ -89,6 +89,6 @@ class BuyFreeButton extends Component {
 }
 BuyFreeButton.propTypes = {
   id: PropTypes.string.isRequired,
-  skip: PropTypes.number.isRequired,
+  skip: PropTypes.number,
 };
 export default BuyFreeButton;

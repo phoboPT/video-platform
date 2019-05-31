@@ -242,7 +242,7 @@ class ViewCourse extends Component {
                           {view === 3 && (
                             <>
                               {showForm === 'true' && me ? (
-                                <CommentForm data={course} />
+                                <CommentForm data={course} refetch={refetch} />
                               ) : (
                                 <></>
                               )}

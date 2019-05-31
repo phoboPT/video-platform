@@ -76,11 +76,15 @@ class CommentItem extends Component {
                     <ul>
                       <li>
                         <a>
-                          <img src="../static/threedots.png" alt="Options" />
+                          <img src="../static/threedots.webp" alt="Options" />
                         </a>
                         <ul className="dropdown">
                           <li className="item">
-                            <button type="button" onClick={this.changeEdit}>
+                            <button
+                              type="button"
+                              onClick={this.changeEdit}
+                              name="edit the comment"
+                            >
                               Edit
                             </button>
                           </li>

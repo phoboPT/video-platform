@@ -31,7 +31,12 @@ const Signout = ({ client }) => (
     mutation={SIGN_OUT_MUTATION}
   >
     {signout => (
-      <button type="button" onClick={() => logout(signout)} tag="a">
+      <button
+        type="button"
+        onClick={() => logout(signout)}
+        tag="a"
+        name="sign out button"
+      >
         Sign Out
       </button>
     )}

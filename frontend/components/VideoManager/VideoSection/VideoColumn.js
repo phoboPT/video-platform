@@ -120,7 +120,7 @@ class InnerList extends React.PureComponent {
                   {video.video.file && (
                     <Link href={video.video.file}>
                       <a>
-                        <img src="../../static/fileIcon.png" alt="file" />
+                        <img src="../../static/fileIcon.webp" alt="file" />
                       </a>
                     </Link>
                   )}

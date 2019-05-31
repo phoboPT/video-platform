@@ -66,6 +66,7 @@ export class Interests extends Component {
 
               <Interest view={1} />
               <button
+                name="add interest to your account"
                 type="button"
                 id="NextButton"
                 onClick={async e => {

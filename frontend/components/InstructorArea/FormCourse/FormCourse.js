@@ -194,7 +194,7 @@ class FormCourse extends Component {
     if (!once) {
       if (createCourse) {
         this.setState({
-          thumbnail: '../../../static/no-thumbnail.jpg',
+          thumbnail: '../../../static/no-thumbnail.webp',
           once: true,
         });
       }

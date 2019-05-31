@@ -211,6 +211,7 @@ class UserCourses extends Component {
                       id={1}
                       onClick={this.changeView}
                       className={view === 1 ? 'active' : ''}
+                      name="my courses view"
                     >
                       My Courses
                     </button>
@@ -219,6 +220,7 @@ class UserCourses extends Component {
                       id={2}
                       onClick={this.changeView}
                       className={view === 2 ? 'active' : ''}
+                      name="wishlist view"
                     >
                       Whish List
                     </button>
@@ -258,6 +260,7 @@ class UserCourses extends Component {
                             disabled={isDisabled}
                             className="reset"
                             onClick={this.reset}
+                            name="reset the filters"
                           >
                             Reset
                           </button>

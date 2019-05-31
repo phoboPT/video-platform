@@ -64,12 +64,12 @@ class Header extends Component {
   render() {
     const { link } = this.state;
     return (
-      <StyledHeader>
+      <StyledHeader role="banner">
         <div className="bar">
           <Logo>
             <Link href={link}>
               <a>
-                <img src="/static/logo.png" />
+                <img src="/static/logo.webp" />
               </a>
             </Link>
           </Logo>

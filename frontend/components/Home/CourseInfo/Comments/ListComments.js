@@ -102,7 +102,12 @@ class ListComments extends Component {
                 />
               ))}
               <Button>
-                <button type="button" id="myBtn" onClick={this.topFunction}>
+                <button
+                  type="button"
+                  id="myBtn"
+                  onClick={this.topFunction}
+                  name="go to the top of the page"
+                >
                   Go Top
                 </button>
               </Button>

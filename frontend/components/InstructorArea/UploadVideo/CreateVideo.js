@@ -285,7 +285,7 @@ class CreateVideo extends Component {
                         data.video.id === video.id &&
                         (isUploading === 0 && (
                           <>
-                            {/* <img src="../../static/done.png" alt="done" /> */}
+                            {/* <img src="../../static/done.webp" alt="done" /> */}
                             <button type="button" onClick={this.changeUpload}>
                               Change Video
                             </button>

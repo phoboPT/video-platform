@@ -159,7 +159,6 @@ class ShowVideo extends Component {
       watched,
       total,
       controller,
-      index,
     } = this.state;
     const { id } = this.props;
     return (
@@ -188,13 +187,16 @@ class ShowVideo extends Component {
                         courseId={id}
                         changeIndex={this.changeIndex}
                         key={key}
+                        className="videoPlayer"
                       />
                     </div>
                     <div className="info">
                       <p id="title">Course Content</p>
                       <div className="progress">
                         <Progress
-                          percent={parseInt(percent)}
+                          percent={
+                            isNaN(parseInt(percent)) ? 0 : parseInt(percent)
+                          }
                           width={50}
                           key={key}
                         />

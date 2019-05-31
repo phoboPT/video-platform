@@ -80,10 +80,12 @@ class CommentForm extends Component {
 
   saveData = async (mutation, e) => {
     const { rating } = this.state;
+    const { refetch } = this.props;
     if (rating) {
       const res = await mutation();
       if (res) {
-        this.setState({ comment: '' });
+        await this.setState({ comment: '' });
+        refetch();
       }
     } else {
       swal({
@@ -168,7 +170,11 @@ class CommentForm extends Component {
                     value={comment}
                   />
                   <div id="button-container">
-                    <button id="comment" type="submit">
+                    <button
+                      id="comment"
+                      type="submit"
+                      name="submit comment and rating"
+                    >
                       Comment
                     </button>
                   </div>
