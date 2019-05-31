@@ -181,7 +181,10 @@ class Column extends Component {
                     onClick={this.handleRemove}
                     id={section.id}
                   >
-                    <img alt="remove" src="../../../../static/deleteIcon.png" />
+                    <img
+                      alt="remove"
+                      src="../../../../static/deleteIcon.webp"
+                    />
                   </button>
                 </div>
               </div>
