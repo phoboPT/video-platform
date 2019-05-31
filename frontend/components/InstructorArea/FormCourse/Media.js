@@ -56,13 +56,29 @@ class Media extends Component {
   };
 
   render() {
-    const { sections, updateState, courseId, undoSections } = this.props;
+    const {
+      sections,
+      updateState,
+      courseId,
+      undoSections,
+      refetch,
+    } = this.props;
     return (
       <Container>
         <p id="message">
           In this area you can add content to your course and customize it to
           your liking
         </p>
+        <div className="button">
+          <SaveCourseButton
+            sections={sections}
+            id={courseId}
+            refetch={refetch}
+            data={this.state}
+          />
+
+          <button type="button"> Save</button>
+        </div>
         <br />
 
         <Index

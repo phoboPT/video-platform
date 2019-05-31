@@ -175,7 +175,7 @@ class FormCourse extends Component {
   };
 
   render() {
-    const { course, createCourse, id, changeToEdit } = this.props;
+    const { course, createCourse, id, changeToEdit, refetch } = this.props;
     const {
       alreadyExecuted,
       changeThumbnail,
@@ -187,6 +187,8 @@ class FormCourse extends Component {
 
     if (!createCourse) {
       if (!alreadyExecuted) {
+        console.log('course', course);
+
         this.courseState(course.state);
       }
     }
@@ -243,6 +245,7 @@ class FormCourse extends Component {
                     createCourse={createCourse}
                     data={this.state}
                     id={id}
+                    refetch={refetch}
                     changeToEdit={changeToEdit}
                   />
                   <label htmlFor="state">

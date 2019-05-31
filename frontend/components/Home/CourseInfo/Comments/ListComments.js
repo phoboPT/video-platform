@@ -24,6 +24,7 @@ const ALL_COMMENTS_QUERY = gql`
     }
   }
 `;
+
 const Title = styled.div`
   max-width: 1000px;
   margin: 30px auto 0 auto;

@@ -156,7 +156,8 @@
     "start": "next start",
     "test": "NODE_ENV=test jest --watch",
     "test-win": "SET NODE_ENV=test&& jest --watch",
-    "lint": "eslint . --fix "
+    "esLint": "eslint . --fix ",
+    "lint": "eslint --fix . && stylelint \"./client/**/*.js\""
   },
   "version": "1.0.0"
 }

@@ -75,6 +75,22 @@ const updateRate = async (ctx, courseId, newRate, oldRate) => {
   return true;
 };
 
+const removeUnusedVideos = async (courseId, ctx) => {
+  const getSection = await ctx.db.query.course(
+    {
+      where: { id: courseId },
+    },
+    `{section
+    videos{
+      id
+    }
+    }`
+  );
+
+  const section = JSON.parse(getSection.section);
+  console.log(section);
+};
+
 const Mutations = {
   async createVideo(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -513,6 +529,7 @@ const Mutations = {
     if (!userId) {
       throw new Error('You must be signed in soooon');
     }
+
     // Get the video ids to delete if there is any
     const videosToDelete = args.idsToDelete;
 
@@ -605,6 +622,7 @@ const Mutations = {
           id: args.id,
         },
       });
+      removeUnusedVideos(args.id, ctx);
     }
 
     // elimina o id dos updates

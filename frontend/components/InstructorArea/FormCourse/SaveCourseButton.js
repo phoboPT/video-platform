@@ -77,16 +77,23 @@ class SaveCourseButton extends Component {
 
   updateCourse = async (e, updateCourseMutation) => {
     e.preventDefault();
-    const { createCourse, changeToEdit, id } = this.props;
-    await this.setState({
-      idsToDelete: [...this.props.data.videosToDelete],
-    });
+    const { createCourse, changeToEdit, id, refetch } = this.props;
+    if (this.props.data.videosToDelete) {
+      await this.setState({
+        idsToDelete: [...this.props.data.videosToDelete],
+      });
+    } else {
+      await this.setState({ idsToDelete: [] });
+    }
     const res = await updateCourseMutation({
       variables: {
         id,
         ...this.state,
       },
     });
+    if (res) {
+      refetch();
+    }
 
     if (createCourse) {
       changeToEdit(res);
@@ -99,12 +106,6 @@ class SaveCourseButton extends Component {
       <Mutation
         mutation={CREATE_COURSE_MUTATION}
         refetchQueries={[
-          {
-            query: SINGLE_COURSE_QUERY,
-            variables: {
-              id,
-            },
-          },
           {
             query: CURRENT_COURSES_QUERY,
           },

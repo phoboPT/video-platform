@@ -219,8 +219,8 @@ class ChangeCourse extends Component {
     window.history.back();
   };
 
-  changeToEdit = res => {
-    this.setState({
+  changeToEdit = async res => {
+    await this.setState({
       createCourse: false,
       id: res.data.saveCourse.id,
     });
@@ -245,10 +245,10 @@ class ChangeCourse extends Component {
     const { changeIntructorView } = this.props;
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
-        {({ data, loading }) => {
+        {({ data, loading, refetch }) => {
           if (loading) return <Loading />;
           if (!createCourse) {
-            if (!data) return <p>No Courses Found for {id}</p>;
+            if (!data.course) return <p>No Courses Found for {id}</p>;
             if (!hasUpdated && data.course) {
               if (data.course.section) {
                 const newSection = JSON.parse(data.course.section);
@@ -312,6 +312,7 @@ class ChangeCourse extends Component {
                       id={id}
                       course={data.course}
                       section={sections}
+                      refetch={refetch}
                     />
                   ))}
                 {view === 2 && (
@@ -322,6 +323,7 @@ class ChangeCourse extends Component {
                     updateState={this.updateState}
                     courseId={id}
                     undoSections={this.applyInitialSection}
+                    refetch={refetch}
                   />
                 )}
                 {view === 3 && <Interest courseId={id} />}
