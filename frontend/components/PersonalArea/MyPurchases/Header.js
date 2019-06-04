@@ -54,10 +54,8 @@ class Header extends Component {
   //   const amount = data.ordersUser.reduce((tally, item) => tally + item.total, 0);
   render() {
     const { data } = this.props;
-    const amount = data.ordersUser.reduce(
-      (tally, item) => tally + item.total,
-      0
-    );
+    console.log('here', data);
+
     return (
       <>
         <Title> Purchases Historic </Title>
@@ -70,8 +68,10 @@ class Header extends Component {
         </Flex>
         {this.props.children}
         <FlexBottom>
-          <p id="items"> Total Orders {data.ordersUser.length} </p>
-          <p id="total"> Total Spent {formatMoney(amount / 100)} </p>
+          <p id="items"> Total: {data.ordersUserStats.countOrders} </p>
+          <p id="total">
+            Total Spent: {formatMoney(data.ordersUserStats.amountOrders / 100)}
+          </p>
         </FlexBottom>
       </>
     );

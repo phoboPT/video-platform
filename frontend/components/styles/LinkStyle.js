@@ -16,7 +16,6 @@ const LinkStyle = styled.div`
     border: none;
     padding: 0;
     font: inherit;
-    /*border is optional*/
     cursor: pointer;
   }
 

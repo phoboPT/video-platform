@@ -13,6 +13,7 @@ import {
   ALL_COURSES_QUERY,
   ALL_COURSES_RATING,
 } from '../Home/CoursesList/ListAllCourses';
+import { PAGINATION_QUERY } from '../Home/CoursesList/Pagination';
 import { COURSES_FILTER_QUERY } from '../Courses/UserCourses';
 import Error from '../Static/ErrorMessage';
 
@@ -78,7 +79,7 @@ const Style = styled.div`
         #span-password {
           margin-top: 5px;
           order: 1;
-          background: url('../../static/password-icon.gif');
+          background: url('../../static/password-icon.webp');
           width: 30px;
           height: 30px;
           background-repeat: no-repeat;
@@ -190,6 +191,9 @@ class Signin extends Component {
           },
           {
             query: ALL_COURSES_RATING,
+          },
+          {
+            query: PAGINATION_QUERY,
           },
         ]}
         variables={this.state}

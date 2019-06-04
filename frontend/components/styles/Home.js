@@ -33,6 +33,7 @@ const Animation = keyframes`
         }
 
 `;
+
 const animationReady = css`
   animation: ${Animation} 1s forwards 0s ease;
 `;

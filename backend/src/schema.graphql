@@ -41,6 +41,8 @@ type Stats {
   # Variaveis nao definidas em datamodel mas necessarias backend
   count: Int
   course: Course
+  countOrders: Int
+  amountOrders: Float
 }
 
 type Course {
@@ -182,7 +184,7 @@ type Query {
   course(where: CourseWhereUniqueInput, orderBy: CourseOrderByInput): Course
   rateCourse(where: RateCourseWhereUniqueInput!): RateCourse
   coursesFilter(category: ID, author: ID): [UserCourse]
-  ordersUser: [Order]!
+  ordersUser(skip: Int, first: Int): [Order]!
   # querys selecionar tudo com argumentos
   videosFromUser(
     where: VideoWhereInput
@@ -225,7 +227,6 @@ type Query {
   coursesInstructor(id: ID!): [Course]
   userCourses(where: UserCourseWhereInput): [UserCourse]
 
-  userCoursesConnection(orderBy: String, skip: Int, first: Int): [Course]
   # Information about actual user
   me: User
 
@@ -233,12 +234,12 @@ type Query {
   videosConnection(where: VideoWhereInput): VideoConnection!
   coursesConnection(data: String): CourseConnection!
   coursesUserConnection(data: String): CourseConnection!
-
   wishlists(where: WishlistWhereInput): [Wishlist]
-
+  userCoursesConnection(data: String): UserCourseConnection!
   #Stats Instrutor Page
   instrutorStats(id: ID!): StatsInstrutor
   #Stats
+  ordersUserStats: Stats
   coursesStats: [Stats]
   sellsByCourse(id: ID): [Stats]
   coursesStatsByDate(initialDate: String): [Stats]

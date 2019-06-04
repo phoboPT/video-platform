@@ -105,3 +105,4 @@ Pagination.propTypes = {
 };
 
 export default Pagination;
+export { PAGINATION_QUERY };

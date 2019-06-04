@@ -127,3 +127,4 @@ ListComments.propTypes = {
 
 export default ListComments;
 export { ALL_COMMENTS_QUERY };
+export { Button };
