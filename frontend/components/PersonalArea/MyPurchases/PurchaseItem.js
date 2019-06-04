@@ -61,6 +61,7 @@ class PurchaseItem extends Component {
       return (
         <Container>
           <img alt="cart" src="../../../static/cart.webp" />
+          <p> {order.id} </p>
           <p id="count"> {order.items.length} purchased courses</p>
           <p id="data"> {formatDate(order.createdAt)} </p>
           <p id="total"> {formatMoney(order.total / 100)}</p>

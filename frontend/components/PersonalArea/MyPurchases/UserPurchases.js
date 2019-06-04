@@ -81,8 +81,8 @@ class UserPurchases extends Component {
   scrollFunction = () => {
     try {
       if (
-        document.body.scrollTop > 300 ||
-        document.documentElement.scrollTop > 300
+        document.body.scrollTop > 200 ||
+        document.documentElement.scrollTop > 200
       ) {
         document.getElementById('myBtn').style.display = 'block';
       } else {
@@ -128,7 +128,6 @@ class UserPurchases extends Component {
               if (error) {
                 return <p> Error: {error.message} </p>;
               }
-
               return (
                 <>
                   {view === 1 && (

@@ -846,7 +846,7 @@ const Query = {
       countOrders: totalOrders.length,
       amountOrders,
     };
-    
+
     return res;
   },
   async coursesStats(parent, args, ctx, info) {
