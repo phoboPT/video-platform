@@ -195,56 +195,6 @@ const Mutations = {
     // para dar debug console.log(video);
     return videos;
   },
-  async deleteVideo(parent, args, ctx, info) {
-    if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
-    }
-    const where = {
-      id: args.id,
-    };
-    // 1.encontrar o video
-    await ctx.db.query.video(
-      {
-        where,
-      },
-      '{id}'
-    );
-    // 2.checkar se tem permissoes para o apagar
-    // const ownsVideo = video.user.id === ctx.request.userId;
-    // TODO falta verificar se é admin ou user (hasPermissions)
-    // if (!ownsVideo) {
-    //   throw new Error("You don't have permission to do that!");
-    // }
-    // 3.dar delete
-    return ctx.db.mutation.deleteVideo(
-      {
-        where,
-      },
-      info
-    );
-  },
-  updateVideo(parent, args, ctx, info) {
-    const { userId } = ctx.request;
-    if (!userId) {
-      throw new Error('You must be logged in to do that!');
-    }
-    // faz uma copia dos updates
-    const updates = {
-      ...args,
-    };
-    // elimina o id dos updates
-    delete updates.id;
-    // da run no update method
-    return ctx.db.mutation.updateVideo(
-      {
-        data: updates,
-        where: {
-          id: args.id,
-        },
-      },
-      info
-    );
-  },
   async updateVideoUser(parent, args, ctx, info) {
     const { userId } = ctx.request;
     if (!userId) {

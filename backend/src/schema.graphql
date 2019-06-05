@@ -76,21 +76,14 @@ type Mutation {
     videoId: ID
     duration: String
   ): Video!
-  updateVideo(
-    id: ID!
-    title: String
-    category: String
-    watched: Boolean
-  ): Video!
-  updateVideoUser(
-    id: ID!
 
-    watched: Boolean
-  ): Video!
-  deleteVideo(id: ID!): Video
+  updateVideoUser(id: ID!, watched: Boolean): Video!
+
+  # standby waitting for backoffice
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Video!
   deleteCategory(id: ID!): Category
+
   signup(
     email: String!
     password: String!
@@ -150,13 +143,6 @@ type Mutation {
 
 type Query {
   #searchbar
-  videosUserSearch(
-    where: VideoWhereInput
-    orderBy: VideoOrderByInput
-    skip: Int
-    first: Int
-  ): [Video]
-
   checkUserRated(courseId: ID): SuccessMessage
 
   coursesSearch(
@@ -171,15 +157,10 @@ type Query {
 
   # querys sellect all
   categories: [Category]!
-  users: [User]!
   interests: [Interest!]!
-  userInterests: [UserInterest]!
-  courseInterests(where: CourseInterestWhereInput): [CourseInterest]!
-  rateCourses: [RateCourse]
 
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
-  category(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput, orderBy: CourseOrderByInput): Course
   rateCourse(where: RateCourseWhereUniqueInput!): RateCourse
@@ -193,21 +174,12 @@ type Query {
     first: Int
   ): [Video]
 
-  videos(
-    where: VideoWhereInput
-    orderBy: VideoOrderByInput
-    skip: Int
-    first: Int
-  ): [Video]!
-
   courses(
     where: CourseWhereInput
     orderBy: CourseOrderByInput
     skip: Int
     first: Int
   ): [Course]
-
-  videosSearch(where: VideoWhereInput!): [Video]
 
   #LISTAS DA HOME PAGE
   coursesUserInterestList(
@@ -231,11 +203,9 @@ type Query {
   me: User
 
   #pagination
-  videosConnection(where: VideoWhereInput): VideoConnection!
   coursesConnection(data: String): CourseConnection!
   coursesUserConnection(data: String): CourseConnection!
   wishlists(where: WishlistWhereInput): [Wishlist]
-  userCoursesConnection(data: String): UserCourseConnection!
   #Stats Instrutor Page
   instrutorStats(id: ID!): StatsInstrutor
   #Stats

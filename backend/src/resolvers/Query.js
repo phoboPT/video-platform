@@ -19,24 +19,16 @@ function getDate() {
 
 const Query = {
   categories: forwardTo('db'),
-  category: forwardTo('db'),
   rateCourse: forwardTo('db'),
   course: forwardTo('db'),
   courses: forwardTo('db'),
-  courseInterests: forwardTo('db'),
   interests: forwardTo('db'),
   user: forwardTo('db'),
-  userInterests: forwardTo('db'),
-  users: forwardTo('db'),
   video: forwardTo('db'),
-  videos: forwardTo('db'),
-  rateCourses: forwardTo('db'),
   videoUsers: forwardTo('db'),
   videoItems: forwardTo('db'),
-  userCoursesConnection: forwardTo('db'),
   userCourses: forwardTo('db'),
 
-  // videosConnection: forwardTo("db"),
   async me(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // checkar se tem um current ID
@@ -53,25 +45,6 @@ const Query = {
     );
 
     return res;
-  },
-  videosConnection(parent, args, ctx, info) {
-    const { userId } = ctx.request;
-
-    // Ver se esta logado
-    if (!userId) {
-      throw new Error('You must be signed in!');
-    }
-    // query o video atual com comparaçao de ids de user
-    return ctx.db.query.videosConnection(
-      {
-        where: {
-          user: {
-            id: userId,
-          },
-        },
-      },
-      info
-    );
   },
 
   videosFromUser(parent, args, ctx, info) {
@@ -166,33 +139,7 @@ const Query = {
 
     return res;
   },
-  videosUserSearch(parent, args, ctx, info) {
-    const { userId } = ctx.request;
 
-    // Ver se esta logado
-    if (!userId) {
-      throw new Error('You must be signed in!');
-    }
-
-    // query o video atual com comparaçao de ids de user
-    return ctx.db.query.videos(
-      {
-        where: {
-          AND: [
-            {
-              user: {
-                id: args.id,
-              },
-            },
-            {
-              state: 'PUBLISHED',
-            },
-          ],
-        },
-      },
-      info
-    );
-  },
   async coursesSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
