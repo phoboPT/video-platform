@@ -5,14 +5,15 @@ const CartStyles = styled.div`
   position: relative;
   background: white;
   position: fixed;
-  height: 60%;
+  height: 50%;
   right: 0;
   width: 30%;
+  margin-top: 10rem;
   min-width: 400px;
   transform: translateX(100%);
   transition: all 0.3s;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.2);
-  z-index: 5;
+  z-index: 8;
   display: grid;
   grid-template-rows: auto 1fr auto;
   ${props => props.open && `transform: translateX(0);`};

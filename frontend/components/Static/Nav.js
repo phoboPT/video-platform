@@ -29,25 +29,24 @@ class Nav extends Component {
                     <a> Courses </a>
                   </Link>
 
-                  <ul>
-                    <li>
-                      <a>Hi, {me.name}</a>
-                      <ul className="dropdown">
-                        <li>
-                          <Link href="/account">
-                            <a>Account</a>
-                          </Link>
-                        </li>
-                        <li>
-                          <Signout />
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                  <div className="dropdown">
+                    <a className="dropbtn">Hi, {me.name}</a>
+                    <div className="dropdown-content">
+                      <Link href="/account">
+                        <a>My Account</a>
+                      </Link>
+                      <Signout />
+                    </div>
+                  </div>
+
                   <Mutation mutation={TOGGLE_CART_MUTATION}>
                     {toggleCart => (
-                      <button id="cart" type="button" onClick={toggleCart}>
-                        <img alt="cart" src="../../static/cart.webp" />
+                      <button type="button" onClick={toggleCart}>
+                        <img
+                          id="cart"
+                          alt="cart"
+                          src="../../static/cart.webp"
+                        />
                         <CartCount count={me.cart.length} />
                       </button>
                     )}
