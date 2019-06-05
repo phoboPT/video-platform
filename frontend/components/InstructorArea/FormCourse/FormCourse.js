@@ -187,8 +187,6 @@ class FormCourse extends Component {
 
     if (!createCourse) {
       if (!alreadyExecuted) {
-        console.log('course', course);
-
         this.courseState(course.state);
       }
     }

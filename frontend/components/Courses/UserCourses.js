@@ -8,7 +8,6 @@ import CourseItem from './CourseItem';
 import FilterAuthor from './Filters/FilterAuthor';
 import FilterCategory from './Filters/FilterCategory';
 import Wishlist from './Wishlist';
-import Loading from '../Static/Loading';
 
 const COURSES_FILTER_QUERY = gql`
   query COURSES_FILTER_QUERY($category: ID, $author: ID) {

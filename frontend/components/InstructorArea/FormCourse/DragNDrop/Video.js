@@ -170,20 +170,13 @@ class Video extends Component {
     const { content, freeToWatch } = this.state;
     const { handleVideo, video } = this.props;
     const { value, id, checked } = e.target;
-    console.log('checked', id, checked);
 
     await this.setState({ [id]: id === 'content' ? value : checked });
     const data = {
-      content,
-      freeToWatch,
+      content: this.state.content,
+      freeToWatch: this.state.freeToWatch,
     };
     handleVideo(data, video.id);
-  };
-
-  changeFree = () => {
-    const { freeToWatch } = this.state;
-
-    this.setState({ freeToWatch: !freeToWatch });
   };
 
   disableInput = () => {
@@ -213,8 +206,9 @@ class Video extends Component {
       updateSections,
       section,
       updateFiles,
+      changeIsUploading,
     } = this.props;
-    const { content, upload } = this.state;
+    const { content, freeToWatch, upload } = this.state;
     return (
       <Draggable draggableId={video.id} index={index}>
         {(provided, snapshot) => (
@@ -250,7 +244,7 @@ class Video extends Component {
                       placeholder="free"
                       required
                       type="checkbox"
-                      checked={video.freeToWatch}
+                      checked={freeToWatch}
                     />
                   </li>
                 </div>
@@ -303,6 +297,7 @@ class Video extends Component {
                         updateFiles={updateFiles}
                         isUpdate={video.id.length > 20}
                         section={section}
+                        changeIsUploading={changeIsUploading}
                       />
                     )}
                     {upload === 3 && (
@@ -315,6 +310,7 @@ class Video extends Component {
                         updateSections={updateSections}
                         isUpdate={video.id.length > 20}
                         section={section}
+                        changeIsUploading={changeIsUploading}
                       />
                     )}
                   </div>
@@ -339,6 +335,7 @@ Video.propTypes = {
   updateFiles: PropTypes.func.isRequired,
   handleVideo: PropTypes.func.isRequired,
   removeVideo: PropTypes.func.isRequired,
+  changeIsUploading: PropTypes.func.isRequired,
 };
 
 export default Video;

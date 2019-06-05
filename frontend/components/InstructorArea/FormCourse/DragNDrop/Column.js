@@ -76,6 +76,7 @@ class InnerList extends React.PureComponent {
     updateFiles: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     removeVideo: PropTypes.func.isRequired,
+    changeIsUploading: PropTypes.func.isRequired,
   };
 
   render() {
@@ -88,6 +89,7 @@ class InnerList extends React.PureComponent {
       updateFiles,
       title,
       removeVideo,
+      changeIsUploading,
     } = this.props;
 
     return videos.map(
@@ -102,6 +104,7 @@ class InnerList extends React.PureComponent {
             updateSections={updateSections}
             updateFiles={updateFiles}
             section={section}
+            changeIsUploading={changeIsUploading}
             title={title}
             removeVideo={removeVideo}
           />
@@ -149,6 +152,7 @@ class Column extends Component {
       courseId,
       updateSections,
       updateFiles,
+      changeIsUploading,
       removeSection,
       removeVideo,
     } = this.props;
@@ -204,6 +208,7 @@ class Column extends Component {
                         courseId={courseId}
                         updateSections={updateSections}
                         updateFiles={updateFiles}
+                        changeIsUploading={changeIsUploading}
                         section={section}
                         title={title}
                       />
@@ -242,6 +247,7 @@ Column.propTypes = {
   updateFiles: PropTypes.func.isRequired,
   isShow: PropTypes.bool,
   removeSection: PropTypes.func.isRequired,
+  changeIsUploading: PropTypes.func.isRequired,
   removeVideo: PropTypes.func.isRequired,
 };
 

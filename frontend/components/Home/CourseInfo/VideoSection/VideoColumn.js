@@ -71,7 +71,6 @@ class InnerList extends React.PureComponent {
       <div id="right">
         {data.course.videos.map(video => {
           if (video.video.id === item) {
-            console.log(item);
             return (
               <Fragment key={item}>
                 <p id="p">{video.video.title}</p>

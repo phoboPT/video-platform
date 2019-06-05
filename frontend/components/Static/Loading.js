@@ -1,3 +1,3 @@
-const Loading = () => <img src="../static/load.gif" alt="loading" />;
+const Loading = () => <img src="../static/load.webp\" alt="loading" />;
 
 export default Loading;

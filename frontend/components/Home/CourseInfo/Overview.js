@@ -101,7 +101,6 @@ class Overview extends Component {
   render() {
     const { data: propsData, view } = this.props;
     const { id } = this.state;
-    console.log(view);
     return (
       <Query
         query={SINGLE_VIDEO_QUERY}

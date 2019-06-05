@@ -36,6 +36,7 @@ const Container = styled.div`
 class Media extends Component {
   state = {
     videosToDelete: [],
+    isUploading: false,
   };
 
   updateFilesToDelete = (stateToUpdate, id) => {
@@ -55,6 +56,11 @@ class Media extends Component {
     }
   };
 
+  changeIsUploading = () => {
+    const { isUploading } = this.state;
+    this.setState({ isUploading: !isUploading });
+  };
+
   render() {
     const {
       sections,
@@ -63,23 +69,13 @@ class Media extends Component {
       undoSections,
       refetch,
     } = this.props;
+    const { isUploading } = this.state;
     return (
       <Container>
         <p id="message">
           In this area you can add content to your course and customize it to
           your liking
         </p>
-        <div className="button">
-          <SaveCourseButton
-            sections={sections}
-            id={courseId}
-            refetch={refetch}
-            data={this.state}
-          />
-
-          <button type="button"> Save</button>
-        </div>
-        <br />
 
         <Index
           updateFilesToDelete={this.updateFilesToDelete}
@@ -87,12 +83,15 @@ class Media extends Component {
           updateState={updateState}
           courseId={courseId}
           undoSections={undoSections}
+          changeIsUploading={this.changeIsUploading}
         >
           <div className="button" id="right">
             <SaveCourseButton
               sections={sections}
               id={courseId}
+              refetch={refetch}
               data={this.state}
+              isUploading={isUploading}
             />
           </div>
         </Index>
@@ -106,6 +105,7 @@ Media.propTypes = {
   updateState: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
   undoSections: PropTypes.func.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default Media;

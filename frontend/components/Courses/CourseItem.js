@@ -33,12 +33,12 @@ class CourseItem extends Component {
     } else {
       data = this.props.course.course;
     }
-    console.log(data);
+
     return (
       <Container>
         <Link
           href={{
-            pathname: '/course',
+            pathname: '/video',
             query: { id: data.id },
           }}
         >

@@ -50,6 +50,10 @@ const Style = styled.button`
   :focus {
     outline: none;
   }
+  :disabled {
+    background: rgba(163, 163, 163, 0.5);
+    cursor: not-allowed;
+  }
 `;
 class SaveCourseButton extends Component {
   state = {
@@ -101,7 +105,7 @@ class SaveCourseButton extends Component {
   };
 
   render() {
-    const { id } = this.props;
+    const { isUploading } = this.props;
     return (
       <Mutation
         mutation={CREATE_COURSE_MUTATION}
@@ -120,7 +124,7 @@ class SaveCourseButton extends Component {
               <Style
                 id={loading ? 'submitLoading' : 'submit'}
                 type="submit"
-                disabled={loading}
+                disabled={loading || isUploading}
               >
                 {loading ? 'Saving...' : 'Save Changes'}
               </Style>
@@ -136,6 +140,8 @@ SaveCourseButton.propTypes = {
   id: PropTypes.string,
   changeToEdit: PropTypes.func,
   createCourse: PropTypes.bool,
+  refetch: PropTypes.func.isRequired,
+  isUploading: PropTypes.bool,
 };
 
 export default SaveCourseButton;
