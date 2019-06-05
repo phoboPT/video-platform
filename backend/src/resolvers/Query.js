@@ -67,7 +67,6 @@ const Query = {
       info
     );
   },
-
   rateCourseList(parent, args, ctx, info) {
     return ctx.db.query.rateCourses(
       {
@@ -119,7 +118,7 @@ const Query = {
     );
   },
   async coursesInstructor(parent, args, ctx, info) {
-    const res = await ctx.db.query.courses(
+    return ctx.db.query.courses(
       {
         where: {
           AND: [
@@ -136,10 +135,7 @@ const Query = {
       },
       info
     );
-
-    return res;
   },
-
   async coursesSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
@@ -173,9 +169,7 @@ const Query = {
         `
     );
 
-    const coursesIds = [];
-
-    user.courses.map(course => coursesIds.push(course.course.id));
+    const coursesIds = user.courses.map(course => course.course.id);
     // query o video atual com comparaçao de ids de user
     const finalRes = await ctx.db.query.courses(
       {
@@ -287,7 +281,6 @@ const Query = {
          }`
     );
 
-    // remove thCoursee layers of an array putting all in one flat function
     const res = result.flat();
 
     // this remove the header on the array to clean it before send it to frontend
@@ -335,7 +328,6 @@ const Query = {
       return item;
     });
 
-    finalRes.map(item => item);
     console.timeEnd('coursesUserInterestList');
 
     return finalRes;
