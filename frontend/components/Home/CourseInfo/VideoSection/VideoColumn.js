@@ -67,6 +67,8 @@ class InnerList extends React.PureComponent {
       data,
       video: { freeToWatch },
     } = this.props;
+
+    console.log(freeToWatch);
     return (
       <div id="right">
         {data.course.videos.map(video => {

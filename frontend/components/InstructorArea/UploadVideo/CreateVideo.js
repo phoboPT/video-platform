@@ -6,13 +6,34 @@ import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
 import Form from '../../styles/Form';
 import Error from '../../Static/ErrorMessage.js';
-import { ALL_VIDEOS_USER } from '../MyVideos/Videos';
 import { ALL_COURSES_QUERY } from '../../Home/CoursesList/ListAllCourses';
 import validateExtension from '../../../lib/validateFileExtensions';
-import { SINGLE_VIDEO_QUERY } from '../MyVideos/UpdateVideo';
 import Loading from '../../Static/Loading';
 import { fileExtensions, videoExtensions } from '../../../lib/formatExtensions';
 import { Alert } from '../../styles/AlertStyles';
+import { perPage } from '../../../config';
+
+const SINGLE_VIDEO_QUERY = gql`
+  query SINGLE_VIDEO_QUERY($id: ID!) {
+    video(where: { id: $id }) {
+      id
+      title
+      urlVideo
+      file
+    }
+  }
+`;
+
+const ALL_VIDEOS_USER = gql`
+  query ALL_VIDEOS_USER ($skip: Int =0,$first:Int=${perPage}){
+      videosFromUser(first:$first,skip:$skip,orderBy:createdAt_DESC)  {
+      id
+      title
+      urlVideo
+      createdAt
+    }
+  }
+`;
 
 const CREATE_VIDEO_MUTATION = gql`
   mutation CREATE_VIDEO_MUTATION(
