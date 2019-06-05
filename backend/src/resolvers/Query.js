@@ -10,7 +10,7 @@ function formatDate(date) {
 function getDate() {
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, '0');
-  const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
   const yyyy = today.getFullYear();
 
   const res = [yyyy, mm, dd];
@@ -931,7 +931,7 @@ const Query = {
           AND: [
             { course: { id: args.id } },
             { createdAt_gte: `${date[0]}-${date[1]}-01` },
-            { createdAt_lte: `${date[0]}-${date[1]}-31` },
+            { createdAt_lte: `${date[0]}-${date[1]}-${date[2]}` },
           ],
         },
         orderBy: 'createdAt_ASC',
@@ -949,22 +949,29 @@ const Query = {
      }`
     );
 
-    const res = courses.flat();
+    console.log('courses', courses);
 
-    res[0].count = 0;
+    if (courses.length > 0) {
+      const res = courses.flat();
 
-    const result = [
-      ...res
-        .reduce((mp, o) => {
-          if (!mp.has(formatDate(o.createdAt)))
-            mp.set(formatDate(o.createdAt), { ...o, count: 0 });
-          mp.get(formatDate(o.createdAt)).count += 1;
-          return mp;
-        }, new Map())
-        .values(),
-    ];
-    console.timeEnd('sellsByCourse');
-    return result;
+      res[0].count = 0;
+      console.log('res', res[0]);
+      const result = [
+        ...res
+          .reduce((mp, o) => {
+            if (!mp.has(formatDate(o.createdAt)))
+              mp.set(formatDate(o.createdAt), { ...o, count: 0 });
+            mp.get(formatDate(o.createdAt)).count += 1;
+            return mp;
+          }, new Map())
+          .values(),
+      ];
+      console.timeEnd('sellsByCourse');
+      console.log(result);
+      return result;
+    }
+    const template = [];
+    return template;
   },
   async coursesStatsByDate(parent, args, ctx, info) {
     console.time('courseStats');

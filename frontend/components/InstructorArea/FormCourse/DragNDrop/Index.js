@@ -68,6 +68,7 @@ class InnerList extends React.PureComponent {
     updateFiles: PropTypes.func.isRequired,
     isShow: PropTypes.bool,
     removeSection: PropTypes.func.isRequired,
+    changeIsUploading: PropTypes.func.isRequired,
     removeVideo: PropTypes.func.isRequired,
   };
 
@@ -85,6 +86,7 @@ class InnerList extends React.PureComponent {
       isShow,
       removeSection,
       removeVideo,
+      changeIsUploading,
     } = this.props;
     let videos;
     if (section.videoIds) {
@@ -105,6 +107,7 @@ class InnerList extends React.PureComponent {
         updateSections={updateSections}
         updateFiles={updateFiles}
         removeVideo={removeVideo}
+        changeIsUploading={changeIsUploading}
       />
     );
   }
@@ -232,17 +235,19 @@ class Index extends Component {
         ...videos,
       },
     };
-    console.log('state', newState);
     await this.setState(newState);
     updateState(this.state);
   };
 
-  updateSections = async (video, id, section) => {
+  updateSections = async (video, id, section, isNew) => {
     const { videos } = this.state;
     const atualvideo = videos[video.id];
     const { updateState } = this.props;
 
-    delete Object.assign(videos, { [id]: videos[video.id] })[video.id];
+    if (isNew) {
+      delete Object.assign(videos, { [id]: videos[video.id] })[video.id];
+    }
+
     let index = 0;
     section.videoIds.forEach((item, i) => {
       if (item === video.id) {
@@ -264,7 +269,7 @@ class Index extends Component {
     updateState(this.state);
   };
 
-  updateFiles = async (id, newFile) => {
+  updateFiles = async (_, newFile) => {
     const { updateState } = this.props;
 
     const newState = {
@@ -388,7 +393,13 @@ class Index extends Component {
 
   render() {
     const { columnOrder, sections, videos, key } = this.state;
-    const { courseId, isShow, undoSections, children } = this.props;
+    const {
+      courseId,
+      isShow,
+      undoSections,
+      children,
+      changeIsUploading,
+    } = this.props;
 
     return (
       <Container key={key}>
@@ -448,6 +459,7 @@ class Index extends Component {
                         index={index}
                         courseId={courseId}
                         removeVideo={this.removeVideo}
+                        changeIsUploading={changeIsUploading}
                       />
                     );
                   })}
@@ -466,8 +478,10 @@ Index.propTypes = {
   updateState: PropTypes.func.isRequired,
   courseId: PropTypes.string.isRequired,
   isShow: PropTypes.bool,
+  children: PropTypes.object.isRequired,
   undoSections: PropTypes.func.isRequired,
   updateFilesToDelete: PropTypes.func.isRequired,
+  changeIsUploading: PropTypes.func.isRequired,
 };
 
 export default Index;

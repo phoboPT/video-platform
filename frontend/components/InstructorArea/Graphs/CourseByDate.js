@@ -69,7 +69,7 @@ class CourseByDate extends Component {
 
   componentWillMount() {
     const { chartData } = this.props;
-    if (chartData) {
+    if (chartData.sellsByCourse.length > 0) {
       this.createData();
       this.setState({
         title: chartData.sellsByCourse[0].course.title,

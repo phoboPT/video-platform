@@ -155,7 +155,7 @@ class Signin extends Component {
     await mutation();
     this.setState({ email: '', password: '' });
     Router.push({
-      pathname: '/home',
+      pathname: '/index',
     });
   };
 

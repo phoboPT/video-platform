@@ -66,7 +66,6 @@ class CheckoutDetails extends Component {
     return (
       <User>
         {({ data: { me } }) => {
-          console.log('data', me);
           if (!me) return <p>hi</p>;
           if (me) {
             return (
@@ -82,7 +81,6 @@ class CheckoutDetails extends Component {
                   <div className="cartDetails">
                     <span> Total: </span>
                     <h1>{formatMoney(calcTotalPrice(me.cart))}</h1>
-                    {console.log(me.cart.length)}
                     {me.cart.length > 0 && (
                       <>
                         <Checkout>

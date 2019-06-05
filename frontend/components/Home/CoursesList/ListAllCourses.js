@@ -5,7 +5,7 @@ import { perPageCourse } from '../../../config';
 import { Container, CoursesList, Title } from '../../styles/Home';
 import CourseItem from './CourseItem';
 import CourseItemNoUser from './CourseItemNoUser';
-import Pagination from './Pagination';
+import PaginationCourse from './PaginationCourse';
 import Error from '../../Static/ErrorMessage.js';
 import LoadingSkeletonCourses from '../../Static/LoadingSkeletonCourses';
 
@@ -263,7 +263,7 @@ class ListAllCourses extends Component {
                       ))}
                     </CoursesList>
                     {data.courses[0] !== undefined && (
-                      <Pagination
+                      <PaginationCourse
                         page={page}
                         animationSliderControlForward={
                           this.animationSliderControlForward
@@ -295,7 +295,7 @@ class ListAllCourses extends Component {
                     </CoursesList>
 
                     {data.coursesList[0] !== undefined && (
-                      <Pagination
+                      <PaginationCourse
                         page={page}
                         animationSliderControlForward={
                           this.animationSliderControlForward
@@ -332,7 +332,7 @@ class ListAllCourses extends Component {
                       {/* Check what pagination to render ( count gives the total of items of the interest list) */}
 
                       {data.coursesUserInterestList[0] !== undefined && (
-                        <Pagination
+                        <PaginationCourse
                           page={page}
                           animationSliderControlForward={
                             this.animationSliderControlForward
@@ -383,7 +383,7 @@ class ListAllCourses extends Component {
                       {/* Check what pagination to render ( count gives the total of items of the interest list) */}
 
                       {data.coursesRating[0] !== undefined && (
-                        <Pagination
+                        <PaginationCourse
                           page={page}
                           animationSliderControlForward={
                             this.animationSliderControlForward

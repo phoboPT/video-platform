@@ -16,7 +16,7 @@ const PAGINATION_QUERY = gql`
   }
 `;
 
-export class Pagination extends Component {
+export class PaginationCourse extends Component {
   fetchNext = (client, page) => {
     setTimeout(() => {
       client.query({
@@ -96,13 +96,13 @@ export class Pagination extends Component {
   }
 }
 
-Pagination.propTypes = {
+PaginationCourse.propTypes = {
   isInterest: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
   animationSliderControlForward: PropTypes.func.isRequired,
   animationSliderControlBackward: PropTypes.func.isRequired,
-  count: PropTypes.number.isRequired,
+  count: PropTypes.number,
 };
 
-export default Pagination;
+export default PaginationCourse;
 export { PAGINATION_QUERY };

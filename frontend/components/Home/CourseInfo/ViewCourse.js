@@ -204,14 +204,14 @@ class ViewCourse extends Component {
                               </div>
                               <h2>{course.title}</h2>
                               <br />
-                              <Link
+                              {/* <Link
                                 href={{
                                   pathname: 'video',
                                   query: { id },
                                 }}
                               >
                                 <button type="button">Go to the Videos</button>
-                              </Link>
+                              </Link> */}
                             </div>
                           </CourseContainer>
                           <Bar>

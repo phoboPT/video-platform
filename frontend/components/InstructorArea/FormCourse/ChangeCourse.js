@@ -208,8 +208,8 @@ class ChangeCourse extends Component {
     });
   };
 
-  updateState = newState => {
-    this.setState(prevState => ({
+  updateState = async newState => {
+    await this.setState(prevState => ({
       value: prevState.value + 1,
       sections: { ...newState },
     }));

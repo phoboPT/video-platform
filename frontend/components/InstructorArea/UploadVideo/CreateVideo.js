@@ -76,6 +76,7 @@ class CreateVideo extends Component {
     video: PropTypes.object.isRequired,
     section: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
+    changeIsUploading: PropTypes.func.isRequired,
   };
 
   state = {
@@ -94,12 +95,9 @@ class CreateVideo extends Component {
     this.setState({ [name]: val });
   };
 
-  teste = e => {
-    const { files } = e.target;
-    console.log(files);
-  };
-
   uploadVideo = async (e, createVideoMutation) => {
+    const { changeIsUploading } = this.props;
+    changeIsUploading();
     this.setState({
       isUploading: 1,
     });
@@ -132,8 +130,9 @@ class CreateVideo extends Component {
           createVideo: { id },
         },
       } = await createVideoMutation();
+      changeIsUploading();
       // change Video id
-      updateSections(video, id, section);
+      updateSections(video, id, section, video.id.length < 10);
     } else {
       swal({
         title: 'Filename not Supported',
@@ -249,10 +248,9 @@ class CreateVideo extends Component {
                     <Form>
                       <Error error={error} />
                       <h3>{header}</h3>
-
-                      {show === 1 && (
-                        <label htmlFor="file">
-                          {isUploading !== 0 && (
+                      {isUploading === 0 &&
+                        (show === 1 && (
+                          <label htmlFor="file">
                             <input
                               className="file"
                               type="file"
@@ -262,8 +260,13 @@ class CreateVideo extends Component {
                               // required
                               onChange={e => this.uploadVideo(e, createVideo)}
                             />
-                          )}
-                        </label>
+                          </label>
+                        ))}
+                      {isUploading === 1 && <Loading />}
+                      {isUploading === 2 && (
+                        <button type="button" onClick={this.changeUpload}>
+                          Change Video
+                        </button>
                       )}
 
                       {show === 2 && (
@@ -275,35 +278,6 @@ class CreateVideo extends Component {
                             placeholder="file"
                             onChange={e => this.uploadFile(e, createVideo)}
                           />
-                        </label>
-                      )}
-
-                      {/* {isUploading === 1 && (
-                        // <img src="../../static/loading.gif" alt="Loading" />
-                      )} */}
-                      {data.video ? (
-                        data.video.id === video.id &&
-                        (isUploading === 0 && (
-                          <>
-                            {/* <img src="../../static/done.webp" alt="done" /> */}
-                            <button type="button" onClick={this.changeUpload}>
-                              Change Video
-                            </button>
-                          </>
-                        ))
-                      ) : (
-                        <label htmlFor="file">
-                          {isUploading === 0 && (
-                            <input
-                              className="file"
-                              type="file"
-                              name="file"
-                              id="file"
-                              placeholder="Upload a Video"
-                              // required
-                              onChange={e => this.uploadVideo(e, createVideo)}
-                            />
-                          )}
                         </label>
                       )}
                     </Form>

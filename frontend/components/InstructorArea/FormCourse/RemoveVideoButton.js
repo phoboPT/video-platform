@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
 import { CURRENT_USER_QUERY } from '../../Authentication/User';
-import { SINGLE_COURSE_QUERY } from './FormCourse';
+import { SINGLE_COURSE_QUERY } from './ChangeCourse';
 
 const REMOVE_VIDEO_COURSE = gql`
   mutation REMOVE_VIDEO_COURSE($id: ID!, $courseId: ID!) {
@@ -71,6 +71,7 @@ class RemoveVideoButton extends Component {
 
 RemoveVideoButton.propTypes = {
   courseId: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default RemoveVideoButton;
