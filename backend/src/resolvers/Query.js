@@ -285,47 +285,43 @@ const Query = {
         }
         `
     );
-    const coursesIds = [];
-    await user.courses.map(course => coursesIds.push(course.course.id));
     // mapear os interesses do user
-    const interestsIds = [];
+    const coursesIds = user.courses.map(course => course.course.id);
     // foreach de cada elemento e fazer a query e guardar num array
-    await user.interests.map(interest =>
-      interestsIds.push(interest.interest.id)
-    );
+    const interestsIds = user.interests.map(interest => interest.interest.id);
+
     // Search all the courses that have the interests match wiith user
-    const result = await Promise.all(
-      interestsIds.map(async id => {
-        const res = await ctx.db.query.courseInterests(
-          {
-            where: {
-              AND: [
-                {
-                  interest: {
-                    id,
-                  },
-                },
-                {
-                  course: {
-                    state: 'PUBLISHED',
-                  },
-                },
-                {
-                  course: {
-                    id_not_in: coursesIds,
-                  },
-                },
-                {
-                  course: {
-                    user: {
-                      id_not: userId,
-                    },
-                  },
-                },
-              ],
+
+    const result = await ctx.db.query.courseInterests(
+      {
+        where: {
+          AND: [
+            {
+              interest: {
+                id_in: interestsIds,
+              },
             },
-          },
-          `{
+            {
+              course: {
+                state: 'PUBLISHED',
+              },
+            },
+            {
+              course: {
+                id_not_in: coursesIds,
+              },
+            },
+            {
+              course: {
+                user: {
+                  id_not: userId,
+                },
+              },
+            },
+          ],
+        },
+      },
+      `{
            course{
              id
              title
@@ -342,10 +338,8 @@ const Query = {
              }
            }
          }`
-        );
-        return res;
-      })
     );
+
     // remove thCoursee layers of an array putting all in one flat function
     const res = result.flat();
 
@@ -846,7 +840,7 @@ const Query = {
       countOrders: totalOrders.length,
       amountOrders,
     };
-    
+
     return res;
   },
   async coursesStats(parent, args, ctx, info) {
@@ -993,27 +987,25 @@ const Query = {
      }`
     );
 
+    const ids = allInstrutorCourses.map(item => item.id);
     const date = args.initialDate.split('-');
     // get all the buys from the instrutor courses list
-    const courses = await Promise.all(
-      allInstrutorCourses.map(item =>
-        ctx.db.query.userCourses(
-          {
-            where: {
-              AND: [
-                { course: { id: item.id } },
-                {
-                  createdAt_gte: `${date[0]}-${date[1]}-${parseInt(date[2])}`,
-                },
-                {
-                  createdAt_lte: `${date[0]}-${date[1]}-${parseInt(date[2]) +
-                    1}`,
-                },
-              ],
+    const courses = await ctx.db.query.userCourses(
+      {
+        where: {
+          AND: [
+            { course: { id_in: ids } },
+            {
+              createdAt_gte: `${date[0]}-${date[1]}-${parseInt(date[2])}`,
             },
-            orderBy: 'createdAt_DESC',
-          },
-          `{
+            {
+              createdAt_lte: `${date[0]}-${date[1]}-${parseInt(date[2]) + 1}`,
+            },
+          ],
+        },
+        orderBy: 'createdAt_DESC',
+      },
+      `{
             id
             createdAt
             course{
@@ -1024,8 +1016,6 @@ const Query = {
               id
             }
           }`
-        )
-      )
     );
 
     const res = courses.flat();
@@ -1041,7 +1031,6 @@ const Query = {
     ];
 
     console.timeEnd('courseStats');
-    console.table(result);
     return result;
   },
   async instrutorStats(parent, args, ctx, info) {

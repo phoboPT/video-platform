@@ -109,28 +109,28 @@ const removeUnusedVideos = async (courseId, ctx) => {
     allVideos.push(video.video);
   });
   const unusedVideos = allVideos.filter(x => !usedVideos.includes(x.id));
-
-  unusedVideos.forEach(async video => {
-    const videoId = formatString('video', video.urlVideo)[0];
-    await cloudinary.v2.uploader.destroy(
-      videoId,
-      { resource_type: 'video' },
-      function(error, result) {
-        console.log(result, error);
-        if (result === 'ok') {
-          const where = {
-            id: video.id,
-          };
-          ctx.db.mutation.deleteVideo({
-            where,
-          });
-          ctx.db.mutation.deleteManyCourseVideoses({
-            where: { video: { id: video.id } },
-          });
-        }
-      }
-    );
-  });
+  console.log('unused',unusedVideos);
+  // unusedVideos.forEach(async video => {
+  //   const videoId = formatString('video', video.urlVideo)[0];
+  //   await cloudinary.v2.uploader.destroy(
+  //     videoId,
+  //     { resource_type: 'video' },
+  //     function(error, result) {
+  //       console.log(result, error);
+  //       if (result === 'ok') {
+  //         const where = {
+  //           id: video.id,
+  //         };
+  //         ctx.db.mutation.deleteVideo({
+  //           where,
+  //         });
+  //         ctx.db.mutation.deleteManyCourseVideoses({
+  //           where: { video: { id: video.id } },
+  //         });
+  //       }
+  //     }
+  //   );
+  // });
 };
 
 const Mutations = {

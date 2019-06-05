@@ -67,9 +67,11 @@ class InnerList extends React.PureComponent {
       data,
       video: { freeToWatch },
     } = this.props;
+    console.log(data);
     return (
       <div id="right">
         {data.course.videos.map(video => {
+          console.log(video, item);
           if (video.video.id === item) {
             return (
               <Fragment key={item}>

@@ -375,17 +375,20 @@ class Index extends Component {
     updateState(this.state);
   };
 
-  removeVideo = async videoId => {
+  removeVideo = async (videoId, section) => {
     const { videos } = this.state;
     const { updateState, updateFilesToDelete } = this.props;
 
+    const result = section.videoIds.filter(id => id !== videoId);
+    section.videoIds = result;
     delete videos[videoId];
 
     const newState = {
       ...this.state,
+      section: { ...section },
       videos: { ...videos },
     };
-    await this.setState({});
+
     await this.setState(newState);
     updateFilesToDelete('video', videoId);
     updateState(this.state);

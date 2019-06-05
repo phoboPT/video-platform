@@ -173,8 +173,8 @@ class Video extends Component {
 
     await this.setState({ [id]: id === 'content' ? value : checked });
     const data = {
-      content: this.state.content,
-      freeToWatch: this.state.freeToWatch,
+      content,
+      freeToWatch,
     };
     handleVideo(data, video.id);
   };
@@ -193,9 +193,9 @@ class Video extends Component {
   };
 
   handleRemove = e => {
-    const { removeVideo } = this.props;
+    const { removeVideo, section } = this.props;
 
-    removeVideo(e.target.id);
+    removeVideo(e.target.id, section);
   };
 
   render() {

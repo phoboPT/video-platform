@@ -13,7 +13,7 @@ import {
   ALL_COURSES_QUERY,
   ALL_COURSES_RATING,
 } from '../Home/CoursesList/ListAllCourses';
-import { PAGINATION_QUERY } from '../Home/CoursesList/Pagination';
+import { PAGINATION_QUERY } from '../Home/CoursesList/PaginationCourse';
 import { COURSES_FILTER_QUERY } from '../Courses/UserCourses';
 import Error from '../Static/ErrorMessage';
 
