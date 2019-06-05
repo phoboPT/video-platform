@@ -46,8 +46,8 @@ class Nav extends Component {
                   </ul>
                   <Mutation mutation={TOGGLE_CART_MUTATION}>
                     {toggleCart => (
-                      <button type="button" onClick={toggleCart}>
-                        My Cart
+                      <button id="cart" type="button" onClick={toggleCart}>
+                        <img alt="cart" src="../../static/cart.webp" />
                         <CartCount count={me.cart.length} />
                       </button>
                     )}

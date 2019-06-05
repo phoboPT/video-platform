@@ -69,7 +69,7 @@ class Header extends Component {
           <Logo>
             <Link href={link}>
               <a>
-                <img src="/static/logo.webp" />
+                <img alt="logo-picus" src="/static/logo.webp" />
               </a>
             </Link>
           </Logo>

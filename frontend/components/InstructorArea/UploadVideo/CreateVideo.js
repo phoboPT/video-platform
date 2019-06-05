@@ -321,4 +321,4 @@ CreateVideo.propTypes = {
 };
 
 export default CreateVideo;
-export { CREATE_VIDEO_MUTATION };
+export { CREATE_VIDEO_MUTATION, ALL_VIDEOS_USER };

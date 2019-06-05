@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 const Supreme = styled.h3`
-  background: ${props => props.theme.red};
+  background: #827171;
   color: white;
   display: inline-block;
-  padding: 4px 5px;
+  padding: 3px;
   transform: skew(-3deg);
   margin: 0;
   font-size: 4rem;

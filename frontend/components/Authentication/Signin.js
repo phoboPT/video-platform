@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { Mutation, withApollo } from 'react-apollo';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { ALL_VIDEOS_USER } from '../InstructorArea/MyVideos/Videos';
+import { ALL_VIDEOS_USER } from '../InstructorArea/UploadVideo/CreateVideo';
 import { CURRENT_USER_QUERY } from './User';
 import { CURRENT_COURSES_QUERY } from '../InstructorArea/MyCourses';
 import {
