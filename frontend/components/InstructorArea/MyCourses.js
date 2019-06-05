@@ -59,7 +59,7 @@ class MyCourses extends Component {
           skip: page * perPage - perPage,
         }}
       >
-        {({ data, error, loading }) => {
+        {({ data, error }) => {
           if (error) return <Error error={error} />;
           if (!data) return <p>No Data</p>;
           if (data.coursesUser) {

@@ -127,6 +127,7 @@ const Query = {
       info
     );
   },
+
   async coursesUserConnection(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
@@ -815,6 +816,38 @@ const Query = {
       },
       info
     );
+  },
+  async ordersUserStats(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+
+    // query o video atual com comparaçao de ids de user
+    const totalOrders = await ctx.db.query.orders(
+      {
+        where: {
+          user: {
+            id: userId,
+          },
+        },
+      },
+      `{
+        total
+      }`
+    );
+
+    const amountOrders = totalOrders.reduce(
+      (tally, item) => tally + item.total,
+      0
+    );
+    const res = {
+      countOrders: totalOrders.length,
+      amountOrders,
+    };
+    
+    return res;
   },
   async coursesStats(parent, args, ctx, info) {
     console.time('courseStats');

@@ -7,7 +7,7 @@ import CourseItem from './CourseItem';
 import CourseItemNoUser from './CourseItemNoUser';
 import PaginationCourse from './PaginationCourse';
 import Error from '../../Static/ErrorMessage.js';
-import Loading from '../../Static/Loading';
+import LoadingSkeletonCourses from '../../Static/LoadingSkeletonCourses';
 
 const RENDER_QUERY = gql`
   query RENDER_QUERY {
@@ -128,7 +128,7 @@ const ALL_COURSES_RATING = gql`
       title
       description
       thumbnail
-      createdAt
+      createdAt 
       totalComments
       price
       totalRate
@@ -230,6 +230,7 @@ class ListAllCourses extends Component {
   render() {
     const { query, page, title, classe } = this.state;
     const { noUser } = this.props;
+
     return (
       <>
         <Query
@@ -240,15 +241,16 @@ class ListAllCourses extends Component {
           }}
         >
           {({ data, error, loading }) => {
-            if (loading) return <Loading />;
-
+            if (loading) {
+              return <LoadingSkeletonCourses />;
+            }
             if (error) return <Error error={error} />;
 
             if (!data) return <p>No Data</p>;
 
             if (data.courses) {
               return (
-                <Container>
+                <Container lista>
                   {data.courses[0] !== undefined && <Title>{title}</Title>}
                   <div id="content-container">
                     <CoursesList id="courses-list" className={classe}>
@@ -279,7 +281,7 @@ class ListAllCourses extends Component {
 
             if (data.coursesList) {
               return (
-                <Container>
+                <Container lista>
                   {data.coursesList[0] !== undefined && <Title>{title}</Title>}
                   <div id="content-container">
                     <CoursesList id="courses-list" className={classe}>
@@ -311,7 +313,7 @@ class ListAllCourses extends Component {
             if (data.coursesUserInterestList)
               return (
                 <>
-                  <Container>
+                  <Container lista>
                     {data.coursesUserInterestList[0] !== undefined && (
                       <Title>{title}</Title>
                     )}
@@ -353,7 +355,7 @@ class ListAllCourses extends Component {
             if (data.coursesRating) {
               return (
                 <>
-                  <Container>
+                  <Container lista>
                     {data.coursesRating[0] !== undefined && (
                       <Title>{title}</Title>
                     )}

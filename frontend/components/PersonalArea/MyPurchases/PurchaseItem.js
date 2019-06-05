@@ -12,7 +12,6 @@ const Container = styled.div`
 
   img {
     order: 1;
-    flex: 1;
     width: 80px;
     height: 80px;
   }

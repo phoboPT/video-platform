@@ -4,7 +4,6 @@ import { PageTransition } from 'next-page-transitions';
 import styled from 'styled-components';
 import Page from '../components/Static/Page';
 import withData from '../lib/withData';
-import Loading from '../components/Static/Loading';
 
 const AnimationStyle = styled.div`
   .page-transition-enter {
@@ -12,14 +11,14 @@ const AnimationStyle = styled.div`
   }
   .page-transition-enter-active {
     opacity: 1;
-    transition: opacity 250ms;
+    transition: opacity 150ms;
   }
   .page-transition-exit {
     opacity: 1;
   }
   .page-transition-exit-active {
     opacity: 0;
-    transition: opacity 250ms;
+    transition: opacity 150ms;
   }
 `;
 class MyApp extends App {
@@ -39,7 +38,7 @@ class MyApp extends App {
       <AnimationStyle>
         <Container>
           <ApolloProvider client={apollo}>
-            <PageTransition timeout={250} classNames="page-transition">
+            <PageTransition timeout={150} classNames="page-transition">
               <Page key={Math.floor(Math.random() * 100 + 1)}>
                 <Component {...pageProps} />
               </Page>

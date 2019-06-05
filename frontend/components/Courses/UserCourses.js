@@ -51,28 +51,27 @@ const COURSES_FILTER_QUERY = gql`
 `;
 
 const Bar = styled.div`
-  .active {
-    border-bottom: 3px solid red;
-  }
   text-align: center;
   padding: 8px 0px;
   background: #333350;
-  button {
-    width: auto;
-    color: white;
-    background: none;
-    border: 0;
-    font-size: 2rem;
-    font-weight: 600;
-    padding: 0.5rem 1.2rem;
-    text-align: center;
-    cursor: pointer;
-    /* &:hover {
+  #button {
+    .active {
       border-bottom: 3px solid red;
-    } */
+    }
+    button {
+      width: auto;
+      color: white;
+      background: none;
+      border: 0;
+      font-size: 2rem;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      text-align: center;
+      cursor: pointer;
 
-    &:focus {
-      outline: none;
+      &:focus {
+        outline: none;
+      }
     }
   }
 `;
@@ -161,6 +160,15 @@ class UserCourses extends Component {
     showMessage: this.props.query.afterBuyed === 'true',
   };
 
+  async componentDidMount() {
+    const { showMessage } = this.state;
+    if (showMessage) {
+      setTimeout(async () => {
+        await this.setState({ showMessage: !showMessage });
+      }, 8000);
+    }
+  }
+
   changeView = e => {
     this.setState({ view: parseInt(e.target.id) });
   };
@@ -182,15 +190,6 @@ class UserCourses extends Component {
     this.setState({ author: 'a', category: 'a', isDisabled: true });
   };
 
-  async componentDidMount() {
-    const { showMessage } = this.state;
-    if (showMessage) {
-      setTimeout(async () => {
-        await this.setState({ showMessage: !showMessage });
-      }, 8000);
-    }
-  }
-
   render() {
     const { category, author, view, isDisabled, showMessage } = this.state;
 
@@ -205,24 +204,27 @@ class UserCourses extends Component {
               <>
                 <Bar>
                   <div className="info-bar">
-                    <button
-                      type="button"
-                      id={1}
-                      onClick={this.changeView}
-                      className={view === 1 ? 'active' : ''}
-                      name="my courses view"
-                    >
-                      My Courses
-                    </button>
-                    <button
-                      type="button"
-                      id={2}
-                      onClick={this.changeView}
-                      className={view === 2 ? 'active' : ''}
-                      name="wishlist view"
-                    >
-                      Whish List
-                    </button>
+                    <div id="button">
+                      <button
+                        type="button"
+                        id={1}
+                        onClick={this.changeView}
+                        className={view === 1 ? 'active' : ''}
+                        name="my courses view"
+                      >
+                        My Courses
+                      </button>
+
+                      <button
+                        type="button"
+                        id={2}
+                        onClick={this.changeView}
+                        className={view === 2 ? 'active' : ''}
+                        name="wishlist view"
+                      >
+                        Whish List
+                      </button>
+                    </div>
                   </div>
                 </Bar>
                 {data.coursesFilter.length === 0 &&
