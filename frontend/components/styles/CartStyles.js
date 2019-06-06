@@ -5,9 +5,9 @@ const CartStyles = styled.div`
   position: relative;
   background: white;
   position: fixed;
-  height: 50%;
+  height: 60%;
   right: 0;
-  width: 30%;
+  width: 25%;
   margin-top: 10rem;
   min-width: 400px;
   transform: translateX(100%);
@@ -19,20 +19,31 @@ const CartStyles = styled.div`
   ${props => props.open && `transform: translateX(0);`};
   header {
     border-bottom: 5px solid ${props => props.theme.black};
-    margin-bottom: 2rem;
     padding-bottom: 2rem;
   }
   footer {
-    border-top: 10px double ${props => props.theme.black};
+    border-top: 1px solid ${props => props.theme.black};
     margin-top: 2rem;
     padding-top: 2rem;
-    display: grid;
-    grid-template-columns: auto auto;
-    align-items: center;
-    font-size: 3rem;
+    display: block;
+    font-size: 2rem;
     font-weight: 900;
-    p {
-      margin: 0;
+    text-align: center;
+    #total {
+      margin: auto;
+      display: flex;
+      width: 90%;
+      #text {
+        order: 1;
+        flex: 1;
+        text-align: left;
+      }
+      #value {
+        order: 2;
+      }
+    }
+    #button-checkout {
+      width: 90%;
     }
   }
   ul {

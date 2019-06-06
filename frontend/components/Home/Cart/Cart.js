@@ -10,7 +10,6 @@ import User from '../../Authentication/User';
 import CartStyles from '../../styles/CartStyles';
 import CloseButton from '../../styles/CloseButton';
 import SickButton from '../../styles/SickButton';
-import Supreme from '../../styles/Supreme';
 import CartItem from './CartItem';
 
 const LOCAL_STATE_QUERY = gql`
@@ -42,10 +41,10 @@ const Cart = () => (
             <CloseButton onClick={toggleCart} title="close">
               &times;
             </CloseButton>
-            <Supreme>{me.name}'s Cart</Supreme>
+
             <p>
-              You Have {me.cart.length} Item
-              {me.cart.length === 1 ? '' : 's'} in your cart.
+              Shopping Cart{' '}
+              {me.cart.length > 0 ? `(${me.cart.length})` : 'Empty'}
             </p>
           </header>
           <ul>
@@ -54,10 +53,15 @@ const Cart = () => (
             ))}
           </ul>
           <footer>
-            <p>{formatMoney(calcTotalPrice(me.cart))} </p>
-            {me.cart.length && (
+            <div id="total">
+              <p id="text">Total</p>
+              <p id="value">{formatMoney(calcTotalPrice(me.cart))} </p>
+            </div>
+            {me.cart.length > 0 && (
               <Link href="/checkout">
-                <SickButton onClick={toggleCart}>Checkout</SickButton>
+                <SickButton id="button-checkout" onClick={toggleCart}>
+                  Checkout
+                </SickButton>
               </Link>
             )}
           </footer>
