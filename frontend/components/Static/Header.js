@@ -37,7 +37,6 @@ const Logo = styled.h1`
 `;
 
 const StyledHeader = styled.header`
-  height: 100px;
   .bar {
     z-index: 5;
     background: white;

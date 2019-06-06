@@ -19,26 +19,21 @@ const theme = {
 };
 
 const StyledPage = styled.div`
-  /* background: white; */
-  color: ${props => props.theme.black};
-
-  .footer {
-    text-align: center;
-    opacity: 0.5;
-    width: 100%;
-    height: 60px; /* Height of the footer */
-    background-color: red;
-    clear: both;
-    position: relative;
-    height: 40px;
-    margin-top: -40px;
-  }
+  height: 80px;
 `;
 
 const Inner = styled.div`
   max-width: ${props => props.theme.maxWidth};
-  margin: 0 auto;
+  margin: 100px auto 0;
   padding: 2rem;
+  min-height: calc(100vh - 206px);
+  @media (max-width: 1300px) {
+    margin: 150px auto 0;
+    min-height: calc(100vh - 256px);
+  }
+  &::after {
+    content: '';
+  }
 `;
 
 injectGlobal`
@@ -49,7 +44,7 @@ injectGlobal`
     font-style: normal;
   }
   html {
-    height: 100%;
+    height:100%;
     box-sizing: border-box;
     font-size: 10px;
     margin:0;
@@ -59,7 +54,7 @@ injectGlobal`
     box-sizing: inherit;
   }
   body {
-    height: 100%;
+    height:100%;
     padding: 0;
     margin: 0;
     font-size: 1.5rem;
@@ -68,21 +63,14 @@ injectGlobal`
     &:after {
       content: '';
       display: block;
-      height: 50px; /* Set same as footer's height */
+      height: 60px; /* Set same as footer's height */
     }
   }
   a {
     text-decoration: none;
     color: ${theme.black};
   }
-/* 
-  footer {
-   position:absolute;
-   bottom:0;
-   width:100%;
-   height:60px;   
-   background:#6cf;
-  }  */
+
 `;
 
 class Page extends Component {
@@ -94,7 +82,7 @@ class Page extends Component {
           <Meta />
           <Header />
           <Inner role="main">{children}</Inner>
-          {/* <Footer role="contentinfo"/> */}
+          <Footer role="contentinfo" />
         </StyledPage>
       </ThemeProvider>
     );
