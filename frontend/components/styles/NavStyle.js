@@ -5,7 +5,11 @@ const NavStyle = styled.ul`
   padding: 0;
   display: flex;
   justify-self: end;
-
+  .svg {
+    height: 32px;
+    width: 32px;
+    fill: gray;
+  }
   a,
   button {
     height: 80px;

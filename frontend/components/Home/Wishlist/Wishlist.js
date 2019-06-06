@@ -10,7 +10,7 @@ import User from '../../Authentication/User';
 import CartStyles from '../../styles/CartStyles';
 import CloseButton from '../../styles/CloseButton';
 import SickButton from '../../styles/SickButton';
-import CartItem from './CartItem';
+// import CartItem from './CartItem';
 
 const LOCAL_STATE_QUERY = gql`
   query {
@@ -32,54 +32,39 @@ const Composed = adopt({
   ),
   user: ({ render }) => <User>{render}</User>,
 });
-const Cart = () => (
+const Wishlist = () => (
   <Composed>
     {({ localState, toggleCart, user }) => {
       const { me } = user.data;
       if (!me) return null;
       return (
-        <CartStyles open={localState.data.cartOpen === 1}>
+        <CartStyles open={localState.data.cartOpen === 2}>
           <header>
             <CloseButton onClick={toggleCart} title="close">
               &times;
             </CloseButton>
 
             <p>
-              Shopping Cart
-              {me.cart.length > 0 ? ` (${me.cart.length})` : ' Empty'}
+              Wishlist
+              {me.cart.length > 0 ? `(${me.cart.length})` : 'Empty'}
             </p>
           </header>
           <ul>
-            {!me.cart[0] && (
-              <div id="container">
-                <div id="empty-cart">
-                  <p>YOUR SHOPPING CART IS EMPTY</p>
-                  <img alt="empty cart" src="../../../static/emptycart.webp" />
-                </div>
-              </div>
-            )}
-            {me.cart.map(cartItem => (
+            {/* {me.cart.map(cartItem => (
               <CartItem cartItem={cartItem} key={cartItem.id} />
-            ))}
+            ))} */}
           </ul>
-          {me.cart.length > 0 && (
-            <footer>
-              <div id="total">
-                <p id="text">Total</p>
-                <p id="value">{formatMoney(calcTotalPrice(me.cart))} </p>
-              </div>
-              <Link href="/checkout">
-                <SickButton id="button-checkout" onClick={toggleCart}>
-                  Checkout
-                </SickButton>
-              </Link>
-            </footer>
-          )}
+          <footer>
+            <div id="total">
+              <p id="text">Total</p>
+              <p id="value">{formatMoney(calcTotalPrice(me.cart))} </p>
+            </div>
+          </footer>
         </CartStyles>
       );
     }}
   </Composed>
 );
 
-export default Cart;
+export default Wishlist;
 export { LOCAL_STATE_QUERY, TOGGLE_CART_MUTATION };

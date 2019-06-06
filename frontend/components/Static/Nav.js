@@ -17,6 +17,7 @@ class Nav extends Component {
               <Link href="/index">
                 <a>Home</a>
               </Link>
+
               {me && (
                 <>
                   {me.permission[0] === 'INSTRUTOR' && (
@@ -39,7 +40,10 @@ class Nav extends Component {
                     </div>
                   </div>
 
-                  <Mutation mutation={TOGGLE_CART_MUTATION}>
+                  <Mutation
+                    mutation={TOGGLE_CART_MUTATION}
+                    variables={{ cartOpen: 1 }}
+                  >
                     {toggleCart => (
                       <button type="button" onClick={toggleCart}>
                         <img
@@ -51,8 +55,29 @@ class Nav extends Component {
                       </button>
                     )}
                   </Mutation>
+
+                  <Mutation
+                    mutation={TOGGLE_CART_MUTATION}
+                    variables={{ cartOpen: 2 }}
+                  >
+                    {toggleCart => (
+                      <>
+                        <button type="button" onClick={toggleCart}>
+                          <div className="svg">
+                            <svg viewBox="0 0 32 32">
+                              <path
+                                d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+                              c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"
+                              />
+                            </svg>
+                          </div>
+                        </button>
+                      </>
+                    )}
+                  </Mutation>
                 </>
               )}
+
               {!me && (
                 <>
                   <Link href="/signup">

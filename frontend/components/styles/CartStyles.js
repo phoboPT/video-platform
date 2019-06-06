@@ -17,9 +17,24 @@ const CartStyles = styled.div`
   display: grid;
   grid-template-rows: auto 1fr auto;
   ${props => props.open && `transform: translateX(0);`};
+  #container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    #empty-cart {
+      width: 100%;
+      text-align: center;
+      p {
+        font-family: 'Open Sans Condensed', sans-serif;
+        text-align: center;
+        font-size: 2.2rem;
+        color: #a4a6a8;
+      }
+    }
+  }
   header {
-    border-bottom: 5px solid ${props => props.theme.black};
-    padding-bottom: 2rem;
+    border-bottom: 2px solid ${props => props.theme.black};
+    padding-bottom: 1rem;
   }
   footer {
     border-top: 1px solid ${props => props.theme.black};

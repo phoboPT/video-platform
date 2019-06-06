@@ -5,6 +5,7 @@ import NProgress from 'nprogress';
 import React, { Component } from 'react';
 import Nav from './Nav';
 import Cart from '../Home/Cart/Cart';
+import Wishlist from '../Home/Wishlist/Wishlist';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -84,6 +85,8 @@ class Header extends Component {
         </div>
         <div className="sub-bar" />
         <Cart />
+        <Wishlist />
+
         <div />
       </StyledHeader>
     );
