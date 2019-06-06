@@ -65,7 +65,7 @@ const CartStyles = styled.div`
     margin: 0;
     padding: 0;
     list-style: none;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 `;
 
