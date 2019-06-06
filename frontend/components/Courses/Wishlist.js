@@ -37,9 +37,7 @@ class Wishlist extends Component {
       <Query query={WISHLIST_QUERY}>
         {({ data, error, loading, refetch }) => {
           if (loading) return <Loading />;
-
           if (error) return <Error error={error} />;
-
           if (!data) return null;
           if (data) {
             return (
