@@ -76,6 +76,33 @@ const updateRate = async (ctx, courseId, newRate, oldRate) => {
   return true;
 };
 
+const deleteFiles = async publicId => {
+  if (publicId.length > 0) {
+    publicId.forEach(async id => {
+      console.log(id.urlVideo);
+      const { urlVideo, file } = id;
+      if (urlVideo) {
+        const videoId = formatString('video', urlVideo)[0];
+        await cloudinary.v2.uploader.destroy(
+          videoId,
+          { resource_type: 'video' },
+          function(error, result) {
+            console.log(result, error);
+          }
+        );
+      }
+      if (file) {
+        await cloudinary.v2.api.delete_resources(
+          formatString('file', file),
+          { resource_type: 'raw' },
+          function(error, result) {
+            console.log(result, error);
+          }
+        );
+      }
+    });
+  }
+};
 const removeUnusedVideos = async (courseId, ctx) => {
   const getSection = await ctx.db.query.course(
     {
@@ -93,7 +120,6 @@ const removeUnusedVideos = async (courseId, ctx) => {
         }
     }`
   );
-
   const section = JSON.parse(getSection.section);
   const columns = section.columnOrder;
   const usedVideos = [];
@@ -103,34 +129,31 @@ const removeUnusedVideos = async (courseId, ctx) => {
       usedVideos.push(section);
     });
   });
-  const allVideos = [];
 
-  getSection.videos.forEach(video => {
-    allVideos.push(video.video);
-  });
+  const allVideos = getSection.videos.map(video => video.video);
   const unusedVideos = allVideos.filter(x => !usedVideos.includes(x.id));
-  console.log('unused',unusedVideos);
-  // unusedVideos.forEach(async video => {
-  //   const videoId = formatString('video', video.urlVideo)[0];
-  //   await cloudinary.v2.uploader.destroy(
-  //     videoId,
-  //     { resource_type: 'video' },
-  //     function(error, result) {
-  //       console.log(result, error);
-  //       if (result === 'ok') {
-  //         const where = {
-  //           id: video.id,
-  //         };
-  //         ctx.db.mutation.deleteVideo({
-  //           where,
-  //         });
-  //         ctx.db.mutation.deleteManyCourseVideoses({
-  //           where: { video: { id: video.id } },
-  //         });
-  //       }
-  //     }
-  //   );
-  // });
+  console.log('unused', unusedVideos, usedVideos);
+  unusedVideos.forEach(async video => {
+    const videoId = formatString('video', video.urlVideo)[0];
+    await cloudinary.v2.uploader.destroy(
+      videoId,
+      { resource_type: 'video' },
+      function(error, result) {
+        console.log(result, error);
+        if (result === 'ok') {
+          const where = {
+            id: video.id,
+          };
+          ctx.db.mutation.deleteVideo({
+            where,
+          });
+          ctx.db.mutation.deleteManyCourseVideoses({
+            where: { video: { id: video.id } },
+          });
+        }
+      }
+    );
+  });
 };
 
 const Mutations = {
@@ -216,7 +239,6 @@ const Mutations = {
         }
       }`
     );
-    // console.log(videoUser.videoItem[0].video);
 
     // da run no update method
 
@@ -527,80 +549,54 @@ const Mutations = {
 
     // delete the videos if there any
     if (videosToDelete.length > 0) {
-      const publicId = await Promise.all(
-        videosToDelete.map(video =>
-          ctx.db.query.videos(
-            {
-              where: { id: video },
-            },
-            `{
+      const publicId = await ctx.db.query.videos(
+        {
+          where: { id_in: videosToDelete },
+        },
+        `{
               urlVideo
               file
             }`
-          )
-        )
       );
 
       publicId.flat();
 
       // Delete the files on the server
-      publicId.forEach(async id => {
-        const { urlVideo, file } = id[0];
-        if (urlVideo) {
-          const videoId = formatString('video', urlVideo)[0];
-
-          await cloudinary.v2.uploader.destroy(
-            videoId,
-            { resource_type: 'video' },
-            function(error, result) {
-              console.log(result, error);
-            }
-          );
-        }
-        if (file) {
-          await cloudinary.v2.api.delete_resources(
-            formatString('file', file),
-            { resource_type: 'raw' },
-            function(error, result) {
-              console.log(result, error);
-            }
-          );
-        }
-      });
+      deleteFiles(publicId);
 
       // CourseVideo ids to delete
-      const courseVideoId = await Promise.all(
-        videosToDelete.map(video =>
-          ctx.db.query.courseVideoses(
-            {
-              where: { video: { id: video } },
-            },
-            `{
+      const courseVideoId = await ctx.db.query.courseVideoses(
+        {
+          where: { video: { id_in: videosToDelete } },
+        },
+        `{
           id
-                  }`
-          )
-        )
+        
+        }`
       );
+
       courseVideoId.flat();
+
       // Delete the course reference to the video
-      await ctx.db.mutation
-        .deleteManyCourseVideoses(
-          {
-            where: {
-              id: courseVideoId[0].id,
+      if (courseVideoId.length > 0) {
+        await ctx.db.mutation
+          .deleteManyCourseVideoses(
+            {
+              where: {
+                id: courseVideoId[0].id,
+              },
             },
-          },
-          info
-        )
-        .catch(err => {
-          console.log(err);
-        });
+            info
+          )
+          .catch(err => {
+            console.log(err);
+          });
+      }
 
       // Delete Videos
-      videosToDelete.forEach(id => {
-        ctx.db.mutation.deleteVideo({
-          where: { id },
-        });
+
+      ctx.db.mutation.deleteManyVideos({
+        where: { id_in: videosToDelete },
       });
     }
 
@@ -614,7 +610,6 @@ const Mutations = {
           id: args.id,
         },
       });
-      removeUnusedVideos(args.id, ctx);
     }
 
     // elimina o id dos updates
@@ -630,7 +625,7 @@ const Mutations = {
       delete updates.category;
       // da run no update method
       if (args.category) {
-        return ctx.db.mutation.updateCourse(
+        const res = await ctx.db.mutation.updateCourse(
           {
             data: {
               ...updates,
@@ -644,9 +639,11 @@ const Mutations = {
           },
           info
         );
+        removeUnusedVideos(args.id, ctx);
+        return res;
       }
 
-      return ctx.db.mutation.updateCourse(
+      const res = await ctx.db.mutation.updateCourse(
         {
           data: updates,
           where: {
@@ -655,6 +652,9 @@ const Mutations = {
         },
         info
       );
+      removeUnusedVideos(args.id, ctx);
+
+      return res;
     }
 
     return ctx.db.mutation.createCourse(
@@ -760,7 +760,7 @@ const Mutations = {
       info
     );
 
-    const res = await updateRate(ctx, args.courseId, args.rating, 0);
+    updateRate(ctx, args.courseId, args.rating, 0);
     return rateCourse;
   },
   async deleteRateCourse(parent, args, ctx, info) {
@@ -827,12 +827,7 @@ const Mutations = {
       }}`
     );
 
-    const res = await updateRate(
-      ctx,
-      courseId.course.id,
-      args.rate,
-      courseId.rate
-    );
+    updateRate(ctx, courseId.course.id, args.rate, courseId.rate);
 
     // da run no update method
     return ctx.db.mutation.updateRateCourse(
@@ -1204,7 +1199,7 @@ const Mutations = {
       (tally, cartItem) => tally + cartItem.course.price,
       0
     );
-    const create_payment_json = {
+    const createPaymentJson = {
       intent: 'sale',
       payer: {
         payment_method: 'paypal',
@@ -1237,7 +1232,7 @@ const Mutations = {
 
     function getLink() {
       return new Promise(function(fulfilled, rejected) {
-        paypal.payment.create(create_payment_json, function(error, payment) {
+        paypal.payment.create(createPaymentJson, function(error, payment) {
           if (error) {
             rejected(error);
           } else {
@@ -1296,7 +1291,7 @@ const Mutations = {
       0
     );
 
-    const execute_payment_json = {
+    const executePaymentJson = {
       payer_id: args.payerId,
       transactions: [
         {
@@ -1311,7 +1306,7 @@ const Mutations = {
     const { paymentId } = args;
     function getOrder() {
       return new Promise(function(fulfilled, rejected) {
-        paypal.payment.execute(paymentId, execute_payment_json, async function(
+        paypal.payment.execute(paymentId, executePaymentJson, async function(
           error,
           payment
         ) {
@@ -1379,10 +1374,7 @@ const Mutations = {
       },
     });
 
-    console.log(existingWhishItem);
-
     if (existingWhishItem) {
-      console.log('remove');
       return ctx.db.mutation.deleteWishlist(
         {
           where: { id: existingWhishItem.id },

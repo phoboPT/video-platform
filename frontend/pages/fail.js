@@ -1,13 +1,7 @@
-import React, { Component } from 'react';
+const Fail = () => (
+  <div>
+    <p>Fail</p>
+  </div>
+);
 
-export class fail extends Component {
-  render() {
-    return (
-      <div>
-        <p>Fail</p>
-      </div>
-    );
-  }
-}
-
-export default fail;
+export default Fail;

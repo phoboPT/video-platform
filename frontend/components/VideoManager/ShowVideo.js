@@ -171,8 +171,7 @@ class ShowVideo extends Component {
           <Query query={SINGLE_VIDEO_QUERY} variables={{ id }}>
             {({ data, loading }) => {
               if (loading) return <Loading />;
-              if (!data) return <p>`No Video Found for ${id}`</p>;
-              if (!data.course) return null;
+              if (!data.course) return <p>No Video Found for {id}</p>;
               if (data.course.videos.length > 0) {
                 if (!hasUpdated) {
                   this.initialState(data, videoUser);

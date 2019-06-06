@@ -327,3 +327,4 @@ FormCourse.propTypes = {
 };
 
 export default FormCourse;
+export { ALL_CATEGORIES_QUERY };

@@ -33,13 +33,12 @@ class CourseItem extends Component {
     } else {
       data = this.props.course.course;
     }
-
     return (
       <Container>
         <Link
           href={{
             pathname: '/video',
-            query: { id: data.id },
+            query: { id: data.videos[0] || 0 },
           }}
         >
           <img alt={data.title} src={data.thumbnail} />

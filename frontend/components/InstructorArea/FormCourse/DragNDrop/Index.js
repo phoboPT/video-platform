@@ -337,7 +337,7 @@ class Index extends Component {
   removeSection = async sectionId => {
     const { sections, videos, files, columnOrder } = this.state;
     const { updateState, updateFilesToDelete } = this.props;
-
+    console.log('section', sectionId);
     const videosIds = sections[sectionId].videoIds;
     const { fileIds } = sections[sectionId].fileIds;
 

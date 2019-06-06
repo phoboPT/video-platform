@@ -1009,6 +1009,20 @@ const Query = {
     };
     return result;
   },
+  async coursesCategory(parent, args, ctx, info) {
+    console.log(args);
+
+    return ctx.db.query.courses(
+      {
+        where: {
+          category: {
+            id_in: args.category,
+          },
+        },
+      },
+      info
+    );
+  },
 };
 
 module.exports = Query;

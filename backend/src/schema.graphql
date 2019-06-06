@@ -213,4 +213,5 @@ type Query {
   coursesStats: [Stats]
   sellsByCourse(id: ID): [Stats]
   coursesStatsByDate(initialDate: String): [Stats]
+  coursesCategory(category: [ID]): [Course]
 }

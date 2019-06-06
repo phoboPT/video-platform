@@ -122,11 +122,11 @@ class Column extends Component {
   }
 
   changeState = async e => {
-    const { title } = this.state;
     const { handleChange, section } = this.props;
     const { name, type, value } = e.target;
     const val = type === 'number' ? parseFloat(value) : value;
     await this.setState({ [name]: val });
+    const { title } = this.state;
     handleChange(title, section.id);
   };
 
@@ -137,8 +137,7 @@ class Column extends Component {
 
   handleRemove = e => {
     const { removeSection } = this.props;
-
-    removeSection(e.target.id);
+    removeSection(e.target.parentElement.id);
   };
 
   render() {

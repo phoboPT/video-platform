@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import Rating from '../CourseInfo/Comments/Rating';
 import Container from '../../styles/CourseItemStyle';
 import formatMoney from '../../../lib/formatMoney';
@@ -11,25 +10,12 @@ export class CourseItem extends Component {
     course: PropTypes.object.isRequired,
   };
 
-  state = {
-    ...this.props.course.user,
-    buttonToShow: 0,
-    courseId: this.props.course.id,
-  };
-
   render() {
     const { course } = this.props;
     return (
       <>
-        <Container>
-          <Link
-            href={{
-              pathname: '/course',
-              query: { id: course.id },
-            }}
-          >
-            <img alt="thumbnail" className="Thumbnail" src={course.thumbnail} />
-          </Link>
+        <Container noCursor>
+          <img alt="thumbnail" src={course.thumbnail} />
           <br />
           <div id="title-card">
             <p>{course.title}</p>

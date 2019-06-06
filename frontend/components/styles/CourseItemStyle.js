@@ -14,7 +14,7 @@ const Container = styled.div`
     width: 100%;
     height: 190px;
     object-fit: cover;
-    cursor: pointer;
+    cursor: ${props => (props.noCursor ? '' : 'pointer')};
   }
   p {
     margin-block-start: 0em;

@@ -167,15 +167,16 @@ class Video extends Component {
   };
 
   changeState = async e => {
-    const { content, freeToWatch } = this.state;
     const { handleVideo, video } = this.props;
     const { value, id, checked } = e.target;
-
     await this.setState({ [id]: id === 'content' ? value : checked });
+    const { content, freeToWatch } = this.state;
+
     const data = {
       content,
       freeToWatch,
     };
+
     handleVideo(data, video.id);
   };
 
