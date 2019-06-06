@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const Dot = styled.div`
-  background: ${props => props.theme.red};
+  background: rgba(0, 0, 0, 0.7);
   color: white;
   border-radius: 100%;
   padding: 0, 5rem;

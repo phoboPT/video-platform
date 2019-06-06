@@ -20,19 +20,25 @@ function createClient({ headers }) {
         Mutation: {
           toggleCart(_, variables, { cache }) {
             // read the cartOpen value from the cache
+            console.log(variables);
+
             const { cartOpen } = cache.readQuery({
               query: LOCAL_STATE_QUERY,
             });
-            // Write the cart State to the opposite
-            const data = { data: { cartOpen: !cartOpen } };
-
+            let data;
+            if (cartOpen === variables.cartOpen) {
+              data = { data: { cartOpen: 0 } };
+            } else {
+              // Write the cart State to the opposite
+              data = { data: { cartOpen: variables.cartOpen } };
+            }
             cache.writeData(data);
             return data;
           },
         },
       },
       defaults: {
-        cartOpen: false,
+        cartOpen: 0,
       },
     },
   });
