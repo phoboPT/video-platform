@@ -1,4 +1,4 @@
-export default function orderCourses(course) {
+function orderCourses(course) {
   const final = [];
 
   course.map(element => {
@@ -13,3 +13,5 @@ export default function orderCourses(course) {
 
   return final;
 }
+
+export default orderCourses;

@@ -1,4 +1,4 @@
-export default function(amount) {
+function formatMoney(amount) {
   const options = {
     currency: 'EUR',
     minimumFractionDigits: 2,
@@ -9,3 +9,5 @@ export default function(amount) {
   const formatter = new Intl.NumberFormat('pt-PT', options);
   return formatter.format(amount);
 }
+
+export default formatMoney;

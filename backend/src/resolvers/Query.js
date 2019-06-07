@@ -988,8 +988,7 @@ const Query = {
     let totalComments = 0;
     allCourses.map(course => (totalComments += course.totalComments));
     // totalComments
-    const coursesId = [];
-    await allCourses.map(course => coursesId.push(course.id));
+    const coursesId = allCourses.map(course => course.id);
 
     const userCourse = await ctx.db.query.userCourses(
       {
@@ -1010,14 +1009,42 @@ const Query = {
     return result;
   },
   async coursesCategory(parent, args, ctx, info) {
-    console.log(args);
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
 
+    const coursesBuyed = await ctx.db.query.userCourses(
+      {
+        where: { user: { id: userId } },
+      },
+      `{
+        course{
+        id
+      }
+      }`
+    );
+
+    const coursesToFilter = coursesBuyed.map(item => item.course.id);
+    console.log(args);
     return ctx.db.query.courses(
       {
+        orderBy: args.orderBy,
         where: {
-          category: {
-            id_in: args.category,
-          },
+          AND: [
+            {
+              category: {
+                id_in: args.category,
+              },
+            },
+            // {
+            //   id_not_in: coursesToFilter,
+            // },
+            {
+              state: 'PUBLISHED',
+            },
+          ],
         },
       },
       info

@@ -4,7 +4,7 @@ import {
   imageExtensions,
 } from './formatExtensions';
 
-export default function validateExtension(string, extensionToCompare) {
+function validateExtension(string, extensionToCompare) {
   const format = string.slice(((string.lastIndexOf('.') - 1) >>> 0) + 2);
   let isValid = false;
 
@@ -40,3 +40,4 @@ export default function validateExtension(string, extensionToCompare) {
 
   return isValid;
 }
+export default validateExtension;

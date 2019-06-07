@@ -8,8 +8,8 @@ import CourseItem from '../CoursesList/CourseItem';
 import { Container, CoursesList, Title } from '../../styles/Home';
 
 const SEARCH_COURSE_CATEGORY = gql`
-  query SEARCH_COURSE_CATEGORY($category: [ID]) {
-    coursesCategory(category: $category) {
+  query SEARCH_COURSE_CATEGORY($category: [ID], $orderBy: String) {
+    coursesCategory(category: $category, orderBy: $orderBy) {
       id
       title
       description
@@ -25,33 +25,38 @@ const SEARCH_COURSE_CATEGORY = gql`
     }
   }
 `;
-export class SearchList extends Component {
+class SearchList extends Component {
   render() {
     const { info } = this.props;
-    console.log(info);
+    console.log('info', info);
     return (
-      <Query query={SEARCH_COURSE_CATEGORY} variables={{ category: info }}>
+      <Query
+        query={SEARCH_COURSE_CATEGORY}
+        variables={{
+          category: info.category,
+          orderBy: `${info.orderBy}_${info.sort}`,
+        }}
+      >
         {({ data, loading, error }) => {
-          console.log(data);
           if (loading) return <Loading />;
           if (error) return <Error error={error} />;
-          if (data.coursesCategory.length > 0)
-            return (
-              <Container>
-                <Container lista>
-                  <div id="content-container">
-                    <CoursesList id="courses-list">
-                      {/* {data.coursesList.map(course => (
+          if (data.coursesCategory.length > 0) console.log(data);
+          return (
+            <Container>
+              <Container lista>
+                <div id="content-container">
+                  <CoursesList id="courses-list">
+                    {/* {data.coursesList.map(course => (
                         <CourseItem course={course} key={course.id} />
                         ))} */}
-                      {data.coursesCategory.map(item => (
-                        <CourseItem course={item} />
-                      ))}
-                    </CoursesList>
-                  </div>
-                </Container>
+                    {data.coursesCategory.map(item => (
+                      <CourseItem course={item} key={item.id} />
+                    ))}
+                  </CoursesList>
+                </div>
               </Container>
-            );
+            </Container>
+          );
           return <p>No data</p>;
         }}
       </Query>

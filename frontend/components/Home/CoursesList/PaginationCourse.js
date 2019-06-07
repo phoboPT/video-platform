@@ -97,7 +97,7 @@ export class PaginationCourse extends Component {
 }
 
 PaginationCourse.propTypes = {
-  isInterest: PropTypes.number.isRequired,
+  isInterest: PropTypes.bool,
   page: PropTypes.number.isRequired,
   animationSliderControlForward: PropTypes.func.isRequired,
   animationSliderControlBackward: PropTypes.func.isRequired,

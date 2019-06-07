@@ -55,7 +55,7 @@ class WishItem extends Component {
           <div className="rating">
             <Rating
               readOnly
-              initialValue={course.totalRate / course.totalComments || 0}
+              initialValue={course.totalRate || 0}
               totalComments={course.totalComments}
               showTotal
             />
