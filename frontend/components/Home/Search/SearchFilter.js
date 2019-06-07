@@ -16,9 +16,13 @@ const Container = styled.div`
 
     input {
       margin: auto 1rem;
-      width: 25px;
-      height: 25px;
-      -moz-appearance: none;
+      /* Double-sized Checkboxes */
+      -ms-transform: scale(1.5); /* IE */
+      -moz-transform: scale(1.5); /* FF */
+      -webkit-transform: scale(1.5); /* Safari and Chrome */
+      -o-transform: scale(1.5); /* Opera */
+      transform: scale(1.5);
+      padding: 10px;
     }
   }
 `;
@@ -49,7 +53,7 @@ class SearchFilter extends Component {
 
   changeOrderBy = async e => {
     const {
-      checked: { orderBy, category, sort },
+      checked: { category, sort },
     } = this.state;
 
     await this.setState({
@@ -117,14 +121,16 @@ class SearchFilter extends Component {
                 </div>
                 {sort.map(item => (
                   <Fragment key={item}>
-                    <input
-                      type="radio"
-                      defaultChecked={checked.sort === item}
-                      name="sort"
-                      value={item}
-                      onChange={this.changeSort}
-                    />
-                    {item === 'DESC' ? '⬆' : '⬇'}
+                    <div className="item">
+                      <input
+                        type="radio"
+                        defaultChecked={checked.sort === item}
+                        name="sort"
+                        value={item}
+                        onChange={this.changeSort}
+                      />
+                      {item === 'DESC' ? '⬆' : '⬇'}
+                    </div>
                   </Fragment>
                 ))}
               </Container>

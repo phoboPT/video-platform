@@ -10,7 +10,7 @@ const CartStyles = styled.div`
   width: 25%;
   margin-top: 10rem;
   min-width: 400px;
-  transform: translateX(100%);
+  transform: translateX(110%);
   transition: all 0.3s;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.2);
   z-index: 8;

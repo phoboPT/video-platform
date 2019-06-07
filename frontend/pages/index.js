@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 import User from '../components/Authentication/User';
 import ListAllCourses, {
   RENDER_QUERY,
@@ -68,6 +69,20 @@ const Courses = styled.div`
   margin: 500px auto 0 auto;
   border: 1px solid white;
 `;
+
+const SearchStyle = styled.div`
+  display: flex;
+  #image {
+    width: 42px;
+    order: 1;
+    margin: 0 2rem 0 0;
+    cursor: pointer;
+  }
+  #search {
+    order: 1;
+    flex: 1;
+  }
+`;
 class Home extends Component {
   render() {
     return (
@@ -96,7 +111,20 @@ class Home extends Component {
           }
           return (
             <div key={data.me.id}>
-              <Search />
+              <SearchStyle>
+                <Link
+                  href={{
+                    pathname: '/search-filter',
+                  }}
+                >
+                  <img
+                    id="image"
+                    alt="Search whit filters"
+                    src="../static/filter.webp"
+                  />
+                </Link>
+                <Search />
+              </SearchStyle>
               {data.me.interests.length > 0 && (
                 <ListAllCourses query="ALL_COURSE_INTERESTS" />
               )}

@@ -47,7 +47,7 @@ class Search extends Component {
     resetIdCounter();
     const { courses, loading } = this.state;
     return (
-      <SearchStyles>
+      <SearchStyles id="search">
         <Downshift
           onChange={routeToCourse}
           itemToString={course => (course === null ? '' : course.title)}
