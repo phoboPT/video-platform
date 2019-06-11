@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
@@ -161,5 +162,9 @@ export class WishButton extends Component {
     );
   }
 }
+
+WishButton.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default WishButton;

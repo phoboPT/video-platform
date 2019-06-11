@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
+import gql from 'graphql-tag';
 import { ALL_CATEGORIES_QUERY } from '../../InstructorArea/FormCourse/FormCourse';
 import Loading from '../../Static/Loading';
 import Error from '../../Static/ErrorMessage';
@@ -104,6 +105,7 @@ class SearchFilter extends Component {
                   </div>
                 ))}
               </Container>
+              <hr />
               <h3>Order By</h3>
               <Container>
                 <div className="item">
@@ -111,7 +113,6 @@ class SearchFilter extends Component {
                     <option value="a" disabled hidden>
                       Order By
                     </option>
-
                     {Object.entries(orderBy).map(item => (
                       <option key={item[0]} value={`${item[1]}`}>
                         {item[0]}
@@ -134,6 +135,7 @@ class SearchFilter extends Component {
                   </Fragment>
                 ))}
               </Container>
+              <hr />
               <div className="results">
                 <SearchList info={checked} />
               </div>

@@ -9,7 +9,7 @@ class AllCourses extends Component {
     displayTitle: true,
     displayLegend: true,
     legendPosition: 'right',
-    title: 'City',
+    title: 'All',
     height: 300,
     width: 600,
     label: 'Graph',

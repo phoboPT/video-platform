@@ -154,7 +154,7 @@ class CourseByDate extends Component {
         options={{
           title: {
             display: displayTitle,
-            text: title,
+            text: title || 'No Data',
             fontSize: 25,
           },
           legend: {

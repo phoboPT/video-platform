@@ -1,8 +1,8 @@
 const orderBy = {
-  Created: 'createdAt',
+  'More Recent': 'createdAt',
   Price: 'price',
-  'Total Comments': 'totalComments',
-  Rate: 'totalRate',
+  Evaluation: 'totalComments',
+  'Most Popular': 'totalRate',
 };
 const sort = ['ASC', 'DESC'];
 
