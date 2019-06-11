@@ -5,9 +5,16 @@ const NavStyle = styled.ul`
   padding: 0;
   display: flex;
   justify-self: end;
-
+  #button-signin {
+    font-family: inherit;
+    font-weight: 930;
+    cursor: pointer;
+  }
   #cart {
-    margin-right: 2.5rem;
+    margin-right: 3rem;
+    img {
+      margin: 0;
+    }
   }
   #svg-btn {
     margin-right: 1.5rem;
@@ -64,8 +71,7 @@ const NavStyle = styled.ul`
     width: 33px;
   }
   @media (max-width: 1300px) {
-    border-top: 1px solid ${props => props.theme.lightGrey};
-    width: 100%;
+    width: 20%;
     justify-content: center;
     font-size: 1.5rem;
   }

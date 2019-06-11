@@ -29,7 +29,7 @@ const SIGNUP_MUTATION = gql`
 const Style = styled.div`
   display: grid;
   text-align: center;
-
+  background: white;
   input,
   input[placeholder] {
     text-align: center;
@@ -102,7 +102,7 @@ const Style = styled.div`
         #span-password {
           margin-top: 5px;
           order: 1;
-          background-image: url('../../static/password-icon.gif');
+          background-image: url('../../static/password-icon.webp');
           width: 30px;
           height: 30px;
           background-repeat: no-repeat;
@@ -133,11 +133,12 @@ const Style = styled.div`
 `;
 
 const ButtonStyle = styled.div`
-  padding-bottom: 1rem;
+  margin-top: 2rem;
+  margin-left: 1rem;
   button {
     background: none;
     border: none;
-    font-size: 15px;
+    font-size: 30px;
     line-height: 10px;
     color: #2c2f33;
     cursor: pointer;
@@ -193,7 +194,7 @@ class Signup extends Component {
                 type="button"
                 name="go back"
               >
-                ⬅ Go Back
+                ↶
               </button>
             </ButtonStyle>
             <Style>

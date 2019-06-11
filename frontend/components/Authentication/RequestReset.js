@@ -53,11 +53,12 @@ const Style = styled.div`
   }
 `;
 const ButtonStyle = styled.div`
-  padding-bottom: 1rem;
+  margin-top: 2rem;
+  margin-left: 1rem;
   button {
     background: none;
     border: none;
-    font-size: 15px;
+    font-size: 30px;
     line-height: 10px;
     color: #2c2f33;
     cursor: pointer;
@@ -89,7 +90,7 @@ class RequestReset extends Component {
                 type="button"
                 name="go back to the last page"
               >
-                ⬅ Go Back
+                ↶
               </button>
             </ButtonStyle>
             <Style>

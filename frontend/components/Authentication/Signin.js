@@ -27,8 +27,9 @@ const SIGNIN_MUTATION = gql`
 `;
 
 const Style = styled.div`
+  margin-top: 1rem;
   display: grid;
-
+  background: white;
   input,
   input[placeholder] {
     text-align: center;
@@ -199,7 +200,7 @@ class Signin extends Component {
         variables={this.state}
       >
         {(signin, { error, loading }) => (
-          <Style>
+          <Style open>
             <form method="post" onSubmit={e => this.submitForm(e, signin)}>
               <fieldset id="fieldset" aria-busy={loading} disabled={loading}>
                 <img id="img" alt="user" src="../../static/user.webp" />

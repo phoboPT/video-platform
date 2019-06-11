@@ -5,6 +5,7 @@ import NavStyle from '../styles/NavStyle';
 import User from '../Authentication/User';
 import Signout from '../Authentication/Signout';
 import { TOGGLE_CART_MUTATION } from '../Home/Cart/Cart';
+import { TOGGLE_LOGIN_MUTATION } from '../Authentication/LoginPage';
 import CartCount from '../Home/Cart/CartCount';
 
 class Nav extends Component {
@@ -63,30 +64,38 @@ class Nav extends Component {
                       </>
                     )}
                   </Mutation>
-                  <Mutation
-                    mutation={TOGGLE_CART_MUTATION}
-                    variables={{ cartOpen: 1 }}
-                  >
-                    {toggleCart => (
-                      <button id="cart" type="button" onClick={toggleCart}>
-                        <img
-                          id="cart"
-                          alt="cart"
-                          src="../../static/cart.webp"
-                        />
-                        <CartCount count={me.cart.length} />
-                      </button>
-                    )}
-                  </Mutation>
+                  <div id="cart">
+                    <Mutation
+                      mutation={TOGGLE_CART_MUTATION}
+                      variables={{ cartOpen: 1 }}
+                    >
+                      {toggleCart => (
+                        <button type="button" onClick={toggleCart}>
+                          <img
+                            id="cart"
+                            alt="cart"
+                            src="../../static/cart.webp"
+                          />
+                          <CartCount count={me.cart.length} />
+                        </button>
+                      )}
+                    </Mutation>
+                  </div>
                 </>
               )}
 
               {!me && (
-                <>
-                  <Link href="/signup">
-                    <a>Sign In</a>
-                  </Link>
-                </>
+                <Mutation mutation={TOGGLE_LOGIN_MUTATION}>
+                  {toggleLogin => (
+                    <button
+                      id="button-signin"
+                      type="button"
+                      onClick={toggleLogin}
+                    >
+                      Sign In
+                    </button>
+                  )}
+                </Mutation>
               )}
             </NavStyle>
           </>
