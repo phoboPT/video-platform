@@ -48,6 +48,11 @@ const Container = styled.div`
     text-align: left;
     padding: 1rem 0 1rem 0;
     display: flex;
+    img {
+      margin: auto;
+      height: 32px;
+      width: 32px;
+    }
     span {
       color: #1f0063;
       padding: 0 0 0 0.2rem;

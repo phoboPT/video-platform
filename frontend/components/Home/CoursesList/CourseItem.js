@@ -2,6 +2,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import formatMoney from '../../../lib/formatMoney';
+import formatString from '../../../lib/formatString';
 import User from '../../Authentication/User';
 import BuyFreeButton from '../BuyFreeButton';
 import AddToCart from '../Cart/AddToCart';
@@ -45,7 +46,7 @@ class CourseItem extends Component {
                 </Link>
                 <br />
                 <div id="title-card">
-                  <p>{course.title}</p>
+                  <p>{formatString(course.title, 28)}</p>
                 </div>
                 <div id="instructor-card">
                   <p>{course.user.name}</p>
@@ -56,9 +57,7 @@ class CourseItem extends Component {
                     showTotal
                     readOnly
                     initialValue={
-                      Number.isNaN(course.totalRate / course.totalComments)
-                        ? 0
-                        : course.totalRate / course.totalComments
+                      Number.isNaN(course.totalRate) ? 0 : course.totalRate
                     }
                     totalComments={course.totalComments || 0}
                   />

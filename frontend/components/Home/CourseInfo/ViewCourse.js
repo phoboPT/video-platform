@@ -193,11 +193,9 @@ class ViewCourse extends Component {
                                   showTotal
                                   readOnly
                                   initialValue={
-                                    Number.isNaN(
-                                      course.totalRate / course.totalComments
-                                    )
+                                    Number.isNaN(course.totalRate)
                                       ? 0
-                                      : course.totalRate / course.totalComments
+                                      : course.totalRate
                                   }
                                   totalComments={course.totalComments || 0}
                                 />

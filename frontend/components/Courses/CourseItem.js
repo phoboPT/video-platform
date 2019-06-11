@@ -53,6 +53,20 @@ class CourseItem extends Component {
         </div>
         {!showInfo && (
           <div id="rating">
+            <Link
+              href={{
+                pathname: '/course',
+                query: { id: data.id },
+              }}
+            >
+              <img
+                height="42"
+                width="42"
+                alt={data.title}
+                src="../../../static/previewIcon.webp"
+              />
+            </Link>
+
             <div className="progress">
               <Progress type="circle" width={40} percent={parseInt(percent)} />
               <span>{` Watched (${watched}) Total (${total})`}</span>
@@ -66,11 +80,7 @@ class CourseItem extends Component {
               <Rating
                 showTotal
                 readOnly
-                initialValue={
-                  Number.isNaN(data.totalRate / data.totalComments)
-                    ? 0
-                    : data.totalRate / data.totalComments
-                }
+                initialValue={Number.isNaN(data.totalRate) ? 0 : data.totalRate}
                 totalComments={data.totalComments || 0}
               />
             </div>

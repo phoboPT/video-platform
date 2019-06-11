@@ -1,4 +1,4 @@
-export default function calcProgress(data, isShowVideo) {
+function calcProgress(data, isShowVideo) {
   const { course, user } = data;
   const videosCourse = course.videos;
   const videoIds = [];
@@ -56,3 +56,4 @@ export default function calcProgress(data, isShowVideo) {
 
   return res;
 }
+export default calcProgress;
