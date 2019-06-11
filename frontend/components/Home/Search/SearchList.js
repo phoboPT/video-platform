@@ -25,10 +25,10 @@ const SEARCH_COURSE_CATEGORY = gql`
     }
   }
 `;
+
 class SearchList extends Component {
   render() {
     const { info } = this.props;
-    console.log('info', info);
     return (
       <Query
         query={SEARCH_COURSE_CATEGORY}
@@ -40,23 +40,21 @@ class SearchList extends Component {
         {({ data, loading, error }) => {
           if (loading) return <Loading />;
           if (error) return <Error error={error} />;
-          if (data.coursesCategory.length > 0) console.log(data);
-          return (
-            <Container>
-              <Container lista>
-                <div id="content-container">
-                  <CoursesList id="courses-list">
-                    {/* {data.coursesList.map(course => (
-                        <CourseItem course={course} key={course.id} />
-                        ))} */}
-                    {data.coursesCategory.map(item => (
-                      <CourseItem course={item} key={item.id} />
-                    ))}
-                  </CoursesList>
-                </div>
+          if (data.coursesCategory.length > 0) {
+            return (
+              <Container>
+                <Container lista>
+                  <div id="content-container">
+                    <CoursesList id="courses-list">
+                      {data.coursesCategory.map(item => (
+                        <CourseItem course={item} key={item.id} />
+                      ))}
+                    </CoursesList>
+                  </div>
+                </Container>
               </Container>
-            </Container>
-          );
+            );
+          }
           return <p>No data</p>;
         }}
       </Query>

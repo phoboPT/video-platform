@@ -935,7 +935,7 @@ const Query = {
           AND: [
             { course: { id_in: ids } },
             {
-              createdAt_gte: `${date[0]}-${date[1]}-${parseInt(date[2])}`,
+              createdAt_gte: `${date[0]}-${date[1]}-${date[2]}`,
             },
             {
               createdAt_lte: `${date[0]}-${date[1]}-${parseInt(date[2]) + 1}`,
@@ -1038,9 +1038,9 @@ const Query = {
                 id_in: args.category,
               },
             },
-            // {
-            //   id_not_in: coursesToFilter,
-            // },
+            {
+              id_not_in: coursesToFilter,
+            },
             {
               state: 'PUBLISHED',
             },
