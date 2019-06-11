@@ -13,7 +13,10 @@ class Nav extends Component {
       <User>
         {({ data: { me } }) => (
           <>
-            <NavStyle role="navigation">
+            <NavStyle
+              wishColor={me ? me.wishlist.length : ''}
+              role="navigation"
+            >
               <Link href="/index">
                 <a>Home</a>
               </Link>
@@ -42,27 +45,11 @@ class Nav extends Component {
 
                   <Mutation
                     mutation={TOGGLE_CART_MUTATION}
-                    variables={{ cartOpen: 1 }}
-                  >
-                    {toggleCart => (
-                      <button type="button" onClick={toggleCart}>
-                        <img
-                          id="cart"
-                          alt="cart"
-                          src="../../static/cart.webp"
-                        />
-                        <CartCount count={me.cart.length} />
-                      </button>
-                    )}
-                  </Mutation>
-
-                  <Mutation
-                    mutation={TOGGLE_CART_MUTATION}
                     variables={{ cartOpen: 2 }}
                   >
                     {toggleCart => (
                       <>
-                        <button type="button" onClick={toggleCart}>
+                        <button type="button" id="svg-btn" onClick={toggleCart}>
                           <div className="svg">
                             <svg viewBox="0 0 32 32">
                               <path
@@ -71,8 +58,24 @@ class Nav extends Component {
                               />
                             </svg>
                           </div>
+                          <CartCount count={me.wishlist.length} />
                         </button>
                       </>
+                    )}
+                  </Mutation>
+                  <Mutation
+                    mutation={TOGGLE_CART_MUTATION}
+                    variables={{ cartOpen: 1 }}
+                  >
+                    {toggleCart => (
+                      <button id="cart" type="button" onClick={toggleCart}>
+                        <img
+                          id="cart"
+                          alt="cart"
+                          src="../../static/cart.webp"
+                        />
+                        <CartCount count={me.cart.length} />
+                      </button>
                     )}
                   </Mutation>
                 </>

@@ -8,6 +8,7 @@ import {
   ALL_COURSES_QUERY,
   ALL_COURSES_RATING,
 } from './CoursesList/ListAllCourses';
+import { CURRENT_USER_QUERY } from '../Authentication/User';
 
 const ADD_TO_WISHLIST_MUTATION = gql`
   mutation ADD_TO_WISHLIST_MUTATION($id: ID!) {
@@ -127,6 +128,7 @@ export class WishButton extends Component {
             query: ALL_COURSES_RATING,
             variables: { published: 'PUBLISHED', skip: data.skip },
           },
+          { query: CURRENT_USER_QUERY },
         ]}
         variables={{
           id: data.id,
@@ -163,3 +165,4 @@ export class WishButton extends Component {
 }
 
 export default WishButton;
+export { ADD_TO_WISHLIST_MUTATION };

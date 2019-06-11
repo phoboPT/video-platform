@@ -5,10 +5,18 @@ const NavStyle = styled.ul`
   padding: 0;
   display: flex;
   justify-self: end;
+
+  #cart {
+    margin-right: 2.5rem;
+  }
+  #svg-btn {
+    margin-right: 1.5rem;
+  }
   .svg {
+    margin-left: 1rem;
     height: 32px;
     width: 32px;
-    fill: gray;
+    fill: ${props => (props.wishColor > 0 ? 'red' : 'gray')};
   }
   a,
   button {

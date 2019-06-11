@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import RemoveFromCart from './RemoveFromCart';
+import Link from 'next/link';
+import RemoveFromWishlist from './RemoveFromWishlist';
 import formatString from '../../../lib/formatString';
-import AddToWish from './AddToWish';
+import AddToCart from './AddToCart';
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -13,6 +14,7 @@ const CartItemStyles = styled.li`
   grid-template-columns: auto 1fr auto;
   max-height: 105px;
   img {
+    cursor: pointer;
     height: 70px;
     margin-right: 10px;
   }
@@ -37,32 +39,38 @@ const CartItemStyles = styled.li`
     }
   }
   #actions {
-    display: inline-block;
     height: 100%;
   }
 `;
 
-const CartItem = ({ cartItem }) => (
+const WishlistItem = ({ wishlist }) => (
   <CartItemStyles>
-    <img
-      alt={cartItem.course.title}
-      src={cartItem.course.thumbnail}
-      width="100"
-    />
-    <div className="cart-item-details">
-      <h3>{formatString(cartItem.course.title, 25)}</h3>
-      <p id="user">{cartItem.course.user.name}</p>
+    <Link
+      href={{
+        pathname: '/course',
+        query: { id: wishlist.course.id },
+      }}
+    >
+      <img
+        alt={wishlist.course.title}
+        src={wishlist.course.thumbnail}
+        width="100"
+      />
+    </Link>
 
-      <p>{cartItem.course.price} €</p>
+    <div className="cart-item-details">
+      <h3>{formatString(wishlist.course.title, 25)}</h3>
+      <p id="user">{wishlist.course.user.name}</p>
+      <p>{wishlist.course.price} €</p>
     </div>
     <div id="actions">
-      <RemoveFromCart id={cartItem.id} />
-      <AddToWish id={cartItem.id} courseId={cartItem.course.id} />
+      <RemoveFromWishlist id={wishlist.course.id} wishlist={wishlist} />
+      <AddToCart id={wishlist.course.id} wishlist={wishlist} />
     </div>
   </CartItemStyles>
 );
 
-CartItem.propTypes = {
-  cartItem: PropTypes.object.isRequired,
+WishlistItem.propTypes = {
+  wishlist: PropTypes.object.isRequired,
 };
-export default CartItem;
+export default WishlistItem;

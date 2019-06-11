@@ -13,8 +13,20 @@ const CURRENT_USER_QUERY = gql`
       thumbnail
       permission
       wishlist {
+        id
         course {
           id
+          title
+          price
+          thumbnail
+          category {
+            id
+            name
+          }
+          user {
+            id
+            name
+          }
         }
       }
       interests {

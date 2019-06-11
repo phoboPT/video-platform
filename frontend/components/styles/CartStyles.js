@@ -24,11 +24,21 @@ const CartStyles = styled.div`
     #empty-cart {
       width: 100%;
       text-align: center;
-      p {
+      #wishImg {
+        width: 200px;
+      }
+      #p {
         font-family: 'Open Sans Condensed', sans-serif;
         text-align: center;
         font-size: 2.2rem;
         color: #a4a6a8;
+      }
+      #wish-p {
+        font-family: 'Open Sans Condensed', sans-serif;
+        text-align: center;
+        font-size: 2.2rem;
+        color: #a4a6a8;
+        margin: 0;
       }
     }
   }

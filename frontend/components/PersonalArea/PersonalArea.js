@@ -67,15 +67,16 @@ class PersonalArea extends Component {
     const { view, selected } = this.state;
     return (
       <User>
-        {({ data: { me } }) => (
-          <>
-            {me.permission[0] !== 'Instructor' && (
+        {({ data: { me } }) => {
+          if (!me) return <p>You can't be here, please Login first</p>;
+          return (
+            me.permission[0] !== 'Instructor' && (
               <Container>
                 <div id="menu">
                   <button
                     id="1"
                     type="button"
-                    disabled={selected == 1}
+                    disabled={selected === 1}
                     onClick={this.changeView}
                   >
                     Information
@@ -84,7 +85,7 @@ class PersonalArea extends Component {
                   <button
                     type="button"
                     id="3"
-                    disabled={selected == 3}
+                    disabled={selected === 3}
                     onClick={this.changeView}
                   >
                     Change Password
@@ -92,7 +93,7 @@ class PersonalArea extends Component {
                   <button
                     type="button"
                     id="6"
-                    disabled={selected == 6}
+                    disabled={selected === 6}
                     onClick={this.changeView}
                   >
                     Photograph
@@ -100,7 +101,7 @@ class PersonalArea extends Component {
                   <button
                     id="4"
                     type="button"
-                    disabled={selected == 4}
+                    disabled={selected === 4}
                     onClick={this.changeView}
                   >
                     Customize your Interests
@@ -108,7 +109,7 @@ class PersonalArea extends Component {
                   <button
                     id="5"
                     type="button"
-                    disabled={selected == 5}
+                    disabled={selected === 5}
                     onClick={this.changeView}
                   >
                     My Purchases 🛒
@@ -127,9 +128,9 @@ class PersonalArea extends Component {
                   {view === 6 && <Photograph data={me} />}
                 </div>
               </Container>
-            )}
-          </>
-        )}
+            )
+          );
+        }}
       </User>
     );
   }

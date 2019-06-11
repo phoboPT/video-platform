@@ -1,16 +1,12 @@
 /* eslint-disable react/display-name */
 import gql from 'graphql-tag';
-import Link from 'next/link';
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
-import calcTotalPrice from '../../../lib/calcTotalPrice';
-import formatMoney from '../../../lib/formatMoney';
 import User from '../../Authentication/User';
 import CartStyles from '../../styles/CartStyles';
 import CloseButton from '../../styles/CloseButton';
-import SickButton from '../../styles/SickButton';
-// import CartItem from './CartItem';
+import WishlistItem from './WishlistItem';
 
 const LOCAL_STATE_QUERY = gql`
   query {
@@ -43,23 +39,28 @@ const Wishlist = () => (
             <CloseButton onClick={toggleCart} title="close">
               &times;
             </CloseButton>
-
             <p>
               Wishlist
-              {me.cart.length > 0 ? `(${me.cart.length})` : 'Empty'}
+              {me.wishlist.length > 0 ? ` (${me.wishlist.length})` : ' Empty'}
             </p>
           </header>
           <ul>
-            {/* {me.cart.map(cartItem => (
-              <CartItem cartItem={cartItem} key={cartItem.id} />
-            ))} */}
+            {!me.wishlist[0] && (
+              <div id="container">
+                <div id="empty-cart">
+                  <p id="wish-p">YOUR WISHLIST IS EMPTY</p>
+                  <img
+                    alt="empty"
+                    id="wishImg"
+                    src="../../../static/emptywish.svg"
+                  />
+                </div>
+              </div>
+            )}
+            {me.wishlist.map(wishlist => (
+              <WishlistItem wishlist={wishlist} key={wishlist.id} />
+            ))}
           </ul>
-          <footer>
-            <div id="total">
-              <p id="text">Total</p>
-              <p id="value">{formatMoney(calcTotalPrice(me.cart))} </p>
-            </div>
-          </footer>
         </CartStyles>
       );
     }}

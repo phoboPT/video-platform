@@ -78,7 +78,9 @@ class CourseItem extends Component {
                     <AddToCart id={course.id} />
                   )}
 
-                  <WishButton id={course.id} data={course} skip={skip} />
+                  {course.price !== 0 && (
+                    <WishButton id={course.id} data={course} skip={skip} />
+                  )}
                 </div>
               </Container>
             </>

@@ -7,7 +7,6 @@ import ItemList from '../styles/ItemList';
 import CourseItem from './CourseItem';
 import FilterAuthor from './Filters/FilterAuthor';
 import FilterCategory from './Filters/FilterCategory';
-import Wishlist from './Wishlist';
 
 const COURSES_FILTER_QUERY = gql`
   query COURSES_FILTER_QUERY($category: ID, $author: ID) {
@@ -169,10 +168,6 @@ class UserCourses extends Component {
     }
   }
 
-  changeView = e => {
-    this.setState({ view: parseInt(e.target.id) });
-  };
-
   changeCategory = categoryId => {
     this.setState({ category: categoryId, isDisabled: false });
   };
@@ -213,16 +208,6 @@ class UserCourses extends Component {
                         name="my courses view"
                       >
                         My Courses
-                      </button>
-
-                      <button
-                        type="button"
-                        id={2}
-                        onClick={this.changeView}
-                        className={view === 2 ? 'active' : ''}
-                        name="wishlist view"
-                      >
-                        Whish List
                       </button>
                     </div>
                   </div>
@@ -278,11 +263,6 @@ class UserCourses extends Component {
                       </Container>
                     </>
                   ))}
-                {view === 2 && (
-                  <>
-                    <Wishlist />
-                  </>
-                )}
               </>
             );
           }

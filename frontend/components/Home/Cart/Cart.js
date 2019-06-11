@@ -53,7 +53,7 @@ const Cart = () => (
             {!me.cart[0] && (
               <div id="container">
                 <div id="empty-cart">
-                  <p>YOUR SHOPPING CART IS EMPTY</p>
+                  <p id="p">YOUR SHOPPING CART IS EMPTY</p>
                   <img alt="empty cart" src="../../../static/emptycart.webp" />
                 </div>
               </div>
