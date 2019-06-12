@@ -54,7 +54,6 @@ class Header extends Component {
   //   const amount = data.ordersUser.reduce((tally, item) => tally + item.total, 0);
   render() {
     const { data } = this.props;
-    console.log('here', data);
 
     return (
       <>

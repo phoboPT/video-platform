@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
 import Error from '../Static/ErrorMessage';
 import { CURRENT_USER_QUERY } from './User';
+import { TOGGLE_LOGIN_MUTATION } from './LoginPage';
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -56,15 +57,7 @@ const Style = styled.div`
       #container {
         display: flex;
         margin: auto;
-        #span-email {
-          margin-top: 5px;
-          order: 1;
-          background-image: url('../../static/email-icon.webp');
-          width: 30px;
-          height: 30px;
-          background-repeat: no-repeat;
-          background-position: center center;
-        }
+
         #email {
           float: left;
           order: 2;
@@ -78,15 +71,7 @@ const Style = styled.div`
       #container {
         display: flex;
         margin: 3rem auto;
-        #span-name {
-          margin-top: 5px;
-          order: 1;
-          background-image: url('../../static/icon-user.webp');
-          width: 30px;
-          height: 30px;
-          background-repeat: no-repeat;
-          background-position: center center;
-        }
+
         #name {
           order: 2;
           margin: auto;
@@ -99,15 +84,7 @@ const Style = styled.div`
       #container {
         display: flex;
         margin: auto;
-        #span-password {
-          margin-top: 5px;
-          order: 1;
-          background-image: url('../../static/password-icon.webp');
-          width: 30px;
-          height: 30px;
-          background-repeat: no-repeat;
-          background-position: center center;
-        }
+
         #password {
           order: 2;
           border: 0.5px solid rgba(225, 220, 220, 1);
@@ -160,7 +137,7 @@ class Signup extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  submitForm = async (e, mutation) => {
+  submitForm = async (e, mutation, toggleLogin) => {
     e.preventDefault();
     const { password } = this.state;
     if (password.length < 8) {
@@ -169,6 +146,7 @@ class Signup extends Component {
       });
     } else {
       await mutation();
+      await toggleLogin();
       this.setState({ name: '', email: '', password: '' });
       Router.push({
         pathname: '/choose-interests',
@@ -186,80 +164,96 @@ class Signup extends Component {
         variables={this.state}
       >
         {(signup, { error, loading }) => (
-          <>
-            <ButtonStyle>
-              <button
-                id="back"
-                onClick={() => changeView(1)}
-                type="button"
-                name="go back"
-              >
-                ↶
-              </button>
-            </ButtonStyle>
-            <Style>
-              <form
-                method="post"
-                onSubmit={async e => {
-                  this.submitForm(e, signup);
-                }}
-              >
-                <fieldset id="fieldset" aria-busy={loading} disabled={loading}>
-                  <img id="img" alt="user" src="../../static/register.webp" />
-                  <h2 id="h2">Sign Up for An Account</h2>
-                  <Error error={error} />
-                  <Error error={this.state.error} />
-
-                  <div id="div-email">
-                    <div id="container">
-                      <span id="span-email" />
-                      <input
-                        id="email"
-                        name="email"
-                        onChange={this.saveToState}
-                        placeholder="Email"
-                        required
-                        type="email"
-                        value={email}
-                      />
-                    </div>
-                  </div>
-
-                  <div id="div-name">
-                    <div id="container">
-                      <span id="span-name" />
-                      <input
-                        id="name"
-                        name="name"
-                        onChange={this.saveToState}
-                        placeholder="Name"
-                        required
-                        type="text"
-                        value={name}
-                      />
-                    </div>
-                  </div>
-                  <div id="div-password">
-                    <div id="container">
-                      <span id="span-password" />
-                      <input
-                        id="password"
-                        name="password"
-                        onChange={this.saveToState}
-                        placeholder="Password"
-                        required
-                        type="password"
-                        value={password}
-                      />
-                    </div>
-                  </div>
-                  <button id="register" type="submit" name="submit the form">
-                    Register
+          <Mutation mutation={TOGGLE_LOGIN_MUTATION}>
+            {toggleLogin => (
+              <>
+                <ButtonStyle>
+                  <button
+                    id="back"
+                    onClick={() => changeView(1)}
+                    type="button"
+                    name="go back"
+                  >
+                    ↶
                   </button>
-                </fieldset>
-              </form>
-            </Style>
-          </>
+                </ButtonStyle>
+                <Style>
+                  <form
+                    method="post"
+                    onSubmit={async e => {
+                      this.submitForm(e, signup, toggleLogin);
+                    }}
+                  >
+                    <fieldset
+                      id="fieldset"
+                      aria-busy={loading}
+                      disabled={loading}
+                    >
+                      <img
+                        id="img"
+                        alt="user"
+                        src="../../static/register.webp"
+                      />
+                      <h2 id="h2">Sign Up for An Account</h2>
+                      <Error error={error} />
+                      <Error error={this.state.error} />
+
+                      <div id="div-email">
+                        <div id="container">
+                          <span id="span-email" />
+                          <input
+                            id="email"
+                            name="email"
+                            onChange={this.saveToState}
+                            placeholder="Email"
+                            required
+                            type="email"
+                            value={email}
+                          />
+                        </div>
+                      </div>
+
+                      <div id="div-name">
+                        <div id="container">
+                          <span id="span-name" />
+                          <input
+                            id="name"
+                            name="name"
+                            onChange={this.saveToState}
+                            placeholder="Name"
+                            required
+                            type="text"
+                            value={name}
+                          />
+                        </div>
+                      </div>
+                      <div id="div-password">
+                        <div id="container">
+                          <span id="span-password" />
+                          <input
+                            id="password"
+                            name="password"
+                            onChange={this.saveToState}
+                            placeholder="Password"
+                            required
+                            type="password"
+                            value={password}
+                          />
+                        </div>
+                      </div>
+                      <button
+                        id="register"
+                        type="submit"
+                        name="submit the form"
+                      >
+                        Register
+                      </button>
+                    </fieldset>
+                  </form>
+                </Style>
+              </>
+            )}
+          </Mutation>
         )}
       </Mutation>
     );

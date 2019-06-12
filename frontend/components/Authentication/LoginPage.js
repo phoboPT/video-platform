@@ -20,11 +20,10 @@ const TOGGLE_LOGIN_MUTATION = gql`
 `;
 
 const AnimatedStyles = styled.span`
-  .count {
-    transition: all 0.7s !important;
-  }
+  transform-style: preserve-3d;
   .count-enter {
-    transform: rotateX(140deg) scale(1.4);
+    transform: rotateY(180deg);
+    transition: transform 2s ease;
   }
 
   .count-enter-active {
@@ -32,10 +31,10 @@ const AnimatedStyles = styled.span`
   }
   .count-exit {
     transform: none;
-    opacity: 0;
   }
   .count-exit-active {
-    transform: rotateX(-270deg) scale(0);
+    transform: rotateY(-180deg);
+    transition: transform 2s ease;
   }
 `;
 const Container = styled.div`
@@ -47,6 +46,7 @@ const Container = styled.div`
   margin-top: 10rem;
   position: fixed;
   width: 20%;
+  height: 500px;
   min-width: 400px;
   transform: translateX(110%);
   transition: all 0.2s;
@@ -87,9 +87,7 @@ class LoginPage extends Component {
     const { view } = this.state;
     return (
       <Query query={LOCAL_LOGIN_QUERY}>
-        {({ data: { loginOpen } }) => {
-          console.log(loginOpen);
-          return (
+        {({ data: { loginOpen } }) => (
             <Mutation mutation={TOGGLE_LOGIN_MUTATION}>
               {toggleLogin => (
                 <AnimatedStyles>
@@ -99,7 +97,7 @@ class LoginPage extends Component {
                       className="count"
                       classNames="count"
                       key={view}
-                      timeout={{ enter: 300, exit: 300 }}
+                      timeout={{ enter: 450, exit: 450 }}
                     >
                       <Container open={loginOpen}>
                         <CloseButton title="close" onClick={toggleLogin}>
@@ -116,8 +114,7 @@ class LoginPage extends Component {
                 </AnimatedStyles>
               )}
             </Mutation>
-          );
-        }}
+          )}
       </Query>
     );
   }

@@ -479,7 +479,7 @@ const Mutations = {
     const user = await ctx.db.query.user({ where: { email: args.email } });
 
     if (!user) {
-      throw new Error(`No such user found for email ${args.email}`);
+      throw new Error(`Check If The Email Is Correct`);
     }
 
     // 2. set a reset token and expiry on that user

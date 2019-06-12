@@ -71,7 +71,7 @@ const NavStyle = styled.ul`
     width: 33px;
   }
   @media (max-width: 1300px) {
-    width: 20%;
+    width: 100%;
     justify-content: center;
     font-size: 1.5rem;
   }

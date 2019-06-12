@@ -50,7 +50,6 @@ class success extends React.Component {
   render() {
     const { query } = this.props;
     const { hasUpdated } = this.state;
-    console.log(hasUpdated);
 
     return (
       <Mutation

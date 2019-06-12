@@ -52,7 +52,7 @@ function createClient({ headers }) {
       },
       defaults: {
         cartOpen: 0,
-        loginOpen: true,
+        loginOpen: false,
       },
     },
   });
