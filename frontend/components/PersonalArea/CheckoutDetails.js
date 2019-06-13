@@ -1,13 +1,91 @@
-import React, { Component } from 'react';
-import { Query } from 'react-apollo';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import swal from '@sweetalert/with-react';
 import calcTotalPrice from '../../lib/calcTotalPrice';
 import formatMoney from '../../lib/formatMoney';
 import User from '../Authentication/User';
 import Checkout from './Checkout';
 import CheckoutItems from './CheckoutItems';
 import Paypal from './Paypal';
+import ReceiptForm from './ReceiptForm';
 
+const PAYMENT_BILL_QUERY = gql`
+  query PAYMENT_BILL_QUERY {
+    paymentBill {
+      id
+      name
+      email
+      address
+      city
+      state
+      zipCode
+      country {
+        name
+      }
+    }
+  }
+`;
+
+const ALL_COUNTRIES_QUERY = gql`
+  query ALL_COUNTRIES_QUERY {
+    countries {
+      id
+      name
+    }
+  }
+`;
+const Title = styled.div`
+  text-align: center;
+  display: flex;
+  max-width: 60%;
+  margin: auto;
+
+  #border-top {
+    border-radius: 2px;
+    margin-top: 1.3rem;
+    background: #e0e0e0;
+    -moz-box-shadow: 0 0 2px #ccc;
+    -webkit-box-shadow: 0 0 2px #ccc;
+    box-shadow: 0 0 2px #ccc;
+    width: 110px;
+    height: 5px;
+  }
+  #active {
+    span {
+      color: blue;
+    }
+    h4 {
+      color: blue;
+    }
+  }
+  #visited {
+    color: green;
+    i {
+    }
+  }
+  .item {
+    display: flex;
+    margin: auto;
+    .dot {
+      padding-top: 8px;
+      height: 30px;
+      width: 30px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    #checked {
+      font-size: 3rem;
+      color: green;
+    }
+    h4 {
+      padding: 0 0 0 10px;
+      margin: auto;
+    }
+  }
+`;
 const Main = styled.div`
   max-width: 1300px;
   background-color: #fff;
@@ -21,12 +99,28 @@ const Main = styled.div`
   .cartItems {
     flex: 2;
     order: 1;
+    margin: auto;
     /* border: 1px solid blue; */
     float: left;
     position: relative;
 
     top .items {
       /* border: 1px solid green; */
+    }
+    .container {
+      box-shadow: 1px 1px 1px 1px lightgrey;
+      margin: 0 0 1rem 0;
+      .item {
+        display: flex;
+        margin: 0 0 0 0;
+        input {
+          margin: auto 0 auto 1rem;
+        }
+        p {
+          margin: auto 0 auto 1rem;
+          font-size: 1.5rem;
+        }
+      }
     }
   }
 
@@ -38,6 +132,21 @@ const Main = styled.div`
     order: 2;
     position: relative;
     padding-top: 15px;
+    .container {
+      box-shadow: 1px 1px 1px 1px lightgrey;
+      margin: 0 0 1rem 0;
+      .item {
+        display: flex;
+        margin: 0 0 0 0;
+        input {
+          margin: auto 0 auto 1rem;
+        }
+        p {
+          margin: auto 0 auto 1rem;
+          font-size: 1.5rem;
+        }
+      }
+    }
   }
 `;
 
@@ -62,38 +171,205 @@ const Button = styled.button`
 `;
 
 class CheckoutDetails extends Component {
+  state = { view: 1, showReceiptForm: false };
+
+  changeView = () => {
+    const { view } = this.state;
+    this.setState({ view: view + 1 });
+  };
+
+  updateData = data => {
+    this.setState(data);
+  };
+
+  changePayment = e => {
+    console.log(e.target);
+    this.setState({ selectedBill: e.target.value });
+  };
+
   render() {
+    const { view, showReceiptForm } = this.state;
     return (
       <User>
         {({ data: { me } }) => {
-          if (!me) return <p>hi</p>;
+          if (!me) return <p>You should not be here!</p>;
           if (me) {
             return (
-              <>
-                <Main>
-                  <div className="cartItems">
-                    <h3>Total {me.cart.length} items in your cart </h3>
-                    <div className="items" />
-                    {me.cart.map(item => (
-                      <CheckoutItems cartItem={item} key={item.id} />
-                    ))}
-                  </div>
-                  <div className="cartDetails">
-                    <span> Total: </span>
-                    <h1>{formatMoney(calcTotalPrice(me.cart))}</h1>
-                    {me.cart.length > 0 && (
-                      <>
-                        <Checkout>
-                          <Button name="buy with stripe">Stripe</Button>
-                        </Checkout>
-                        <br />
-                        <br />
-                        <Paypal />
-                      </>
-                    )}
-                  </div>
-                </Main>
-              </>
+              <Query query={ALL_COUNTRIES_QUERY}>
+                {({ data: countryData, loading }) => {
+                  if (countryData)
+                    return (
+                      <Query query={PAYMENT_BILL_QUERY}>
+                        {({ data, loading, error }) => {
+                          if (data) {
+                            return (
+                              <>
+                                <Title>
+                                  <div
+                                    className="item"
+                                    id={view === 1 ? 'active' : ''}
+                                  >
+                                    <>
+                                      {view <= 1 ? (
+                                        <span className="dot">1</span>
+                                      ) : (
+                                        <i
+                                          id="checked"
+                                          className="fas fa-check-circle"
+                                        />
+                                      )}
+                                      <h4 id={view > 1 ? 'visited' : ''}>
+                                        Cart Review
+                                      </h4>
+                                    </>
+                                  </div>
+                                  <div />
+                                  <div id="border-top" />
+                                  <div
+                                    className="item"
+                                    id={view === 2 ? 'active' : ''}
+                                  >
+                                    <>
+                                      {view <= 2 ? (
+                                        <span className="dot">2</span>
+                                      ) : (
+                                        <i
+                                          id="checked"
+                                          className="fas fa-check-circle"
+                                        />
+                                      )}
+                                      <h4 id={view > 2 ? 'visited' : ''}>
+                                        Receipt Information
+                                      </h4>
+                                    </>
+                                  </div>
+                                  <div id="border-top" />
+                                  <div
+                                    className="item"
+                                    id={view === 3 ? 'active' : ''}
+                                  >
+                                    <>
+                                      {view <= 3 ? (
+                                        <span className="dot">3</span>
+                                      ) : (
+                                        <i
+                                          id="checked"
+                                          className="fas fa-check-circle"
+                                        />
+                                      )}
+                                      <h4 id={view > 3 ? 'visited' : ''}>
+                                        Confirmation & Payment
+                                      </h4>
+                                    </>
+                                  </div>
+                                </Title>
+                                <Main>
+                                  <div className="cartItems">
+                                    {view === 1 && (
+                                      <>
+                                        <h3>
+                                          Total {me.cart.length} items in your
+                                          cart{' '}
+                                        </h3>
+                                        <div className="items" />
+                                        {me.cart.map(item => (
+                                          <CheckoutItems
+                                            cartItem={item}
+                                            key={item.id}
+                                          />
+                                        ))}
+                                      </>
+                                    )}
+                                    {view === 2 && (
+                                      <>
+                                        <div className="container">
+                                          <p>
+                                            Select one of the billing or create
+                                            a new one
+                                          </p>
+                                          {data.paymentBill.map(item => (
+                                            <div className="item" key={item.id}>
+                                              <input
+                                                type="radio"
+                                                name="bill"
+                                                onChange={this.changePayment}
+                                                value={item.id}
+                                              />
+                                              <p>{item.name}</p>
+                                              <p>{item.email}</p>
+                                              <p>{item.address || ''}</p>
+                                              <p>{item.city}</p>
+                                            </div>
+                                          ))}
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              swal({
+                                                text: `Billing Info`,
+                                                buttons: {
+                                                  cancel: 'Cancel',
+                                                  ok: 'OK',
+                                                },
+                                                content: (
+                                                  <ReceiptForm
+                                                    updateData={this.updateData}
+                                                    country={countryData}
+                                                  />
+                                                ),
+                                              }).then(willDelete => {
+                                                if (!willDelete) {
+                                                  console.log('exit');
+                                                } else {
+                                                  console.log('false');
+                                                }
+                                              })
+                                            }
+                                          >
+                                            Add new billing info
+                                          </button>
+                                        </div>
+                                      </>
+                                    )
+
+                                    // <>
+                                    //   <ReceiptForm updateData={this.updateData} />
+                                    // </>
+                                    }
+                                  </div>
+                                  <div className="cartDetails">
+                                    <span> Total: </span>
+                                    <h1>
+                                      {formatMoney(calcTotalPrice(me.cart))}
+                                    </h1>
+
+                                    {me.cart.length > 0 &&
+                                      (view < 3 ? (
+                                        <Button
+                                          type="button"
+                                          onClick={this.changeView}
+                                        >
+                                          Continue
+                                        </Button>
+                                      ) : (
+                                        <>
+                                          <Checkout data={this.state}>
+                                            <Button>Stripe</Button>
+                                          </Checkout>
+                                          <br />
+                                          <br />
+                                          <Paypal data={this.state} />
+                                        </>
+                                      ))}
+                                  </div>
+                                </Main>
+                              </>
+                            );
+                          }
+                        }}
+                      </Query>
+                    );
+                }}
+              </Query>
             );
           }
         }}

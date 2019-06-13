@@ -1,4 +1,5 @@
 const { forwardTo } = require('prisma-binding');
+// const country = require('../../country.json');
 
 function formatDate(date) {
   const regex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g;
@@ -28,6 +29,7 @@ const Query = {
   videoUsers: forwardTo('db'),
   videoItems: forwardTo('db'),
   userCourses: forwardTo('db'),
+  countries: forwardTo('db'),
 
   async me(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -1114,6 +1116,27 @@ const Query = {
 
     return finalRes;
   },
+  async paymentBill(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    console.log(userId);
+    return ctx.db.query.paymentBills(
+      {
+        where: { user: { id: userId } },
+      },
+      info
+    );
+  },
+  // Method used to insert countries in the db
+  // async insertData(parent, args, ctx, info) {
+  //   country.forEach(item => {
+  //     ctx.db.mutation.createCountry({
+  //       data: {
+  //         name: item.name,
+  //         code: item.code,
+  //       },
+  //     });
+  //   });
+  // },
 };
 
 module.exports = Query;

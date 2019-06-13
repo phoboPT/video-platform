@@ -168,4 +168,23 @@ type Order {
   charge: String!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  paymentBill: PaymentBill
+}
+
+type PaymentBill {
+  id: ID! @id
+  name: String
+  email: String
+  address: String
+  city: String
+  state: String
+  zipCode: String
+  country: Country
+  user: User
+}
+
+type Country {
+  id: ID! @id
+  name: String
+  code: String
 }

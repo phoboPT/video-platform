@@ -11,8 +11,26 @@ import User, { CURRENT_USER_QUERY } from '../Authentication/User';
 import { Alert } from '../styles/AlertStyles';
 
 const CREATE_ORDER_MUTATION = gql`
-  mutation createOrder($token: String!) {
-    createOrder(token: $token) {
+  mutation createOrder(
+    $token: String!
+    $name: String
+    $email: String
+    $address: String
+    $city: String
+    $state: String
+    $zipCode: String
+    $country: ID
+  ) {
+    createOrder(
+      token: $token
+      name: $name
+      email: $email
+      address: $address
+      city: $city
+      state: $state
+      zipCode: $zipCode
+      country: $country
+    ) {
       id
       charge
       total
@@ -24,12 +42,21 @@ const CREATE_ORDER_MUTATION = gql`
   }
 `;
 
-export class Checkout extends Component {
+class Checkout extends Component {
   onToken = async (res, createOrder) => {
+    const { data } = this.props;
     NProgress.start();
     await createOrder({
       variables: {
         token: res.id,
+
+        name: data.name,
+        email: data.email,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
+        country: data.country,
       },
     }).catch(err => {
       swal({
@@ -54,7 +81,7 @@ export class Checkout extends Component {
   };
 
   render() {
-    const { children } = this.props;
+    const { children, data } = this.props;
     return (
       <User>
         {({ data: { me } }) => (
@@ -85,6 +112,7 @@ export class Checkout extends Component {
 
 Checkout.propTypes = {
   children: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 export default Checkout;
