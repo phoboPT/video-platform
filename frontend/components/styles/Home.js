@@ -1,9 +1,8 @@
 import styled, { css, keyframes } from 'styled-components';
 
 const Title = styled.p`
-  margin: 5rem 0 2rem 3rem;
+  margin: 7rem 0 1rem 3rem;
   color: #505763;
-  border-bottom: 2px solid #ccc;
   font-size: 20px;
   font-weight: 500;
   word-spacing: 0px;
@@ -51,6 +50,7 @@ const Container = styled.div`
   .animation {
     ${animationReady}
   }
+
   #content-container {
     display: flex;
     .Left {

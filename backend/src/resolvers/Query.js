@@ -1027,7 +1027,6 @@ const Query = {
     );
 
     const coursesToFilter = coursesBuyed.map(item => item.course.id);
-    console.log(args);
     return ctx.db.query.courses(
       {
         orderBy: args.orderBy,
@@ -1044,11 +1043,76 @@ const Query = {
             {
               state: 'PUBLISHED',
             },
+            {
+              user: {
+                name_contains: args.author,
+              },
+            },
           ],
         },
       },
       info
     );
+  },
+  async authorSearch(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+
+    const user = await ctx.db.query.user(
+      {
+        where: {
+          id: userId,
+        },
+      },
+      `
+        {
+          id
+          name
+          email
+              courses {
+                course {
+                  id
+                }
+              }
+          interests{
+            id
+            interest{
+              id
+            }
+          }
+        }
+        `
+    );
+
+    const coursesIds = user.courses.map(course => course.course.id);
+
+    // query o video atual com comparaçao de ids de user
+    const finalRes = await ctx.db.query.courses(
+      {
+        where: {
+          AND: [
+            {
+              state: 'PUBLISHED',
+            },
+            {
+              user: {
+                name_contains: args.where.title,
+              },
+            },
+            {
+              id_not_in: coursesIds,
+            },
+          ],
+        },
+      },
+      info
+    );
+
+    return finalRes;
   },
 };
 
