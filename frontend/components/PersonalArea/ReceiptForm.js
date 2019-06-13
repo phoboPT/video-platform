@@ -48,7 +48,7 @@ const Container = styled.div`
 `;
 
 class ReceiptForm extends Component {
-  state = { hasUpdated: false };
+  state = { hasUpdated: false, country: this.props.countries.countries[0].id };
 
   handleChange = async e => {
     const { updateData } = this.props;
@@ -56,20 +56,17 @@ class ReceiptForm extends Component {
     updateData(this.state);
   };
 
-  initialState = async (me, data) => {
-    const { updateData } = this.props;
-    await this.setState({
-      name: me.name,
-      email: me.email,
-      country: data.countries[0].id,
-      hasUpdated: true,
-    });
-    updateData(this.state);
-  };
-
   render() {
-    const { name, email } = this.state;
-    const { country } = this.props;
+    const {
+      countries,
+      name,
+      email,
+      address,
+      city,
+      state,
+      zipCode,
+      country,
+    } = this.props;
     return (
       <Container>
         <form>
@@ -100,7 +97,7 @@ class ReceiptForm extends Component {
             type="text"
             name="address"
             placeholder="address"
-            defaultValue=""
+            defaultValue={address}
             onChange={this.handleChange}
           />
           <p>City</p>
@@ -109,7 +106,7 @@ class ReceiptForm extends Component {
             type="text"
             name="city"
             placeholder="city"
-            defaultValue=""
+            defaultValue={city}
             onChange={this.handleChange}
           />
           <div className="state">
@@ -120,7 +117,7 @@ class ReceiptForm extends Component {
                 type="text"
                 name="state"
                 placeholder="state"
-                defaultValue=""
+                defaultValue={state}
                 onChange={this.handleChange}
               />
             </div>
@@ -131,14 +128,19 @@ class ReceiptForm extends Component {
                 type="text"
                 name="zipCode"
                 placeholder="zip-code"
-                defaultValue=""
+                defaultValue={zipCode}
                 onChange={this.handleChange}
               />
             </div>
           </div>
           <p>Country</p>
-          <select name="country" id="country" onChange={this.handleChange}>
-            {country.countries.map(course => (
+          <select
+            name="country"
+            id="country"
+            onChange={this.handleChange}
+            defaultValue={country}
+          >
+            {countries.countries.map(course => (
               <option key={course.id} value={course.id}>
                 {course.name}
               </option>
@@ -152,7 +154,7 @@ class ReceiptForm extends Component {
 
 ReceiptForm.propTypes = {
   updateData: PropTypes.func.isRequired,
-  country: PropTypes.object.isRequired,
+  countries: PropTypes.object.isRequired,
 };
 
 export default ReceiptForm;
