@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import Nav from './Nav';
 import Cart from '../Home/Cart/Cart';
 import Wishlist from '../Home/Wishlist/Wishlist';
+import LoginPage from '../Authentication/LoginPage';
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -31,10 +32,6 @@ const Logo = styled.h1`
     text-transform: uppercase;
     text-decoration: none;
   }
-  @media (max-width: 1300px) {
-    margin: 0;
-    text-align: center;
-  }
 `;
 
 const StyledHeader = styled.header`
@@ -50,10 +47,6 @@ const StyledHeader = styled.header`
     grid-template-columns: auto 1fr;
     justify-content: space-between;
     align-items: stretch;
-    @media (max-width: 1300px) {
-      grid-template-columns: 1fr;
-      justify-content: center;
-    }
   }
   .sub-bar {
     display: grid;
@@ -86,7 +79,7 @@ class Header extends Component {
         <div className="sub-bar" />
         <Cart />
         <Wishlist />
-
+        <LoginPage />
         <div />
       </StyledHeader>
     );

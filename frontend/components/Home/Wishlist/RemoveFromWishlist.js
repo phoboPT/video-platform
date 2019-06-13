@@ -57,7 +57,6 @@ class RemoveFromWishlist extends Component {
 
   render() {
     const { id, wishlist } = this.props;
-    console.log('wish', wishlist);
     return (
       <Mutation
         mutation={REMOVE_FROM_WISH_MUTATION}

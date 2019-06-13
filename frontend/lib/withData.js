@@ -2,6 +2,7 @@ import withApollo from 'next-with-apollo';
 import ApolloClient from 'apollo-boost';
 import { endpoint } from '../config';
 import { LOCAL_STATE_QUERY } from '../components/Home/Cart/Cart';
+import { LOCAL_LOGIN_QUERY } from '../components/Authentication/LoginPage';
 
 function createClient({ headers }) {
   return new ApolloClient({
@@ -20,7 +21,6 @@ function createClient({ headers }) {
         Mutation: {
           toggleCart(_, variables, { cache }) {
             // read the cartOpen value from the cache
-            console.log(variables);
 
             const { cartOpen } = cache.readQuery({
               query: LOCAL_STATE_QUERY,
@@ -35,10 +35,24 @@ function createClient({ headers }) {
             cache.writeData(data);
             return data;
           },
+          toggleLogin(_, variables, { cache }) {
+            // read the cartOpen value from the cache
+
+            const { loginOpen } = cache.readQuery({
+              query: LOCAL_LOGIN_QUERY,
+            });
+
+            // Write the cart State to the opposite
+            const data = { data: { loginOpen: !loginOpen } };
+
+            cache.writeData(data);
+            return data;
+          },
         },
       },
       defaults: {
         cartOpen: 0,
+        loginOpen: false,
       },
     },
   });

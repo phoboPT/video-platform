@@ -74,6 +74,7 @@ const SearchStyle = styled.div`
   display: flex;
   #image {
     width: 42px;
+    height: 42px;
     order: 1;
     margin: 0 2rem 0 0;
     cursor: pointer;

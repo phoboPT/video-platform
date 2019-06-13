@@ -50,7 +50,7 @@ const CartItem = ({ cartItem }) => (
       width="100"
     />
     <div className="cart-item-details">
-      <h3>{formatString(cartItem.course.title, 25)}</h3>
+      <h3>{formatString(cartItem.course.title, 20)}</h3>
       <p id="user">{cartItem.course.user.name}</p>
 
       <p>{cartItem.course.price} €</p>

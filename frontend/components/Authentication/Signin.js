@@ -16,6 +16,7 @@ import {
 import { PAGINATION_QUERY } from '../Home/CoursesList/PaginationCourse';
 import { COURSES_FILTER_QUERY } from '../Courses/UserCourses';
 import Error from '../Static/ErrorMessage';
+import { TOGGLE_LOGIN_MUTATION } from './LoginPage';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -27,8 +28,10 @@ const SIGNIN_MUTATION = gql`
 `;
 
 const Style = styled.div`
-  display: grid;
+  margin-top: 1rem;
 
+  display: grid;
+  background: white;
   input,
   input[placeholder] {
     text-align: center;
@@ -55,15 +58,6 @@ const Style = styled.div`
         display: flex;
         margin: 2rem auto;
 
-        #span-email {
-          margin-top: 5px;
-          order: 1;
-          background-image: url('../../static/icon-user.webp');
-          width: 30px;
-          height: 30px;
-          background-repeat: no-repeat;
-          background-position: center center;
-        }
         #email {
           float: left;
           order: 2;
@@ -76,15 +70,6 @@ const Style = styled.div`
       #container {
         display: flex;
         margin: auto;
-        #span-password {
-          margin-top: 5px;
-          order: 1;
-          background: url('../../static/password-icon.webp');
-          width: 30px;
-          height: 30px;
-          background-repeat: no-repeat;
-          background-position: center center;
-        }
         #password {
           order: 2;
           margin: auto;
@@ -150,9 +135,10 @@ class Signin extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  submitForm = async (e, mutation) => {
+  submitForm = async (e, mutation, toggleLogin) => {
     e.preventDefault();
     await mutation();
+    await toggleLogin();
     this.setState({ email: '', password: '' });
     Router.push({
       pathname: '/index',
@@ -199,68 +185,83 @@ class Signin extends Component {
         variables={this.state}
       >
         {(signin, { error, loading }) => (
-          <Style>
-            <form method="post" onSubmit={e => this.submitForm(e, signin)}>
-              <fieldset id="fieldset" aria-busy={loading} disabled={loading}>
-                <img id="img" alt="user" src="../../static/user.webp" />
-                <h2 id="h2">Sign In</h2>
-                <Error error={error} />
-
-                <div id="div-email">
-                  <div id="container">
-                    <span id="span-email" />
-                    <input
-                      id="email"
-                      name="email"
-                      placeholder="Email"
-                      onChange={this.saveToState}
-                      required
-                      type="email"
-                      value={email}
-                    />
-                  </div>
-                </div>
-                <div id="div-password">
-                  <div id="container">
-                    <span id="span-password" />
-                    <input
-                      id="password"
-                      placeholder="Password"
-                      name="password"
-                      onChange={this.saveToState}
-                      required
-                      type="password"
-                      value={password}
-                    />
-                  </div>
-                </div>
-                <button id="login" type="submit" name="login to your account">
-                  Login
-                </button>
-                <div id="forgot">
-                  <button
-                    id="forgot-button"
-                    type="button"
-                    onClick={() => changeView(2)}
-                    name="forgot your password"
+          <Mutation mutation={TOGGLE_LOGIN_MUTATION}>
+            {toggleLogin => (
+              <Style open>
+                <form
+                  method="post"
+                  onSubmit={e => this.submitForm(e, signin, toggleLogin)}
+                >
+                  <fieldset
+                    id="fieldset"
+                    aria-busy={loading}
+                    disabled={loading}
                   >
-                    Forgot Password?
+                    <img id="img" alt="user" src="../../static/user.webp" />
+                    <h2 id="h2">Sign In</h2>
+                    <Error error={error} />
+
+                    <div id="div-email">
+                      <div id="container">
+                        <span id="span-email" />
+                        <input
+                          id="email"
+                          name="email"
+                          placeholder="Email"
+                          onChange={this.saveToState}
+                          required
+                          type="email"
+                          value={email}
+                        />
+                      </div>
+                    </div>
+                    <div id="div-password">
+                      <div id="container">
+                        <span id="span-password" />
+                        <input
+                          id="password"
+                          placeholder="Password"
+                          name="password"
+                          onChange={this.saveToState}
+                          required
+                          type="password"
+                          value={password}
+                        />
+                      </div>
+                    </div>
+                    <button
+                      id="login"
+                      type="submit"
+                      name="login to your account"
+                    >
+                      Login
+                    </button>
+                    <div id="forgot">
+                      <button
+                        id="forgot-button"
+                        type="button"
+                        onClick={() => changeView(2)}
+                        name="forgot your password"
+                      >
+                        Forgot Password?
+                      </button>
+                    </div>
+                  </fieldset>
+                </form>
+
+                <div id="register">
+                  <button
+                    id="register-button"
+                    type="button"
+                    onClick={() => changeView(3)}
+                    name="register a new account"
+                  >
+                    You are not yet registered? REGISTER HERE!
                   </button>
                 </div>
-              </fieldset>
-            </form>
-
-            <div id="register">
-              <button
-                id="register-button"
-                type="button"
-                onClick={() => changeView(3)}
-                name="register a new account"
-              >
-                You are not yet registered? REGISTER HERE!
-              </button>
-            </div>
-          </Style>
+              </Style>
+            )}
+          </Mutation>
         )}
       </Mutation>
     );

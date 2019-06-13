@@ -50,7 +50,6 @@ const Container = styled.div`
 class PersonalArea extends Component {
   state = {
     view: 1,
-    selected: 1,
   };
 
   changeView = e => {
@@ -64,7 +63,7 @@ class PersonalArea extends Component {
   };
 
   render() {
-    const { view, selected } = this.state;
+    const { view } = this.state;
     return (
       <User>
         {({ data: { me } }) => {
@@ -76,7 +75,7 @@ class PersonalArea extends Component {
                   <button
                     id="1"
                     type="button"
-                    disabled={selected === 1}
+                    disabled={view === 1}
                     onClick={this.changeView}
                   >
                     Information
@@ -85,7 +84,7 @@ class PersonalArea extends Component {
                   <button
                     type="button"
                     id="3"
-                    disabled={selected === 3}
+                    disabled={view === 3}
                     onClick={this.changeView}
                   >
                     Change Password
@@ -93,7 +92,7 @@ class PersonalArea extends Component {
                   <button
                     type="button"
                     id="6"
-                    disabled={selected === 6}
+                    disabled={view === 6}
                     onClick={this.changeView}
                   >
                     Photograph
@@ -101,7 +100,7 @@ class PersonalArea extends Component {
                   <button
                     id="4"
                     type="button"
-                    disabled={selected === 4}
+                    disabled={view === 4}
                     onClick={this.changeView}
                   >
                     Customize your Interests
@@ -109,7 +108,7 @@ class PersonalArea extends Component {
                   <button
                     id="5"
                     type="button"
-                    disabled={selected === 5}
+                    disabled={view === 5}
                     onClick={this.changeView}
                   >
                     My Purchases 🛒

@@ -51,13 +51,21 @@ const Style = styled.div`
       margin: 2rem auto;
     }
   }
+  #center{
+    width:30%;
+    margin:auto auto 1rem auto;
+    img{
+      width:130px;
+    }
+  }
 `;
 const ButtonStyle = styled.div`
-  padding-bottom: 1rem;
+  margin-top: 2rem;
+  margin-left: 1rem;
   button {
     background: none;
     border: none;
-    font-size: 15px;
+    font-size: 30px;
     line-height: 10px;
     color: #2c2f33;
     cursor: pointer;
@@ -89,7 +97,7 @@ class RequestReset extends Component {
                 type="button"
                 name="go back to the last page"
               >
-                ⬅ Go Back
+                ↶
               </button>
             </ButtonStyle>
             <Style>
@@ -104,12 +112,17 @@ class RequestReset extends Component {
                 <fieldset disabled={loading} aria-busy={loading}>
                   <h2 id="h2">Password Reset</h2>
                   <Error error={error} />
+                   <div id="center">
+                  <img alt="pw-icon" src="../../static/forgotPW.png" />
+                   </div>
                   {!error && !loading && called ? (
                     <p id="message">
                       Success! Check your email for a reset link!
                     </p>
                   ) : (
-                    <p id="message">Enter your email to find your account.</p>
+                    <p id="message">
+                      Enter your login email to find your account.
+                    </p>
                   )}
 
                   <input
