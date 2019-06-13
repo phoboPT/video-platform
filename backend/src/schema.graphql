@@ -23,6 +23,7 @@ type User {
   courses: [UserCourse!]!
   wishlist: [Wishlist!]
   videoUser: [VideoUser]
+  paymentBill: [PaymentBill]
 }
 
 type Stats {
@@ -129,11 +130,20 @@ type Mutation {
   addTargetUser(interestId: ID!): User!
   removeTargetUser(interestId: ID!): User!
   removeTargetCourse(interestId: ID!): Course!
-  createOrder(token: String!): Order
+  createOrder(
+    token: String!
+    name: String
+    email: String
+    address: String
+    city: String
+    state: String
+    zipCode: String
+    country: ID
+  ): Order
   addToWish(id: ID!): Wishlist!
   removeFromWish(id: ID!): Wishlist!
   buyCourseFree(id: ID!): UserCourse
-  paypalCheckout: Order
+  paypalCheckout(data: [String]): Order
   executePaypal(
     paymentId: String
     token: String
@@ -158,6 +168,7 @@ type Query {
   # querys sellect all
   categories: [Category]!
   interests: [Interest!]!
+  countries: [Country]!
 
   # querys selecionar por id
   video(where: VideoWhereUniqueInput!): Video
@@ -166,6 +177,7 @@ type Query {
   rateCourse(where: RateCourseWhereUniqueInput!): RateCourse
   coursesFilter(category: ID, author: ID): [UserCourse]
   ordersUser(skip: Int, first: Int): [Order]!
+  paymentBill: [PaymentBill]
   # querys selecionar tudo com argumentos
   videosFromUser(
     where: VideoWhereInput
@@ -214,4 +226,7 @@ type Query {
   sellsByCourse(id: ID): [Stats]
   coursesStatsByDate(initialDate: String): [Stats]
   coursesCategory(category: [ID], orderBy: String): [Course]
+
+  # used to insert the countries data in the db
+  # insertData: Course
 }

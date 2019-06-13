@@ -991,6 +991,7 @@ const Mutations = {
   async createOrder(parent, args, ctx) {
     // query current user and make sure they are signin
     const { userId } = ctx.request;
+    console.log(args);
     if (!userId)
       throw new Error('You must be signed in to complete this order.');
     const user = await ctx.db.query.user(
@@ -1040,6 +1041,22 @@ const Mutations = {
       return orderItem;
     });
 
+    const paymentBill = await ctx.db.mutation.createPaymentBill(
+      {
+        data: {
+          country: { connect: { id: args.country } },
+          name: args.name || '',
+          email: args.email || '',
+          address: args.address || '',
+          city: args.city || '',
+          state: args.state || '',
+          zipCode: args.zipCode || '',
+          user: { connect: { id: userId } },
+        },
+      },
+      `{id}`
+    );
+
     // create the order
     const order = await ctx.db.mutation.createOrder({
       data: {
@@ -1047,6 +1064,9 @@ const Mutations = {
         charge: charge.id,
         items: { create: orderItems },
         user: { connect: { id: userId } },
+        paymentBill: {
+          connect: { id: paymentBill.id },
+        },
       },
     });
 
