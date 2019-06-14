@@ -9,8 +9,28 @@ const EXECUTE_PAYPAL = gql`
     $paymentId: String
     $token: String
     $payerId: String
+    $name: String
+    $email: String
+    $address: String
+    $city: String
+    $state: String
+    $zipCode: String
+    $country: ID
+    $billId: ID
   ) {
-    executePaypal(paymentId: $paymentId, token: $token, payerId: $payerId) {
+    executePaypal(
+      paymentId: $paymentId
+      token: $token
+      payerId: $payerId
+      name: $name
+      email: $email
+      address: $address
+      city: $city
+      state: $state
+      zipCode: $zipCode
+      country: $country
+      billId: $billId
+    ) {
       message
     }
   }
@@ -26,17 +46,36 @@ const Style = styled.div`
 class success extends React.Component {
   state = { hasUpdated: false };
 
-  componentDidMount() {
+  async componentDidMount() {
     const formElementKey1Exists = document.getElementById('form');
     const { hasUpdated } = this.state;
+    await this.setState(JSON.parse(localStorage.getItem('billData')));
     if (formElementKey1Exists && !hasUpdated) {
       formElementKey1Exists.click();
     }
   }
 
   updateState = async (e, mutation) => {
+    const { query } = this.props;
+    const { data } = this.state;
+    console.log('hi');
     e.preventDefault();
-    const res = await mutation();
+    const res = await mutation({
+      variables: {
+        paymentId: query.paymentId,
+        token: query.token,
+        payerId: query.PayerID,
+        name: data.name || '',
+        email: data.email || '',
+        address: data.address || '',
+        city: data.city || '',
+        state: data.state || '',
+        zipCode: data.zipCode || '',
+        country: data.country || '',
+        billId: data.selectedBill || '',
+      },
+    });
+    console.log(res);
     if (res) {
       await this.setState({ hasUpdated: true });
     }
@@ -48,18 +87,12 @@ class success extends React.Component {
   };
 
   render() {
-    const { query } = this.props;
     const { hasUpdated } = this.state;
 
     return (
       <Mutation
         mutation={EXECUTE_PAYPAL}
         refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-        variables={{
-          paymentId: query.paymentId,
-          token: query.token,
-          payerId: query.PayerID,
-        }}
       >
         {executePaypal => (
           <>

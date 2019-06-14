@@ -2,11 +2,58 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Progress } from 'react-sweet-progress';
+import styled from 'styled-components';
 import formatString from '../../lib/formatString';
 import Container from '../styles/CourseItemStyle';
 import calcProgress from '../../lib/calcProgress';
 import Rating from '../Home/CourseInfo/Comments/Rating';
 import formatMoney from '../../lib/formatMoney';
+
+const ToolTip = styled.div`
+  .tooltip {
+    list-style: none;
+    position: relative;
+  }
+  .tooltip:before,
+  .tooltip:after {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+  .tooltip:after {
+    border-right: 6px solid transparent;
+    border-bottom: 14px solid rgba(0, 0, 0, 0.75);
+    border-left: 6px solid transparent;
+    content: '';
+    height: 0;
+    left: 100px;
+    width: 0;
+  }
+  .tooltip:before {
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 2px;
+    color: #fff;
+    content: attr(data-title);
+    font-size: 14px;
+    padding: 6px 10px;
+    top: 48px;
+    white-space: nowrap;
+  }
+
+  /* the animations */
+  /* fade */
+  .tooltip.fade:after,
+  .tooltip.fade:before {
+    transform: translate3d(0, -10px, 0);
+    transition: all 0.15s ease-in-out;
+  }
+  .tooltip.fade:hover:after,
+  .tooltip.fade:hover:before {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+`;
 
 class CourseItem extends Component {
   static propTypes = {
@@ -38,14 +85,22 @@ class CourseItem extends Component {
         <Link
           href={{
             pathname: '/video',
-            query: { id: data.videos[0] || 0 },
+            query: { id: data.id },
           }}
         >
           <img alt={data.title} src={data.thumbnail} />
         </Link>
 
         <div id="title-card">
-          <p>{formatString(data.title, 40)}</p>
+          {data.title.length > 24 ? (
+            <ToolTip>
+              <li className="tooltip fade" data-title={data.title}>
+                <p>{formatString(data.title, 25)}</p>
+              </li>
+            </ToolTip>
+          ) : (
+            <p>{data.title}</p>
+          )}
         </div>
 
         <div id="instructor-card">

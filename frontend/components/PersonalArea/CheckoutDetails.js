@@ -113,6 +113,9 @@ const Main = styled.div`
       .item {
         display: flex;
         margin: 0 0 0 0;
+        label {
+          display: flex;
+        }
         input {
           margin: auto 0 auto 1rem;
         }
@@ -171,11 +174,83 @@ const Button = styled.button`
 `;
 
 class CheckoutDetails extends Component {
-  state = { view: 1, showReceiptForm: false };
+  state = { view: 1, showReceiptForm: false, selectedBill: '' };
 
-  changeView = () => {
-    const { view } = this.state;
-    this.setState({ view: view + 1 });
+  changeView = async () => {
+    const {
+      view,
+      selectedBill,
+      name,
+      email,
+      address,
+      city,
+      state,
+      zipCode,
+      country,
+    } = this.state;
+    console.log(this.isEmpty());
+
+    if (view !== 2) {
+      return this.setState({ view: view + 1 });
+    }
+    if (view === 2) {
+      if (selectedBill !== '') {
+        localStorage.setItem(
+          'billData',
+          JSON.stringify({
+            data: {
+              name,
+              email,
+              address,
+              city,
+              state,
+              zipCode,
+              country,
+              selectedBill,
+            },
+          })
+        );
+        return this.setState({ view: view + 1 });
+      }
+
+      if (this.isEmpty()) {
+        localStorage.setItem(
+          'billData',
+          JSON.stringify({
+            name,
+            email,
+            address,
+            city,
+            state,
+            zipCode,
+            country,
+          })
+        );
+        return this.setState({ view: view + 1 });
+      }
+      swal(
+        'Empty Fields',
+        'You need to select a payment bill or create a new one',
+        'info'
+      );
+    }
+  };
+
+  isEmpty = () => {
+    const { name, email, address, city, state, zipCode, country } = this.state;
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (
+      name !== undefined &&
+      email !== undefined &&
+      address !== undefined &&
+      city !== undefined &&
+      state !== undefined &&
+      zipCode !== undefined
+    ) {
+      return true;
+    }
+
+    return false;
   };
 
   updateData = data => {
@@ -183,12 +258,22 @@ class CheckoutDetails extends Component {
   };
 
   changePayment = e => {
-    console.log(e.target);
     this.setState({ selectedBill: e.target.value });
   };
 
   render() {
-    const { view, showReceiptForm } = this.state;
+    const {
+      selectedBill,
+      view,
+      showReceiptForm,
+      name,
+      email,
+      address,
+      city,
+      state,
+      zipCode,
+      country,
+    } = this.state;
     return (
       <User>
         {({ data: { me } }) => {
@@ -290,15 +375,18 @@ class CheckoutDetails extends Component {
                                           {data.paymentBill.map(item => (
                                             <div className="item" key={item.id}>
                                               <input
+                                                id={item.id}
                                                 type="radio"
                                                 name="bill"
                                                 onChange={this.changePayment}
                                                 value={item.id}
                                               />
-                                              <p>{item.name}</p>
-                                              <p>{item.email}</p>
-                                              <p>{item.address || ''}</p>
-                                              <p>{item.city}</p>
+                                              <label htmlFor={item.id}>
+                                                <p>{item.name}</p>
+                                                <p>{item.email}</p>
+                                                <p>{item.address || ''}</p>
+                                                <p>{item.city}</p>
+                                              </label>
                                             </div>
                                           ))}
                                           <button
@@ -313,7 +401,15 @@ class CheckoutDetails extends Component {
                                                 content: (
                                                   <ReceiptForm
                                                     updateData={this.updateData}
-                                                    country={countryData}
+                                                    countries={countryData}
+                                                    name={name}
+                                                    email={email}
+                                                    address={address}
+                                                    city={city}
+                                                    state={state}
+                                                    zipCode={zipCode}
+                                                    country={country}
+                                                    me={me}
                                                   />
                                                 ),
                                               }).then(willDelete => {
@@ -352,12 +448,18 @@ class CheckoutDetails extends Component {
                                         </Button>
                                       ) : (
                                         <>
-                                          <Checkout data={this.state}>
+                                          <Checkout
+                                            data={this.state}
+                                            selectedBill={selectedBill}
+                                          >
                                             <Button>Stripe</Button>
                                           </Checkout>
                                           <br />
                                           <br />
-                                          <Paypal data={this.state} />
+                                          <Paypal
+                                            data={this.state}
+                                            selectedBill={selectedBill}
+                                          />
                                         </>
                                       ))}
                                   </div>

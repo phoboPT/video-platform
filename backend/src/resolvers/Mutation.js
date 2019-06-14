@@ -1039,16 +1039,52 @@ const Mutations = {
       delete orderItem.id;
       return orderItem;
     });
+    console.log(args);
 
-    // create the order
-    const order = await ctx.db.mutation.createOrder({
-      data: {
-        total: charge.amount,
-        charge: charge.id,
-        items: { create: orderItems },
-        user: { connect: { id: userId } },
-      },
-    });
+    let order;
+    if (args.billId === '') {
+      const paymentBill = await ctx.db.mutation.createPaymentBill(
+        {
+          data: {
+            country: { connect: { id: args.country } },
+            name: args.name || '',
+            email: args.email || '',
+            address: args.address || '',
+            city: args.city || '',
+            state: args.state || '',
+            zipCode: args.zipCode || '',
+            user: { connect: { id: userId } },
+          },
+        },
+        `{id}`
+      );
+
+      // create the order
+      order = await ctx.db.mutation.createOrder({
+        data: {
+          total: charge.amount,
+          charge: charge.id,
+          items: { create: orderItems },
+          user: { connect: { id: userId } },
+          paymentBill: {
+            connect: { id: paymentBill.id },
+          },
+        },
+      });
+    } else {
+      // create the order
+      order = await ctx.db.mutation.createOrder({
+        data: {
+          total: charge.amount,
+          charge: charge.id,
+          items: { create: orderItems },
+          user: { connect: { id: userId } },
+          paymentBill: {
+            connect: { id: args.billId },
+          },
+        },
+      });
+    }
 
     const courseIds = user.cart.map(cartItem => cartItem.course.id);
 
@@ -1306,6 +1342,8 @@ const Mutations = {
       ],
     };
 
+    console.log(args);
+
     const { paymentId } = args;
     function getOrder() {
       return new Promise(function(fulfilled, rejected) {
@@ -1327,15 +1365,50 @@ const Mutations = {
               return orderItem;
             });
 
-            // create the order
-            const order = await ctx.db.mutation.createOrder({
-              data: {
-                total: amount,
-                charge: args.paymentId,
-                items: { create: orderItems },
-                user: { connect: { id: userId } },
-              },
-            });
+            let order;
+            if (args.billId === '') {
+              const paymentBill = await ctx.db.mutation.createPaymentBill(
+                {
+                  data: {
+                    country: { connect: { id: args.country } },
+                    name: args.name || '',
+                    email: args.email || '',
+                    address: args.address || '',
+                    city: args.city || '',
+                    state: args.state || '',
+                    zipCode: args.zipCode || '',
+                    user: { connect: { id: userId } },
+                  },
+                },
+                `{id}`
+              );
+
+              // create the order
+              order = await ctx.db.mutation.createOrder({
+                data: {
+                  total: amount,
+                  charge: args.paymentId,
+                  items: { create: orderItems },
+                  user: { connect: { id: userId } },
+                  paymentBill: {
+                    connect: { id: paymentBill.id },
+                  },
+                },
+              });
+            } else {
+              // create the order
+              order = await ctx.db.mutation.createOrder({
+                data: {
+                  total: amount,
+                  charge: args.paymentId,
+                  items: { create: orderItems },
+                  user: { connect: { id: userId } },
+                  paymentBill: {
+                    connect: { id: args.billId },
+                  },
+                },
+              });
+            }
 
             const courseIds = user.cart.map(cartItem => cartItem.course.id);
 
@@ -1352,6 +1425,8 @@ const Mutations = {
             await ctx.db.mutation.deleteManyCartItems({
               where: { id_in: cartItemIds },
             });
+
+            console.log('order', order);
             // return the Order to the client
             fulfilled(order);
           }

@@ -20,6 +20,7 @@ const CREATE_ORDER_MUTATION = gql`
     $state: String
     $zipCode: String
     $country: ID
+    $billId: ID
   ) {
     createOrder(
       token: $token
@@ -30,6 +31,7 @@ const CREATE_ORDER_MUTATION = gql`
       state: $state
       zipCode: $zipCode
       country: $country
+      billId: $billId
     ) {
       id
       charge
@@ -49,7 +51,6 @@ class Checkout extends Component {
     await createOrder({
       variables: {
         token: res.id,
-
         name: data.name,
         email: data.email,
         address: data.address,
@@ -57,6 +58,7 @@ class Checkout extends Component {
         state: data.state,
         zipCode: data.zipCode,
         country: data.country,
+        billId: data.selectedBill,
       },
     }).catch(err => {
       swal({
@@ -81,7 +83,7 @@ class Checkout extends Component {
   };
 
   render() {
-    const { children, data } = this.props;
+    const { children } = this.props;
     return (
       <User>
         {({ data: { me } }) => (

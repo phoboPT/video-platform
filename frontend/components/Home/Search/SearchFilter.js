@@ -75,7 +75,7 @@ const PageContainer = styled.div`
       order: 1;
     }
     #selectAll {
-      label {
+      span {
         padding-top: 9px;
         padding-right: 1rem;
         text-align: center;
@@ -310,7 +310,7 @@ class SearchFilter extends Component {
                   }}
                 />
                 <div id="selectAll">
-                  <label>Select All</label>
+                  <span>Select All</span>
                   <li
                     className="tooltip fade"
                     data-title="Select All Categories "
