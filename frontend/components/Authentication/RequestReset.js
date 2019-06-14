@@ -51,11 +51,11 @@ const Style = styled.div`
       margin: 2rem auto;
     }
   }
-  #center{
-    width:30%;
-    margin:auto auto 1rem auto;
-    img{
-      width:130px;
+  #center {
+    width: 30%;
+    margin: auto auto 1rem auto;
+    img {
+      width: 130px;
     }
   }
 `;
@@ -80,6 +80,7 @@ class RequestReset extends Component {
   };
 
   saveToState = e => {
+    console.log(e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -112,9 +113,9 @@ class RequestReset extends Component {
                 <fieldset disabled={loading} aria-busy={loading}>
                   <h2 id="h2">Password Reset</h2>
                   <Error error={error} />
-                   <div id="center">
-                  <img alt="pw-icon" src="../../static/forgotPW.png" />
-                   </div>
+                  <div id="center">
+                    <img alt="pw-icon" src="../../static/forgotPW.png" />
+                  </div>
                   {!error && !loading && called ? (
                     <p id="message">
                       Success! Check your email for a reset link!

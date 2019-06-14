@@ -39,8 +39,19 @@ const ALL_COUNTRIES_QUERY = gql`
 const Title = styled.div`
   text-align: center;
   display: flex;
-  max-width: 40%;
+  max-width: 60%;
   margin: auto;
+
+  #border-top {
+    border-radius: 2px;
+    margin-top: 1.3rem;
+    background: #e0e0e0;
+    -moz-box-shadow: 0 0 2px #ccc;
+    -webkit-box-shadow: 0 0 2px #ccc;
+    box-shadow: 0 0 2px #ccc;
+    width: 110px;
+    height: 5px;
+  }
   #active {
     span {
       color: blue;
@@ -266,7 +277,7 @@ class CheckoutDetails extends Component {
     return (
       <User>
         {({ data: { me } }) => {
-          if (!me) return <p>hi</p>;
+          if (!me) return <p>You should not be here!</p>;
           if (me) {
             return (
               <Query query={ALL_COUNTRIES_QUERY}>
@@ -297,6 +308,8 @@ class CheckoutDetails extends Component {
                                       </h4>
                                     </>
                                   </div>
+                                  <div />
+                                  <div id="border-top" />
                                   <div
                                     className="item"
                                     id={view === 2 ? 'active' : ''}
@@ -315,7 +328,7 @@ class CheckoutDetails extends Component {
                                       </h4>
                                     </>
                                   </div>
-
+                                  <div id="border-top" />
                                   <div
                                     className="item"
                                     id={view === 3 ? 'active' : ''}

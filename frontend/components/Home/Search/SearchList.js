@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import styled from 'styled-components';
 import Loading from '../../Static/Loading';
 import Error from '../../Static/ErrorMessage';
 import CourseItem from '../CoursesList/CourseItem';
-import { Container, CoursesList, Title } from '../../styles/Home';
+import { Container, CoursesList } from '../../styles/Home';
 
 const SEARCH_COURSE_CATEGORY = gql`
-  query SEARCH_COURSE_CATEGORY($category: [ID], $orderBy: String) {
-    coursesCategory(category: $category, orderBy: $orderBy) {
+  query SEARCH_COURSE_CATEGORY(
+    $category: [ID]
+    $orderBy: String
+    $author: String
+  ) {
+    coursesCategory(category: $category, orderBy: $orderBy, author: $author) {
       id
       title
       description
@@ -25,6 +30,11 @@ const SEARCH_COURSE_CATEGORY = gql`
     }
   }
 `;
+const P = styled.p`
+  margin-top: 5rem;
+  opacity: 0.5;
+  font-size: 13px;
+`;
 
 class SearchList extends Component {
   render() {
@@ -35,6 +45,7 @@ class SearchList extends Component {
         variables={{
           category: info.category,
           orderBy: `${info.orderBy}_${info.sort}`,
+          author: info.author,
         }}
       >
         {({ data, loading, error }) => {
@@ -55,7 +66,7 @@ class SearchList extends Component {
               </Container>
             );
           }
-          return <p>No data</p>;
+          return <P>Choose One of the Filters To show some Results</P>;
         }}
       </Query>
     );

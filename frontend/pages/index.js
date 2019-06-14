@@ -30,6 +30,19 @@ const Container = styled.div`
   }
 `;
 
+const TopBar = styled.div`
+  #banner {
+    margin: 2rem auto auto auto;
+    width: 70%;
+    img {
+      width: 100%;
+    }
+  }
+  h2 {
+    margin-top: 4rem;
+  }
+`;
+
 const Info = styled.div`
   display: flex;
   min-height: 70px;
@@ -126,6 +139,11 @@ class Home extends Component {
                 </Link>
                 <Search />
               </SearchStyle>
+              <TopBar>
+                <div id="banner">
+                  <img alt="banner" src="../static/banner.webp" />
+                </div>
+              </TopBar>
               {data.me.interests.length > 0 && (
                 <ListAllCourses query="ALL_COURSE_INTERESTS" />
               )}

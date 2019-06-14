@@ -281,33 +281,37 @@ class ListAllCourses extends Component {
 
             if (data.coursesList) {
               return (
-                <Container lista>
-                  {data.coursesList[0] !== undefined && <Title>{title}</Title>}
-                  <div id="content-container">
-                    <CoursesList id="courses-list" className={classe}>
-                      {data.coursesList.map(course => (
-                        <CourseItem
-                          course={course}
-                          key={course.id}
-                          skip={page * perPageCourse - perPageCourse}
-                        />
-                      ))}
-                    </CoursesList>
-
+                <>
+                  <Container lista>
                     {data.coursesList[0] !== undefined && (
-                      <PaginationCourse
-                        page={page}
-                        animationSliderControlForward={
-                          this.animationSliderControlForward
-                        }
-                        animationSliderControlBackward={
-                          this.animationSliderControlBackward
-                        }
-                        isInterest={false}
-                      />
+                      <Title>{title}</Title>
                     )}
-                  </div>
-                </Container>
+                    <div id="content-container">
+                      <CoursesList id="courses-list" className={classe}>
+                        {data.coursesList.map(course => (
+                          <CourseItem
+                            course={course}
+                            key={course.id}
+                            skip={page * perPageCourse - perPageCourse}
+                          />
+                        ))}
+                      </CoursesList>
+
+                      {data.coursesList[0] !== undefined && (
+                        <PaginationCourse
+                          page={page}
+                          animationSliderControlForward={
+                            this.animationSliderControlForward
+                          }
+                          animationSliderControlBackward={
+                            this.animationSliderControlBackward
+                          }
+                          isInterest={false}
+                        />
+                      )}
+                    </div>
+                  </Container>
+                </>
               );
             }
             if (data.coursesUserInterestList)

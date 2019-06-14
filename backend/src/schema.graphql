@@ -171,6 +171,13 @@ type Query {
     first: Int
   ): [Course]
 
+  authorSearch(
+    where: CourseWhereInput
+    orderBy: CourseOrderByInput
+    skip: Int
+    first: Int
+  ): [Course]
+
   videoUsers(where: VideoWhereInput): [VideoUser]
   videoItems(where: VideoWhereInput): [VideoItem]
 
@@ -234,7 +241,7 @@ type Query {
   coursesStats: [Stats]
   sellsByCourse(id: ID): [Stats]
   coursesStatsByDate(initialDate: String): [Stats]
-  coursesCategory(category: [ID], orderBy: String): [Course]
+  coursesCategory(category: [ID], orderBy: String, author: String): [Course]
 
   # used to insert the countries data in the db
   # insertData: Course

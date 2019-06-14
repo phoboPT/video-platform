@@ -991,7 +991,6 @@ const Mutations = {
   async createOrder(parent, args, ctx) {
     // query current user and make sure they are signin
     const { userId } = ctx.request;
-    console.log(args);
     if (!userId)
       throw new Error('You must be signed in to complete this order.');
     const user = await ctx.db.query.user(

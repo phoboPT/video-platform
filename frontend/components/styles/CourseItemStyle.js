@@ -6,6 +6,7 @@ const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 90%;
   border-radius: ${props => props.theme.borderRadius};
 
   img {
@@ -15,6 +16,7 @@ const Container = styled.div`
     height: 190px;
     object-fit: cover;
     cursor: ${props => (props.noCursor ? '' : 'pointer')};
+    border-bottom: 1px solid lightgray;
   }
   p {
     margin-block-start: 0em;
