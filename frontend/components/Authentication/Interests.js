@@ -9,12 +9,19 @@ const Container = styled.div`
   text-align: center;
 
   #NextButton {
-    margin-block-start: 2rem;
+    margin-top: 2rem;
+    height: 45px;
+    width: 100px;
+    border: none;
     text-align: center;
     cursor: pointer;
     background: #cccccc;
     border-radius: 6px;
     font-size: 20px;
+    -moz-box-shadow: 0 0 3px #ccc;
+    -webkit-box-shadow: 0 0 3px #ccc;
+    box-shadow: 0 0 3px #ccc;
+
     font-weight: 900;
     color: #212121;
     word-spacing: 5px;
@@ -29,8 +36,10 @@ const Container = styled.div`
 
   #subtitle {
     color: #303030;
-    text-align: center;
-    font-size: 20px;
+    opacity: 0.6;
+    text-align: left;
+    margin-left: 6em;
+    font-size: 16px;
     font-weight: 500;
     line-height: 48px;
     word-spacing: 0px;
@@ -62,7 +71,9 @@ export class Interests extends Component {
               <Title>
                 Welcome to Video Platform<strong> {me.name} </strong>
               </Title>
-              <p id="subtitle">Choose Your Interests</p>
+              <p id="subtitle">
+                Choose your interests to receive Courses to your liking!
+              </p>
 
               <Interest view={1} />
               <button

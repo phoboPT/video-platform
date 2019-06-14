@@ -10,6 +10,90 @@ import SearchList from './SearchList';
 import { orderBy, sort } from '../../../lib/filterVariables';
 
 const PageContainer = styled.div`
+  .tooltip {
+    padding-top: 1rem;
+    list-style: none;
+    position: relative;
+  }
+  .tooltip:before,
+  .tooltip:after {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+  .tooltip:after {
+    border-right: 6px solid transparent;
+    border-bottom: 14px solid rgba(0, 0, 0, 0.75);
+    border-left: 6px solid transparent;
+    content: '';
+    height: 0;
+    top: 20px;
+    left: 10px;
+    width: 0;
+  }
+  .tooltip:before {
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 2px;
+    color: #fff;
+    content: attr(data-title);
+    font-size: 14px;
+    padding: 6px 10px;
+    top: 26px;
+    white-space: nowrap;
+  }
+
+  /* the animations */
+  /* fade */
+  .tooltip.fade:after,
+  .tooltip.fade:before {
+    transform: translate3d(0, -10px, 0);
+    transition: all 0.15s ease-in-out;
+  }
+  .tooltip.fade:hover:after,
+  .tooltip.fade:hover:before {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  #search-author {
+    margin-top: 3rem;
+    display: flex;
+    width: 80%;
+    margin-bottom: 4rem;
+    #author {
+      -moz-box-shadow: 0 0 5px #c6c6c6;
+      -webkit-box-shadow: 0 0 5px #c6c6c6;
+      box-shadow: 0 0 5px #c6c6c6;
+      border-radius: 8px;
+      height: 30px;
+      border: none;
+      padding-left: 3rem;
+
+      width: 70%;
+
+      order: 1;
+    }
+    #selectAll {
+      label {
+        padding-top: 9px;
+        padding-right: 1rem;
+        text-align: center;
+      }
+
+      input {
+        margin: auto 1rem;
+        -ms-transform: scale(1.5); /* IE */
+        -moz-transform: scale(1.5); /* FF */
+        -webkit-transform: scale(1.5); /* Safari and Chrome */
+        -o-transform: scale(1.5); /* Opera */
+        transform: scale(1.5);
+      }
+      order: 2;
+      display: flex;
+      margin: auto;
+    }
+  }
   h1 {
     margin: 0 0 4rem 0;
     width: 100%;
@@ -39,7 +123,10 @@ const PageContainer = styled.div`
           grid-row-gap: 2rem;
 
           margin: 0 1rem 0 0;
-
+          input:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+          }
           input {
             margin: auto 1rem;
             -ms-transform: scale(1.5); /* IE */
@@ -86,51 +173,6 @@ const PageContainer = styled.div`
             padding: 10px;
           }
         }
-      }
-      .tooltip {
-        padding-top: 1rem;
-        list-style: none;
-        position: relative;
-      }
-      .tooltip:before,
-      .tooltip:after {
-        display: block;
-        opacity: 0;
-        pointer-events: none;
-        position: absolute;
-      }
-      .tooltip:after {
-        border-right: 6px solid transparent;
-        border-bottom: 14px solid rgba(0, 0, 0, 0.75);
-        border-left: 6px solid transparent;
-        content: '';
-        height: 0;
-        top: 20px;
-        left: 20px;
-        width: 0;
-      }
-      .tooltip:before {
-        background: rgba(0, 0, 0, 0.75);
-        border-radius: 2px;
-        color: #fff;
-        content: attr(data-title);
-        font-size: 14px;
-        padding: 6px 10px;
-        top: 26px;
-        white-space: nowrap;
-      }
-
-      /* the animations */
-      /* fade */
-      .tooltip.fade:after,
-      .tooltip.fade:before {
-        transform: translate3d(0, -10px, 0);
-        transition: all 0.15s ease-in-out;
-      }
-      .tooltip.fade:hover:after,
-      .tooltip.fade:hover:before {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
       }
     }
   }
@@ -256,25 +298,34 @@ class SearchFilter extends Component {
           return (
             <PageContainer>
               <h1>Custom Search</h1>
-              <input
-                id="author"
-                placeholder="Select The Name of an Author"
-                name="author"
-                type="text"
-                onChange={e => {
-                  e.persist();
-                  this.onChange(e);
-                }}
-              />
-              SelectAll
-              <input
-                id="selectAll"
-                placeholder="Author"
-                name="selectAll"
-                type="checkbox"
-                checked={isAll}
-                onChange={() => this.selectAll(data.categories)}
-              />
+              <div id="search-author">
+                <input
+                  id="author"
+                  placeholder="Select The Name of an Author"
+                  name="author"
+                  type="text"
+                  onChange={e => {
+                    e.persist();
+                    this.onChange(e);
+                  }}
+                />
+                <div id="selectAll">
+                  <label>Select All</label>
+                  <li
+                    className="tooltip fade"
+                    data-title="Select All Categories "
+                  >
+                    <input
+                      id="selectAll"
+                      placeholder="Author"
+                      name="selectAll"
+                      type="checkbox"
+                      checked={isAll}
+                      onChange={() => this.selectAll(data.categories)}
+                    />
+                  </li>
+                </div>
+              </div>
               <div id="select-bar">
                 <div id="container-categories">
                   <p id="text">Search By Category</p>
