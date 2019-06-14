@@ -105,7 +105,6 @@ const PageContainer = styled.div`
         border-left: 6px solid transparent;
         content: '';
         height: 0;
-        top: 20px;
         left: 20px;
         width: 0;
       }
@@ -116,7 +115,7 @@ const PageContainer = styled.div`
         content: attr(data-title);
         font-size: 14px;
         padding: 6px 10px;
-        top: 26px;
+        top: 38px;
         white-space: nowrap;
       }
 

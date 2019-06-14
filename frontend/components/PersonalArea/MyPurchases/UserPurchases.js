@@ -152,18 +152,18 @@ class UserPurchases extends Component {
                                 SHOW MORE
                               </button>
                             </div>
-                            <Button>
-                              <button
-                                type="button"
-                                id="myBtn"
-                                onClick={this.topFunction}
-                                name="go to the top of the page"
-                              >
-                                Go Top
-                              </button>
-                            </Button>
                           </>
                         )}
+                        <Button>
+                          <button
+                            type="button"
+                            id="myBtn"
+                            onClick={this.topFunction}
+                            name="go to the top of the page"
+                          >
+                            Go Top
+                          </button>
+                        </Button>
                         {!data.ordersUser && <p> No Orders </p>}
                       </Container>
                     </Header>
