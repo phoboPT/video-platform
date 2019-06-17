@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import html2canvas from 'html2canvas';
 import formatDate from '../../../lib/formatDate';
-import formatMoney from '../../../lib/formatMoney';
 
 const BackButton = styled.div`
   padding-left: 6rem;
@@ -39,32 +38,26 @@ const TopBar = styled.div`
   }
 `;
 const SelledStyle = styled.div`
-  display: flex;
-  margin: 2rem;
-  border-bottom: 1px solid rgba(168, 168, 168, 0.6);
-  strong {
-    font-size: 15px;
-    opacity: 1;
-    color: rgba(0, 0, 0, 1);
-    margin-right: 7px;
-  }
-  #left {
-    font-size: 13px;
-    color: rgba(0, 0, 0, 0.8);
-    order: 1;
-    flex: 1;
-    float: left;
-  }
-  #right {
-    color: rgba(0, 0, 0, 0.8);
-
-    font-size: 13px;
-    order: 2;
+  width: 60%;
+  margin: 2rem auto auto auto;
+  #container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    strong {
+      font-size: 15px;
+      opacity: 1;
+      color: rgba(0, 0, 0, 1);
+      margin-right: 7px;
+    }
+    p {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.8);
+    }
   }
 `;
 
 const Container = styled.div`
-  margin: 0rem 2rem 2rem 2rem;
+  margin: 0rem 2rem 13rem 2rem;
 
   #all {
     border-top: 2px solid rgba(168, 168, 168, 0.6);
@@ -89,6 +82,7 @@ const Container = styled.div`
 
 const Table = styled.div`
   display: flex;
+  padding-top: 4rem;
   #item {
     margin-left: 3rem;
     order: 1;
@@ -106,6 +100,7 @@ const ContainerAll = styled.div`
   border: 1px solid #aaaaaa;
   max-width: 800px;
   margin: 2rem auto auto auto;
+
   #sub {
     margin-left: 2rem;
     opacity: 0.6;
@@ -188,14 +183,54 @@ class Receipt extends Component {
           <p id="sub">Viana do Castelo - Portugal </p>
           <p id="sub">picusVideoPlatform.com </p>
           <SelledStyle>
-            <p id="left">
-              <strong>Selled to:</strong>
-              {receipt[0].user.name}
-            </p>
-            <p id="right">
-              <strong>Purchase date:</strong>
-              {formatDate(receipt[0].createdAt)}
-            </p>
+            <div id="container">
+              <p>
+                <strong>Selled to:</strong>
+                {receipt[0].user.name}
+              </p>
+              <p>
+                <strong>Purchase date:</strong>
+                {formatDate(receipt[0].createdAt)}
+              </p>
+              {receipt[0].paymentBill.nif !== '' && (
+                <p>
+                  <strong>Nif: </strong> {receipt[0].paymentBill.nif}
+                </p>
+              )}
+              {receipt[0].paymentBill !== null && (
+                <>
+                  {receipt[0].paymentBill.address !== '' && (
+                    <p>
+                      <strong>Adress: </strong>
+                      {receipt[0].paymentBill.address}
+                    </p>
+                  )}
+                  {receipt[0].paymentBill.zipCode !== '' && (
+                    <p>
+                      <strong>Zip Code: </strong>
+                      {receipt[0].paymentBill.zipCode}
+                    </p>
+                  )}
+                  {receipt[0].paymentBill.country.name !== '' && (
+                    <p>
+                      <strong>Country: </strong>
+                      {receipt[0].paymentBill.country.name}
+                    </p>
+                  )}
+                  {receipt[0].paymentBill.state !== '' && (
+                    <p>
+                      <strong>State: </strong>
+                      {receipt[0].paymentBill.state}
+                    </p>
+                  )}
+                  {receipt[0].paymentBill.city !== '' && (
+                    <p>
+                      <strong>City: </strong> {receipt[0].paymentBill.city}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
           </SelledStyle>
           <Table>
             <p id="item">Item</p>
@@ -217,7 +252,7 @@ class Receipt extends Component {
               <p> Total purchases: {receipt[0].items.length} </p>
             </div>
             <div id="price">
-              <p> Total Price: {formatMoney(receipt[0].total / 100)} </p>
+              <p> Total Price: {receipt[0].total} €</p>
             </div>
           </InfoDown>
         </ContainerAll>

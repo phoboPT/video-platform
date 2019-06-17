@@ -53,7 +53,7 @@ const FlexBottom = styled.div`
 class Header extends Component {
   //   const amount = data.ordersUser.reduce((tally, item) => tally + item.total, 0);
   render() {
-    const { data } = this.props;
+    const { data, children } = this.props;
 
     return (
       <>
@@ -65,7 +65,7 @@ class Header extends Component {
           <p id="total"> Total Price </p>
           <p id="five" />
         </Flex>
-        {this.props.children}
+        {children}
         <FlexBottom>
           <p id="items"> Total: {data.ordersUserStats.countOrders} </p>
           <p id="total">

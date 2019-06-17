@@ -11,7 +11,9 @@ const Style = styled.div`
   }
 
   .top-bar {
-    margin: 0 auto;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    margin: 1rem auto;
     width: 60%;
     min-height: 50px;
     background: #d8d8d8;
@@ -91,7 +93,9 @@ class InstrutorArea extends Component {
               {me.permission[0] === 'INSTRUTOR' ? (
                 <Style>
                   <section id="main" className="top-bar">
-                    <h2> Manage Courses </h2>
+                    {view === 1 && <h2> Manage Courses </h2>}
+                    {view === 2 && <h2> Create Course </h2>}
+                    {view === 3 && <h2> Stats </h2>}
                   </section>
 
                   <div className="container">

@@ -265,11 +265,11 @@ class ChangeCourse extends Component {
               <ButtonStyle>
                 {!changeIntructorView ? (
                   <button type="button" onClick={this.goBack}>
-                    ⬅Go Back
+                    ⬅ Go Back
                   </button>
                 ) : (
                   <button type="button" onClick={() => changeIntructorView(1)}>
-                    <a> ⬅Go Back </a>
+                    <a> ⬅ Go Back </a>
                   </button>
                 )}
               </ButtonStyle>

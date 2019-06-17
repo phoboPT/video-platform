@@ -13,6 +13,10 @@ const Meta = () => (
     />
     <link href="../static/react-datepicker.css" rel="stylesheet" />
     <link href="../static/style.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Quicksand&display=swap"
+      rel="stylesheet"
+    />
 
     <link
       crossOrigin="anonymous"
@@ -20,7 +24,6 @@ const Meta = () => (
       integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
       rel="stylesheet"
     />
-
     <title>Picus</title>
   </Head>
 );

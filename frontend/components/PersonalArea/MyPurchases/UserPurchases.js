@@ -23,6 +23,18 @@ const ALL_USER_ORDERS = gql`
         id
         name
       }
+      paymentBill {
+        id
+        address
+        city
+        state
+        zipCode
+        nif
+        country {
+          id
+          name
+        }
+      }
     }
   }
 `;
@@ -131,13 +143,12 @@ class UserPurchases extends Component {
               if (!data.ordersUser) {
                 return <p> No Orders </p>;
               }
-
               return (
                 <>
                   {view === 1 && (
                     <Header data={statsData}>
                       <Container>
-                        {data.ordersUser &&
+                        {data.ordersUser !== null &&
                           data.ordersUser.map(order => (
                             <PurchaseItem
                               changeReceipt={this.changeReceipt}
