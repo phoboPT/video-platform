@@ -141,7 +141,7 @@ class SearchFilter extends Component {
       category: [],
       orderBy: 'createdAt',
       sort: 'ASC',
-      author: 'teste',
+      author: '',
     },
     isAll: false,
   };

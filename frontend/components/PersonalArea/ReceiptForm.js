@@ -9,7 +9,9 @@ const Container = styled.div`
   select {
     -webkit-appearance: button;
     -webkit-border-radius: 2px;
+    border-radius: 2px;
     -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
     -webkit-padding-end: 20px;
     -webkit-padding-start: 2px;
     -webkit-user-select: none;
@@ -87,10 +89,16 @@ const Container = styled.div`
 `;
 
 class ReceiptForm extends Component {
-  state = { hasUpdated: false, country: this.props.countries.countries[0].id };
+  state = {
+    hasUpdated: false,
+    country: this.props.countries.countries[0].id,
+    name: this.props.name || this.props.me.name,
+    email: this.props.email || this.props.me.email,
+  };
 
   handleChange = async e => {
     const { updateData } = this.props;
+
     await this.setState({ [e.target.name]: e.target.value });
     updateData(this.state);
   };
@@ -105,6 +113,7 @@ class ReceiptForm extends Component {
       state,
       zipCode,
       country,
+      nif,
       me,
     } = this.props;
     return (
@@ -147,6 +156,15 @@ class ReceiptForm extends Component {
             name="city"
             placeholder="City"
             defaultValue={city}
+            onChange={this.handleChange}
+          />
+          <p>NIF</p>
+          <input
+            id="nif"
+            type="number"
+            name="nif"
+            placeholder="NIF"
+            defaultValue={nif}
             onChange={this.handleChange}
           />
           <div className="state">

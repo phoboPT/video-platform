@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { CURRENT_USER_QUERY } from '../../Authentication/User';
 
 const ADD_TO_CART_MUTATION = gql`
@@ -12,6 +13,9 @@ const ADD_TO_CART_MUTATION = gql`
   }
 `;
 
+const Button = styled.button`
+  cursor: pointer;
+`;
 class AddToCart extends Component {
   render() {
     const { id } = this.props;
@@ -22,14 +26,14 @@ class AddToCart extends Component {
         variables={{ id }}
       >
         {(addToCart, { loading }) => (
-          <button
+          <Button
             type="button"
             disabled={loading}
             onClick={addToCart}
             name="add the course to the cart"
           >
             Add{loading && 'ing'} To Cart
-          </button>
+          </Button>
         )}
       </Mutation>
     );

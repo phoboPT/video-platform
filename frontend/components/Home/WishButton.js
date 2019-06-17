@@ -26,7 +26,9 @@ const Img = styled.div`
   top: 5px;
   width: 50px;
   fill: red;
-
+  button {
+    cursor: pointer;
+  }
   .added {
     fill: gray;
   }

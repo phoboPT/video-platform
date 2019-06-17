@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import User, { CURRENT_USER_QUERY } from '../components/Authentication/User';
+import { CURRENT_USER_QUERY } from '../components/Authentication/User';
 
 const EXECUTE_PAYPAL = gql`
   mutation EXECUTE_PAYPAL(
@@ -16,6 +16,7 @@ const EXECUTE_PAYPAL = gql`
     $state: String
     $zipCode: String
     $country: ID
+    $nif: Int
     $billId: ID
   ) {
     executePaypal(
@@ -29,6 +30,7 @@ const EXECUTE_PAYPAL = gql`
       state: $state
       zipCode: $zipCode
       country: $country
+      nif: $nif
       billId: $billId
     ) {
       message

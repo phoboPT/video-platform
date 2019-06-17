@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import {
   ALL_COURSE_INTERESTS,
   ALL_COURSES_ORDERED,
@@ -16,7 +17,9 @@ const ADD_FREE_COURSE_MUTATION = gql`
     }
   }
 `;
-
+const Button = styled.button`
+  cursor: pointer;
+`;
 class BuyFreeButton extends Component {
   update = (cache, payload) => {
     const { id } = this.props;
@@ -74,14 +77,14 @@ class BuyFreeButton extends Component {
         }}
       >
         {(buyCourseFree, { loading }) => (
-          <button
+          <Button
             type="button"
             disabled={loading}
             onClick={buyCourseFree}
             name="add the free course to your account"
           >
             Add To Your Courses
-          </button>
+          </Button>
         )}
       </Mutation>
     );
