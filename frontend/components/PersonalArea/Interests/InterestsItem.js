@@ -9,12 +9,14 @@ const Border = styled.div`
   background: white;
   position: relative;
   display: flex;
+  width: 80%;
+  height: 330px;
   flex-direction: column;
   border-radius: ${props => props.theme.borderRadius};
   img {
     border-radius: ${props => props.theme.borderRadius};
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
   }
   border: 2px solid #dddddd;

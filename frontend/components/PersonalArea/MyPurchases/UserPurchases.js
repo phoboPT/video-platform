@@ -128,6 +128,10 @@ class UserPurchases extends Component {
               if (error) {
                 return <p> Error: {error.message} </p>;
               }
+              if (!data.ordersUser) {
+                return <p> No Orders </p>;
+              }
+
               return (
                 <>
                   {view === 1 && (
