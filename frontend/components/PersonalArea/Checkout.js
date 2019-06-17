@@ -20,7 +20,7 @@ const CREATE_ORDER_MUTATION = gql`
     $state: String
     $zipCode: String
     $country: ID
-    $billId: ID
+    $nif: Int
   ) {
     createOrder(
       token: $token
@@ -31,6 +31,7 @@ const CREATE_ORDER_MUTATION = gql`
       state: $state
       zipCode: $zipCode
       country: $country
+      nif: $nif
       billId: $billId
     ) {
       id
@@ -58,6 +59,7 @@ class Checkout extends Component {
         state: data.state,
         zipCode: data.zipCode,
         country: data.country,
+        nif: data.nif,
         billId: data.selectedBill,
       },
     }).catch(err => {

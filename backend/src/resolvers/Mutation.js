@@ -1039,7 +1039,6 @@ const Mutations = {
       delete orderItem.id;
       return orderItem;
     });
-    console.log(args);
 
     let order;
     if (args.billId === '') {

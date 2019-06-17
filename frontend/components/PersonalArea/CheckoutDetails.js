@@ -10,6 +10,7 @@ import Checkout from './Checkout';
 import CheckoutItems from './CheckoutItems';
 import Paypal from './Paypal';
 import ReceiptForm from './ReceiptForm';
+import validateNif from '../../lib/validateNif';
 
 const PAYMENT_BILL_QUERY = gql`
   query PAYMENT_BILL_QUERY {
@@ -21,6 +22,7 @@ const PAYMENT_BILL_QUERY = gql`
       city
       state
       zipCode
+      nif
       country {
         name
       }
@@ -186,13 +188,14 @@ class CheckoutDetails extends Component {
       city,
       state,
       zipCode,
+      nif,
       country,
     } = this.state;
-    console.log(this.isEmpty());
 
     if (view !== 2) {
       return this.setState({ view: view + 1 });
     }
+
     if (view === 2) {
       if (selectedBill !== '') {
         localStorage.setItem(
@@ -204,6 +207,7 @@ class CheckoutDetails extends Component {
               address,
               city,
               state,
+              nif,
               zipCode,
               country,
               selectedBill,
@@ -222,6 +226,7 @@ class CheckoutDetails extends Component {
             address,
             city,
             state,
+            nif,
             zipCode,
             country,
           })
@@ -237,7 +242,7 @@ class CheckoutDetails extends Component {
   };
 
   isEmpty = () => {
-    const { name, email, address, city, state, zipCode, country } = this.state;
+    const { name, email, address, city, state, zipCode, nif } = this.state;
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (
       name !== undefined &&
@@ -245,7 +250,8 @@ class CheckoutDetails extends Component {
       address !== undefined &&
       city !== undefined &&
       state !== undefined &&
-      zipCode !== undefined
+      zipCode !== undefined &&
+      (nif !== undefined && validateNif(nif))
     ) {
       return true;
     }
@@ -265,12 +271,12 @@ class CheckoutDetails extends Component {
     const {
       selectedBill,
       view,
-      showReceiptForm,
       name,
       email,
       address,
       city,
       state,
+      nif,
       zipCode,
       country,
     } = this.state;
@@ -381,11 +387,12 @@ class CheckoutDetails extends Component {
                                                 onChange={this.changePayment}
                                                 value={item.id}
                                               />
-                                              <label htmlFor={item.id}>
+                                              <label>
                                                 <p>{item.name}</p>
                                                 <p>{item.email}</p>
                                                 <p>{item.address || ''}</p>
                                                 <p>{item.city}</p>
+                                                <p>{item.nif}</p>
                                               </label>
                                             </div>
                                           ))}
@@ -409,6 +416,7 @@ class CheckoutDetails extends Component {
                                                     state={state}
                                                     zipCode={zipCode}
                                                     country={country}
+                                                    nif={nif}
                                                     me={me}
                                                   />
                                                 ),

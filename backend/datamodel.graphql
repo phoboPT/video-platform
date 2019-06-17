@@ -181,6 +181,7 @@ type PaymentBill {
   zipCode: String
   country: Country
   user: User
+  nif: Int
 }
 
 type Country {

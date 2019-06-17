@@ -139,6 +139,7 @@ type Mutation {
     state: String
     zipCode: String
     country: ID
+    nif: Int
     billId: ID
   ): Order
   addToWish(id: ID!): Wishlist!
@@ -157,6 +158,7 @@ type Mutation {
     zipCode: String
     country: ID
     billId: ID
+    nif: Int
   ): SuccessMessage
 }
 

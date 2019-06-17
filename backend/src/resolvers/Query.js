@@ -1059,7 +1059,6 @@ const Query = {
   async authorSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
-
     if (!userId) {
       throw new Error('You must be signed in!');
     }
@@ -1089,9 +1088,7 @@ const Query = {
         }
         `
     );
-
     const coursesIds = user.courses.map(course => course.course.id);
-
     // query o video atual com comparaçao de ids de user
     const finalRes = await ctx.db.query.courses(
       {
@@ -1102,7 +1099,8 @@ const Query = {
             },
             {
               user: {
-                name_contains: args.where.title,
+                name_contains:
+                  args.where.title === '' ? undefined : args.where.title,
               },
             },
             {
@@ -1118,7 +1116,6 @@ const Query = {
   },
   async paymentBill(parent, args, ctx, info) {
     const { userId } = ctx.request;
-    console.log(userId);
     return ctx.db.query.paymentBills(
       {
         where: { user: { id: userId } },
