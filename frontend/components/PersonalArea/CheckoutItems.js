@@ -31,6 +31,7 @@ const CartItemStyles = styled.li`
 
 const ToolTip = styled.div`
   .tooltip {
+    z-index: 1;
     list-style: none;
     position: relative;
   }

@@ -137,8 +137,9 @@ class Signin extends Component {
 
   submitForm = async (e, mutation, toggleLogin) => {
     e.preventDefault();
-    await mutation();
+    const res = await mutation();
     await toggleLogin();
+    console.log(res);
     this.setState({ email: '', password: '' });
     Router.push({
       pathname: '/index',

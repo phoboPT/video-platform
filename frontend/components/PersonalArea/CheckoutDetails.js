@@ -38,6 +38,7 @@ const ALL_COUNTRIES_QUERY = gql`
     }
   }
 `;
+
 const Title = styled.div`
   text-align: center;
   display: flex;
@@ -88,6 +89,7 @@ const Title = styled.div`
     }
   }
 `;
+
 const Main = styled.div`
   background-color: #fff;
   margin: 40px auto 0 auto;
@@ -134,7 +136,6 @@ const Main = styled.div`
     margin: auto;
     float: left;
     position: relative;
-
     .container {
       box-shadow: 1px 1px 1px 1px lightgrey;
       margin: 0 0 1rem 0;
@@ -155,7 +156,6 @@ const Main = styled.div`
       }
     }
   }
-
   .cartDetails {
     margin-left: 20px;
     float: right;
@@ -192,7 +192,6 @@ const Button = styled.button`
   padding: 0.5rem 1.2rem;
   text-align: center;
   min-width: 15rem;
-
   &:hover {
     background-color: #eb675e;
   }
@@ -254,13 +253,11 @@ class CheckoutDetails extends Component {
 
       Object.keys(fields).forEach(key => {
         const value = fields[key];
-        console.log(this.isEmpty(value, key));
         if (this.isEmpty(value, key)) {
           validatedFields += 1;
         }
       });
 
-      console.log('validated', validatedFields);
       if (validatedFields === 7) {
         localStorage.setItem(
           'billData',
@@ -282,8 +279,6 @@ class CheckoutDetails extends Component {
 
   isEmpty = (string, type) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    console.log('string', string, type);
-
     // Check email
     if (type === 'email') {
       if (string === undefined || string === '') {
@@ -296,7 +291,6 @@ class CheckoutDetails extends Component {
       }
       return true;
     }
-
     // check Nif
     if (type === 'nif') {
       if (string === undefined || string === '') {
@@ -354,12 +348,11 @@ class CheckoutDetails extends Component {
           if (me) {
             return (
               <Query query={ALL_COUNTRIES_QUERY}>
-                {({ data: countryData, loading }) => {
+                {({ data: countryData }) => {
                   if (countryData)
                     return (
                       <Query query={PAYMENT_BILL_QUERY}>
-                        {({ data, loading, error }) => {
-                          console.log(data);
+                        {({ data }) => {
                           if (data) {
                             return (
                               <>
@@ -505,7 +498,7 @@ class CheckoutDetails extends Component {
                                     {view === 3 && (
                                       <div id="billInfo">
                                         <div className="first">
-                                          <h3 id="title">Cart</h3>
+                                          <h3 id="title">Items</h3>
                                           {me.cart.map(item => (
                                             <CheckoutItems
                                               cartItem={item}

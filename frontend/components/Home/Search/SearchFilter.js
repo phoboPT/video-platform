@@ -11,6 +11,7 @@ import { orderBy, sort } from '../../../lib/filterVariables';
 
 const PageContainer = styled.div`
   .tooltip {
+    z-index: 1;
     padding-top: 1rem;
     list-style: none;
     position: relative;

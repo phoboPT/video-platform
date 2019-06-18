@@ -4,6 +4,7 @@ const ToolTip = styled.div`
   .tooltip {
     list-style: none;
     position: relative;
+    z-index: 1;
   }
   .tooltip:before,
   .tooltip:after {
