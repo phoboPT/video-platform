@@ -17,6 +17,7 @@ type User {
   description: String
   name: String!
   email: String!
+  password: String
   permission: [Permission]
   interests: [UserInterest!]!
   cart: [CartItem!]!

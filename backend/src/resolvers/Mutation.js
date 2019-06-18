@@ -393,16 +393,21 @@ const Mutations = {
       return user;
     }
   },
-  async signin(parent, { email, password }, ctx) {
+  async signin(parent, args, ctx, info) {
+    console.log(args);
     // check if there is a user
-    const user = await ctx.db.query.user({
-      where: { email },
-    });
+    const user = await ctx.db.query.user(
+      {
+        where: { email: args.email },
+      },
+      info
+    );
+    console.log(user);
     if (!user) {
-      throw new Error(`No such user found for email ${email}`);
+      throw new Error(`No such user found for email ${args.email}`);
     }
     // check passwords
-    const valid = await bcrypt.compare(password, user.password);
+    const valid = await bcrypt.compare(args.password, user.password);
 
     if (!valid) {
       throw new Error('Invalid Password');
@@ -414,6 +419,7 @@ const Mutations = {
       httpOnly: true,
       maxAge: 1000 * 24 * 365 * 60 * 60, // 1 year cookie
     });
+    delete user.password;
     // return the user
     return user;
   },
