@@ -41,7 +41,7 @@ const ALL_COUNTRIES_QUERY = gql`
 const Title = styled.div`
   text-align: center;
   display: flex;
-  max-width: 60%;
+  max-width: 80%;
   margin: auto;
 
   #border-top {
@@ -89,26 +89,52 @@ const Title = styled.div`
   }
 `;
 const Main = styled.div`
-  max-width: 1300px;
   background-color: #fff;
   margin: 40px auto 0 auto;
   line-height: 1.65;
   padding: 20px 50px;
   display: flex;
-  /* border: 1px solid red; */
   position: relative;
-
+  #billInfo {
+    display: flex;
+    .first {
+      order: 1;
+      flex: 1.5;
+      #title {
+        text-align: center;
+      }
+    }
+    .second {
+      order: 2;
+      flex: 1;
+      display: flex;
+      #title {
+        text-align: center;
+      }
+      #infoDetails {
+        width: 100%;
+      }
+      .details {
+        margin: 0 0.5rem 0 2rem;
+        display: flex;
+        p {
+          padding: 0 0 0 1rem;
+          color: grey;
+          margin-block-start: 0em;
+          margin-block-end: 0em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+        }
+      }
+    }
+  }
   .cartItems {
     flex: 2;
     order: 1;
     margin: auto;
-    /* border: 1px solid blue; */
     float: left;
     position: relative;
 
-    top .items {
-      /* border: 1px solid green; */
-    }
     .container {
       box-shadow: 1px 1px 1px 1px lightgrey;
       margin: 0 0 1rem 0;
@@ -116,6 +142,7 @@ const Main = styled.div`
         display: flex;
         margin: 0 0 0 0;
         label {
+          cursor: pointer;
           display: flex;
         }
         input {
@@ -176,7 +203,11 @@ const Button = styled.button`
 `;
 
 class CheckoutDetails extends Component {
-  state = { view: 1, showReceiptForm: false, selectedBill: '' };
+  state = {
+    view: 1,
+    showReceiptForm: false,
+    selectedBill: '',
+  };
 
   changeView = async () => {
     const {
@@ -217,7 +248,20 @@ class CheckoutDetails extends Component {
         return this.setState({ view: view + 1 });
       }
 
-      if (this.isEmpty()) {
+      const fields = { name, email, address, city, state, nif, zipCode };
+
+      let validatedFields = 0;
+
+      Object.keys(fields).forEach(key => {
+        const value = fields[key];
+        console.log(this.isEmpty(value, key));
+        if (this.isEmpty(value, key)) {
+          validatedFields += 1;
+        }
+      });
+
+      console.log('validated', validatedFields);
+      if (validatedFields === 7) {
         localStorage.setItem(
           'billData',
           JSON.stringify({
@@ -233,30 +277,53 @@ class CheckoutDetails extends Component {
         );
         return this.setState({ view: view + 1 });
       }
-      swal(
-        'Empty Fields',
-        'You need to select a payment bill or create a new one',
-        'info'
-      );
     }
   };
 
-  isEmpty = () => {
-    const { name, email, address, city, state, zipCode, nif } = this.state;
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (
-      name !== undefined &&
-      email !== undefined &&
-      address !== undefined &&
-      city !== undefined &&
-      state !== undefined &&
-      zipCode !== undefined &&
-      (nif !== undefined && validateNif(nif))
-    ) {
+  isEmpty = (string, type) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    console.log('string', string, type);
+
+    // Check email
+    if (type === 'email') {
+      if (string === undefined || string === '') {
+        swal(`Empty ${type}`, `The ${type} can't be empty`, 'info');
+        return false;
+      }
+      if (!re.test(string.toLowerCase())) {
+        swal(`Empty ${type}`, `The ${type} must be valid`, 'info');
+        return false;
+      }
       return true;
     }
 
-    return false;
+    // check Nif
+    if (type === 'nif') {
+      if (string === undefined || string === '') {
+        swal('Empty NIF', "The nif can't be empty", 'info');
+        return false;
+      }
+      if (!validateNif(string)) {
+        swal('Invalid NIF', 'The nif is invalid', 'info');
+        return false;
+      }
+      return true;
+    }
+    // check state
+    if (type === 'zipCode') {
+      if (string === undefined || string === '') {
+        swal('Empty Zip Code', "The zip code can't be empty", 'info');
+        return false;
+      }
+      return true;
+    }
+
+    if (string === undefined || string === '') {
+      swal(`Empty ${type}`, `The ${type} can't be empty`, 'info');
+      return false;
+    }
+
+    return true;
   };
 
   updateData = data => {
@@ -292,6 +359,7 @@ class CheckoutDetails extends Component {
                     return (
                       <Query query={PAYMENT_BILL_QUERY}>
                         {({ data, loading, error }) => {
+                          console.log(data);
                           if (data) {
                             return (
                               <>
@@ -360,13 +428,13 @@ class CheckoutDetails extends Component {
                                       <>
                                         <h3>
                                           Total {me.cart.length} items in your
-                                          cart{' '}
+                                          cart
                                         </h3>
-                                        <div className="items" />
                                         {me.cart.map(item => (
                                           <CheckoutItems
                                             cartItem={item}
                                             key={item.id}
+                                            showDelete
                                           />
                                         ))}
                                       </>
@@ -380,14 +448,14 @@ class CheckoutDetails extends Component {
                                           </p>
                                           {data.paymentBill.map(item => (
                                             <div className="item" key={item.id}>
-                                              <input
-                                                id={item.id}
-                                                type="radio"
-                                                name="bill"
-                                                onChange={this.changePayment}
-                                                value={item.id}
-                                              />
                                               <label>
+                                                <input
+                                                  id={item.id}
+                                                  type="radio"
+                                                  name="bill"
+                                                  onChange={this.changePayment}
+                                                  value={item.id}
+                                                />
                                                 <p>{item.name}</p>
                                                 <p>{item.email}</p>
                                                 <p>{item.address || ''}</p>
@@ -433,12 +501,74 @@ class CheckoutDetails extends Component {
                                           </button>
                                         </div>
                                       </>
-                                    )
-
-                                    // <>
-                                    //   <ReceiptForm updateData={this.updateData} />
-                                    // </>
-                                    }
+                                    )}
+                                    {view === 3 && (
+                                      <div id="billInfo">
+                                        <div className="first">
+                                          <h3 id="title">Cart</h3>
+                                          {me.cart.map(item => (
+                                            <CheckoutItems
+                                              cartItem={item}
+                                              key={item.id}
+                                              length="40"
+                                            />
+                                          ))}
+                                        </div>
+                                        <div className="second">
+                                          {!selectedBill && (
+                                            <div id="infoDetails">
+                                              <h3 id="title">Payment Bill</h3>
+                                              <strong className="details">
+                                                Name: <p>{name}</p>
+                                              </strong>
+                                              <strong className="details">
+                                                Email: <p>{email}</p>
+                                              </strong>
+                                              <strong className="details">
+                                                Address: <p>{address || ''}</p>
+                                              </strong>
+                                              <strong className="details">
+                                                City: <p>{city}</p>
+                                              </strong>
+                                              <strong className="details">
+                                                Nif: <p>{nif}</p>
+                                              </strong>
+                                            </div>
+                                          )}
+                                          {data.paymentBill.map(item => {
+                                            console.log(item.id, selectedBill);
+                                            if (item.id === selectedBill) {
+                                              return (
+                                                <div
+                                                  id="infoDetails "
+                                                  key={item.id}
+                                                >
+                                                  <h3 id="title">
+                                                    Payment Bill
+                                                  </h3>
+                                                  <strong className="details">
+                                                    Name: <p>{item.name}</p>
+                                                  </strong>
+                                                  <strong className="details">
+                                                    Email: <p>{item.email}</p>
+                                                  </strong>
+                                                  <strong className="details">
+                                                    Address:{' '}
+                                                    <p>{item.address || ''}</p>
+                                                  </strong>
+                                                  <strong className="details">
+                                                    City: <p>{item.city}</p>
+                                                  </strong>
+                                                  <strong className="details">
+                                                    Nif: <p>{item.nif}</p>
+                                                  </strong>
+                                                </div>
+                                              );
+                                            }
+                                          })}
+                                        </div>
+                                      </div>
+                                    )}
                                   </div>
                                   <div className="cartDetails">
                                     <span> Total: </span>

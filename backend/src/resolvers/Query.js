@@ -3,9 +3,7 @@ const { forwardTo } = require('prisma-binding');
 
 function formatDate(date) {
   const regex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g;
-  const hi = date.match(regex, ' ')[0];
-
-  return hi;
+  return date.match(regex, ' ')[0];
 }
 
 function getDate() {
@@ -14,8 +12,7 @@ function getDate() {
   const mm = String(today.getMonth() + 1).padStart(2, '0');
   const yyyy = today.getFullYear();
 
-  const res = [yyyy, mm, dd];
-  return res;
+  return [yyyy, mm, dd];
 }
 
 const Query = {
