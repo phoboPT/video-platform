@@ -11,7 +11,9 @@ const Style = styled.div`
     display: block;
 
     #container-graphs {
-      border: 2px solid #465875;
+      box-shadow: 0 0 7px #c4c4c4;
+      background: #fcfcfc;
+      border: 2px solid #5e3232;
       width: 70%;
       margin: auto;
       #top-text {
@@ -77,7 +79,7 @@ const Style = styled.div`
 
 class StatsPage extends Component {
   state = {
-    view: 3,
+    view: 1,
     courseId: '',
     key: 0,
   };
@@ -170,6 +172,7 @@ class StatsPage extends Component {
                           <div className="category">
                             <p>Select an Course</p>
                             <select
+                              className="select-css"
                               id="dropdownlist"
                               onChange={this.handleChangeCourse}
                               name="Course"
