@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 
-export class AdminPage extends Component {
+class AdminPage extends Component {
   render() {
-    return (
-      <div>
-        <p>page</p>
-      </div>
-    );
+    return <p>teste</p>;
   }
 }
 

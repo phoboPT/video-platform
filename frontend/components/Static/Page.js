@@ -74,8 +74,11 @@ injectGlobal`
 `;
 
 class Page extends Component {
+  // state = { isAdminPage: false };
+
   render() {
     const { children } = this.props;
+
     return (
       <ThemeProvider theme={theme}>
         <StyledPage>

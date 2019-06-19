@@ -35,6 +35,9 @@ const Logo = styled.h1`
 `;
 
 const StyledHeader = styled.header`
+  padding-left: ${props => props.extended === 1 && '40px'};
+  padding-left: ${props => props.extended === 2 && '150px'};
+  padding-left: ${props => props.extended === 3 && '0'};
   .bar {
     z-index: 5;
     background: white;
@@ -58,14 +61,20 @@ const StyledHeader = styled.header`
 class Header extends Component {
   state = { link: '/index' };
 
+  componentDidMount() {
+    this.setState({
+      extended: JSON.parse(localStorage.getItem('extended')),
+    });
+  }
+
   changeLink = link => {
     this.setState({ link });
   };
 
   render() {
-    const { link } = this.state;
+    const { link, extended } = this.state;
     return (
-      <StyledHeader role="banner">
+      <StyledHeader extended={extended} role="banner">
         <div className="bar">
           <Logo>
             <Link href={link}>
