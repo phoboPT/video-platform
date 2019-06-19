@@ -81,18 +81,19 @@ class CourseItem extends Component {
                         : formatMoney(course.price)}
                     </p>
                   </div>
+                  {me.permission[0] !== 'ADMIN' && (
+                    <div id="buttonList">
+                      {course.price === 0 ? (
+                        <BuyFreeButton id={course.id} skip={skip} />
+                      ) : (
+                        <AddToCart id={course.id} />
+                      )}
 
-                  <div id="buttonList">
-                    {course.price === 0 ? (
-                      <BuyFreeButton id={course.id} skip={skip} />
-                    ) : (
-                      <AddToCart id={course.id} />
-                    )}
-
-                    {course.price !== 0 && (
-                      <WishButton id={course.id} data={course} skip={skip} />
-                    )}
-                  </div>
+                      {course.price !== 0 && (
+                        <WishButton id={course.id} data={course} skip={skip} />
+                      )}
+                    </div>
+                  )}
                 </Container>
               </>
             );

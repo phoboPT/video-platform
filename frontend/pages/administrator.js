@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import User from '../components/Authentication/User';
+import AdminPage from '../components/Admin/AdminPage';
 
 export class administrator extends Component {
   render() {
@@ -13,7 +14,7 @@ export class administrator extends Component {
           if (me.permission[0] === 'ADMIN') {
             return (
               <div>
-                <p>admin</p>
+                <AdminPage />
               </div>
             );
           }

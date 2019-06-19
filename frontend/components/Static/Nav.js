@@ -54,12 +54,12 @@ class Nav extends Component {
                   )}
                   {me.permission[0] === 'ADMIN' && (
                     <>
-                      {isAdminPage && (
+                      {!isAdminPage && (
                         <a onClick={() => this.changePage('administrator')}>
                           Admin Area
                         </a>
                       )}
-                      {!isAdminPage && (
+                      {isAdminPage && (
                         <a onClick={() => this.changePage('index')}>Home</a>
                       )}
                       <div className="dropdown">
