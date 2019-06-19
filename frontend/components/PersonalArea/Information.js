@@ -50,39 +50,37 @@ class Information extends Component {
   render() {
     const { changeManualView, me } = this.props;
     console.log(me.description);
-    if (me.description) {
-      return (
-        <>
-          <Container>
-            <img alt="User Default" src={me.thumbnail} />
-            <div id="information">
-              <div>
-                <strong id="strong">Nome: </strong>
-                <span> {me.name}</span>
-              </div>
-              <div>
-                <strong id="strong">Email: </strong>
-                <span> {me.email}</span>
-              </div>
-              <div>
-                <strong id="strong">Occupation or title: </strong>
-                <span> {me.profession || 'Profession'}</span>
-              </div>
+    return (
+      <>
+        <Container>
+          <img alt="User Default" src={me.thumbnail} />
+          <div id="information">
+            <div>
+              <strong id="strong">Nome: </strong>
+              <span> {me.name}</span>
+            </div>
+            <div>
+              <strong id="strong">Email: </strong>
+              <span> {me.email}</span>
+            </div>
+            <div>
+              <strong id="strong">Occupation or title: </strong>
+              <span> {me.profession || 'Profession'}</span>
+            </div>
 
-              <strong id="strong">About Me:</strong>
-              <div>
-                <Markdown escapeHtml={false} source={me.description} />
-              </div>
+            <strong id="strong">About Me:</strong>
+            <div>
+              <Markdown escapeHtml={false} source={me.description} />
             </div>
-            <div id="change-info">
-              <button type="submit" onClick={() => changeManualView(2)}>
-                ✏️ Edit My Account
-              </button>
-            </div>
-          </Container>
-        </>
-      );
-    }
+          </div>
+          <div id="change-info">
+            <button type="submit" onClick={() => changeManualView(2)}>
+              ✏️ Edit My Account
+            </button>
+          </div>
+        </Container>
+      </>
+    );
   }
 }
 

@@ -8,6 +8,7 @@ import Signout from '../Authentication/Signout';
 import { TOGGLE_CART_MUTATION } from '../Home/Cart/Cart';
 import { TOGGLE_LOGIN_MUTATION } from '../Authentication/LoginPage';
 import CartCount from '../Home/Cart/CartCount';
+import { TOGGLE_SIDEBAR_MUTATION } from '../Admin/AdminMenu';
 
 class Nav extends Component {
   state = { isAdminPage: false };
@@ -24,6 +25,12 @@ class Nav extends Component {
     Router.push({
       pathname: `/${page}`,
     });
+  };
+
+  toggleSidebar = (mutation, size) => {
+    const { extended } = this.state;
+    this.setState({ extended: !extended });
+    mutation({ variables: { sidebarState: size } });
   };
 
   render() {
@@ -53,25 +60,36 @@ class Nav extends Component {
                     </Link>
                   )}
                   {me.permission[0] === 'ADMIN' && (
-                    <>
-                      {!isAdminPage && (
-                        <a onClick={() => this.changePage('administrator')}>
-                          Admin Area
-                        </a>
+                    <Mutation mutation={TOGGLE_SIDEBAR_MUTATION}>
+                      {toggleSidebar => (
+                        <>
+                          <a>Hi , Admin {me.name}</a>
+                          {!isAdminPage && (
+                            <a
+                              onClick={() => {
+                                this.changePage('administrator');
+                                this.toggleSidebar(toggleSidebar, 1);
+                              }}
+                            >
+                              Admin Area
+                            </a>
+                          )}
+                          {isAdminPage && (
+                            <a
+                              onClick={() => {
+                                this.toggleSidebar(toggleSidebar, 3);
+                                this.changePage('index');
+                              }}
+                            >
+                              Home
+                            </a>
+                          )}
+                          <div id="extended">
+                            <Signout />
+                          </div>
+                        </>
                       )}
-                      {isAdminPage && (
-                        <a onClick={() => this.changePage('index')}>Home</a>
-                      )}
-                      <div className="dropdown">
-                        <a className="dropbtn">Hi, {me.name}</a>
-                        <div className="dropdown-content">
-                          <Link href="/account">
-                            <a>My Account</a>
-                          </Link>
-                          <Signout />
-                        </div>
-                      </div>
-                    </>
+                    </Mutation>
                   )}
 
                   {(me.permission[0] === 'USER' ||
@@ -87,6 +105,7 @@ class Nav extends Component {
                           <Link href="/account">
                             <a>My Account</a>
                           </Link>
+
                           <Signout />
                         </div>
                       </div>

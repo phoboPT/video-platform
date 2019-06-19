@@ -54,7 +54,6 @@ class AdminMenu extends Component {
 
   toggleSidebar = (mutation, size) => {
     const { extended } = this.state;
-    localStorage.setItem('extended', !extended);
     this.setState({ extended: !extended });
     mutation({ variables: { sidebarState: size } });
   };
@@ -188,3 +187,5 @@ class AdminMenu extends Component {
 }
 
 export default AdminMenu;
+
+export { TOGGLE_SIDEBAR_MUTATION };

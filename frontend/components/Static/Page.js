@@ -1,9 +1,19 @@
+/* eslint-disable react/display-name */
 import React, { Component } from 'react';
 import styled, { injectGlobal, ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import { adopt } from 'react-adopt';
 import Header from './Header';
 import Meta from './Meta';
 import Footer from './Footer';
+
+const LOCAL_SIDEBAR_QUERY = gql`
+  query {
+    sidebarState @client
+  }
+`;
 
 const theme = {
   black: '#2c2f33',
@@ -23,11 +33,16 @@ const StyledPage = styled.div`
 `;
 
 const Inner = styled.div`
+  padding: 2rem;
+  border: 2px solid red;
+  margin-left: ${props => props.extended === 1 && '130px!important'};
+  margin-left: ${props => props.extended === 2 && '200px!important'};
   max-width: ${props => props.theme.maxWidth};
   margin: 100px auto 0;
-  padding: 2rem;
   min-height: calc(100vh - 210px);
   @media (max-width: 1300px) {
+    margin-left: ${props => props.extended === 1 && '90px!important'};
+    margin-right: 20px !important;
     margin: 150px auto 0;
     min-height: calc(100vh - 260px);
   }
@@ -72,22 +87,41 @@ injectGlobal`
   }
 
 `;
-
+const Composed = adopt({
+  sidebarState: ({ render }) => (
+    <Query query={LOCAL_SIDEBAR_QUERY}>{render}</Query>
+  ),
+});
 class Page extends Component {
   // state = { isAdminPage: false };
 
   render() {
     const { children } = this.props;
-
     return (
-      <ThemeProvider theme={theme}>
-        <StyledPage>
-          <Meta />
-          <Header />
-          <Inner role="main">{children}</Inner>
-          <Footer role="contentinfo" />
-        </StyledPage>
-      </ThemeProvider>
+      <Composed query={LOCAL_SIDEBAR_QUERY}>
+        {({
+          sidebarState: {
+            data: { sidebarState },
+            loading,
+          },
+        }) => {
+          console.log('sidebar', sidebarState);
+          if (loading) return <p>Loading...</p>;
+          if (sidebarState)
+            return (
+              <ThemeProvider theme={theme}>
+                <StyledPage>
+                  <Meta />
+                  <Header sidebarState={sidebarState} />
+                  <Inner extended={sidebarState} role="main">
+                    {children}
+                  </Inner>
+                  <Footer sidebarState={sidebarState} role="contentinfo" />
+                </StyledPage>
+              </ThemeProvider>
+            );
+        }}
+      </Composed>
     );
   }
 }
