@@ -70,7 +70,7 @@ const Style = styled.div`
       display: flex;
       #container {
         display: flex;
-        margin: 3rem auto;
+        margin: 1.5rem auto;
 
         #name {
           order: 2;

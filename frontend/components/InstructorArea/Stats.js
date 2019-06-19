@@ -8,6 +8,7 @@ import CourseByDate from './Graphs/CourseByDate';
 import AllCourses from './Graphs/AllCourses';
 import AllByDay from './Graphs/AllByDay';
 import Loading from '../Static/Loading';
+import count from '../../lib/countCoursesSells';
 
 const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY {
@@ -65,7 +66,55 @@ const LoadStyle = styled.div`
 `;
 
 const Dooted = styled.div`
-  border: 1px dotted red;
+  border: 2px solid #2f3c51;
+  padding: 2rem;
+  #title {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 13px;
+  }
+  #date {
+    display: flex;
+    img {
+      margin-right: 5px;
+      width: 35px;
+      height: 35px;
+    }
+    input {
+      height: 35px;
+      background: #f7f7f7;
+      border: none;
+      padding-left: 2rem;
+      font-size: 15px;
+      -moz-box-shadow: 0 0 4px #ccc;
+      -webkit-box-shadow: 0 0 4px #ccc;
+      box-shadow: 0 0 4px #ccc;
+    }
+  }
+  .custom-style {
+    div {
+      font-size: 12px;
+    }
+    button {
+      border-right-width: 1.3rem;
+      border-left-width: 1.3rem;
+      height: 12px;
+    }
+
+    .react-datepicker__current-month {
+      padding-bottom: 5px;
+    }
+    .react-datepicker__header {
+      padding-left: 10px;
+      width: 220px;
+    }
+    .react-datepicker__month {
+      padding-left: 10px;
+    }
+    .react-datepicker__day,
+    .react-datepicker__day-name {
+      margin-right: 10px;
+    }
+  }
 `;
 class Stats extends Component {
   async componentWillMount() {
@@ -115,19 +164,36 @@ class Stats extends Component {
                     <Loading />
                   </LoadStyle>
                 );
-              if (!data) return null;
-              if (data)
+              if (data.coursesStats.length === 0)
                 return (
                   <Dooted>
+                    <p id="title">All time Stats</p>
                     <AllCourses
-                      chartData={data}
+                      empty
                       location="All Courses"
-                      legendPosition="top"
+                      legendPosition="bottom"
                       displayTitle="Hello"
                       label="Total Courses Selled"
                       width={700}
                       height={400}
                     />
+                    <p>Total Sells: {count(data)}</p>
+                  </Dooted>
+                );
+
+              if (data.coursesStats.length > 0)
+                return (
+                  <Dooted>
+                    <AllCourses
+                      chartData={data}
+                      location="All Courses"
+                      legendPosition="bottom"
+                      displayTitle="Hello"
+                      label="Total Courses Selled"
+                      width={700}
+                      height={400}
+                    />
+                    <p>Total Sells: {count(data)}</p>
                   </Dooted>
                 );
             }}
@@ -142,10 +208,11 @@ class Stats extends Component {
                     <Loading />
                   </LoadStyle>
                 );
-              if (!data) {
+              if (data.sellsByCourse.length === 0) {
                 return (
                   <CourseByDate
                     empty
+                    chartData={data}
                     location=""
                     legendPosition="top"
                     displayTitle="Hello"
@@ -155,19 +222,17 @@ class Stats extends Component {
                   />
                 );
               }
-              if (data)
+              if (data.sellsByCourse.length > 0)
                 return (
-                  <Dooted>
-                    <CourseByDate
-                      chartData={data}
-                      location=""
-                      legendPosition="top"
-                      displayTitle="Hello"
-                      label="Total Courses Selled"
-                      width={700}
-                      height={400}
-                    />
-                  </Dooted>
+                  <CourseByDate
+                    chartData={data}
+                    location=""
+                    legendPosition="top"
+                    displayTitle="Hello"
+                    label="Total Courses Selled"
+                    width={700}
+                    height={400}
+                  />
                 );
             }}
           </Query>
@@ -181,10 +246,11 @@ class Stats extends Component {
                     <Loading />
                   </LoadStyle>
                 );
-              if (!data) {
+              if (data.coursesStatsByDate.length === 0) {
                 return (
                   <AllByDay
                     empty
+                    chartData={data}
                     legendPosition="top"
                     displayTitle="Hello"
                     label="Total Courses Selled"
@@ -193,18 +259,16 @@ class Stats extends Component {
                   />
                 );
               }
-              if (data)
+              if (data.coursesStatsByDate.length > 0)
                 return (
-                  <Dooted>
-                    <AllByDay
-                      chartData={data}
-                      legendPosition="top"
-                      displayTitle="Hello"
-                      label="All Courses By Date"
-                      width={700}
-                      height={400}
-                    />
-                  </Dooted>
+                  <AllByDay
+                    chartData={data}
+                    legendPosition="top"
+                    displayTitle="Hello"
+                    label="All Courses By Date"
+                    width={700}
+                    height={400}
+                  />
                 );
             }}
           </Query>
@@ -219,5 +283,5 @@ Stats.propTypes = {
   date: PropTypes.string,
 };
 export default Stats;
-
+export { Dooted };
 export { CURRENT_USER_QUERY };

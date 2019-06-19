@@ -285,8 +285,8 @@ class FormCourse extends Component {
                       min="0"
                       step="any"
                       name="price"
-                      defaultValue={!createCourse ? course.price : ''}
-                      placeholder="00.00"
+                      defaultValue={!createCourse ? course.price : 0}
+                      placeholder="Select a price"
                       value={this.price}
                       onChange={this.handleChange}
                       required

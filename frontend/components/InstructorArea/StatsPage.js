@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import DatePicker from 'react-datepicker';
-import Stats from './Stats';
+import Stats, { Dooted } from './Stats';
 import { CURRENT_COURSES_QUERY } from './MyCourses';
 import Loading from '../Static/Loading';
 
@@ -10,11 +10,50 @@ const Style = styled.div`
   .graphs-container {
     display: block;
 
-    .title {
-      display: flex;
-      margin: 0 0 0 5rem;
-      .col {
-        margin: 2rem;
+    #container-graphs {
+      border: 2px solid #465875;
+      width: 70%;
+      margin: auto;
+      #top-text {
+        padding-left: 1rem;
+        margin: 2rem auto auto auto;
+      }
+      .Buttons {
+        padding-bottom: 1rem;
+        display: flex;
+        margin: 2rem auto 1rem auto;
+        align-content: center;
+        .col {
+          flex: 1;
+          margin: auto;
+          text-align: center;
+          button {
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 150px;
+            height: 40px;
+            border: none;
+            background: #a1b7cc;
+            span {
+              border: none;
+            }
+
+            &:focus {
+              outline: none;
+            }
+
+            &:hover {
+              background: #90a3b5;
+            }
+            &:disabled {
+              background: #3c484f;
+              span {
+                border-bottom: 1px solid red;
+              }
+            }
+          }
+        }
       }
     }
     .category {
@@ -38,7 +77,7 @@ const Style = styled.div`
 
 class StatsPage extends Component {
   state = {
-    view: 1,
+    view: 3,
     courseId: '',
     key: 0,
   };
@@ -84,44 +123,40 @@ class StatsPage extends Component {
             return (
               <Style>
                 <div className="graphs-container">
-                  <div className="title">
-                    <div className="col">
-                      <button type="button" id={1} onClick={this.changeView}>
-                        All Courses
-                      </button>
-                    </div>
-                    <div className="col">
-                      <button type="button" id={2} onClick={this.changeView}>
-                        By Course
-                      </button>
-                    </div>
-                    <div className="col">
-                      <button type="button" id={3} onClick={this.changeView}>
-                        All By Date
-                      </button>
-                    </div>
-                  </div>
-                  <div className="category">
-                    {view === 2 && (
-                      <label htmlFor="Course">
-                        Category
-                        <select
-                          id="dropdownlist"
-                          onChange={this.handleChangeCourse}
-                          name="Course"
-                          defaultValue={courses[0].title || 'a'}
+                  <div id="container-graphs">
+                    <p id="top-text">Graph Selection: </p>
+                    <div className="Buttons">
+                      <div className="col">
+                        <button
+                          type="button"
+                          disabled={view === 1}
+                          id={1}
+                          onClick={this.changeView}
                         >
-                          <option value="a" disabled hidden>
-                            Select a Course
-                          </option>
-                          {courses.map(item => (
-                            <option key={item.id} value={item.id}>
-                              {item.title}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    )}
+                          <span id={1}> All Courses</span>
+                        </button>
+                      </div>
+                      <div className="col">
+                        <button
+                          type="button"
+                          disabled={view === 2}
+                          id={2}
+                          onClick={this.changeView}
+                        >
+                          <span id={2}> By Course</span>
+                        </button>
+                      </div>
+                      <div className="col">
+                        <button
+                          type="button"
+                          disabled={view === 3}
+                          id={3}
+                          onClick={this.changeView}
+                        >
+                          <span id={3}> By Date</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="graphs">
@@ -130,45 +165,63 @@ class StatsPage extends Component {
                         <Stats key={key} query="CURRENT_USER_QUERY" />
                       )}
                       {view === 2 && (
-                        <Stats
-                          key={key}
-                          query="COURSE_SELL_BY_TIME"
-                          courseId={courseId}
-                        />
+                        <Dooted>
+                          <p id="title">Stats of an Single Course</p>
+                          <div className="category">
+                            <p>Select an Course</p>
+                            <select
+                              id="dropdownlist"
+                              onChange={this.handleChangeCourse}
+                              name="Course"
+                              defaultValue={courses[0].title || 'a'}
+                            >
+                              <option value="a" disabled hidden>
+                                Select a Course
+                              </option>
+                              {courses.map(item => (
+                                <option key={item.id} value={item.id}>
+                                  {item.title}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <Stats
+                            key={key}
+                            query="COURSE_SELL_BY_TIME"
+                            courseId={courseId}
+                          />
+                        </Dooted>
                       )}
                       {view === 3 && (
-                        <>
-                          <DatePicker
-                            todayButton="Today"
-                            dateFormat="dd/MM/yyyy"
-                            selected={new Date(startDate)}
-                            onChange={this.handleChange}
-                          />
-                          <br />
-                          <br />
-                          <br />
+                        <Dooted>
+                          <p id="title">
+                            Go Check The day that u have more sells
+                          </p>
+                          <div id="date">
+                            <img
+                              alt="calendar"
+                              src="../../static/calendar.png"
+                            />
+                            <DatePicker
+                              popperClassName="custom-style"
+                              todayButton="Today"
+                              dateFormat="dd/MM/yyyy"
+                              selected={new Date(startDate)}
+                              onChange={this.handleChange}
+                            />
+                          </div>
+
                           <Stats
                             key={key}
                             query="ALL_BY_DATE"
                             courseId={courseId}
                             date={startDate}
                           />
-                        </>
+                        </Dooted>
                       )}
                     </div>
-                    <div className="second" />
                   </div>
                 </div>
-                {/* <div className="graphs-container">
-          <div className="graphs">
-          <div className="first">
-          <Stats id={3} />
-          </div>
-          <div className="second">
-          <Stats id={4} />
-          </div>
-          </div>
-        </div> */}
               </Style>
             );
           }

@@ -10,25 +10,20 @@ const Style = styled.div`
     display: flex;
   }
 
-  .top-bar {
-    color: white;
-    font-family: 'Quicksand', sans-serif;
-    margin: 1rem auto;
-    width: 60%;
-    min-height: 50px;
-    background: #d8d8d8;
-    line-height: 50px;
-    text-align: center;
-    border-radius: 25px;
-  }
-
   .main-bar {
     order: 2;
     flex: 7;
-    padding-top: 30px;
     float: bottom;
     margin: 0 0 0 5rem;
 
+    .top-bar {
+      margin-bottom: 2rem;
+      color: black;
+      font-family: 'Quicksand', sans-serif;
+      width: 100%;
+      font-size: 27px;
+      text-align: center;
+    }
     .create-course {
       width: auto;
       background: red;
@@ -70,7 +65,7 @@ const AddButon = styled.div`
 
 class InstrutorArea extends Component {
   state = {
-    view: 1,
+    view: 3,
   };
 
   // This method will be sent to the child component
@@ -92,12 +87,6 @@ class InstrutorArea extends Component {
             <>
               {me.permission[0] === 'INSTRUTOR' ? (
                 <Style>
-                  <section id="main" className="top-bar">
-                    {view === 1 && <h2> Manage Courses </h2>}
-                    {view === 2 && <h2> Create Course </h2>}
-                    {view === 3 && <h2> Stats </h2>}
-                  </section>
-
                   <div className="container">
                     <div className="left-bar">
                       <AddButon>
@@ -147,6 +136,11 @@ class InstrutorArea extends Component {
                     </div>
 
                     <aside id="sidebar" className="main-bar">
+                      <section id="main" className="top-bar">
+                        {view === 1 && <h2> Manage Courses </h2>}
+                        {view === 2 && <h2> Create Course </h2>}
+                        {view === 3 && <h2> Statistics </h2>}
+                      </section>
                       {view === 1 && (
                         <>
                           <MyCourses changeView={this.changeView} />
@@ -154,7 +148,6 @@ class InstrutorArea extends Component {
                       )}
                       {view === 2 && (
                         <ChangeCourse
-                          changeIntructorView={this.changeView}
                           createCourse
                           saveToState={this.saveToState}
                         />
