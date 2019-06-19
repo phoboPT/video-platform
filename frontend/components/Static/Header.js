@@ -1,12 +1,22 @@
+/* eslint-disable react/display-name */
 import Link from 'next/link';
 import styled from 'styled-components';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import { adopt } from 'react-adopt';
 import Nav from './Nav';
 import Cart from '../Home/Cart/Cart';
 import Wishlist from '../Home/Wishlist/Wishlist';
 import LoginPage from '../Authentication/LoginPage';
+
+const LOCAL_SIDEBAR_QUERY = gql`
+  query {
+    sidebarState @client
+  }
+`;
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -35,9 +45,8 @@ const Logo = styled.h1`
 `;
 
 const StyledHeader = styled.header`
-  padding-left: ${props => props.extended === 1 && '40px'};
-  padding-left: ${props => props.extended === 2 && '150px'};
-  padding-left: ${props => props.extended === 3 && '0'};
+  padding-left: ${props => props.extended};
+
   .bar {
     z-index: 5;
     background: white;
@@ -57,7 +66,13 @@ const StyledHeader = styled.header`
     border-bottom: 1px solid ${props => props.theme.lithGrey};
   }
 `;
+const Composed = adopt({
+  sidebarState: ({ render }) => (
+    <Query query={LOCAL_SIDEBAR_QUERY}>{render}</Query>
+  ),
 
+  // user: ({ render }) => <User>{render}</User>,
+});
 class Header extends Component {
   state = { link: '/index' };
 
@@ -74,25 +89,40 @@ class Header extends Component {
   render() {
     const { link, extended } = this.state;
     return (
-      <StyledHeader extended={extended} role="banner">
-        <div className="bar">
-          <Logo>
-            <Link href={link}>
-              <a>
-                <img alt="logo-picus" src="/static/logo.webp" />
-              </a>
-            </Link>
-          </Logo>
-          <Nav changeLink={this.changeLink} />
-        </div>
-        <div className="sub-bar" />
-        <Cart />
-        <Wishlist />
-        <LoginPage />
-        <div />
-      </StyledHeader>
+      <Composed query={LOCAL_SIDEBAR_QUERY}>
+        {({
+          sidebarState: {
+            data: { sidebarState },
+            loading,
+          },
+        }) => {
+          console.log('sidebar', sidebarState);
+          if (loading) return <p>Loading...</p>;
+          if (sidebarState)
+            return (
+              <StyledHeader extended={sidebarState} role="banner">
+                <div className="bar">
+                  <Logo>
+                    <Link href={link}>
+                      <a>
+                        <img alt="logo-picus" src="/static/logo.webp" />
+                      </a>
+                    </Link>
+                  </Logo>
+                  <Nav changeLink={this.changeLink} />
+                </div>
+                <div className="sub-bar" />
+                <Cart />
+                <Wishlist />
+                <LoginPage />
+                <div />
+              </StyledHeader>
+            );
+        }}
+      </Composed>
     );
   }
 }
 
 export default Header;
+export { LOCAL_SIDEBAR_QUERY };

@@ -48,11 +48,18 @@ function createClient({ headers }) {
             cache.writeData(data);
             return data;
           },
+          toggleSidebar(_, variables, { cache }) {
+            // Write the cart State to the opposite
+            const data = { data: { sidebarState: variables.sidebarState } };
+            cache.writeData(data);
+            return data;
+          },
         },
       },
       defaults: {
         cartOpen: 0,
         loginOpen: false,
+        sidebarState: '0px',
       },
     },
   });

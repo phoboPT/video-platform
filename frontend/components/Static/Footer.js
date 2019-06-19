@@ -1,11 +1,13 @@
 import styled from 'styled-components';
+import { Query } from 'react-apollo';
+import { LOCAL_SIDEBAR_QUERY } from './Header';
 
 const StyleFooter = styled.div`
   bottom: 0;
   margin: 5rem auto auto auto;
-  width: 100%;
-  text-align: center;
   padding: 10px;
+  margin-left: ${props => props.sidebarState};
+
   display: flex;
   background: #e2e2e2;
 
@@ -33,17 +35,25 @@ const StyleFooter = styled.div`
 `;
 
 const Footer = () => (
-  <StyleFooter>
-    <p>Copyright © 2019 Picus Creative</p>
-    <div id="images">
-      <a href="https://www.facebook.com/picuscreative/">
-        <img alt="fb-icon" src="../../static/fb-icon.png" />
-      </a>
-      <a href="https://picuscreative.com/">
-        <img alt="picus-logo" src="../../static/picus-logo.jpg" />
-      </a>
-    </div>
-  </StyleFooter>
+  <Query query={LOCAL_SIDEBAR_QUERY}>
+    {({ sidebarState, loading, error }) => {
+      if (loading) return <p>Loading</p>;
+
+      return (
+        <StyleFooter sidebarState={sidebarState}>
+          <p>Copyright © 2019 Picus Creative</p>
+          <div id="images">
+            <a href="https://www.facebook.com/picuscreative/">
+              <img alt="fb-icon" src="../../static/fb-icon.png" />
+            </a>
+            <a href="https://picuscreative.com/">
+              <img alt="picus-logo" src="../../static/picus-logo.jpg" />
+            </a>
+          </div>
+        </StyleFooter>
+      );
+    }}
+  </Query>
 );
 
 export default Footer;

@@ -74,7 +74,8 @@ class Nav extends Component {
                     </>
                   )}
 
-                  {me.permission[0] === 'USER' && (
+                  {(me.permission[0] === 'USER' ||
+                    me.permission[0] === 'INSTRUTOR') && (
                     <>
                       <Link href="/courses">
                         <a> Courses </a>
