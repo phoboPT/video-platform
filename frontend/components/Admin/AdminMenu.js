@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
@@ -58,9 +60,14 @@ class AdminMenu extends Component {
   };
 
   changePage = e => {
-    const { name, data } = e.target;
-    console.log(e.target, name, data);
-    this.setState({ [name]: !data });
+    const { name } = e.target;
+    this.setState({
+      showCategory: false,
+      showInterest: false,
+      showCountry: false,
+      showInstrutor: false,
+      [name]: !JSON.parse(e.target.getAttribute('data-value')),
+    });
   };
 
   render() {
@@ -80,13 +87,13 @@ class AdminMenu extends Component {
               <MenuOpened>
                 <button
                   type="button"
-                  onClick={() => this.toggleSidebar(toggleSidebar, '40px')}
+                  onClick={() => this.toggleSidebar(toggleSidebar, 1)}
                 >
                   ...
                 </button>
                 <a
                   onClick={this.changePage}
-                  data={showCategory.toString()}
+                  data-value={showCategory}
                   name="showCategory"
                 >
                   Category
@@ -94,21 +101,21 @@ class AdminMenu extends Component {
                 <a
                   onClick={this.changePage}
                   name="showInterest"
-                  value={showInterest}
+                  data-value={showInterest}
                 >
                   Interest
                 </a>
                 <a
                   onClick={this.changePage}
                   name="showCountry"
-                  value={showCountry}
+                  data-value={showCountry}
                 >
                   Country
                 </a>
                 <a
                   onClick={this.changePage}
-                  id="showInstrutor"
-                  value={showInstrutor}
+                  name="showInstrutor"
+                  data-value={showInstrutor}
                 >
                   Instrutor
                 </a>
@@ -118,35 +125,35 @@ class AdminMenu extends Component {
               <Menu>
                 <button
                   type="button"
-                  onClick={() => this.toggleSidebar(toggleSidebar, '150px')}
+                  onClick={() => this.toggleSidebar(toggleSidebar, 2)}
                 >
                   ...
                 </button>
                 <a
                   onClick={this.changePage}
                   name="showCategory"
-                  value={showCategory}
+                  data-value={showCategory}
                 >
                   😄
                 </a>
                 <a
                   onClick={this.changePage}
                   name="showInterest"
-                  value={showInterest}
+                  data-value={showInterest}
                 >
                   😠
                 </a>
                 <a
                   onClick={this.changePage}
                   name="showCountry"
-                  value={showCountry}
+                  data-value={showCountry}
                 >
                   😺
                 </a>
                 <a
                   onClick={this.changePage}
                   name="showInstrutor"
-                  value={showInstrutor}
+                  data-value={showInstrutor}
                 >
                   🤖
                 </a>
