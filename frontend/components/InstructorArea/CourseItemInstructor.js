@@ -21,6 +21,10 @@ const CURRENT_COURSE_SELLS = gql`
 
 const Div = styled.div`
   padding: none;
+  #state {
+    text-align: center;
+    width: 90px;
+  }
   span {
     display: grid;
     grid-template-columns: 0.5fr 1fr;

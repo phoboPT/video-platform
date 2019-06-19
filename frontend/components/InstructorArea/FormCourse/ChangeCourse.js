@@ -242,7 +242,6 @@ class ChangeCourse extends Component {
       selected,
       key,
     } = this.state;
-    const { changeIntructorView } = this.props;
     return (
       <Query query={SINGLE_COURSE_QUERY} variables={{ id }}>
         {({ data, loading, refetch }) => {
@@ -263,13 +262,9 @@ class ChangeCourse extends Component {
           return (
             <>
               <ButtonStyle>
-                {!changeIntructorView ? (
+                {!createCourse && (
                   <button type="button" onClick={this.goBack}>
-                    ⬅Go Back
-                  </button>
-                ) : (
-                  <button type="button" onClick={() => changeIntructorView(1)}>
-                    <a> ⬅Go Back </a>
+                    ⬅ Go Back
                   </button>
                 )}
               </ButtonStyle>

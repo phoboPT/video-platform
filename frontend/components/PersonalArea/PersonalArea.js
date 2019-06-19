@@ -116,7 +116,10 @@ class PersonalArea extends Component {
                 </div>
                 <div id="content">
                   {view === 1 && (
-                    <Information changeManualView={this.changeManualView} />
+                    <Information
+                      changeManualView={this.changeManualView}
+                      me={me}
+                    />
                   )}
                   {view === 2 && (
                     <FormUser changeManualView={this.changeManualView} />

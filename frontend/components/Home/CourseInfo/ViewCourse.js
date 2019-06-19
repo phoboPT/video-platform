@@ -50,6 +50,7 @@ const CHECK_RATE_COURSE_QUERY = gql`
 const CourseContainer = styled.div`
   color: white;
   display: flex;
+  width: 100%;
   background: #333350;
   padding: 20px 0px;
   h2 {
@@ -202,14 +203,6 @@ class ViewCourse extends Component {
                               </div>
                               <h2>{course.title}</h2>
                               <br />
-                              {/* <Link
-                                href={{
-                                  pathname: 'video',
-                                  query: { id },
-                                }}
-                              >
-                                <button type="button">Go to the Videos</button>
-                              </Link> */}
                             </div>
                           </CourseContainer>
                           <Bar>

@@ -88,33 +88,33 @@ class LoginPage extends Component {
     return (
       <Query query={LOCAL_LOGIN_QUERY}>
         {({ data: { loginOpen } }) => (
-            <Mutation mutation={TOGGLE_LOGIN_MUTATION}>
-              {toggleLogin => (
-                <AnimatedStyles>
-                  <TransitionGroup>
-                    <CSSTransition
-                      unmountOnExit
-                      className="count"
-                      classNames="count"
-                      key={view}
-                      timeout={{ enter: 450, exit: 450 }}
-                    >
-                      <Container open={loginOpen}>
-                        <CloseButton title="close" onClick={toggleLogin}>
-                          &times;
-                        </CloseButton>
-                        {view === 1 && <Signin changeView={this.changeView} />}
-                        {view === 2 && (
-                          <RequestReset changeView={this.changeView} />
-                        )}
-                        {view === 3 && <Signup changeView={this.changeView} />}
-                      </Container>
-                    </CSSTransition>
-                  </TransitionGroup>
-                </AnimatedStyles>
-              )}
-            </Mutation>
-          )}
+          <Mutation mutation={TOGGLE_LOGIN_MUTATION}>
+            {toggleLogin => (
+              <AnimatedStyles>
+                <TransitionGroup>
+                  <CSSTransition
+                    unmountOnExit
+                    className="count"
+                    classNames="count"
+                    key={view}
+                    timeout={{ enter: 450, exit: 450 }}
+                  >
+                    <Container open={loginOpen}>
+                      <CloseButton title="close" onClick={toggleLogin}>
+                        &times;
+                      </CloseButton>
+                      {view === 1 && <Signin changeView={this.changeView} />}
+                      {view === 2 && (
+                        <RequestReset changeView={this.changeView} />
+                      )}
+                      {view === 3 && <Signup changeView={this.changeView} />}
+                    </Container>
+                  </CSSTransition>
+                </TransitionGroup>
+              </AnimatedStyles>
+            )}
+          </Mutation>
+        )}
       </Query>
     );
   }

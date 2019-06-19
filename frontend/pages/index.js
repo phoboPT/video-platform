@@ -79,7 +79,7 @@ const Info = styled.div`
 `;
 
 const Courses = styled.div`
-  margin: 500px auto 0 auto;
+  margin: 2rem auto 0 auto;
   border: 1px solid white;
 `;
 
@@ -106,17 +106,13 @@ class Home extends Component {
           if (!data.me) {
             return (
               <>
-                <Container>
-                  <div className="title">
-                    <h1>Picus Creative Video Platform</h1>
-                  </div>
-                </Container>
-
-                <Info>
-                  <div className="first">The Best</div>
-                  <div className="second">100+ Topics</div>
-                  <div className="third">Try now</div>
-                </Info>
+                <div id="banner">
+                  <img alt="banner" src="../static/banner.webp" />
+                  <p>The Best</p>
+                  <p>100+ Topics</p>
+                  <p>Try now</p>
+                  <p>Interests</p>
+                </div>
                 <Courses>
                   <ListAllCourses query="ALL_COURSES_RATING" noUser />
                 </Courses>

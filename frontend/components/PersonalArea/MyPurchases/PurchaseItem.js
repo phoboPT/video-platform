@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import formatDate from '../../../lib/formatDate';
-import formatMoney from '../../../lib/formatMoney';
 import Receipt from './Receipt';
 
 const Container = styled.div`
@@ -63,7 +62,7 @@ class PurchaseItem extends Component {
           <img alt="cart" src="../../../static/cart.webp" />
           <p id="count"> {order.items.length} purchased courses</p>
           <p id="data"> {formatDate(order.createdAt)} </p>
-          <p id="total"> {formatMoney(order.total / 100)}</p>
+          <p id="total"> {order.total} €</p>
           <div id="more">
             <button type="button" onClick={() => changeReceipt(order.id, 2)}>
               Receipt

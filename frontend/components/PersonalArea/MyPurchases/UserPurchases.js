@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
+import { SSL_OP_CRYPTOPRO_TLSEXT_BUG } from 'constants';
 import PurchaseItem from './PurchaseItem';
 import Header from './Header';
 import Receipt from './Receipt';
@@ -23,6 +24,18 @@ const ALL_USER_ORDERS = gql`
         id
         name
       }
+      paymentBill {
+        id
+        address
+        city
+        state
+        zipCode
+        nif
+        country {
+          id
+          name
+        }
+      }
     }
   }
 `;
@@ -37,6 +50,7 @@ const ALL_USER_ORDERS_STATS = gql`
 `;
 
 const Container = styled.div`
+  min-height: 200px;
   margin-left: 3rem;
   margin-top: 20px;
 
@@ -56,6 +70,10 @@ const Container = styled.div`
   button:focus {
     outline: none;
   }
+`;
+const P = styled.p`
+  width: 100%;
+  text-align: center;
 `;
 
 class UserPurchases extends Component {
@@ -128,23 +146,21 @@ class UserPurchases extends Component {
               if (error) {
                 return <p> Error: {error.message} </p>;
               }
-              if (!data.ordersUser) {
-                return <p> No Orders </p>;
+              if (data.ordersUser.length === 0) {
+                return <P> No Purchases Done , Go buy something !</P>;
               }
-
               return (
                 <>
                   {view === 1 && (
                     <Header data={statsData}>
                       <Container>
-                        {data.ordersUser &&
-                          data.ordersUser.map(order => (
-                            <PurchaseItem
-                              changeReceipt={this.changeReceipt}
-                              order={order}
-                              key={order.id}
-                            />
-                          ))}
+                        {data.ordersUser.map(order => (
+                          <PurchaseItem
+                            changeReceipt={this.changeReceipt}
+                            order={order}
+                            key={order.id}
+                          />
+                        ))}
                         {data.ordersUser.length <
                           statsData.ordersUserStats.countOrders && (
                           <>
@@ -171,6 +187,7 @@ class UserPurchases extends Component {
                         {!data.ordersUser && <p> No Orders </p>}
                       </Container>
                     </Header>
+                  )}
                   )}
                   {view === 2 && (
                     <Receipt
