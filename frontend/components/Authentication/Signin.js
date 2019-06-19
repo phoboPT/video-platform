@@ -22,7 +22,11 @@ const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
       id
+      name
       email
+      thumbnail
+      permission
+      password
     }
   }
 `;
@@ -137,12 +141,21 @@ class Signin extends Component {
 
   submitForm = async (e, mutation, toggleLogin) => {
     e.preventDefault();
-    await mutation();
+    const res = await mutation();
     await toggleLogin();
     this.setState({ email: '', password: '' });
-    Router.push({
-      pathname: '/index',
-    });
+
+    if (res.data.signin.permission[0] === 'ADMIN') {
+      localStorage.setItem('isAdminPage', true);
+      Router.push({
+        pathname: '/administrator',
+      });
+    } else {
+      localStorage.setItem('isAdminPage', false);
+      Router.push({
+        pathname: '/index',
+      });
+    }
   };
 
   render() {
