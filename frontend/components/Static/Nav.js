@@ -28,8 +28,6 @@ class Nav extends Component {
   };
 
   toggleSidebar = (mutation, size) => {
-    const { extended } = this.state;
-    this.setState({ extended: !extended });
     mutation({ variables: { sidebarState: size } });
   };
 

@@ -38,15 +38,16 @@ const Logo = styled.h1`
 
 const StyledHeader = styled.header`
   padding-left: 0px;
-  padding-left: ${props => props.extended === 1 && '40px'};
-  padding-left: ${props => props.extended === 2 && '150px'};
+  padding-left: ${props => props.sidebarState === 1 && '40px'};
+  padding-left: ${props => props.sidebarState === 2 && '150px'};
+
   #extended {
     button {
       font-weight: 930 !important;
       font-family: 'radnika_next' !important;
     }
-    margin-right: ${props => props.extended === 1 && '4rem!important'};
-    margin-right: ${props => props.extended === 2 && '15rem!important'};
+    margin-right: ${props => props.sidebarState === 1 && '4rem!important'};
+    margin-right: ${props => props.sidebarState === 2 && '15rem!important'};
   }
 
   .bar {
@@ -80,7 +81,7 @@ class Header extends Component {
     const { link } = this.state;
     const { sidebarState } = this.props;
     return (
-      <StyledHeader extended={sidebarState} role="banner">
+      <StyledHeader sidebarState={sidebarState} role="banner">
         <div className="bar">
           <Logo>
             <Link href={link}>

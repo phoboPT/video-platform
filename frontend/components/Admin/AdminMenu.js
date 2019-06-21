@@ -39,23 +39,22 @@ const MenuOpened = styled.div`
 `;
 class AdminMenu extends Component {
   state = {
-    extended: false,
     showCategory: false,
     showInterest: false,
     showCountry: false,
     showInstrutor: false,
   };
-
-  componentDidMount() {
-    this.setState({
-      extended: JSON.parse(localStorage.getItem('extended')),
-    });
-  }
+  
+componentDidMount() {
+    this.setState({ extended: JSON.parse(localStorage.getItem('extended')) }); 
+}
 
   toggleSidebar = (mutation, size) => {
     const { extended } = this.state;
     this.setState({ extended: !extended });
     mutation({ variables: { sidebarState: size } });
+
+    localStorage.setItem('extended', !extended);
   };
 
   changePage = e => {
