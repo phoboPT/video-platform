@@ -47,7 +47,7 @@ class Nav extends Component {
                 (me.permission[0] !== 'ADMIN' && (
                   <>
                     <Link href="/index">
-                      <a href="/index">Index</a>
+                      <a href="/index">Home</a>
                     </Link>
                   </>
                 ))}

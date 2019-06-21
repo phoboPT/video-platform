@@ -62,7 +62,7 @@ class PurchaseItem extends Component {
           <img alt="cart" src="../../../static/cart.webp" />
           <p id="count"> {order.items.length} purchased courses</p>
           <p id="data"> {formatDate(order.createdAt)} </p>
-          <p id="total"> {order.total} €</p>
+          <p id="total"> {order.total / 100} €</p>
           <div id="more">
             <button type="button" onClick={() => changeReceipt(order.id, 2)}>
               Receipt

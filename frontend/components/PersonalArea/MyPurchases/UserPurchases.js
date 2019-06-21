@@ -188,7 +188,7 @@ class UserPurchases extends Component {
                       </Container>
                     </Header>
                   )}
-                  )}
+
                   {view === 2 && (
                     <Receipt
                       data={data}

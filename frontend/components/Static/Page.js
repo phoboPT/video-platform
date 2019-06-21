@@ -34,7 +34,6 @@ const StyledPage = styled.div`
 
 const Inner = styled.div`
   padding: 2rem;
-  border: 2px solid red;
   margin-left: ${props => props.extended === 1 && '130px!important'};
   margin-left: ${props => props.extended === 2 && '200px!important'};
   max-width: ${props => props.theme.maxWidth};
@@ -105,7 +104,6 @@ class Page extends Component {
             loading,
           },
         }) => {
-          console.log('sidebar', sidebarState);
           if (loading) return <p>Loading...</p>;
           if (sidebarState)
             return (

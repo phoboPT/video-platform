@@ -44,23 +44,18 @@ const Title = styled.div`
   display: flex;
   max-width: 80%;
   margin: auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #f2f2f2;
+  border-top: 1px solid #f2f2f2;
 
-  #border-top {
-    border-radius: 2px;
-    margin-top: 1.3rem;
-    background: #e0e0e0;
-    -moz-box-shadow: 0 0 2px #ccc;
-    -webkit-box-shadow: 0 0 2px #ccc;
-    box-shadow: 0 0 2px #ccc;
-    width: 110px;
-    height: 5px;
-  }
   #active {
     span {
-      color: blue;
+      background: #53b3ba;
+      color: white;
     }
     h4 {
-      color: blue;
+      color: #53b3ba;
     }
   }
   #visited {
@@ -86,6 +81,10 @@ const Title = styled.div`
     h4 {
       padding: 0 0 0 10px;
       margin: auto;
+      color: #d8d8d8;
+    }
+    span {
+      color: white;
     }
   }
 `;
@@ -97,11 +96,41 @@ const Main = styled.div`
   padding: 20px 50px;
   display: flex;
   position: relative;
+
+  #back {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 25px;
+  }
+
+  #choose-Payment {
+    display: flex;
+    img {
+      width: 40%;
+    }
+    button {
+      border-radius: 5px;
+      margin: 1rem;
+    }
+  }
+  #payment-text {
+    width: 75%;
+    margin-top: 4rem;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  #small-text {
+    margin-bottom: 2rem;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.8);
+  }
   #billInfo {
     display: flex;
     .first {
       order: 1;
-      flex: 1.5;
+      flex: 2;
       #title {
         text-align: center;
       }
@@ -110,6 +139,7 @@ const Main = styled.div`
       order: 2;
       flex: 1;
       display: flex;
+      margin-left: 10rem;
       #title {
         text-align: center;
       }
@@ -117,7 +147,7 @@ const Main = styled.div`
         width: 100%;
       }
       .details {
-        margin: 0 0.5rem 0 2rem;
+        margin: 1rem auto;
         display: flex;
         p {
           padding: 0 0 0 1rem;
@@ -137,16 +167,14 @@ const Main = styled.div`
     float: left;
     position: relative;
     .container {
-      box-shadow: 1px 1px 1px 1px lightgrey;
-      margin: 0 0 1rem 0;
       .item {
         display: flex;
-        margin: 0 0 0 0;
+        margin-bottom: 2rem;
         label {
-          cursor: pointer;
           display: flex;
         }
         input {
+          cursor: pointer;
           margin: auto 0 auto 1rem;
         }
         p {
@@ -154,16 +182,29 @@ const Main = styled.div`
           font-size: 1.5rem;
         }
       }
+
+      #newBill-button {
+        box-shadow: 0 0 3px #ccc;
+        cursor: pointer;
+        margin-top: 2rem;
+        border: none;
+        margin-left: 3rem;
+        height: 30px;
+        width: 200px;
+        &:hover {
+          opacity: 0.6;
+        }
+      }
     }
   }
   .cartDetails {
-    margin-left: 20px;
+    padding-left: 10rem;
+    padding-top: 2rem;
+    margin-left: 10rem;
     float: right;
     flex: 1;
-    /* border: 1px solid orange; */
     order: 2;
     position: relative;
-    padding-top: 15px;
     .container {
       box-shadow: 1px 1px 1px 1px lightgrey;
       margin: 0 0 1rem 0;
@@ -183,8 +224,11 @@ const Main = styled.div`
 `;
 
 const Button = styled.button`
+  cursor: pointer;
+
   width: auto;
-  background: red;
+  background: rgba(83, 179, 186, 0.6);
+  border-radius: 5px;
   color: white;
   border: 0;
   font-size: 2rem;
@@ -193,7 +237,7 @@ const Button = styled.button`
   text-align: center;
   min-width: 15rem;
   &:hover {
-    background-color: #eb675e;
+    background-color: rgba(83, 179, 186, 0.3);
   }
   &:active {
     position: relative;
@@ -206,6 +250,10 @@ class CheckoutDetails extends Component {
     view: 1,
     showReceiptForm: false,
     selectedBill: '',
+  };
+
+  backChange = view => {
+    this.setState({ view });
   };
 
   changeView = async () => {
@@ -376,7 +424,6 @@ class CheckoutDetails extends Component {
                                     </>
                                   </div>
                                   <div />
-                                  <div id="border-top" />
                                   <div
                                     className="item"
                                     id={view === 2 ? 'active' : ''}
@@ -395,7 +442,6 @@ class CheckoutDetails extends Component {
                                       </h4>
                                     </>
                                   </div>
-                                  <div id="border-top" />
                                   <div
                                     className="item"
                                     id={view === 3 ? 'active' : ''}
@@ -415,14 +461,15 @@ class CheckoutDetails extends Component {
                                     </>
                                   </div>
                                 </Title>
+
                                 <Main>
                                   <div className="cartItems">
                                     {view === 1 && (
                                       <>
-                                        <h3>
-                                          Total {me.cart.length} items in your
-                                          cart
-                                        </h3>
+                                        <p id="small-text">
+                                          Confirm that these are the courses
+                                          that you want.
+                                        </p>
                                         {me.cart.map(item => (
                                           <CheckoutItems
                                             cartItem={item}
@@ -430,14 +477,25 @@ class CheckoutDetails extends Component {
                                             showDelete
                                           />
                                         ))}
+                                        <h4>
+                                          Total {me.cart.length} courses in your
+                                          cart
+                                        </h4>
                                       </>
                                     )}
                                     {view === 2 && (
                                       <>
+                                        <button
+                                          id="back"
+                                          type="button"
+                                          onClick={() => this.backChange(1)}
+                                        >
+                                          ↶
+                                        </button>
                                         <div className="container">
-                                          <p>
-                                            Select one of the billing or create
-                                            a new one
+                                          <p id="small-text">
+                                            Select one of the billings or create
+                                            a new one.
                                           </p>
                                           {data.paymentBill.map(item => (
                                             <div className="item" key={item.id}>
@@ -449,7 +507,7 @@ class CheckoutDetails extends Component {
                                                   onChange={this.changePayment}
                                                   value={item.id}
                                                 />
-                                                <p>{item.name}</p>
+                                                <p>{item.name}: </p>
                                                 <p>{item.email}</p>
                                                 <p>{item.address || ''}</p>
                                                 <p>{item.city}</p>
@@ -459,6 +517,7 @@ class CheckoutDetails extends Component {
                                           ))}
                                           <button
                                             type="button"
+                                            id="newBill-button"
                                             onClick={() =>
                                               swal({
                                                 text: `Billing Info`,
@@ -490,77 +549,92 @@ class CheckoutDetails extends Component {
                                               })
                                             }
                                           >
-                                            Add new billing info
+                                            Add new Billing Info
                                           </button>
                                         </div>
                                       </>
                                     )}
                                     {view === 3 && (
-                                      <div id="billInfo">
-                                        <div className="first">
-                                          <h3 id="title">Items</h3>
-                                          {me.cart.map(item => (
-                                            <CheckoutItems
-                                              cartItem={item}
-                                              key={item.id}
-                                              length="40"
-                                            />
-                                          ))}
-                                        </div>
-                                        <div className="second">
-                                          {!selectedBill && (
-                                            <div id="infoDetails">
-                                              <h3 id="title">Payment Bill</h3>
-                                              <strong className="details">
-                                                Name: <p>{name}</p>
-                                              </strong>
-                                              <strong className="details">
-                                                Email: <p>{email}</p>
-                                              </strong>
-                                              <strong className="details">
-                                                Address: <p>{address || ''}</p>
-                                              </strong>
-                                              <strong className="details">
-                                                City: <p>{city}</p>
-                                              </strong>
-                                              <strong className="details">
-                                                Nif: <p>{nif}</p>
-                                              </strong>
-                                            </div>
-                                          )}
-                                          {data.paymentBill.map(item => {
-                                            console.log(item.id, selectedBill);
-                                            if (item.id === selectedBill) {
-                                              return (
-                                                <div
-                                                  id="infoDetails "
-                                                  key={item.id}
-                                                >
-                                                  <h3 id="title">
-                                                    Payment Bill
-                                                  </h3>
-                                                  <strong className="details">
-                                                    Name: <p>{item.name}</p>
-                                                  </strong>
-                                                  <strong className="details">
-                                                    Email: <p>{item.email}</p>
-                                                  </strong>
-                                                  <strong className="details">
-                                                    Address:{' '}
-                                                    <p>{item.address || ''}</p>
-                                                  </strong>
-                                                  <strong className="details">
-                                                    City: <p>{item.city}</p>
-                                                  </strong>
-                                                  <strong className="details">
-                                                    Nif: <p>{item.nif}</p>
-                                                  </strong>
-                                                </div>
+                                      <>
+                                        <button
+                                          id="back"
+                                          type="button"
+                                          onClick={() => this.backChange(2)}
+                                        >
+                                          ↶
+                                        </button>
+                                        <div id="billInfo">
+                                          <div className="first">
+                                            <h3 id="title">Items</h3>
+                                            {me.cart.map(item => (
+                                              <CheckoutItems
+                                                cartItem={item}
+                                                key={item.id}
+                                                length="40"
+                                              />
+                                            ))}
+                                          </div>
+                                          <div className="second">
+                                            {!selectedBill && (
+                                              <div id="infoDetails">
+                                                <h3 id="title">Payment Bill</h3>
+                                                <strong className="details">
+                                                  Name: <p>{name}</p>
+                                                </strong>
+                                                <strong className="details">
+                                                  Email: <p>{email}</p>
+                                                </strong>
+                                                <strong className="details">
+                                                  Address:{' '}
+                                                  <p>{address || ''}</p>
+                                                </strong>
+                                                <strong className="details">
+                                                  City: <p>{city}</p>
+                                                </strong>
+                                                <strong className="details">
+                                                  Nif: <p>{nif}</p>
+                                                </strong>
+                                              </div>
+                                            )}
+                                            {data.paymentBill.map(item => {
+                                              console.log(
+                                                item.id,
+                                                selectedBill
                                               );
-                                            }
-                                          })}
+                                              if (item.id === selectedBill) {
+                                                return (
+                                                  <div
+                                                    id="infoDetails "
+                                                    key={item.id}
+                                                  >
+                                                    <h3 id="title">
+                                                      Payment Bill
+                                                    </h3>
+                                                    <strong className="details">
+                                                      Name: <p>{item.name}</p>
+                                                    </strong>
+                                                    <strong className="details">
+                                                      Email: <p>{item.email}</p>
+                                                    </strong>
+                                                    <strong className="details">
+                                                      Address:{' '}
+                                                      <p>
+                                                        {item.address || ''}
+                                                      </p>
+                                                    </strong>
+                                                    <strong className="details">
+                                                      City: <p>{item.city}</p>
+                                                    </strong>
+                                                    <strong className="details">
+                                                      Nif: <p>{item.nif}</p>
+                                                    </strong>
+                                                  </div>
+                                                );
+                                              }
+                                            })}
+                                          </div>
                                         </div>
-                                      </div>
+                                      </>
                                     )}
                                   </div>
                                   <div className="cartDetails">
@@ -579,18 +653,24 @@ class CheckoutDetails extends Component {
                                         </Button>
                                       ) : (
                                         <>
-                                          <Checkout
-                                            data={this.state}
-                                            selectedBill={selectedBill}
-                                          >
-                                            <Button>Stripe</Button>
-                                          </Checkout>
-                                          <br />
-                                          <br />
-                                          <Paypal
-                                            data={this.state}
-                                            selectedBill={selectedBill}
-                                          />
+                                          <p id="payment-text">
+                                            Choose The payment Method
+                                          </p>
+                                          <div id="choose-Payment">
+                                            <Checkout
+                                              data={this.state}
+                                              selectedBill={selectedBill}
+                                            >
+                                              <Button>Stripe</Button>
+                                            </Checkout>
+                                            <br />
+                                            <br />
+
+                                            <Paypal
+                                              data={this.state}
+                                              selectedBill={selectedBill}
+                                            />
+                                          </div>
                                         </>
                                       ))}
                                   </div>
