@@ -83,7 +83,7 @@ type Mutation {
 
   # standby waitting for backoffice
   createCategory(name: String!): Category!
-  updateCategory(id: ID!, name: String!): Video!
+  updateCategory(id: ID!, name: String!): Category!
   deleteCategory(id: ID!): Category
 
   signup(
@@ -190,7 +190,9 @@ type Query {
   countries: [Country]!
 
   # querys selecionar por id
+  category(where: CategoryWhereUniqueInput!): Category!
   video(where: VideoWhereUniqueInput!): Video
+  categorie(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput, orderBy: CourseOrderByInput): Course
   rateCourse(where: RateCourseWhereUniqueInput!): RateCourse

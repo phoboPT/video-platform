@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import CategoryList from './Category/CategoryList';
 
 const TOGGLE_SIDEBAR_MUTATION = gql`
   mutation($sidebarState: Int) {
@@ -59,15 +60,26 @@ class AdminMenu extends Component {
     mutation({ variables: { sidebarState: size } });
   };
 
-  changePage = e => {
-    const { name } = e.target;
-    this.setState({
-      showCategory: false,
-      showInterest: false,
-      showCountry: false,
-      showInstrutor: false,
-      [name]: !JSON.parse(e.target.getAttribute('data-value')),
-    });
+  changePage = (e, type) => {
+    if (e) {
+      const { name } = e.target;
+
+      this.setState({
+        showCategory: false,
+        showInterest: false,
+        showCountry: false,
+        showInstrutor: false,
+        [name]: true,
+      });
+    } else {
+      this.setState({
+        showCategory: false,
+        showInterest: false,
+        showCountry: false,
+        showInstrutor: false,
+        [type]: true,
+      });
+    }
   };
 
   render() {
@@ -91,32 +103,16 @@ class AdminMenu extends Component {
                 >
                   ...
                 </button>
-                <a
-                  onClick={this.changePage}
-                  data-value={showCategory}
-                  name="showCategory"
-                >
+                <a onClick={this.changePage} name="showCategory">
                   Category
                 </a>
-                <a
-                  onClick={this.changePage}
-                  name="showInterest"
-                  data-value={showInterest}
-                >
+                <a onClick={this.changePage} name="showInterest">
                   Interest
                 </a>
-                <a
-                  onClick={this.changePage}
-                  name="showCountry"
-                  data-value={showCountry}
-                >
+                <a onClick={this.changePage} name="showCountry">
                   Country
                 </a>
-                <a
-                  onClick={this.changePage}
-                  name="showInstrutor"
-                  data-value={showInstrutor}
-                >
+                <a onClick={this.changePage} name="showInstrutor">
                   Instrutor
                 </a>
               </MenuOpened>
@@ -129,32 +125,16 @@ class AdminMenu extends Component {
                 >
                   ...
                 </button>
-                <a
-                  onClick={this.changePage}
-                  name="showCategory"
-                  data-value={showCategory}
-                >
+                <a onClick={this.changePage} name="showCategory">
                   😄
                 </a>
-                <a
-                  onClick={this.changePage}
-                  name="showInterest"
-                  data-value={showInterest}
-                >
+                <a onClick={this.changePage} name="showInterest">
                   😠
                 </a>
-                <a
-                  onClick={this.changePage}
-                  name="showCountry"
-                  data-value={showCountry}
-                >
+                <a onClick={this.changePage} name="showCountry">
                   😺
                 </a>
-                <a
-                  onClick={this.changePage}
-                  name="showInstrutor"
-                  data-value={showInstrutor}
-                >
+                <a onClick={this.changePage} name="showInstrutor">
                   🤖
                 </a>
               </Menu>
@@ -162,7 +142,7 @@ class AdminMenu extends Component {
 
             {showCategory && (
               <div>
-                <p>Category</p>
+                <CategoryList changePage={this.changePage} />
               </div>
             )}
             {showInterest && (

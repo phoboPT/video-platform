@@ -17,6 +17,7 @@ function getDate() {
 
 const Query = {
   categories: forwardTo('db'),
+  category: forwardTo('db'),
   rateCourse: forwardTo('db'),
   course: forwardTo('db'),
   courses: forwardTo('db'),

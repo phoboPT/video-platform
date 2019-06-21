@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import User from '../components/Authentication/User';
-import AdminPage from '../components/Admin/AdminPage';
 import AdminMenu from '../components/Admin/AdminMenu';
 
 export class administrator extends Component {
@@ -16,7 +15,6 @@ export class administrator extends Component {
             return (
               <div>
                 <AdminMenu />
-                <AdminPage />
               </div>
             );
           }

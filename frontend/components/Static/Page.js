@@ -83,6 +83,7 @@ class Page extends Component {
       <ThemeProvider theme={theme}>
         <StyledPage>
           <Meta />
+
           <Header />
           <Inner role="main">{children}</Inner>
           <Footer role="contentinfo" />
