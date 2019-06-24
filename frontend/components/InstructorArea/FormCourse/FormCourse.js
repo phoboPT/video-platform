@@ -19,8 +19,8 @@ import { Alert } from '../../styles/AlertStyles';
 const ALL_CATEGORIES_QUERY = gql`
   query ALL_CATEGORIES_QUERY {
     categories {
-      name
       id
+      name
     }
   }
 `;
@@ -201,7 +201,10 @@ class FormCourse extends Component {
     }
 
     return (
-      <Query query={ALL_CATEGORIES_QUERY}>
+      <Query
+        query={ALL_CATEGORIES_QUERY}
+        variables={{ orderBy: 'createdAt_ASC', skip: 0 }}
+      >
         {({ data, loading }) => {
           if (loading) return <Loading />;
           if (!data) return <p>No Categories</p>;

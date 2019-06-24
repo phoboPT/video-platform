@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
-import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import FormCategory from './FormCategory';
-import Pagination from './Pagination';
+import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
 import { perPageCategory } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
-import DeleteCategoryButton from './DeleteCategoryButton';
+import FormInterest from './FormInterests';
+import Pagination from './Pagination';
+import DeleteInterestButton from './DeleteInterestButton';
 
-const ALL_CATEGORIES_QUERY_PAGINATION = gql`
-  query ALL_CATEGORIES_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCategory}){
-    categories (first:$first,skip:$skip,orderBy:createdAt_ASC){
+const ALL_INTERESTS_QUERY_PAGINATION = gql`
+  query ALL_INTERESTS_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCategory}){
+    interests (first:$first,skip:$skip,orderBy:createdAt_ASC){
       name
       id
+      thumbnail
     }
   }
 `;
 
-class CategoryList extends Component {
+class InterestList extends Component {
   state = { showList: true };
 
   changeShow = () => {
@@ -34,23 +35,24 @@ class CategoryList extends Component {
     const { showList, isEdit, item } = this.state;
     const { page } = this.props;
     return (
-      <Query
-        query={ALL_CATEGORIES_QUERY_PAGINATION}
-        variables={{
-          skip: page * perPageCategory - perPageCategory,
-        }}
-      >
-        {({ data, loading, error, refetch }) => {
-          if (error) return <p>Error</p>;
-          if (loading) return <p>Loading</p>;
-          if (!data) return <p>No Data</p>;
-          if (data)
-            return (
-              <>
+      <div>
+        <Query
+          query={ALL_INTERESTS_QUERY_PAGINATION}
+          variables={{
+            skip: page * perPageCategory - perPageCategory,
+          }}
+        >
+          {({ data, loading, error, refetch }) => {
+            if (error) return <p>Error</p>;
+            if (loading) return <p>Loading</p>;
+            if (!data) return <p>No Data</p>;
+            console.log(data);
+            if (data)
+              return (
                 <Container>
                   {showList && (
                     <>
-                      <h2>Categories</h2>
+                      <h2>Interests</h2>
                       <div id="button">
                         <button
                           type="button"
@@ -66,15 +68,23 @@ class CategoryList extends Component {
                           <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Thumbnail</th>
                             <th>Edit</th>
                             <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {data.categories.map(item => (
+                          {data.interests.map(item => (
                             <tr key={item.id}>
                               <td id="id">{item.id}</td>
                               <td>{item.name}</td>
+                              <td id="img">
+                                <img
+                                  height="70"
+                                  src={item.thumbnail}
+                                  alt="interest description"
+                                />
+                              </td>
                               <td id="center">
                                 <button
                                   type="button"
@@ -84,14 +94,14 @@ class CategoryList extends Component {
                                 </button>
                               </td>
                               <td id="center">
-                                <DeleteCategoryButton item={item} />
+                                <DeleteInterestButton item={item} />
                               </td>
                             </tr>
                           ))}
                         </tbody>
                         <tfoot>
                           <tr>
-                            <td colSpan="4">
+                            <td colSpan="5">
                               <div className="links">
                                 <Pagination page={page} />
                               </div>
@@ -102,7 +112,7 @@ class CategoryList extends Component {
                     </>
                   )}
                   {!showList && (
-                    <FormCategory
+                    <FormInterest
                       isEdit={isEdit}
                       item={isEdit ? item : null}
                       refetch={refetch}
@@ -110,13 +120,15 @@ class CategoryList extends Component {
                     />
                   )}
                 </Container>
-              </>
-            );
-        }}
-      </Query>
+              );
+          }}
+        </Query>
+      </div>
     );
   }
 }
-CategoryList.propTypes = { page: PropTypes.number };
-export default CategoryList;
-export { ALL_CATEGORIES_QUERY_PAGINATION };
+InterestList.propTypes = {
+  page: PropTypes.number,
+};
+export default InterestList;
+export { ALL_INTERESTS_QUERY_PAGINATION };

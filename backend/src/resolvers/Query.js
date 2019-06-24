@@ -136,6 +136,22 @@ const Query = {
       info
     );
   },
+  async categoriesConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+    return ctx.db.query.categoriesConnection({}, info);
+  },
+  async interestsConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+    return ctx.db.query.interestsConnection({}, info);
+  },
   async coursesSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado

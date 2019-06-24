@@ -3,7 +3,7 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Error from '../../Static/ErrorMessage';
-import { ALL_CATEGORIES_QUERY } from '../../InstructorArea/FormCourse/FormCourse';
+import { ALL_CATEGORIES_QUERY_PAGINATION } from './CategoryList';
 
 const SAVE_CATEGORY_MUTATION = gql`
   mutation SAVE_CATEGORY_MUTATION($name: String!) {
@@ -32,7 +32,7 @@ class FormCategory extends Component {
   update = (cache, payload) => {
     const { name } = this.state;
     // read the cache
-    const data = cache.readQuery({ query: ALL_CATEGORIES_QUERY });
+    const data = cache.readQuery({ query: ALL_CATEGORIES_QUERY_PAGINATION });
     // remove item from cart
     const categoryId = payload.data.updateCategory.id;
     data.categories = data.categories.map(item => {
@@ -42,13 +42,13 @@ class FormCategory extends Component {
       return item;
     });
     // write back to the cache
-    cache.writeQuery({ query: ALL_CATEGORIES_QUERY, data });
+    cache.writeQuery({ query: ALL_CATEGORIES_QUERY_PAGINATION, data });
   };
 
   render() {
     const { item, isEdit, refetch, changePage } = this.props;
     const { name } = this.state;
-    console.log(changePage);
+    console.log(isEdit);
     return (
       <Mutation
         mutation={UPDATE_CATEGORY_MUTATION}
@@ -62,21 +62,22 @@ class FormCategory extends Component {
           },
         }}
       >
-        {(updateCategory, { loading: updateLoading, error }) => (
+        {(updateCategory, { loading: updateLoading, error: updateError }) => (
           <Mutation mutation={SAVE_CATEGORY_MUTATION} variables={this.state}>
-            {(createCategory, { loading: createLoading, error }) => (
+            {(
+              createCategory,
+              { loading: createLoading, error: createError }
+            ) => (
               <div>
                 <form
                   method="post"
                   onSubmit={async e => {
                     e.preventDefault();
                     if (isEdit) {
-                      console.log('update');
                       await updateCategory();
                       this.setState({ name: '' });
                       changePage();
                     } else {
-                      console.log('create');
                       await createCategory();
                       refetch();
                       this.setState({ name: '' });
@@ -84,7 +85,8 @@ class FormCategory extends Component {
                     }
                   }}
                 >
-                  <Error error={error} />
+                  {isEdit ? <h2>Edit</h2> : <h2>Add New</h2>}
+                  <Error error={createError || updateError} />
                   <button
                     type="submit"
                     disabled={createLoading || updateLoading}

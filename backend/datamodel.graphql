@@ -58,12 +58,16 @@ type VideoUser {
   id: ID! @id
   user: User
   videoItem: [VideoItem]
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type VideoItem {
   id: ID! @id
   video: Video
   watched: Boolean
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Wishlist {
@@ -182,10 +186,14 @@ type PaymentBill {
   country: Country
   user: User
   nif: Int
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Country {
   id: ID! @id
   name: String
   code: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

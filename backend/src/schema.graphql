@@ -82,6 +82,10 @@ type Mutation {
   updateVideoUser(id: ID!, watched: Boolean): Video!
 
   # standby waitting for backoffice
+  createInterest(name: String!, thumbnail: String!): Interest!
+  updateInterest(id: ID!, name: String!): Interest!
+  deleteInterest(id: ID!): Interest!
+
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Category!
   deleteCategory(id: ID!): Category
@@ -185,9 +189,25 @@ type Query {
   videoItems(where: VideoWhereInput): [VideoItem]
 
   # querys sellect all
-  categories: [Category]!
-  interests: [Interest!]!
-  countries: [Country]!
+  categories(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    first: Int
+  ): [Category]!
+
+  countries(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    first: Int
+  ): [Country]!
+  interests(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    first: Int
+  ): [Interest!]!
 
   # querys selecionar por id
   category(where: CategoryWhereUniqueInput!): Category!
@@ -238,6 +258,10 @@ type Query {
   #pagination
   coursesConnection(data: String): CourseConnection!
   coursesUserConnection(data: String): CourseConnection!
+  categoriesConnection(data: String): CategoryConnection!
+  interestsConnection(data: String): InterestConnection!
+  countriesConnection(data: String): CountryConnection!
+
   wishlists(where: WishlistWhereInput): [Wishlist]
   #Stats Instrutor Page
   instrutorStats(id: ID!): StatsInstrutor

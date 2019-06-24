@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
-import Link from 'next/link';
 import React, { Component } from 'react';
-import { Mutation, Query } from 'react-apollo';
+import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import InterestItem from './InterestItem';

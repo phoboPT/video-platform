@@ -289,13 +289,13 @@ const Mutations = {
       `{ id }`
     );
   },
-  async createCategory(parent, args, ctx, info) {
+  createInterest(parent, args, ctx, info) {
     // Check if they are logged in
-    // if (!ctx.request.userId) {
-    //   throw new Error("You must be logged in to do that!");
-    // }
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
 
-    const category = await ctx.db.mutation.createCategory(
+    return ctx.db.mutation.createInterest(
       {
         data: {
           ...args,
@@ -303,8 +303,57 @@ const Mutations = {
       },
       info
     );
-    // para dar debug console.log(category);
-    return category;
+  },
+  updateInterest(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // faz uma copia dos updates para guardar o id nos args
+    const updates = {
+      ...args,
+    };
+    // elimina o id dos updates para nao dar update no id(unico)
+    delete updates.id;
+    // da run no update method
+    return ctx.db.mutation.updateInterest(
+      {
+        data: updates,
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
+  async deleteInterest(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const where = {
+      id: args.id,
+    };
+
+    return ctx.db.mutation.deleteInterest(
+      {
+        where,
+      },
+      info
+    );
+  },
+  createCategory(parent, args, ctx, info) {
+    // Check if they are logged in
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    return ctx.db.mutation.createCategory(
+      {
+        data: {
+          ...args,
+        },
+      },
+      info
+    );
   },
   updateCategory(parent, args, ctx, info) {
     if (!ctx.request.userId) {

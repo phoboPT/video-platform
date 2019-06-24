@@ -17,6 +17,7 @@ import { PAGINATION_QUERY } from '../Home/CoursesList/PaginationCourse';
 import { COURSES_FILTER_QUERY } from '../Courses/UserCourses';
 import Error from '../Static/ErrorMessage';
 import { TOGGLE_LOGIN_MUTATION } from './LoginPage';
+import { TOGGLE_SIDEBAR_MUTATION } from '../Admin/AdminMenu';
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -138,7 +139,7 @@ class Signin extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  submitForm = async (e, mutation, toggleLogin) => {
+  submitForm = async (e, mutation, toggleLogin, toggleSidebar) => {
     e.preventDefault();
     const res = await mutation();
     await toggleLogin();
@@ -146,6 +147,7 @@ class Signin extends Component {
 
     if (res.data.signin.permission[0] === 'ADMIN') {
       localStorage.setItem('isAdminPage', true);
+      toggleSidebar({ variables: { sidebarState: 1 } });
       Router.push({
         pathname: '/administrator',
       });
@@ -161,117 +163,123 @@ class Signin extends Component {
     const { email, password } = this.state;
     const { changeView } = this.props;
     return (
-      <Mutation
-        mutation={SIGNIN_MUTATION}
-        refetchQueries={[
-          {
-            query: CURRENT_USER_QUERY,
-          },
-          {
-            query: COURSES_FILTER_QUERY,
-            variables: { author: 'a', category: 'a' },
-          },
-          {
-            query: CURRENT_COURSES_QUERY,
-          },
-          {
-            query: ALL_VIDEOS_USER,
-          },
-          {
-            query: ALL_COURSE_INTERESTS,
-          },
-          {
-            query: ALL_COURSES_ORDERED,
-            variables: { published: 'PUBLISHED', skip: 0, first: 5 },
-          },
-          {
-            query: ALL_COURSES_QUERY,
-          },
-          {
-            query: ALL_COURSES_RATING,
-          },
-          {
-            query: PAGINATION_QUERY,
-          },
-        ]}
-        variables={this.state}
-      >
-        {(signin, { error, loading }) => (
-          <Mutation mutation={TOGGLE_LOGIN_MUTATION}>
-            {toggleLogin => (
-              <Style open>
-                <form
-                  method="post"
-                  onSubmit={e => this.submitForm(e, signin, toggleLogin)}
-                >
-                  <fieldset
-                    id="fieldset"
-                    aria-busy={loading}
-                    disabled={loading}
-                  >
-                    <img id="img" alt="user" src="../../static/user.webp" />
-                    <h2 id="h2">Sign In</h2>
-                    <Error error={error} />
-
-                    <div id="div-email">
-                      <div id="container">
-                        <span id="span-email" />
-                        <input
-                          id="email"
-                          name="email"
-                          placeholder="Email"
-                          onChange={this.saveToState}
-                          required
-                          type="email"
-                          value={email}
-                        />
-                      </div>
-                    </div>
-                    <div id="div-password">
-                      <div id="container">
-                        <span id="span-password" />
-                        <input
-                          id="password"
-                          placeholder="Password"
-                          name="password"
-                          onChange={this.saveToState}
-                          required
-                          type="password"
-                          value={password}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      id="login"
-                      type="submit"
-                      name="login to your account"
+      <Mutation mutation={TOGGLE_SIDEBAR_MUTATION}>
+        {toggleSidebar => (
+          <Mutation
+            mutation={SIGNIN_MUTATION}
+            refetchQueries={[
+              {
+                query: CURRENT_USER_QUERY,
+              },
+              {
+                query: COURSES_FILTER_QUERY,
+                variables: { author: 'a', category: 'a' },
+              },
+              {
+                query: CURRENT_COURSES_QUERY,
+              },
+              {
+                query: ALL_VIDEOS_USER,
+              },
+              {
+                query: ALL_COURSE_INTERESTS,
+              },
+              {
+                query: ALL_COURSES_ORDERED,
+                variables: { published: 'PUBLISHED', skip: 0, first: 5 },
+              },
+              {
+                query: ALL_COURSES_QUERY,
+              },
+              {
+                query: ALL_COURSES_RATING,
+              },
+              {
+                query: PAGINATION_QUERY,
+              },
+            ]}
+            variables={this.state}
+          >
+            {(signin, { error, loading }) => (
+              <Mutation mutation={TOGGLE_LOGIN_MUTATION}>
+                {toggleLogin => (
+                  <Style open>
+                    <form
+                      method="post"
+                      onSubmit={e =>
+                        this.submitForm(e, signin, toggleLogin, toggleSidebar)
+                      }
                     >
-                      Login
-                    </button>
-                    <div id="forgot">
-                      <button
-                        id="forgot-button"
-                        type="button"
-                        onClick={() => changeView(2)}
-                        name="forgot your password"
+                      <fieldset
+                        id="fieldset"
+                        aria-busy={loading}
+                        disabled={loading}
                       >
-                        Forgot Password?
+                        <img id="img" alt="user" src="../../static/user.webp" />
+                        <h2 id="h2">Sign In</h2>
+                        <Error error={error} />
+
+                        <div id="div-email">
+                          <div id="container">
+                            <span id="span-email" />
+                            <input
+                              id="email"
+                              name="email"
+                              placeholder="Email"
+                              onChange={this.saveToState}
+                              required
+                              type="email"
+                              value={email}
+                            />
+                          </div>
+                        </div>
+                        <div id="div-password">
+                          <div id="container">
+                            <span id="span-password" />
+                            <input
+                              id="password"
+                              placeholder="Password"
+                              name="password"
+                              onChange={this.saveToState}
+                              required
+                              type="password"
+                              value={password}
+                            />
+                          </div>
+                        </div>
+                        <button
+                          id="login"
+                          type="submit"
+                          name="login to your account"
+                        >
+                          Login
+                        </button>
+                        <div id="forgot">
+                          <button
+                            id="forgot-button"
+                            type="button"
+                            onClick={() => changeView(2)}
+                            name="forgot your password"
+                          >
+                            Forgot Password?
+                          </button>
+                        </div>
+                      </fieldset>
+                    </form>
+
+                    <div id="register">
+                      <button
+                        id="register-button"
+                        type="button"
+                        onClick={() => changeView(3)}
+                        name="register a new account"
+                      >
+                        You are not yet registered? REGISTER HERE!
                       </button>
                     </div>
-                  </fieldset>
-                </form>
-
-                <div id="register">
-                  <button
-                    id="register-button"
-                    type="button"
-                    onClick={() => changeView(3)}
-                    name="register a new account"
-                  >
-                    You are not yet registered? REGISTER HERE!
-                  </button>
-                </div>
-              </Style>
+                  </Style>
+                )}
+              </Mutation>
             )}
           </Mutation>
         )}

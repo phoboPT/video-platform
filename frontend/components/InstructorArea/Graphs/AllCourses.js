@@ -124,7 +124,6 @@ class AllCourses extends Component {
   render() {
     const { width, height, empty } = this.props;
     const { totalCourses, options, defaultData } = this.state;
-    console.log(empty);
     if (empty) {
       return (
         <Bar

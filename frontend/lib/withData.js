@@ -59,7 +59,7 @@ function createClient({ headers }) {
       defaults: {
         cartOpen: 0,
         loginOpen: false,
-        sidebarState: 1,
+        sidebarState: 3,
       },
     },
   });

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
-import CategoryList from './Category/CategoryList';
+import Link from 'next/link';
 
 const TOGGLE_SIDEBAR_MUTATION = gql`
   mutation($sidebarState: Int) {
@@ -50,47 +50,33 @@ class AdminMenu extends Component {
   componentDidMount() {
     this.setState({
       extended: JSON.parse(localStorage.getItem('extended')),
+      showCategory: JSON.parse(localStorage.getItem('showCategory')),
+      showInterest: JSON.parse(localStorage.getItem('showInterest')),
+      showCountry: JSON.parse(localStorage.getItem('showCountry')),
+      showInstrutor: JSON.parse(localStorage.getItem('showInstrutor')),
     });
   }
 
-  toggleSidebar = (mutation, size) => {
+  toggleSidebar = async (mutation, size) => {
     const { extended } = this.state;
-    localStorage.setItem('extended', !extended);
     this.setState({ extended: !extended });
-    mutation({ variables: { sidebarState: size } });
+    localStorage.setItem('extended', !extended);
+    await mutation({ variables: { sidebarState: size } });
   };
 
-  changePage = (e, type) => {
-    if (e) {
-      const { name } = e.target;
+  changePage = e => {
+    const { name } = e.target;
+    const selectedItem = JSON.parse(localStorage.getItem(name));
 
-      this.setState({
-        showCategory: false,
-        showInterest: false,
-        showCountry: false,
-        showInstrutor: false,
-        [name]: true,
-      });
-    } else {
-      this.setState({
-        showCategory: false,
-        showInterest: false,
-        showCountry: false,
-        showInstrutor: false,
-        [type]: true,
-      });
-    }
+    localStorage.setItem(name, !selectedItem);
+
+    this.setState({
+      [name]: true,
+    });
   };
 
   render() {
-    const {
-      extended,
-      showCategory,
-      showInterest,
-      showCountry,
-      showInstrutor,
-    } = this.state;
-
+    const { extended } = this.state;
     return (
       <Mutation mutation={TOGGLE_SIDEBAR_MUTATION}>
         {toggleSidebar => (
@@ -103,18 +89,38 @@ class AdminMenu extends Component {
                 >
                   ...
                 </button>
-                <a onClick={this.changePage} name="showCategory">
-                  Category
-                </a>
-                <a onClick={this.changePage} name="showInterest">
-                  Interest
-                </a>
-                <a onClick={this.changePage} name="showCountry">
-                  Country
-                </a>
-                <a onClick={this.changePage} name="showInstrutor">
-                  Instrutor
-                </a>
+                <Link
+                  href={{
+                    pathname: '/category-list',
+                    query: { page: 1 },
+                  }}
+                >
+                  <a>Category</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/interest-list',
+                    query: { page: 1 },
+                  }}
+                >
+                  <a>Interest</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/country-list',
+                    query: { page: 1 },
+                  }}
+                >
+                  <a>Country</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/intrutor-list',
+                    query: { page: 1 },
+                  }}
+                >
+                  <a>Instrutor</a>
+                </Link>
               </MenuOpened>
             )}
             {!extended && (
@@ -125,29 +131,50 @@ class AdminMenu extends Component {
                 >
                   ...
                 </button>
-                <a onClick={this.changePage} name="showCategory">
-                  😄
-                </a>
-                <a onClick={this.changePage} name="showInterest">
-                  😠
-                </a>
-                <a onClick={this.changePage} name="showCountry">
-                  😺
-                </a>
-                <a onClick={this.changePage} name="showInstrutor">
-                  🤖
-                </a>
+                <Link
+                  href={{
+                    pathname: '/category-list',
+                    query: { page: 1 },
+                  }}
+                >
+                  <a>😄</a>
+                </Link>
+
+                <Link
+                  href={{
+                    pathname: '/interest-list',
+                    query: { page: 1 },
+                  }}
+                >
+                  <a> 😠</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/country-list',
+                    query: { page: 1 },
+                  }}
+                >
+                  <a>😺</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/intrutor-list',
+                    query: { page: 1 },
+                  }}
+                >
+                  <a>🤖</a>
+                </Link>
               </Menu>
             )}
 
-            {showCategory && (
+            {/* {showCategory && (
               <div>
-                <CategoryList changePage={this.changePage} />
+                <CategoryList page={page} />
               </div>
             )}
             {showInterest && (
               <div>
-                <p>Interest</p>
+                <InterestList page={page} />
               </div>
             )}
             {showCountry && (
@@ -159,7 +186,7 @@ class AdminMenu extends Component {
               <div>
                 <p>Instrutor</p>
               </div>
-            )}
+            )} */}
           </>
         )}
       </Mutation>
@@ -168,3 +195,5 @@ class AdminMenu extends Component {
 }
 
 export default AdminMenu;
+
+export { TOGGLE_SIDEBAR_MUTATION };

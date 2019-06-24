@@ -3,20 +3,12 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import React, { Component } from 'react';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
-import { adopt } from 'react-adopt';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Nav from './Nav';
 import Cart from '../Home/Cart/Cart';
 import Wishlist from '../Home/Wishlist/Wishlist';
 import LoginPage from '../Authentication/LoginPage';
-
-const LOCAL_SIDEBAR_QUERY = gql`
-  query {
-    sidebarState @client
-  }
-`;
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -45,7 +37,17 @@ const Logo = styled.h1`
 `;
 
 const StyledHeader = styled.header`
-  padding-left: ${props => props.extended};
+  padding-left: 0px;
+  padding-left: ${props => props.extended === 1 && '40px'};
+  padding-left: ${props => props.extended === 2 && '150px'};
+  #extended {
+    button {
+      font-weight: 930 !important;
+      font-family: 'radnika_next' !important;
+    }
+    margin-right: ${props => props.extended === 1 && '4rem!important'};
+    margin-right: ${props => props.extended === 2 && '15rem!important'};
+  }
 
   .bar {
     z-index: 5;
@@ -66,63 +68,40 @@ const StyledHeader = styled.header`
     border-bottom: 1px solid ${props => props.theme.lithGrey};
   }
 `;
-const Composed = adopt({
-  sidebarState: ({ render }) => (
-    <Query query={LOCAL_SIDEBAR_QUERY}>{render}</Query>
-  ),
 
-  // user: ({ render }) => <User>{render}</User>,
-});
-class Header extends Component {
+class Header extends PureComponent {
   state = { link: '/index' };
-
-  componentDidMount() {
-    this.setState({
-      extended: JSON.parse(localStorage.getItem('extended')),
-    });
-  }
 
   changeLink = link => {
     this.setState({ link });
   };
 
   render() {
-    const { link, extended } = this.state;
+    const { link } = this.state;
+    const { sidebarState } = this.props;
     return (
-      <Composed query={LOCAL_SIDEBAR_QUERY}>
-        {({
-          sidebarState: {
-            data: { sidebarState },
-            loading,
-          },
-        }) => {
-          console.log('sidebar', sidebarState);
-          if (loading) return <p>Loading...</p>;
-          if (sidebarState)
-            return (
-              <StyledHeader extended={sidebarState} role="banner">
-                <div className="bar">
-                  <Logo>
-                    <Link href={link}>
-                      <a>
-                        <img alt="logo-picus" src="/static/logo.webp" />
-                      </a>
-                    </Link>
-                  </Logo>
-                  <Nav changeLink={this.changeLink} />
-                </div>
-                <div className="sub-bar" />
-                <Cart />
-                <Wishlist />
-                <LoginPage />
-                <div />
-              </StyledHeader>
-            );
-        }}
-      </Composed>
+      <StyledHeader extended={sidebarState} role="banner">
+        <div className="bar">
+          <Logo>
+            <Link href={link}>
+              <a>
+                <img alt="logo-picus" src="/static/logo.webp" />
+              </a>
+            </Link>
+          </Logo>
+          <Nav changeLink={this.changeLink} />
+        </div>
+        <div className="sub-bar" />
+        <Cart />
+        <Wishlist />
+        <LoginPage />
+        <div />
+      </StyledHeader>
     );
   }
 }
+Header.propTypes = {
+  sidebarState: PropTypes.number,
+};
 
 export default Header;
-export { LOCAL_SIDEBAR_QUERY };
