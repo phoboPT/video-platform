@@ -34,16 +34,18 @@ const StyledPage = styled.div`
 `;
 
 const Inner = styled.div`
-  padding: 2rem;
-  margin-left: ${props => props.extended === 1 && '130px!important'};
-  margin-left: ${props => props.extended === 2 && '200px!important'};
+  padding: 0 2rem 2rem 2rem;
+  margin-left: ${props => props.sidebarState === 1 && '130px!important'};
+  margin-left: ${props => props.sidebarState === 2 && '200px!important'};
+
   max-width: ${props => props.theme.maxWidth};
   margin: 100px auto 0;
   min-height: calc(100vh - 210px);
   @media (max-width: 1300px) {
-    margin-left: ${props => props.extended === 1 && '90px!important'};
+    margin-left: ${props => props.sidebarState === 1 && '90px!important'};
+
     margin-right: 20px !important;
-    margin: 150px auto 0;
+    margin: 100px auto 0;
     min-height: calc(100vh - 260px);
   }
   &::after {
@@ -75,11 +77,6 @@ injectGlobal`
     font-size: 1.5rem;
     line-height: 1;
     font-family: 'radnika_next';
-    &:after {
-      content: '';
-      display: block;
-      height: 60px; /* Set same as footer's height */
-    }
   }
   a {
     text-decoration: none;
@@ -96,22 +93,27 @@ const Composed = adopt({
   ),
 });
 class Page extends Component {
-  state = {
-    isExtended: false,
-    loaded: false,
-    ready: false,
-  };
+  state = {};
 
-  async componentDidMount() {
-    await this.setState({
-      isExtended: JSON.parse(localStorage.getItem('extended')),
-      ready: true,
+  componentDidMount() {
+    this.setState({
+      isAdminPage: JSON.parse(localStorage.getItem('isAdminPage')),
+      extended: JSON.parse(localStorage.getItem('extended')),
     });
   }
 
+  testeBar = (sidebarState, isAdminPage, extended) => {
+    if (extended) {
+      return isAdminPage && sidebarState === 3 ? 2 : sidebarState;
+    }
+    if (!extended) {
+      return isAdminPage && sidebarState === 3 ? 1 : sidebarState;
+    }
+  };
+
   render() {
     const { children } = this.props;
-    const { isExtended, loaded, ready } = this.state;
+    const { isAdminPage, extended } = this.state;
     return (
       <Composed query={LOCAL_SIDEBAR_QUERY}>
         {({
@@ -122,28 +124,36 @@ class Page extends Component {
           toogleSidebar,
         }) => {
           if (loading) return <p>Loading...</p>;
-          if (ready) {
-            if (!loaded) {
-              if (sidebarState === 3 && isExtended) {
-                toogleSidebar({ variables: { sidebarState: 2 } });
-              }
-              if (sidebarState === 3 && !isExtended) {
-                toogleSidebar({ variables: { sidebarState: 1 } });
-              }
-
-              this.setState({ loaded: true, ready: false });
-            }
-          }
           if (sidebarState)
             return (
               <ThemeProvider theme={theme}>
                 <StyledPage>
                   <Meta />
-                  <Header sidebarState={sidebarState} />
-                  <Inner extended={sidebarState} role="main">
+                  <Header
+                    sidebarState={this.testeBar(
+                      sidebarState,
+                      isAdminPage,
+                      extended
+                    )}
+                  />
+                  <Inner
+                    sidebarState={this.testeBar(
+                      sidebarState,
+                      isAdminPage,
+                      extended
+                    )}
+                    role="main"
+                  >
                     {children}
                   </Inner>
-                  <Footer sidebarState={sidebarState} role="contentinfo" />
+                  <Footer
+                    sidebarState={this.testeBar(
+                      sidebarState,
+                      isAdminPage,
+                      extended
+                    )}
+                    role="contentinfo"
+                  />
                 </StyledPage>
               </ThemeProvider>
             );

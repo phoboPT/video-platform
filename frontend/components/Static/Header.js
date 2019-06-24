@@ -1,9 +1,8 @@
 /* eslint-disable react/display-name */
-import Link from 'next/link';
 import styled from 'styled-components';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Nav from './Nav';
 import Cart from '../Home/Cart/Cart';
@@ -38,15 +37,16 @@ const Logo = styled.h1`
 
 const StyledHeader = styled.header`
   padding-left: 0px;
-  padding-left: ${props => props.extended === 1 && '40px'};
-  padding-left: ${props => props.extended === 2 && '150px'};
+  padding-left: ${props => props.sidebarState === 1 && '40px'};
+  padding-left: ${props => props.sidebarState === 2 && '150px'};
+
   #extended {
     button {
       font-weight: 930 !important;
       font-family: 'radnika_next' !important;
     }
-    margin-right: ${props => props.extended === 1 && '4rem!important'};
-    margin-right: ${props => props.extended === 2 && '15rem!important'};
+    margin-right: ${props => props.sidebarState === 1 && '4rem!important'};
+    margin-right: ${props => props.sidebarState === 2 && '15rem!important'};
   }
 
   .bar {
@@ -69,25 +69,20 @@ const StyledHeader = styled.header`
   }
 `;
 
-class Header extends PureComponent {
-  state = { link: '/index' };
-
+class Header extends Component {
   changeLink = link => {
     this.setState({ link });
   };
 
   render() {
-    const { link } = this.state;
     const { sidebarState } = this.props;
     return (
-      <StyledHeader extended={sidebarState} role="banner">
+      <StyledHeader sidebarState={sidebarState} role="banner">
         <div className="bar">
           <Logo>
-            <Link href={link}>
-              <a>
-                <img alt="logo-picus" src="/static/logo.webp" />
-              </a>
-            </Link>
+            <a href="#">
+              <img alt="logo-picus" src="/static/logo.webp" />
+            </a>
           </Logo>
           <Nav changeLink={this.changeLink} />
         </div>

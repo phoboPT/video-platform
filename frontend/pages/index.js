@@ -31,11 +31,40 @@ const Container = styled.div`
 `;
 
 const TopBar = styled.div`
-  #banner {
-    margin: 2rem auto auto auto;
+  #banner1 {
+    margin: 1rem auto auto auto;
     width: 70%;
     img {
       width: 100%;
+    }
+  }
+  #banner {
+    margin: 1rem auto auto auto;
+    width: 90%;
+
+    img {
+      width: 100%;
+    }
+    #info {
+      margin-top: -2px;
+      background: #3e1163;
+      width: 100%;
+      display: flex;
+      div {
+        margin-top: 1rem;
+        text-align: center;
+        width: 25%;
+        p {
+          font-size: 12px;
+          color: white;
+          text-align: center;
+          width: 100%;
+        }
+        strong {
+          color: white;
+          font-size: 15px;
+        }
+      }
     }
   }
   h2 {
@@ -106,13 +135,29 @@ class Home extends Component {
           if (!data.me) {
             return (
               <>
-                <div id="banner">
-                  <img alt="banner" src="../static/banner.webp" />
-                  <p>The Best</p>
-                  <p>100+ Topics</p>
-                  <p>Try now</p>
-                  <p>Interests</p>
-                </div>
+                <TopBar>
+                  <div id="banner">
+                    <img alt="banner" src="../static/banner.webp" />
+                    <div id="info">
+                      <div>
+                        <strong>Especialistas </strong>
+                        <p>Aprenda com o melhor de cada área</p>
+                      </div>
+                      <div>
+                        <strong>Diversidade</strong>
+                        <p>Cursos para todos os gostos</p>
+                      </div>
+                      <div>
+                        <strong>Access for life</strong>
+                        <p>Learn in your time</p>
+                      </div>
+                      <div>
+                        <strong>Choice of Interests</strong>
+                        <p>Courses to your liking</p>
+                      </div>
+                    </div>
+                  </div>
+                </TopBar>
                 <Courses>
                   <ListAllCourses query="ALL_COURSES_RATING" noUser />
                 </Courses>
@@ -136,8 +181,8 @@ class Home extends Component {
                 <Search />
               </SearchStyle>
               <TopBar>
-                <div id="banner">
-                  <img alt="banner" src="../static/banner.webp" />
+                <div id="banner1">
+                  <img alt="banner" src="../static/bannerIn.webp" />
                 </div>
               </TopBar>
               {data.me.interests.length > 0 && (

@@ -40,7 +40,6 @@ const MenuOpened = styled.div`
 `;
 class AdminMenu extends Component {
   state = {
-    extended: false,
     showCategory: false,
     showInterest: false,
     showCountry: false,
@@ -48,20 +47,15 @@ class AdminMenu extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      extended: JSON.parse(localStorage.getItem('extended')),
-      showCategory: JSON.parse(localStorage.getItem('showCategory')),
-      showInterest: JSON.parse(localStorage.getItem('showInterest')),
-      showCountry: JSON.parse(localStorage.getItem('showCountry')),
-      showInstrutor: JSON.parse(localStorage.getItem('showInstrutor')),
-    });
+    this.setState({ extended: JSON.parse(localStorage.getItem('extended')) });
   }
 
   toggleSidebar = async (mutation, size) => {
     const { extended } = this.state;
     this.setState({ extended: !extended });
+    mutation({ variables: { sidebarState: size } });
+
     localStorage.setItem('extended', !extended);
-    await mutation({ variables: { sidebarState: size } });
   };
 
   changePage = e => {
@@ -115,7 +109,7 @@ class AdminMenu extends Component {
                 </Link>
                 <Link
                   href={{
-                    pathname: '/intrutor-list',
+                    pathname: '/instrutor-list',
                     query: { page: 1 },
                   }}
                 >
@@ -158,7 +152,7 @@ class AdminMenu extends Component {
                 </Link>
                 <Link
                   href={{
-                    pathname: '/intrutor-list',
+                    pathname: '/instrutor-list',
                     query: { page: 1 },
                   }}
                 >
