@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { perPageCategory } from '../../../config';
+import { perPageInterest } from '../../../config';
 
 const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY {
@@ -28,13 +28,13 @@ const Url = styled.div`
   }
 `;
 
-const Pagination = props => (
+const PaginationInterest = props => (
   <Query query={PAGINATION_QUERY}>
     {({ data, loading, error }) => {
       if (loading) return <p>Loading...</p>;
       console.log(data);
       const { count } = data.interestsConnection.aggregate;
-      const pages = Math.ceil(count / perPageCategory);
+      const pages = Math.ceil(count / perPageInterest);
       const { page } = props;
       return (
         <Url>
@@ -76,8 +76,8 @@ const Pagination = props => (
   </Query>
 );
 
-Pagination.propTypes = {
+PaginationInterest.propTypes = {
   page: PropTypes.number.isRequired,
 };
 
-export default Pagination;
+export default PaginationInterest;

@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
-import { perPageCategory } from '../../../config';
+import { perPageInterest } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
 import FormInterest from './FormInterests';
-import Pagination from './Pagination';
+import PaginationInterest from './PaginationInterest';
 import DeleteInterestButton from './DeleteInterestButton';
 
 const ALL_INTERESTS_QUERY_PAGINATION = gql`
-  query ALL_INTERESTS_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCategory}){
+  query ALL_INTERESTS_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageInterest}){
     interests (first:$first,skip:$skip,orderBy:createdAt_ASC){
       name
       id
@@ -34,19 +34,19 @@ class InterestList extends Component {
   render() {
     const { showList, isEdit, item } = this.state;
     const { page } = this.props;
+    const skip = page * perPageInterest - perPageInterest;
     return (
       <div>
         <Query
           query={ALL_INTERESTS_QUERY_PAGINATION}
           variables={{
-            skip: page * perPageCategory - perPageCategory,
+            skip,
           }}
         >
           {({ data, loading, error, refetch }) => {
             if (error) return <p>Error</p>;
             if (loading) return <p>Loading</p>;
             if (!data) return <p>No Data</p>;
-            console.log(data);
             if (data)
               return (
                 <Container>
@@ -103,7 +103,7 @@ class InterestList extends Component {
                           <tr>
                             <td colSpan="5">
                               <div className="links">
-                                <Pagination page={page} />
+                                <PaginationInterest page={page} />
                               </div>
                             </td>
                           </tr>
@@ -113,6 +113,7 @@ class InterestList extends Component {
                   )}
                   {!showList && (
                     <FormInterest
+                      skip={skip}
                       isEdit={isEdit}
                       item={isEdit ? item : null}
                       refetch={refetch}

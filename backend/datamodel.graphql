@@ -12,6 +12,12 @@ enum State {
   UNPUBLISHED
 }
 
+enum RequestState {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 type Interest {
   id: ID! @id
   name: String!
@@ -202,5 +208,7 @@ type BecomeInstructor {
   id: ID! @id
   message: String!
   user: User!
-  state: State
+  state: RequestState
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

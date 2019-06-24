@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-// import FormCategory from './FormCategory';
-// import Pagination from './Pagination';
-import { perPageCategory } from '../../../config';
+import FormCountry from './FormCountry';
+import PaginationCountry from './PaginationCountry';
+import { perPageCountry } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
-// import DeleteCategoryButton from './DeleteCategoryButton';
+import DeleteCountryButton from './DeleteCountryButton';
 
 const ALL_COUNTRIES_QUERY_PAGINATION = gql`
-  query ALL_COUNTRIES_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCategory}){
+  query ALL_COUNTRIES_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCountry}){
     countries (first:$first,skip:$skip,orderBy:createdAt_ASC){
       name
       id
+      code
     }
   }
 `;
@@ -33,11 +34,12 @@ class CountryList extends Component {
   render() {
     const { showList, isEdit, item } = this.state;
     const { page } = this.props;
+    const skip = page * perPageCountry - perPageCountry;
     return (
       <Query
         query={ALL_COUNTRIES_QUERY_PAGINATION}
         variables={{
-          skip: page * perPageCategory - perPageCategory,
+          skip,
         }}
       >
         {({ data, loading, error, refetch }) => {
@@ -87,16 +89,16 @@ class CountryList extends Component {
                                 </button>
                               </td>
                               <td id="center">
-                                {/* <DeleteCategoryButton item={item} /> */}
+                                <DeleteCountryButton item={item} />
                               </td>
                             </tr>
                           ))}
                         </tbody>
                         <tfoot>
                           <tr>
-                            <td colSpan="4">
+                            <td colSpan="5">
                               <div className="links">
-                                {/* <Pagination page={page} /> */}
+                                <PaginationCountry page={page} />
                               </div>
                             </td>
                           </tr>
@@ -104,14 +106,15 @@ class CountryList extends Component {
                       </Table>
                     </>
                   )}
-                  {/* {!showList && (
-                    <FormCategory
+                  {!showList && (
+                    <FormCountry
+                      skip={skip}
                       isEdit={isEdit}
                       item={isEdit ? item : null}
                       refetch={refetch}
                       changePage={this.changeShow}
                     />
-                  )} */}
+                  )}
                 </Container>
               </>
             );

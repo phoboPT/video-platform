@@ -83,12 +83,16 @@ type Mutation {
 
   # standby waitting for backoffice
   createInterest(name: String!, thumbnail: String!): Interest!
-  updateInterest(id: ID!, name: String!): Interest!
+  updateInterest(id: ID!, name: String!, thumbnail: String): Interest!
   deleteInterest(id: ID!): Interest!
 
   createCategory(name: String!): Category!
   updateCategory(id: ID!, name: String!): Category!
-  deleteCategory(id: ID!): Category
+  deleteCategory(id: ID!): Category!
+
+  createCountry(name: String!, code: String!): Country!
+  updateCountry(id: ID!, name: String!, code: String): Country!
+  deleteCountry(id: ID!): Country!
 
   signup(
     email: String!
@@ -208,6 +212,13 @@ type Query {
     skip: Int
     first: Int
   ): [Interest!]!
+
+  becomeInstructors(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    first: Int
+  ): [BecomeInstructor!]!
 
   # querys selecionar por id
   category(where: CategoryWhereUniqueInput!): Category!

@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import FormCategory from './FormCategory';
-import Pagination from './Pagination';
+import PaginationCategory from './PaginationCategory';
 import { perPageCategory } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
 import DeleteCategoryButton from './DeleteCategoryButton';
@@ -33,11 +33,12 @@ class CategoryList extends Component {
   render() {
     const { showList, isEdit, item } = this.state;
     const { page } = this.props;
+    const skip = page * perPageCategory - perPageCategory;
     return (
       <Query
         query={ALL_CATEGORIES_QUERY_PAGINATION}
         variables={{
-          skip: page * perPageCategory - perPageCategory,
+          skip,
         }}
       >
         {({ data, loading, error, refetch }) => {
@@ -93,7 +94,7 @@ class CategoryList extends Component {
                           <tr>
                             <td colSpan="4">
                               <div className="links">
-                                <Pagination page={page} />
+                                <PaginationCategory page={page} />
                               </div>
                             </td>
                           </tr>
@@ -103,6 +104,7 @@ class CategoryList extends Component {
                   )}
                   {!showList && (
                     <FormCategory
+                      skip={skip}
                       isEdit={isEdit}
                       item={isEdit ? item : null}
                       refetch={refetch}

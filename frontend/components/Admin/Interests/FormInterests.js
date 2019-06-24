@@ -18,8 +18,12 @@ const SAVE_INTEREST_MUTATION = gql`
 `;
 
 const UPDATE_INTEREST_MUTATION = gql`
-  mutation UPDATE_INTEREST_MUTATION($id: ID!, $name: String!) {
-    updateInterest(id: $id, name: $name) {
+  mutation UPDATE_INTEREST_MUTATION(
+    $id: ID!
+    $name: String!
+    $thumbnail: String
+  ) {
+    updateInterest(id: $id, name: $name, thumbnail: $thumbnail) {
       id
     }
   }
@@ -40,15 +44,20 @@ class FormInterest extends Component {
 
   // this gets called as soon as we get a responde back from the server after a mutation
   update = (cache, payload) => {
-    const { name } = this.state;
+    const { name, thumbnail } = this.state;
+    const { skip } = this.props;
     // read the cache
-    const data = cache.readQuery({ query: ALL_INTERESTS_QUERY_PAGINATION });
+    const data = cache.readQuery({
+      query: ALL_INTERESTS_QUERY_PAGINATION,
+      variables: { skip },
+    });
     // remove item from cart
 
     const interestId = payload.data.updateInterest.id;
     data.interests = data.interests.map(item => {
       if (item.id === interestId) {
         item.name = name;
+        item.thumbnail = thumbnail;
       }
       return item;
     });
@@ -101,7 +110,7 @@ class FormInterest extends Component {
     return (
       <Mutation
         mutation={UPDATE_INTEREST_MUTATION}
-        variables={{ id: item ? item.id : '', name }}
+        variables={{ id: item ? item.id : '', name, thumbnail }}
         update={this.update}
         optimisticResponse={{
           __typename: 'Mutation',
@@ -196,6 +205,7 @@ class FormInterest extends Component {
 }
 
 FormInterest.propTypes = {
+  skip: PropTypes.number.isRequired,
   item: PropTypes.object,
   isEdit: PropTypes.bool,
   refetch: PropTypes.func,

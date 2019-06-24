@@ -1,11 +1,11 @@
 import InterestList from '../components/Admin/Interests/InterestList';
 import AdminMenu from '../components/Admin/AdminMenu';
 
-const CategoryPage = ({ query }) => (
+const InterestPage = ({ query }) => (
   <div>
     <AdminMenu />
     <InterestList page={parseFloat(query.page) || 1} />
   </div>
 );
 
-export default CategoryPage;
+export default InterestPage;

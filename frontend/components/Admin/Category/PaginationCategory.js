@@ -28,7 +28,7 @@ const Url = styled.div`
   }
 `;
 
-const Pagination = props => (
+const PaginationCategory = props => (
   <Query query={PAGINATION_QUERY}>
     {({ data, loading, error }) => {
       if (loading) return <p>Loading...</p>;
@@ -75,8 +75,8 @@ const Pagination = props => (
   </Query>
 );
 
-Pagination.propTypes = {
+PaginationCategory.propTypes = {
   page: PropTypes.number.isRequired,
 };
 
-export default Pagination;
+export default PaginationCategory;

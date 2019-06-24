@@ -312,6 +312,7 @@ const Mutations = {
     const updates = {
       ...args,
     };
+    console.log(args);
     // elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
     // da run no update method
@@ -392,7 +393,58 @@ const Mutations = {
       info
     );
   },
+  createCountry(parent, args, ctx, info) {
+    // Check if they are logged in
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
 
+    return ctx.db.mutation.createCountry(
+      {
+        data: {
+          ...args,
+        },
+      },
+      info
+    );
+  },
+  updateCountry(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // faz uma copia dos updates para guardar o id nos args
+    const updates = {
+      ...args,
+    };
+    console.log(args);
+    // elimina o id dos updates para nao dar update no id(unico)
+    delete updates.id;
+    // da run no update method
+    return ctx.db.mutation.updateCountry(
+      {
+        data: updates,
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
+  async deleteCountry(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const where = {
+      id: args.id,
+    };
+
+    return ctx.db.mutation.deleteCountry(
+      {
+        where,
+      },
+      info
+    );
+  },
   async signup(parent, args, ctx, info) {
     // lowercase the email
     args.email = args.email.toLowerCase();

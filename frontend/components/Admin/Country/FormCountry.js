@@ -3,26 +3,28 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Error from '../../Static/ErrorMessage';
-import { ALL_CATEGORIES_QUERY_PAGINATION } from './CategoryList';
+import { ALL_COUNTRIES_QUERY_PAGINATION } from './CountryList';
 
-const SAVE_CATEGORY_MUTATION = gql`
-  mutation SAVE_CATEGORY_MUTATION($name: String!) {
-    createCategory(name: $name) {
+const SAVE_COUNTRY_MUTATION = gql`
+  mutation SAVE_COUNTRY_MUTATION($name: String!, $code: String!) {
+    createCountry(name: $name, code: $code) {
       id
     }
   }
 `;
 
-const UPDATE_CATEGORY_MUTATION = gql`
-  mutation UPDATE_CATEGORY_MUTATION($id: ID!, $name: String!) {
-    updateCategory(id: $id, name: $name) {
+const UPDATE_COUNTRY_MUTATION = gql`
+  mutation UPDATE_COUNTRY_MUTATION($id: ID!, $name: String!, $code: String) {
+    updateCountry(id: $id, name: $name, code: $code) {
       id
     }
   }
 `;
 
-class FormCategory extends Component {
-  state = { name: this.props.item ? this.props.item.name : '' };
+class FormCountry extends Component {
+  state = {
+    name: this.props.item ? this.props.item.name : '',
+  };
 
   saveToState = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -30,46 +32,51 @@ class FormCategory extends Component {
 
   // this gets called as soon as we get a responde back from the server after a mutation
   update = (cache, payload) => {
-    const { name } = this.state;
+    const { name, code } = this.state;
     const { skip } = this.props;
     // read the cache
     const data = cache.readQuery({
-      query: ALL_CATEGORIES_QUERY_PAGINATION,
+      query: ALL_COUNTRIES_QUERY_PAGINATION,
       variables: { skip },
     });
+
     // remove item from cart
-    const categoryId = payload.data.updateCategory.id;
-    data.categories = data.categories.map(item => {
-      if (item.id === categoryId) {
+    const countryId = payload.data.updateCountry.id;
+    data.countries = data.countries.map(item => {
+      if (item.id === countryId) {
         item.name = name;
+        item.code = code;
       }
       return item;
     });
     // write back to the cache
-    cache.writeQuery({ query: ALL_CATEGORIES_QUERY_PAGINATION, data });
+    cache.writeQuery({ query: ALL_COUNTRIES_QUERY_PAGINATION, data });
   };
 
   render() {
     const { item, isEdit, refetch, changePage } = this.props;
-    const { name } = this.state;
-    console.log(isEdit);
+    const { name, code } = this.state;
     return (
       <Mutation
-        mutation={UPDATE_CATEGORY_MUTATION}
-        variables={{ id: item ? item.id : '', name }}
+        mutation={UPDATE_COUNTRY_MUTATION}
+        variables={{
+          id: item ? item.id : '',
+          name,
+          code,
+        }}
         update={this.update}
         optimisticResponse={{
           __typename: 'Mutation',
-          updateCategory: {
-            __typename: 'Category',
+          updateCountry: {
+            __typename: 'Country',
             id: item ? item.id : '',
           },
         }}
       >
-        {(updateCategory, { loading: updateLoading, error: updateError }) => (
-          <Mutation mutation={SAVE_CATEGORY_MUTATION} variables={this.state}>
+        {(updateCountry, { loading: updateLoading, error: updateError }) => (
+          <Mutation mutation={SAVE_COUNTRY_MUTATION} variables={this.state}>
             {(
-              createCategory,
+              createCountry,
               { loading: createLoading, error: createError }
             ) => (
               <div>
@@ -78,13 +85,13 @@ class FormCategory extends Component {
                   onSubmit={async e => {
                     e.preventDefault();
                     if (isEdit) {
-                      await updateCategory();
-                      this.setState({ name: '' });
+                      await updateCountry();
+                      this.setState({ name: '', code: '' });
                       changePage();
                     } else {
-                      await createCategory();
+                      await createCountry();
                       refetch();
-                      this.setState({ name: '' });
+                      this.setState({ name: '', code: '' });
                       changePage();
                     }
                   }}
@@ -112,6 +119,19 @@ class FormCategory extends Component {
                       onChange={this.saveToState}
                     />
                   </label>
+                  <br />
+                  <br />
+                  <label htmlFor="code">
+                    Code:
+                    <input
+                      id="code"
+                      type="code"
+                      name="code"
+                      placeholder="Code"
+                      defaultValue={code || ''}
+                      onChange={this.saveToState}
+                    />
+                  </label>
                 </form>
               </div>
             )}
@@ -122,11 +142,12 @@ class FormCategory extends Component {
   }
 }
 
-FormCategory.propTypes = {
+FormCountry.propTypes = {
   item: PropTypes.object,
   isEdit: PropTypes.bool,
   refetch: PropTypes.func,
   changePage: PropTypes.func,
+  skip: PropTypes.number.isRequired,
 };
 
-export default FormCategory;
+export default FormCountry;
