@@ -1,5 +1,4 @@
 /* eslint-disable react/display-name */
-import Link from 'next/link';
 import styled from 'styled-components';
 import Router from 'next/router';
 import NProgress from 'nprogress';
@@ -71,24 +70,19 @@ const StyledHeader = styled.header`
 `;
 
 class Header extends Component {
-  state = { link: '/index' };
-
   changeLink = link => {
     this.setState({ link });
   };
 
   render() {
-    const { link } = this.state;
     const { sidebarState } = this.props;
     return (
       <StyledHeader sidebarState={sidebarState} role="banner">
         <div className="bar">
           <Logo>
-            <Link href={link}>
-              <a>
-                <img alt="logo-picus" src="/static/logo.webp" />
-              </a>
-            </Link>
+            <a href="#">
+              <img alt="logo-picus" src="/static/logo.webp" />
+            </a>
           </Logo>
           <Nav changeLink={this.changeLink} />
         </div>

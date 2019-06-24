@@ -189,3 +189,10 @@ type Country {
   name: String
   code: String
 }
+
+type BecomeInstructor {
+  id: ID! @id
+  message: String!
+  user: User!
+  state: State
+}
