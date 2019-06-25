@@ -19,7 +19,7 @@ const Container = styled.div`
 
 export class ShowInstrutor extends Component {
   render() {
-    const { item, changePage } = this.props;
+    const { item, changePage, skip, refetch } = this.props;
     return (
       <Container>
         <div className="info">
@@ -33,11 +33,17 @@ export class ShowInstrutor extends Component {
           <p>User ID: {item.user.id}</p>
           <p>State: {item.state || 'None'}</p>
           <p>Message: {item.message}</p>
+          <p>Response: {item.response || ''}</p>
           <p>Created at: {item.createdAt}</p>
           <p>Updated at: {item.updatedAt}</p>
         </div>
         <div className="form">
-          <FormInstrutor />
+          <FormInstrutor
+            item={item}
+            skip={skip}
+            refetch={refetch}
+            changePage={changePage}
+          />
         </div>
       </Container>
     );
@@ -47,6 +53,8 @@ export class ShowInstrutor extends Component {
 ShowInstrutor.propTypes = {
   item: PropTypes.object.isRequired,
   changePage: PropTypes.func.isRequired,
+  skip: PropTypes.number.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default ShowInstrutor;
