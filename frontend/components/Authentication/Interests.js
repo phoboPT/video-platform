@@ -59,7 +59,7 @@ const Title = styled.p`
   }
 `;
 
-export class Interests extends Component {
+class Interests extends Component {
   render() {
     return (
       <User>

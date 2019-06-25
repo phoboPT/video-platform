@@ -16,7 +16,7 @@ const Container = styled.div`
     flex: 1;
     order: 1;
     width: 150px;
-    height: 200px;
+    height: 250px;
   }
   #information {
     margin: auto;

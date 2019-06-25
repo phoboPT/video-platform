@@ -69,6 +69,8 @@ type Course {
 }
 
 type Mutation {
+  createInstructor(message: String!): BecomeInstructor!
+
   createVideo(
     title: String!
     urlVideo: String
@@ -283,6 +285,8 @@ type Query {
   sellsByCourse(id: ID): [Stats]
   coursesStatsByDate(initialDate: String): [Stats]
   coursesCategory(category: [ID], orderBy: String, author: String): [Course]
+
+  pedidoInstructor: [BecomeInstructor]
 
   # used to insert the countries data in the db
   # insertData: Course

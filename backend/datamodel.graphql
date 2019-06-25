@@ -203,7 +203,6 @@ type Country {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
-
 type BecomeInstructor {
   id: ID! @id
   message: String!

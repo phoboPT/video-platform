@@ -248,7 +248,6 @@ const Button = styled.button`
 class CheckoutDetails extends Component {
   state = {
     view: 1,
-    showReceiptForm: false,
     selectedBill: '',
   };
 
@@ -295,7 +294,7 @@ class CheckoutDetails extends Component {
         return this.setState({ view: view + 1 });
       }
 
-      const fields = { name, email, address, city, state, nif, zipCode };
+      const fields = { name, email, address, city, state, nif, zipCode, city };
 
       let validatedFields = 0;
 
