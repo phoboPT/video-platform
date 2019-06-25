@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
 import { ALL_COUNTRIES_QUERY_PAGINATION } from './CountryList';
 import Error from '../../Static/ErrorMessage';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
 
 const DELETE_COUNTRY_MUTATION = gql`
   mutation DELETE_COUNTRY_MUTATION($id: ID!) {
@@ -71,12 +72,12 @@ class DeleteCountryButton extends React.Component {
         {(deleteCountry, { loading, error }) => (
           <>
             <Error error={error} />
-            <button
+            <ButtonStyle
               type="button"
               onClick={() => this.deleteCountry(deleteCountry)}
             >
               ❎
-            </button>
+            </ButtonStyle>
           </>
         )}
       </Mutation>

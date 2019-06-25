@@ -8,9 +8,12 @@ const Container = styled.div`
     text-align: right;
   }
   #img {
+    padding-left: 1px;
+    width: 10%;
     text-align: center;
   }
-  #saveButton {
+
+  #add-button {
     border-radius: 5px;
     height: 50px;
     width: 200px;
@@ -30,6 +33,30 @@ const Container = styled.div`
       cursor: not-allowed;
     }
   }
+
+  #form {
+    text-align: right;
+    #saveButton {
+      border-radius: 5px;
+      height: 50px;
+      width: 200px;
+      text-align: center;
+      margin: auto 2rem;
+      font-size: 25px;
+      font-weight: 400;
+      border: none;
+      background: #27ad39;
+      cursor: pointer;
+      color: white;
+      :focus {
+        outline: none;
+      }
+      :disabled {
+        background: rgba(163, 163, 163, 0.5);
+        cursor: not-allowed;
+      }
+    }
+  }
 `;
 
 const Table = styled.table`
@@ -38,15 +65,18 @@ const Table = styled.table`
   border-collapse: collapse;
   margin: 2rem auto 0 auto;
   #id {
-    width: 30%;
+    width: 20%;
   }
-  #center {
+
+  #action {
     text-align: center;
+    width: 5%;
+    padding-left: 0px;
   }
+
   td,
   th {
     border: 1px solid #aaaaaa;
-    padding: 3px 2px;
   }
   tbody td {
     font-size: 13px;
@@ -76,6 +106,8 @@ const Table = styled.table`
     border-bottom: 2px solid #444444;
   }
   thead th {
+    height: 3rem;
+    padding-left: 1rem;
     font-size: 15px;
     font-weight: bold;
     color: #ffffff;
@@ -111,6 +143,7 @@ const Table = styled.table`
     border-top: 2px solid #444444;
   }
   tfoot td {
+    height: 3rem;
     font-size: 14px;
   }
   tfoot .links {

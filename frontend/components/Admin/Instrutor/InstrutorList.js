@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { perPageInstrutor } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
+import ShowInstrutor from './ShowInstrutor';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
+import PaginationInstrutor from './PaginationInstrutor';
+import formatString from '../../../lib/formatString';
 
 const ALL_INSTRUTOR_QUERY_PAGINATION = gql`
   query ALL_INSTRUTOR_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageInstrutor}){
@@ -11,10 +15,13 @@ const ALL_INSTRUTOR_QUERY_PAGINATION = gql`
      id
      message
      state
+     response
      user{
         id
         name
      }
+       createdAt
+    updatedAt
     }
   }
 `;
@@ -61,6 +68,7 @@ class InstrutorList extends Component {
                           <th>ID</th>
                           <th>Name</th>
                           <th>Message</th>
+                          <th>Response</th>
                           <th>State</th>
                           <th>Action</th>
                         </tr>
@@ -68,26 +76,32 @@ class InstrutorList extends Component {
                       <tbody>
                         {data.becomeInstructors.map(item => (
                           <tr key={item.id}>
-                            <td id="id">{item.id}</td>
-                            <td>{item.user.name}</td>
-                            <td>{item.message}</td>
-                            <td>{item.state}</td>
-                            <td id="center">
-                              <button
+                            <td id="id">{formatString(item.id, 25)}</td>
+                            <td>{formatString(item.user.name, 25)}</td>
+                            <td>{formatString(item.message, 25)}</td>
+                            <td>{formatString(item.response || '', 25)}</td>
+                            <td>{formatString(item.state, 25)}</td>
+                            <td id="action">
+                              <ButtonStyle
+                                id="more"
                                 type="button"
                                 onClick={() => this.edit(item)}
                               >
-                                ✏
-                              </button>
+                                <img
+                                  height="35"
+                                  src="../../static/previewIcon.webp"
+                                  alt="preview icon"
+                                />
+                              </ButtonStyle>
                             </td>
                           </tr>
                         ))}
                       </tbody>
                       <tfoot>
                         <tr>
-                          <td colSpan="5">
+                          <td colSpan="6">
                             <div className="links">
-                              {/* <PaginationInterest page={page} /> */}
+                              <PaginationInstrutor page={page} />
                             </div>
                           </td>
                         </tr>
@@ -95,15 +109,15 @@ class InstrutorList extends Component {
                     </Table>
                   </>
                 )}
-                {/* {!showList && (
-                    <FormInterest
-                      skip={skip}
-                      isEdit={isEdit}
-                      item={isEdit ? item : null}
-                      refetch={refetch}
-                      changePage={this.changeShow}
-                    />
-                  )} */}
+                {!showList && (
+                  <ShowInstrutor
+                    skip={skip}
+                    isEdit={isEdit}
+                    item={isEdit ? item : null}
+                    refetch={refetch}
+                    changePage={this.changeShow}
+                  />
+                )}
               </Container>
             );
         }}
@@ -115,3 +129,4 @@ InstrutorList.propTypes = {
   page: PropTypes.number,
 };
 export default InstrutorList;
+export { ALL_INSTRUTOR_QUERY_PAGINATION };

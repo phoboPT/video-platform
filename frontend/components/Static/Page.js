@@ -27,6 +27,8 @@ const theme = {
   maxWidth: '1700px',
   red: '#d9534f',
   white: '#ffffff',
+  adminBarSizeSmall: '50px',
+  adminBarSizeLarge: '150px',
 };
 
 const StyledPage = styled.div`

@@ -70,6 +70,7 @@ type Course {
 
 type Mutation {
   createInstructor(message: String!): BecomeInstructor!
+  updateInstructor(id: ID!, response: String, state: String): BecomeInstructor!
 
   createVideo(
     title: String!
@@ -274,6 +275,7 @@ type Query {
   categoriesConnection(data: String): CategoryConnection!
   interestsConnection(data: String): InterestConnection!
   countriesConnection(data: String): CountryConnection!
+  instrutorConnection(data: String): BecomeInstructorConnection!
 
   wishlists(where: WishlistWhereInput): [Wishlist]
   #Stats Instrutor Page

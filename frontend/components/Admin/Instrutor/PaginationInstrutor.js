@@ -4,11 +4,11 @@ import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { perPageInterest } from '../../../config';
+import { perPageInstrutor } from '../../../config';
 
 const PAGINATION_QUERY = gql`
   query PAGINATION_QUERY {
-    interestsConnection {
+    instrutorConnection {
       aggregate {
         count
       }
@@ -28,19 +28,19 @@ const Url = styled.div`
   }
 `;
 
-const PaginationInterest = props => (
+const PaginationInstrutor = props => (
   <Query query={PAGINATION_QUERY}>
     {({ data, loading }) => {
       if (loading) return <p>Loading...</p>;
-      const { count } = data.interestsConnection.aggregate;
-      const pages = Math.ceil(count / perPageInterest);
+      const { count } = data.instrutorConnection.aggregate;
+      const pages = Math.ceil(count / perPageInstrutor);
       const { page } = props;
       return (
         <Url>
           <Link
             prefetch
             href={{
-              pathname: 'interest-list',
+              pathname: 'instrutor-list',
               query: { page: page - 1 },
             }}
           >
@@ -51,7 +51,7 @@ const PaginationInterest = props => (
               <Link
                 prefetch
                 href={{
-                  pathname: 'interest-list',
+                  pathname: 'instrutor-list',
                   query: { page: i + 1 },
                 }}
               >
@@ -63,7 +63,7 @@ const PaginationInterest = props => (
           <Link
             prefetch
             href={{
-              pathname: 'category-list',
+              pathname: 'instrutor-list',
               query: { page: page + 1 },
             }}
           >
@@ -75,8 +75,8 @@ const PaginationInterest = props => (
   </Query>
 );
 
-PaginationInterest.propTypes = {
+PaginationInstrutor.propTypes = {
   page: PropTypes.number.isRequired,
 };
 
-export default PaginationInterest;
+export default PaginationInstrutor;

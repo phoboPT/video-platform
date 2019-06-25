@@ -37,16 +37,20 @@ const Logo = styled.h1`
 
 const StyledHeader = styled.header`
   padding-left: 0px;
-  padding-left: ${props => props.sidebarState === 1 && '40px'};
-  padding-left: ${props => props.sidebarState === 2 && '150px'};
+  padding-left: ${props =>
+    props.sidebarState === 1 && props.theme.adminBarSizeSmall};
+  padding-left: ${props =>
+    props.sidebarState === 2 && props.theme.adminBarSizeLarge};
 
   #extended {
     button {
       font-weight: 930 !important;
       font-family: 'radnika_next' !important;
     }
-    margin-right: ${props => props.sidebarState === 1 && '4rem!important'};
-    margin-right: ${props => props.sidebarState === 2 && '15rem!important'};
+    margin-right: ${props =>
+      props.sidebarState === 1 && props.theme.adminBarSizeSmall};
+    margin-right: ${props =>
+      props.sidebarState === 2 && props.theme.adminBarSizeLarge};
   }
 
   .bar {

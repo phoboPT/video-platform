@@ -326,6 +326,28 @@ const Mutations = {
       info
     );
   },
+  updateInstructor(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // faz uma copia dos updates para guardar o id nos args
+    const updates = {
+      ...args,
+    };
+    console.log(args);
+    // elimina o id dos updates para nao dar update no id(unico)
+    delete updates.id;
+    // da run no update method
+    return ctx.db.mutation.updateBecomeInstructor(
+      {
+        data: updates,
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
   async deleteInterest(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');

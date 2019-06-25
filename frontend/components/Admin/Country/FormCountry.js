@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Error from '../../Static/ErrorMessage';
 import { ALL_COUNTRIES_QUERY_PAGINATION } from './CountryList';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
 
 const SAVE_COUNTRY_MUTATION = gql`
   mutation SAVE_COUNTRY_MUTATION($name: String!, $code: String!) {
@@ -97,14 +98,19 @@ class FormCountry extends Component {
                   }}
                 >
                   {isEdit ? <h2>Edit</h2> : <h2>Add New</h2>}
+                  <ButtonStyle type="button" onClick={changePage}>
+                    ⬅ Go Back
+                  </ButtonStyle>
                   <Error error={createError || updateError} />
-                  <button
-                    type="submit"
-                    disabled={createLoading || updateLoading}
-                    id="saveButton"
-                  >
-                    Sav{createLoading || updateLoading ? 'ing' : 'e'}
-                  </button>
+                  <div id="form">
+                    <button
+                      type="submit"
+                      disabled={createLoading || updateLoading}
+                      id="saveButton"
+                    >
+                      Sav{createLoading || updateLoading ? 'ing' : 'e'}
+                    </button>
+                  </div>
                   <br />
                   <br />
                   <br />
