@@ -15,7 +15,10 @@ const Style = styled.div`
       color: rgba(0, 0, 0, 0.9);
     }
     #state {
-      background: ${props => (props.state === 'PENDING' ? '#ff8a5b' : 'red')};
+      background: ${props => props.state === 'PENDING' && '#ff8a5b'};
+      background: ${props => props.state === 'REJECTED' && 'red'};
+      background: ${props => props.state === 'APPROVED' && 'green'};
+
       color: white;
       width: 30%;
       width: 150px;

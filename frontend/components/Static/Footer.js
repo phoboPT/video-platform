@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Query } from 'react-apollo';
+import Link from 'next/link';
+import PermissionUser from '../Authentication/PermissionUser';
 
 const StyleFooter = styled.div`
   bottom: 0;
@@ -12,40 +13,48 @@ const StyleFooter = styled.div`
   background: #e2e2e2;
 
   p {
-    width: 50%;
+    flex: 1;
     order: 1;
-    text-align: right;
+    text-align: left;
     color: black;
     font-size: 1.3rem;
+    margin-left: 1rem;
   }
 
-  #images {
-    text-align: left;
-    width: 50%;
-    order: 2;
-    margin: auto auto 0 2rem;
-  }
-
-  img {
-    width: 32px;
-    height: 32px;
-    margin-right: 2rem !important;
-    cursor: pointer;
+  #a {
+    a {
+      box-shadow: 0 0 3px #999797;
+      background: #ededed;
+      padding: 1rem;
+      margin-top: 2rem;
+      margin-right: 1rem;
+      font-size: 1.3rem;
+    }
+    padding-top: 1.2rem;
+    flex: 1;
+    order: 3;
+    text-align: right;
   }
 `;
 
 const Footer = ({ sidebarState }) => (
-  <StyleFooter sidebarState={sidebarState}>
-    <p>Copyright © 2019 Picus Creative</p>
-    <div id="images">
-      <a href="https://www.facebook.com/picuscreative/">
-        <img alt="fb-icon" src="../../static/fb-icon.png" />
-      </a>
-      <a href="https://picuscreative.com/">
-        <img alt="picus-logo" src="../../static/picus-logo.jpg" />
-      </a>
-    </div>
-  </StyleFooter>
+  <PermissionUser>
+    {({ data: { me } }) => (
+      <StyleFooter sidebarState={sidebarState}>
+        <p>Copyright © 2019 Picus Creative</p>
+        {me &&
+          (me.permission[0] === 'USER' && (
+            <div id="a">
+              <Link href="/becomeInstructor">
+                <a id="become" href="/becomeInstructor">
+                  Become an Instructor
+                </a>
+              </Link>
+            </div>
+          ))}
+      </StyleFooter>
+    )}
+  </PermissionUser>
 );
 
 export default Footer;

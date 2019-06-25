@@ -42,17 +42,6 @@ class Nav extends Component {
               role="navigation"
             >
               {me &&
-                (me.permission[0] === 'USER' && (
-                  <>
-                    <Link href="/becomeInstructor">
-                      <a id="become" href="/becomeInstructor">
-                        Become an Instructor
-                      </a>
-                    </Link>
-                  </>
-                ))}
-
-              {me &&
                 (me.permission[0] !== 'ADMIN' && (
                   <>
                     <Link href="/index">

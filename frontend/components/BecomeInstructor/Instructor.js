@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import InstructorForm from './InstructorForm';
 import RequestItem from './RequestItem';
+import PermissionUser from '../Authentication/PermissionUser';
 
 const CREATE_INSTRUCTOR_MUTATION = gql`
   mutation CREATE_INSTRUCTOR_MUTATION($message: String!) {
@@ -13,6 +14,7 @@ const CREATE_INSTRUCTOR_MUTATION = gql`
     }
   }
 `;
+
 const ALL_PEDIDOS_QUERY = gql`
   query ALL_PEDIDOS_QUERY {
     pedidoInstructor {
@@ -118,105 +120,123 @@ class Instructor extends Component {
   render() {
     const { message } = this.state;
     return (
-      <Mutation mutation={CREATE_INSTRUCTOR_MUTATION} variables={this.state}>
-        {(createInstructor, { error }) => {
-          if (error) return <p>Something went Wrong</p>;
+      <PermissionUser>
+        {({ data: { me } }) => {
+          if (!me) return <p> You need To log In to access this page!</p>;
+          if (me.permission[0] === 'INSTRUCTOR') {
+            return <p>You are already an instructor!</p>;
+          }
           return (
-            <Query query={ALL_PEDIDOS_QUERY}>
-              {({ data, error }) => {
-                console.log(data);
+            <Mutation
+              mutation={CREATE_INSTRUCTOR_MUTATION}
+              variables={this.state}
+            >
+              {(createInstructor, { error }) => {
                 if (error) return <p>Something went Wrong</p>;
                 return (
-                  <Container>
-                    <div id="banner">
-                      <img
-                        alt="banner"
-                        src="../../static/becomeInstructor.svg"
-                      />
-                    </div>
-                    <div id="content">
-                      <h2>Share your knowledge with everyone</h2>
-                      <div id="flex">
-                        <div>
-                          <div id="img-container">
-                            <img alt="Earn" src="../../static/earn.png" />
+                  <Query query={ALL_PEDIDOS_QUERY}>
+                    {({ data, error }) => {
+                      console.log(data);
+                      if (error) return <p>Something went Wrong</p>;
+                      return (
+                        <Container>
+                          <div id="banner">
+                            <img
+                              alt="banner"
+                              src="../../static/becomeInstructor.svg"
+                            />
                           </div>
-                          <p>Earn some extra Money</p>
-                        </div>
-                        <div>
-                          <div id="img-container">
-                            <img alt="Earn" src="../../static/help.png" />
+                          <div id="content">
+                            <h2>Share your knowledge with everyone</h2>
+                            <div id="flex">
+                              <div>
+                                <div id="img-container">
+                                  <img alt="Earn" src="../../static/earn.png" />
+                                </div>
+                                <p>Earn some extra Money</p>
+                              </div>
+                              <div>
+                                <div id="img-container">
+                                  <img alt="Earn" src="../../static/help.png" />
+                                </div>
+                                <p>Help People to improve their knowledge</p>
+                              </div>
+                              <div>
+                                <div id="img-container">
+                                  <img
+                                    alt="Earn"
+                                    src="../../static/success.png"
+                                  />
+                                </div>
+                                <p>Expand your success</p>
+                              </div>
+                            </div>
+                            <div id="page-footer">
+                              <div id="left">
+                                <h3>Here We can Help You!</h3>
+                                <p>Custom Course Creation! </p>
+                                <p>
+                                  Interest System to improve the visibility of
+                                  your course!{' '}
+                                </p>
+                                <p>More Rating = More Students</p>
+                              </div>
+                              <div id="right">
+                                {data.pedidoInstructor[
+                                  data.pedidoInstructor.length - 1
+                                ].state !== 'PENDING' ? (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      swal({
+                                        text: `Become an Instructor`,
+                                        buttons: {
+                                          cancel: 'Cancel',
+                                          ok: 'OK',
+                                        },
+                                        content: (
+                                          <InstructorForm
+                                            handleChange={this.handleChange}
+                                            message={message}
+                                          />
+                                        ),
+                                      }).then(willDelete => {
+                                        if (!willDelete) {
+                                          console.log('cancel');
+                                        } else {
+                                          createInstructor();
+                                        }
+                                      })
+                                    }
+                                  >
+                                    Become an Instructor
+                                  </button>
+                                ) : (
+                                  <p id="message-wait">
+                                    Wait for the Response!
+                                  </p>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          <p>Help People to improve their knowledge</p>
-                        </div>
-                        <div>
-                          <div id="img-container">
-                            <img alt="Earn" src="../../static/success.png" />
-                          </div>
-                          <p>Expand your success</p>
-                        </div>
-                      </div>
-                      <div id="page-footer">
-                        <div id="left">
-                          <h3>Here We can Help You!</h3>
-                          <p>Custom Course Creation! </p>
-                          <p>
-                            Interest System to improve the visibility of your
-                            course!{' '}
-                          </p>
-                          <p>More Rating = More Students</p>
-                        </div>
-                        <div id="right">
-                          {data.pedidoInstructor[
-                            data.pedidoInstructor.length - 1
-                          ].state !== 'PENDING' ? (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                swal({
-                                  text: `Become an Instructor`,
-                                  buttons: {
-                                    cancel: 'Cancel',
-                                    ok: 'OK',
-                                  },
-                                  content: (
-                                    <InstructorForm
-                                      handleChange={this.handleChange}
-                                      message={message}
-                                    />
-                                  ),
-                                }).then(willDelete => {
-                                  if (!willDelete) {
-                                    console.log('cancel');
-                                  } else {
-                                    createInstructor();
-                                  }
-                                })
-                              }
-                            >
-                              Become an Instructor
-                            </button>
-                          ) : (
-                            <p id="message-wait">Wait for the Response!</p>
+                          {data.pedidoInstructor.length > 0 && (
+                            <div id="pedidos">
+                              <h2>Instructor Requests</h2>
+                              {data.pedidoInstructor.map(item => (
+                                <RequestItem item={item} key={item.id} />
+                              ))}
+                            </div>
                           )}
-                        </div>
-                      </div>
-                    </div>
-                    {data.pedidoInstructor.length > 0 && (
-                      <div id="pedidos">
-                        <h2>Instructor Requests</h2>
-                        {data.pedidoInstructor.map(item => (
-                          <RequestItem item={item} key={item.id} />
-                        ))}
-                      </div>
-                    )}
-                  </Container>
+                        </Container>
+                      );
+                    }}
+                  </Query>
                 );
               }}
-            </Query>
+            </Mutation>
           );
         }}
-      </Mutation>
+      </PermissionUser>
     );
   }
 }
