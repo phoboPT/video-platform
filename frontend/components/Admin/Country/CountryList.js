@@ -8,6 +8,7 @@ import { perPageCountry } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
 import DeleteCountryButton from './DeleteCountryButton';
 import { ButtonStyle } from '../../styles/GoBackAdminButton';
+import formatString from '../../../lib/formatString';
 
 const ALL_COUNTRIES_QUERY_PAGINATION = gql`
   query ALL_COUNTRIES_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCountry}){
@@ -74,14 +75,15 @@ class CountryList extends Component {
                             <th>Delete</th>
                           </tr>
                         </thead>
+
                         <tbody>
                           {data.countries.map(item => (
-                            <tr key={item.id}>
-                              <td id="id">{item.id}</td>
-                              <td>{item.name}</td>
-                              <td>{item.code}</td>
+                            <tr key={formatString(item.id, 25)}>
+                              <td id="id">{formatString(item.id, 25)}</td>
+                              <td>{formatString(item.name, 50)}</td>
+                              <td id="action">{formatString(item.code, 25)}</td>
 
-                              <td id="center">
+                              <td id="action">
                                 <ButtonStyle
                                   type="button"
                                   onClick={() => this.edit(item)}
@@ -89,7 +91,7 @@ class CountryList extends Component {
                                   ✏
                                 </ButtonStyle>
                               </td>
-                              <td id="center">
+                              <td id="action">
                                 <DeleteCountryButton item={item} />
                               </td>
                             </tr>

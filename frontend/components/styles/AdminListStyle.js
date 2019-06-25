@@ -8,6 +8,8 @@ const Container = styled.div`
     text-align: right;
   }
   #img {
+    padding-left: 1px;
+    width: 10%;
     text-align: center;
   }
 
@@ -63,16 +65,18 @@ const Table = styled.table`
   border-collapse: collapse;
   margin: 2rem auto 0 auto;
   #id {
-    width: 30%;
+    width: 20%;
   }
-  #center {
+
+  #action {
     text-align: center;
+    width: 5%;
+    padding-left: 0px;
   }
 
   td,
   th {
     border: 1px solid #aaaaaa;
-    padding: 3px 2px;
   }
   tbody td {
     font-size: 13px;
@@ -102,6 +106,8 @@ const Table = styled.table`
     border-bottom: 2px solid #444444;
   }
   thead th {
+    height: 3rem;
+    padding-left: 1rem;
     font-size: 15px;
     font-weight: bold;
     color: #ffffff;
@@ -137,6 +143,7 @@ const Table = styled.table`
     border-top: 2px solid #444444;
   }
   tfoot td {
+    height: 3rem;
     font-size: 14px;
   }
   tfoot .links {

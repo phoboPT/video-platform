@@ -76,12 +76,12 @@ class InstrutorList extends Component {
                       <tbody>
                         {data.becomeInstructors.map(item => (
                           <tr key={item.id}>
-                            <td id="id">{formatString(item.id)}</td>
+                            <td id="id">{formatString(item.id, 25)}</td>
                             <td>{formatString(item.user.name, 25)}</td>
-                            <td>{item.message}</td>
-                            <td>{item.response}</td>
-                            <td>{item.state}</td>
-                            <td id="center">
+                            <td>{formatString(item.message, 25)}</td>
+                            <td>{formatString(item.response || '', 25)}</td>
+                            <td>{formatString(item.state, 25)}</td>
+                            <td id="action">
                               <ButtonStyle
                                 id="more"
                                 type="button"

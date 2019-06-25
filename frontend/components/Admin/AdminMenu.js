@@ -13,38 +13,61 @@ const TOGGLE_SIDEBAR_MUTATION = gql`
 `;
 
 const Menu = styled.div`
-  padding-left: 1rem;
   top: 0;
   bottom: 0;
   left: 0;
   z-index: 10;
-  background: red;
-  width: 40px;
+  background: rgba(55, 53, 79, 0.7);
+  width: 50px;
   position: fixed;
   a {
+    padding: 1rem 0 0 1rem;
     display: block;
+  }
+  button {
+    margin: auto;
+    height: 25px;
+    padding: 1rem;
+    background: none;
+    border: none;
+    font-size: 15px;
+    line-height: 10px;
+    cursor: pointer;
+
+    &focus {
+      outline: none;
+    }
   }
 `;
 const MenuOpened = styled.div`
-  padding-left: 1rem;
   top: 0;
   bottom: 0;
   left: 0;
   z-index: 10;
-  background: blue;
+  background: rgba(55, 53, 79, 0.7);
   width: 150px;
   position: fixed;
+
   a {
+    padding: 1rem 0 0 1rem;
     display: block;
   }
+    button {
+      padding:1rem;
+    margin: auto;
+    height: 25px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    line-height: 10px;
+    cursor: pointer;
+
+    &focus {
+      outline: none;
+    }
 `;
 class AdminMenu extends Component {
-  state = {
-    showCategory: false,
-    showInterest: false,
-    showCountry: false,
-    showInstrutor: false,
-  };
+  state = {};
 
   componentDidMount() {
     this.setState({ extended: JSON.parse(localStorage.getItem('extended')) });
@@ -81,7 +104,10 @@ class AdminMenu extends Component {
                   type="button"
                   onClick={() => this.toggleSidebar(toggleSidebar, 1)}
                 >
-                  ...
+                  <img
+                    src="../../static/list-close.png"
+                    alt="extend list button"
+                  />
                 </button>
                 <Link
                   href={{
@@ -123,7 +149,10 @@ class AdminMenu extends Component {
                   type="button"
                   onClick={() => this.toggleSidebar(toggleSidebar, 2)}
                 >
-                  ...
+                  <img
+                    src="../../static/list-open.png"
+                    alt="extend list button"
+                  />
                 </button>
                 <Link
                   href={{
@@ -160,27 +189,6 @@ class AdminMenu extends Component {
                 </Link>
               </Menu>
             )}
-
-            {/* {showCategory && (
-              <div>
-                <CategoryList page={page} />
-              </div>
-            )}
-            {showInterest && (
-              <div>
-                <InterestList page={page} />
-              </div>
-            )}
-            {showCountry && (
-              <div>
-                <p>Country</p>
-              </div>
-            )}
-            {showInstrutor && (
-              <div>
-                <p>Instrutor</p>
-              </div>
-            )} */}
           </>
         )}
       </Mutation>

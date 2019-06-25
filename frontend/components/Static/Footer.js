@@ -5,8 +5,10 @@ const StyleFooter = styled.div`
   bottom: 0;
   margin-top: 5rem;
   padding: 10px;
-  margin-left: ${props => props.sidebarState === 1 && '40px!important'};
-  margin-left: ${props => props.sidebarState === 2 && '150px!important'};
+  margin-left: ${props =>
+    props.sidebarState === 1 && props.theme.adminBarSizeSmall};
+  margin-left: ${props =>
+    props.sidebarState === 2 && props.theme.adminBarSizeLarge};
 
   display: flex;
   background: #e2e2e2;

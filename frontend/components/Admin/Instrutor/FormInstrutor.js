@@ -57,7 +57,7 @@ export default class FormInstrutor extends Component {
   };
 
   render() {
-    const { response, state, id } = this.state;
+    const { id } = this.state;
     const { changePage } = this.props;
     return (
       <Mutation
@@ -112,7 +112,6 @@ export default class FormInstrutor extends Component {
               <p>Response</p>
 
               <textarea
-                defaultValue={response}
                 name="response"
                 id="response"
                 cols="100"

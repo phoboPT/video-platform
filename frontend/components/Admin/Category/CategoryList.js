@@ -8,6 +8,7 @@ import { perPageCategory } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
 import DeleteCategoryButton from './DeleteCategoryButton';
 import { ButtonStyle } from '../../styles/GoBackAdminButton';
+import formatString from '../../../lib/formatString';
 
 const ALL_CATEGORIES_QUERY_PAGINATION = gql`
   query ALL_CATEGORIES_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCategory}){
@@ -19,7 +20,20 @@ const ALL_CATEGORIES_QUERY_PAGINATION = gql`
 `;
 
 class CategoryList extends Component {
-  state = { showList: true };
+  constructor(props) {
+    super(props);
+    this.state = { showList: true, width: 0 };
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
 
   changeShow = () => {
     const { showList } = this.state;
@@ -31,10 +45,17 @@ class CategoryList extends Component {
     await this.setState({ showList: !showList, isEdit: true, item });
   };
 
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth });
+  }
+
   render() {
-    const { showList, isEdit, item } = this.state;
+    const { showList, isEdit, item, width } = this.state;
     const { page } = this.props;
     const skip = page * perPageCategory - perPageCategory;
+
+    const totalCharaters = width / 10 - 70;
+    console.log(width, totalCharaters);
     return (
       <Query
         query={ALL_CATEGORIES_QUERY_PAGINATION}
@@ -74,10 +95,10 @@ class CategoryList extends Component {
                         </thead>
                         <tbody>
                           {data.categories.map(item => (
-                            <tr key={item.id}>
-                              <td id="id">{item.id}</td>
-                              <td>{item.name}</td>
-                              <td id="center">
+                            <tr key={formatString(item.id, 25)}>
+                              <td id="id">{formatString(item.id, 25)}</td>
+                              <td>{formatString(item.name, totalCharaters)}</td>
+                              <td id="action">
                                 <ButtonStyle
                                   type="button"
                                   onClick={() => this.edit(item)}
@@ -85,7 +106,7 @@ class CategoryList extends Component {
                                   ✏
                                 </ButtonStyle>
                               </td>
-                              <td id="center">
+                              <td id="action">
                                 <DeleteCategoryButton item={item} />
                               </td>
                             </tr>

@@ -8,6 +8,7 @@ import FormInterest from './FormInterests';
 import PaginationInterest from './PaginationInterest';
 import DeleteInterestButton from './DeleteInterestButton';
 import { ButtonStyle } from '../../styles/GoBackAdminButton';
+import formatString from '../../../lib/formatString';
 
 const ALL_INTERESTS_QUERY_PAGINATION = gql`
   query ALL_INTERESTS_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageInterest}){
@@ -77,8 +78,8 @@ class InterestList extends Component {
                         <tbody>
                           {data.interests.map(item => (
                             <tr key={item.id}>
-                              <td id="id">{item.id}</td>
-                              <td>{item.name}</td>
+                              <td id="id">{formatString(item.id, 25)}</td>
+                              <td>{formatString(item.name, 25)}</td>
                               <td id="img">
                                 <img
                                   height="70"
@@ -86,7 +87,7 @@ class InterestList extends Component {
                                   alt="interest description"
                                 />
                               </td>
-                              <td id="center">
+                              <td id="action">
                                 <ButtonStyle
                                   type="button"
                                   onClick={() => this.edit(item)}
@@ -94,7 +95,7 @@ class InterestList extends Component {
                                   ✏
                                 </ButtonStyle>
                               </td>
-                              <td id="center">
+                              <td id="action">
                                 <DeleteInterestButton item={item} />
                               </td>
                             </tr>
