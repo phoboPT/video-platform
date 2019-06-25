@@ -84,9 +84,17 @@ type Mutation {
   updateVideoUser(id: ID!, watched: Boolean): Video!
 
   # standby waitting for backoffice
+  createInterest(name: String!, thumbnail: String!): Interest!
+  updateInterest(id: ID!, name: String!, thumbnail: String): Interest!
+  deleteInterest(id: ID!): Interest!
+
   createCategory(name: String!): Category!
-  updateCategory(id: ID!, name: String!): Video!
-  deleteCategory(id: ID!): Category
+  updateCategory(id: ID!, name: String!): Category!
+  deleteCategory(id: ID!): Category!
+
+  createCountry(name: String!, code: String!): Country!
+  updateCountry(id: ID!, name: String!, code: String): Country!
+  deleteCountry(id: ID!): Country!
 
   signup(
     email: String!
@@ -187,12 +195,37 @@ type Query {
   videoItems(where: VideoWhereInput): [VideoItem]
 
   # querys sellect all
-  categories: [Category]!
-  interests: [Interest!]!
-  countries: [Country]!
+  categories(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    first: Int
+  ): [Category]!
+
+  countries(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    first: Int
+  ): [Country]!
+  interests(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    first: Int
+  ): [Interest!]!
+
+  becomeInstructors(
+    where: CategoryWhereInput
+    orderBy: CategoryOrderByInput
+    skip: Int
+    first: Int
+  ): [BecomeInstructor!]!
 
   # querys selecionar por id
+  category(where: CategoryWhereUniqueInput!): Category!
   video(where: VideoWhereUniqueInput!): Video
+  categorie(where: CategoryWhereUniqueInput!): Category
   user(where: UserWhereUniqueInput!): User
   course(where: CourseWhereUniqueInput, orderBy: CourseOrderByInput): Course
   rateCourse(where: RateCourseWhereUniqueInput!): RateCourse
@@ -238,6 +271,10 @@ type Query {
   #pagination
   coursesConnection(data: String): CourseConnection!
   coursesUserConnection(data: String): CourseConnection!
+  categoriesConnection(data: String): CategoryConnection!
+  interestsConnection(data: String): InterestConnection!
+  countriesConnection(data: String): CountryConnection!
+
   wishlists(where: WishlistWhereInput): [Wishlist]
   #Stats Instrutor Page
   instrutorStats(id: ID!): StatsInstrutor

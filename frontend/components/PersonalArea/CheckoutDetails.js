@@ -596,10 +596,6 @@ class CheckoutDetails extends Component {
                                               </div>
                                             )}
                                             {data.paymentBill.map(item => {
-                                              console.log(
-                                                item.id,
-                                                selectedBill
-                                              );
                                               if (item.id === selectedBill) {
                                                 return (
                                                   <div

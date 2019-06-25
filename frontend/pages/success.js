@@ -60,7 +60,6 @@ class success extends React.Component {
   updateState = async (e, mutation) => {
     const { query } = this.props;
     const { data } = this.state;
-    console.log('hi');
     e.preventDefault();
     const res = await mutation({
       variables: {
@@ -77,7 +76,6 @@ class success extends React.Component {
         billId: data.selectedBill || '',
       },
     });
-    console.log(res);
     if (res) {
       await this.setState({ hasUpdated: true });
     }

@@ -13,8 +13,8 @@ import { TOGGLE_SIDEBAR_MUTATION } from '../Admin/AdminMenu';
 class Nav extends Component {
   state = { isAdminPage: false };
 
-  componentDidMount() {
-    this.setState({
+  async componentDidMount() {
+    await this.setState({
       isAdminPage: JSON.parse(localStorage.getItem('isAdminPage')),
     });
   }

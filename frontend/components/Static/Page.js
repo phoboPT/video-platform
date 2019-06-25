@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import styled, { injectGlobal, ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import { adopt } from 'react-adopt';
 import Header from './Header';
 import Meta from './Meta';
 import Footer from './Footer';
+import { TOGGLE_SIDEBAR_MUTATION } from '../Admin/AdminMenu';
 
 const LOCAL_SIDEBAR_QUERY = gql`
   query {
@@ -87,6 +88,9 @@ const Composed = adopt({
   sidebarState: ({ render }) => (
     <Query query={LOCAL_SIDEBAR_QUERY}>{render}</Query>
   ),
+  toogleSidebar: ({ render }) => (
+    <Mutation mutation={TOGGLE_SIDEBAR_MUTATION}>{render}</Mutation>
+  ),
 });
 class Page extends Component {
   state = {};
@@ -117,9 +121,9 @@ class Page extends Component {
             data: { sidebarState },
             loading,
           },
+          toogleSidebar,
         }) => {
           if (loading) return <p>Loading...</p>;
-
           if (sidebarState)
             return (
               <ThemeProvider theme={theme}>

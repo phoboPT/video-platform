@@ -208,4 +208,6 @@ type BecomeInstructor {
   message: String!
   user: User!
   state: RequestState
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

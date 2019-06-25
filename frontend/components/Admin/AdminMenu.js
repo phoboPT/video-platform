@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
+import Link from 'next/link';
 
 const TOGGLE_SIDEBAR_MUTATION = gql`
   mutation($sidebarState: Int) {
@@ -44,12 +45,12 @@ class AdminMenu extends Component {
     showCountry: false,
     showInstrutor: false,
   };
-  
-componentDidMount() {
-    this.setState({ extended: JSON.parse(localStorage.getItem('extended')) }); 
-}
 
-  toggleSidebar = (mutation, size) => {
+  componentDidMount() {
+    this.setState({ extended: JSON.parse(localStorage.getItem('extended')) });
+  }
+
+  toggleSidebar = async (mutation, size) => {
     const { extended } = this.state;
     this.setState({ extended: !extended });
     mutation({ variables: { sidebarState: size } });
@@ -59,24 +60,17 @@ componentDidMount() {
 
   changePage = e => {
     const { name } = e.target;
+    const selectedItem = JSON.parse(localStorage.getItem(name));
+
+    localStorage.setItem(name, !selectedItem);
+
     this.setState({
-      showCategory: false,
-      showInterest: false,
-      showCountry: false,
-      showInstrutor: false,
-      [name]: !JSON.parse(e.target.getAttribute('data-value')),
+      [name]: true,
     });
   };
 
   render() {
-    const {
-      extended,
-      showCategory,
-      showInterest,
-      showCountry,
-      showInstrutor,
-    } = this.state;
-
+    const { extended } = this.state;
     return (
       <Mutation mutation={TOGGLE_SIDEBAR_MUTATION}>
         {toggleSidebar => (
@@ -89,34 +83,38 @@ componentDidMount() {
                 >
                   ...
                 </button>
-                <a
-                  onClick={this.changePage}
-                  data-value={showCategory}
-                  name="showCategory"
+                <Link
+                  href={{
+                    pathname: '/category-list',
+                    query: { page: 1 },
+                  }}
                 >
-                  Category
-                </a>
-                <a
-                  onClick={this.changePage}
-                  name="showInterest"
-                  data-value={showInterest}
+                  <a>Category</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/interest-list',
+                    query: { page: 1 },
+                  }}
                 >
-                  Interest
-                </a>
-                <a
-                  onClick={this.changePage}
-                  name="showCountry"
-                  data-value={showCountry}
+                  <a>Interest</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/country-list',
+                    query: { page: 1 },
+                  }}
                 >
-                  Country
-                </a>
-                <a
-                  onClick={this.changePage}
-                  name="showInstrutor"
-                  data-value={showInstrutor}
+                  <a>Country</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/instrutor-list',
+                    query: { page: 1 },
+                  }}
                 >
-                  Instrutor
-                </a>
+                  <a>Instrutor</a>
+                </Link>
               </MenuOpened>
             )}
             {!extended && (
@@ -127,45 +125,50 @@ componentDidMount() {
                 >
                   ...
                 </button>
-                <a
-                  onClick={this.changePage}
-                  name="showCategory"
-                  data-value={showCategory}
+                <Link
+                  href={{
+                    pathname: '/category-list',
+                    query: { page: 1 },
+                  }}
                 >
-                  😄
-                </a>
-                <a
-                  onClick={this.changePage}
-                  name="showInterest"
-                  data-value={showInterest}
+                  <a>😄</a>
+                </Link>
+
+                <Link
+                  href={{
+                    pathname: '/interest-list',
+                    query: { page: 1 },
+                  }}
                 >
-                  😠
-                </a>
-                <a
-                  onClick={this.changePage}
-                  name="showCountry"
-                  data-value={showCountry}
+                  <a> 😠</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/country-list',
+                    query: { page: 1 },
+                  }}
                 >
-                  😺
-                </a>
-                <a
-                  onClick={this.changePage}
-                  name="showInstrutor"
-                  data-value={showInstrutor}
+                  <a>😺</a>
+                </Link>
+                <Link
+                  href={{
+                    pathname: '/instrutor-list',
+                    query: { page: 1 },
+                  }}
                 >
-                  🤖
-                </a>
+                  <a>🤖</a>
+                </Link>
               </Menu>
             )}
 
-            {showCategory && (
+            {/* {showCategory && (
               <div>
-                <p>Category</p>
+                <CategoryList page={page} />
               </div>
             )}
             {showInterest && (
               <div>
-                <p>Interest</p>
+                <InterestList page={page} />
               </div>
             )}
             {showCountry && (
@@ -177,7 +180,7 @@ componentDidMount() {
               <div>
                 <p>Instrutor</p>
               </div>
-            )}
+            )} */}
           </>
         )}
       </Mutation>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import Nav from './Nav';
 import Cart from '../Home/Cart/Cart';
 import Wishlist from '../Home/Wishlist/Wishlist';
@@ -95,5 +95,8 @@ class Header extends Component {
     );
   }
 }
+Header.propTypes = {
+  sidebarState: PropTypes.number,
+};
 
 export default Header;

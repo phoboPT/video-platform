@@ -34,7 +34,6 @@ const SIGNIN_MUTATION = gql`
 
 const Style = styled.div`
   margin-top: 1rem;
-
   display: grid;
   background: white;
   input,

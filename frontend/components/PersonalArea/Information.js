@@ -49,7 +49,6 @@ const Container = styled.div`
 class Information extends Component {
   render() {
     const { changeManualView, me } = this.props;
-    console.log(me.description);
     return (
       <>
         <Container>

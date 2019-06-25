@@ -17,6 +17,7 @@ function getDate() {
 
 const Query = {
   categories: forwardTo('db'),
+  category: forwardTo('db'),
   rateCourse: forwardTo('db'),
   course: forwardTo('db'),
   courses: forwardTo('db'),
@@ -27,6 +28,7 @@ const Query = {
   videoItems: forwardTo('db'),
   userCourses: forwardTo('db'),
   countries: forwardTo('db'),
+  becomeInstructors: forwardTo('db'),
 
   async me(parent, args, ctx, info) {
     const { userId } = ctx.request;
@@ -134,6 +136,30 @@ const Query = {
       },
       info
     );
+  },
+  async categoriesConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+    return ctx.db.query.categoriesConnection({}, info);
+  },
+  async countriesConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+    return ctx.db.query.countriesConnection({}, info);
+  },
+  async interestsConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+    return ctx.db.query.interestsConnection({}, info);
   },
   async coursesSearch(parent, args, ctx, info) {
     const { userId } = ctx.request;
