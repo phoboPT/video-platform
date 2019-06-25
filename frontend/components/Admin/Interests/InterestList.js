@@ -7,6 +7,7 @@ import { Container, Table } from '../../styles/AdminListStyle';
 import FormInterest from './FormInterests';
 import PaginationInterest from './PaginationInterest';
 import DeleteInterestButton from './DeleteInterestButton';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
 
 const ALL_INTERESTS_QUERY_PAGINATION = gql`
   query ALL_INTERESTS_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageInterest}){
@@ -57,7 +58,7 @@ class InterestList extends Component {
                         <button
                           type="button"
                           onClick={this.changeShow}
-                          id="saveButton"
+                          id="add-button"
                         >
                           Add new
                         </button>
@@ -86,12 +87,12 @@ class InterestList extends Component {
                                 />
                               </td>
                               <td id="center">
-                                <button
+                                <ButtonStyle
                                   type="button"
                                   onClick={() => this.edit(item)}
                                 >
                                   ✏
-                                </button>
+                                </ButtonStyle>
                               </td>
                               <td id="center">
                                 <DeleteInterestButton item={item} />

@@ -272,6 +272,7 @@ type Query {
   categoriesConnection(data: String): CategoryConnection!
   interestsConnection(data: String): InterestConnection!
   countriesConnection(data: String): CountryConnection!
+  instrutorConnection(data: String): BecomeInstructorConnection!
 
   wishlists(where: WishlistWhereInput): [Wishlist]
   #Stats Instrutor Page

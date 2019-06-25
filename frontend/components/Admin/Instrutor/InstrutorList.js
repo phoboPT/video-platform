@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { perPageInstrutor } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
+import ShowInstrutor from './ShowInstrutor';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
+import PaginationInstrutor from './PaginationInstrutor';
 
 const ALL_INSTRUTOR_QUERY_PAGINATION = gql`
   query ALL_INSTRUTOR_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageInstrutor}){
@@ -15,6 +18,8 @@ const ALL_INSTRUTOR_QUERY_PAGINATION = gql`
         id
         name
      }
+       createdAt
+    updatedAt
     }
   }
 `;
@@ -73,12 +78,17 @@ class InstrutorList extends Component {
                             <td>{item.message}</td>
                             <td>{item.state}</td>
                             <td id="center">
-                              <button
+                              <ButtonStyle
+                                id="more"
                                 type="button"
                                 onClick={() => this.edit(item)}
                               >
-                                ✏
-                              </button>
+                                <img
+                                  height="35"
+                                  src="../../static/previewIcon.webp"
+                                  alt="preview icon"
+                                />
+                              </ButtonStyle>
                             </td>
                           </tr>
                         ))}
@@ -87,7 +97,7 @@ class InstrutorList extends Component {
                         <tr>
                           <td colSpan="5">
                             <div className="links">
-                              {/* <PaginationInterest page={page} /> */}
+                              <PaginationInstrutor page={page} />
                             </div>
                           </td>
                         </tr>
@@ -95,15 +105,15 @@ class InstrutorList extends Component {
                     </Table>
                   </>
                 )}
-                {/* {!showList && (
-                    <FormInterest
-                      skip={skip}
-                      isEdit={isEdit}
-                      item={isEdit ? item : null}
-                      refetch={refetch}
-                      changePage={this.changeShow}
-                    />
-                  )} */}
+                {!showList && (
+                  <ShowInstrutor
+                    skip={skip}
+                    isEdit={isEdit}
+                    item={isEdit ? item : null}
+                    refetch={refetch}
+                    changePage={this.changeShow}
+                  />
+                )}
               </Container>
             );
         }}

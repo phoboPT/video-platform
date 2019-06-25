@@ -8,6 +8,7 @@ import { ALL_INTERESTS_QUERY_PAGINATION } from './InterestList';
 import { Alert } from '../../styles/AlertStyles';
 import validateExtension from '../../../lib/validateFileExtensions';
 import { imageExtensions } from '../../../lib/formatExtensions';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
 
 const SAVE_INTEREST_MUTATION = gql`
   mutation SAVE_INTEREST_MUTATION($name: String!, $thumbnail: String!) {
@@ -144,14 +145,20 @@ class FormInterest extends Component {
                   }}
                 >
                   {isEdit ? <h2>Edit</h2> : <h2>Add New</h2>}
+
+                  <ButtonStyle type="button" onClick={changePage}>
+                    ⬅ Go Back
+                  </ButtonStyle>
                   <Error error={createError || updateError} />
-                  <button
-                    type="submit"
-                    disabled={createLoading || updateLoading}
-                    id="saveButton"
-                  >
-                    Sav{createLoading || updateLoading ? 'ing' : 'e'}
-                  </button>
+                  <div id="form">
+                    <button
+                      type="submit"
+                      disabled={createLoading || updateLoading}
+                      id="saveButton"
+                    >
+                      Sav{createLoading || updateLoading ? 'ing' : 'e'}
+                    </button>
+                  </div>
                   <br />
                   <br />
                   <br />

@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
 import { ALL_CATEGORIES_QUERY_PAGINATION } from './CategoryList';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
 import Error from '../../Static/ErrorMessage';
 
 const DELETE_CATEGORY_MUTATION = gql`
@@ -71,12 +72,12 @@ class DeleteCategoryButton extends React.Component {
         {(deleteCategory, { loading, error }) => (
           <>
             <Error error={error} />
-            <button
+            <ButtonStyle
               type="button"
               onClick={() => this.deleteCategory(deleteCategory)}
             >
               ❎
-            </button>
+            </ButtonStyle>
           </>
         )}
       </Mutation>

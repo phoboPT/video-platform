@@ -7,6 +7,7 @@ import PaginationCountry from './PaginationCountry';
 import { perPageCountry } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
 import DeleteCountryButton from './DeleteCountryButton';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
 
 const ALL_COUNTRIES_QUERY_PAGINATION = gql`
   query ALL_COUNTRIES_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCountry}){
@@ -57,7 +58,7 @@ class CountryList extends Component {
                         <button
                           type="button"
                           onClick={this.changeShow}
-                          id="saveButton"
+                          id="add-button"
                         >
                           Add new
                         </button>
@@ -81,12 +82,12 @@ class CountryList extends Component {
                               <td>{item.code}</td>
 
                               <td id="center">
-                                <button
+                                <ButtonStyle
                                   type="button"
                                   onClick={() => this.edit(item)}
                                 >
                                   ✏
-                                </button>
+                                </ButtonStyle>
                               </td>
                               <td id="center">
                                 <DeleteCountryButton item={item} />

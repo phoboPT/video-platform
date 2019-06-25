@@ -10,7 +10,8 @@ const Container = styled.div`
   #img {
     text-align: center;
   }
-  #saveButton {
+
+  #add-button {
     border-radius: 5px;
     height: 50px;
     width: 200px;
@@ -30,6 +31,30 @@ const Container = styled.div`
       cursor: not-allowed;
     }
   }
+
+  #form {
+    text-align: right;
+    #saveButton {
+      border-radius: 5px;
+      height: 50px;
+      width: 200px;
+      text-align: center;
+      margin: auto 2rem;
+      font-size: 25px;
+      font-weight: 400;
+      border: none;
+      background: #27ad39;
+      cursor: pointer;
+      color: white;
+      :focus {
+        outline: none;
+      }
+      :disabled {
+        background: rgba(163, 163, 163, 0.5);
+        cursor: not-allowed;
+      }
+    }
+  }
 `;
 
 const Table = styled.table`
@@ -43,6 +68,7 @@ const Table = styled.table`
   #center {
     text-align: center;
   }
+
   td,
   th {
     border: 1px solid #aaaaaa;

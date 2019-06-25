@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import swal from '@sweetalert/with-react';
 import { ALL_INTERESTS_QUERY_PAGINATION } from './InterestList';
 import Error from '../../Static/ErrorMessage';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
 
 const DELETE_INTEREST_MUTATION = gql`
   mutation DELETE_CATEGORY_MUTATION($id: ID!) {
@@ -71,12 +72,12 @@ class DeleteCategoryButton extends React.Component {
         {(deleteInterest, { loading, error }) => (
           <>
             <Error error={error} />
-            <button
+            <ButtonStyle
               type="button"
               onClick={() => this.deleteInterest(deleteInterest)}
             >
               ❎
-            </button>
+            </ButtonStyle>
           </>
         )}
       </Mutation>

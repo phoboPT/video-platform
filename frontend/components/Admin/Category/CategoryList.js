@@ -7,6 +7,7 @@ import PaginationCategory from './PaginationCategory';
 import { perPageCategory } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
 import DeleteCategoryButton from './DeleteCategoryButton';
+import { ButtonStyle } from '../../styles/GoBackAdminButton';
 
 const ALL_CATEGORIES_QUERY_PAGINATION = gql`
   query ALL_CATEGORIES_QUERY_PAGINATION ($skip:Int=0,$first:Int=${perPageCategory}){
@@ -56,7 +57,7 @@ class CategoryList extends Component {
                         <button
                           type="button"
                           onClick={this.changeShow}
-                          id="saveButton"
+                          id="add-button"
                         >
                           Add new
                         </button>
@@ -77,12 +78,12 @@ class CategoryList extends Component {
                               <td id="id">{item.id}</td>
                               <td>{item.name}</td>
                               <td id="center">
-                                <button
+                                <ButtonStyle
                                   type="button"
                                   onClick={() => this.edit(item)}
                                 >
                                   ✏
-                                </button>
+                                </ButtonStyle>
                               </td>
                               <td id="center">
                                 <DeleteCategoryButton item={item} />

@@ -153,6 +153,14 @@ const Query = {
     }
     return ctx.db.query.countriesConnection({}, info);
   },
+  async instrutorConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    // Ver se esta logado
+    if (!userId) {
+      throw new Error('You must be signed in!');
+    }
+    return ctx.db.query.becomeInstructorsConnection({}, info);
+  },
   async interestsConnection(parent, args, ctx, info) {
     const { userId } = ctx.request;
     // Ver se esta logado
