@@ -5,6 +5,10 @@ const NavStyle = styled.ul`
   padding: 0;
   display: flex;
   justify-self: end;
+  #become {
+    cursor: pointer;
+    font-size: 13px !important;
+  }
   #button-signin {
     font-family: inherit;
     font-weight: 930;

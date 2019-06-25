@@ -1210,11 +1210,6 @@ const Mutations = {
     );
   },
   async paypalCheckout(parent, args, ctx, info) {
-    const { userId } = ctx.request;
-    if (!userId) {
-      throw new Error('You must be signed in soooon');
-    }
-
     const user = await ctx.db.query.user(
       { where: { id: userId } },
       `
@@ -1465,6 +1460,24 @@ const Mutations = {
         info
       );
     }
+  },
+  async createInstructor(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    if (!userId) {
+      throw new Error('You must be signed in soooon');
+    }
+    // Make sure they are signin
+    return ctx.db.mutation.createBecomeInstructor(
+      {
+        data: {
+          user: { connect: { id: userId } },
+          state: 'PENDING',
+          ...args,
+        },
+      },
+      info
+    );
   },
 };
 

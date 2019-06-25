@@ -1120,6 +1120,17 @@ const Query = {
       info
     );
   },
+  async pedidoInstructor(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    return ctx.db.query.becomeInstructors(
+      {
+        where: { user: { id: userId } },
+      },
+      info
+    );
+  },
+
   // Method used to insert countries in the db
   // async insertData(parent, args, ctx, info) {
   //   country.forEach(item => {

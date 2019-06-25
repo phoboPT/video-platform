@@ -12,6 +12,12 @@ enum State {
   UNPUBLISHED
 }
 
+enum RequestState {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 type Interest {
   id: ID! @id
   name: String!
@@ -58,12 +64,16 @@ type VideoUser {
   id: ID! @id
   user: User
   videoItem: [VideoItem]
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type VideoItem {
   id: ID! @id
   video: Video
   watched: Boolean
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Wishlist {
@@ -182,17 +192,20 @@ type PaymentBill {
   country: Country
   user: User
   nif: Int
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Country {
   id: ID! @id
   name: String
   code: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
-
 type BecomeInstructor {
   id: ID! @id
   message: String!
   user: User!
-  state: State
+  state: RequestState
 }

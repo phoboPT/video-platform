@@ -15,7 +15,6 @@ const Style = styled.div`
   .container {
     padding: 5rem;
     .fields {
-      border: 1px solid red;
       margin: auto;
       padding: auto;
 
@@ -23,7 +22,7 @@ const Style = styled.div`
       label {
         text-align: left;
         p {
-          padding: 0 0 0 1rem;
+          padding: 0 0 0 0;
           margin: 0.2rem;
         }
       }

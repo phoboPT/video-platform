@@ -80,7 +80,7 @@ class Header extends Component {
       <StyledHeader sidebarState={sidebarState} role="banner">
         <div className="bar">
           <Logo>
-            <a href="#">
+            <a>
               <img alt="logo-picus" src="/static/logo.webp" />
             </a>
           </Logo>
