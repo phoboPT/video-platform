@@ -13,6 +13,7 @@ const SIGN_OUT_MUTATION = gql`
 const logout = async mutation => {
   Router.push({
     pathname: '/index',
+    query: { logout: true },
   });
 
   setTimeout(() => {

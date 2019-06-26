@@ -21,6 +21,7 @@ const ALL_PEDIDOS_QUERY = gql`
       id
       message
       state
+      response
     }
   }
 `;
@@ -117,13 +118,36 @@ class Instructor extends Component {
     await this.setState({ message: e.target.value });
   };
 
+  showSwall = (createInstructor, refetch) => {
+    const { message } = this.state;
+    swal({
+      text: `Become an Instructor`,
+      buttons: {
+        cancel: 'Cancel',
+        ok: 'OK',
+      },
+      content: (
+        <InstructorForm handleChange={this.handleChange} message={message} />
+      ),
+    }).then(async willDelete => {
+      if (!willDelete) {
+        console.log('cancel');
+      } else {
+        const res = await createInstructor();
+        if (res) {
+          refetch();
+        }
+      }
+    });
+  };
+
   render() {
     const { message } = this.state;
     return (
       <PermissionUser>
         {({ data: { me } }) => {
           if (!me) return <p> You need To log In to access this page!</p>;
-          if (me.permission[0] === 'INSTRUCTOR') {
+          if (me.permission[0] === 'INSTRUTOR') {
             return <p>You are already an instructor!</p>;
           }
           return (
@@ -135,8 +159,7 @@ class Instructor extends Component {
                 if (error) return <p>Something went Wrong</p>;
                 return (
                   <Query query={ALL_PEDIDOS_QUERY}>
-                    {({ data, error }) => {
-                      console.log(data);
+                    {({ data, error, refetch }) => {
                       if (error) return <p>Something went Wrong</p>;
                       return (
                         <Container>
@@ -168,6 +191,7 @@ class Instructor extends Component {
                                     src="../../static/success.png"
                                   />
                                 </div>
+                                Rerun
                                 <p>Expand your success</p>
                               </div>
                             </div>
@@ -182,40 +206,36 @@ class Instructor extends Component {
                                 <p>More Rating = More Students</p>
                               </div>
                               <div id="right">
-                                {data.pedidoInstructor[
-                                  data.pedidoInstructor.length - 1
-                                ].state !== 'PENDING' ? (
+                                {data.pedidoInstructor.length === 0 && (
                                   <button
                                     type="button"
                                     onClick={() =>
-                                      swal({
-                                        text: `Become an Instructor`,
-                                        buttons: {
-                                          cancel: 'Cancel',
-                                          ok: 'OK',
-                                        },
-                                        content: (
-                                          <InstructorForm
-                                            handleChange={this.handleChange}
-                                            message={message}
-                                          />
-                                        ),
-                                      }).then(willDelete => {
-                                        if (!willDelete) {
-                                          console.log('cancel');
-                                        } else {
-                                          createInstructor();
-                                        }
-                                      })
+                                      this.showSwall(createInstructor, refetch)
                                     }
                                   >
                                     Become an Instructor
                                   </button>
-                                ) : (
-                                  <p id="message-wait">
-                                    Wait for the Response!
-                                  </p>
                                 )}
+                                {data.pedidoInstructor.length !== 0 &&
+                                  (data.pedidoInstructor[
+                                    data.pedidoInstructor.length - 1
+                                  ].state !== 'PENDING' ? (
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        this.showSwall(
+                                          createInstructor,
+                                          refetch
+                                        )
+                                      }
+                                    >
+                                      Become an Instructor
+                                    </button>
+                                  ) : (
+                                    <p id="message-wait">
+                                      Wait for the Response!
+                                    </p>
+                                  ))}
                               </div>
                             </div>
                           </div>

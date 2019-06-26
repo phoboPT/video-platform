@@ -173,7 +173,7 @@ type OrderItem {
 type Order {
   id: ID! @id
   items: [OrderItem!]!
-  total: Int!
+  total: Float!
   user: User!
   charge: String!
   createdAt: DateTime! @createdAt

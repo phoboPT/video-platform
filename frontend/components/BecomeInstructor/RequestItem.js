@@ -44,9 +44,7 @@ class RequestItem extends Component {
           <p id="message">{item.message}</p>
           <p id="state">{item.state}</p>
         </div>
-        <p id="reason">
-          Reason: ..............................................
-        </p>
+        {item.response && <p id="reason">Reason: {item.response}</p>}
       </Style>
     );
   }

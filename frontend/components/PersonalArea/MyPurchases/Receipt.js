@@ -252,7 +252,7 @@ class Receipt extends Component {
               <p> Total purchases: {receipt[0].items.length} </p>
             </div>
             <div id="price">
-              <p> Total Price: {receipt[0].total} €</p>
+              <p> Total Price: {receipt[0].total / 100} €</p>
             </div>
           </InfoDown>
         </ContainerAll>

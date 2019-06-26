@@ -8,28 +8,6 @@ import ListAllCourses, {
 import Search from '../components/Home/Search';
 import Loading from '../components/Static/Loading';
 
-const Container = styled.div`
-  background-image: url('../static/backgroud.webp');
-  width: 100%;
-  height: 500px;
-  background-size: cover;
-  -webkit-background-size: cover;
-  background-position: center center;
-  position: absolute;
-  left: 0;
-  right: 0;
-
-  z-index: -2;
-  .title {
-    text-align: center;
-    color: #fff;
-    font-size: 3rem;
-    z-index: 2;
-    h1 {
-    }
-  }
-`;
-
 const TopBar = styled.div`
   #banner1 {
     margin: 1rem auto auto auto;
@@ -72,41 +50,6 @@ const TopBar = styled.div`
   }
 `;
 
-const Info = styled.div`
-  display: flex;
-  min-height: 70px;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  background-image: linear-gradient(
-    to right bottom,
-    #e91010,
-    #e82825,
-    #e63835,
-    #e34544,
-    #df5151
-  );
-  margin: 500px auto 0 auto;
-  border: 1px solid black;
-  text-align: center;
-
-  .first {
-    margin: auto;
-    order: 1;
-    flex: 1;
-  }
-  .second {
-    margin: auto;
-    order: 2;
-    flex: 1;
-  }
-  .third {
-    margin: auto;
-    order: 3;
-    flex: 1;
-  }
-`;
-
 const Courses = styled.div`
   margin: 2rem auto 0 auto;
   border: 1px solid white;
@@ -128,11 +71,14 @@ const SearchStyle = styled.div`
 `;
 class Home extends Component {
   render() {
+    const {
+      query: { logout },
+    } = this.props;
     return (
       <User>
         {({ data, loading }) => {
           if (loading) return <Loading />;
-          if (!data.me) {
+          if (!data.me || logout) {
             return (
               <>
                 <TopBar>
