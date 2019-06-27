@@ -41,13 +41,12 @@ const Inner = styled.div`
   margin-left: ${props => props.sidebarState === 2 && '200px!important'};
 
   max-width: ${props => props.theme.maxWidth};
-  margin: 100px auto 0;
+  margin: 100px auto auto auto;
   min-height: calc(100vh - 210px);
   @media (max-width: 1300px) {
-    margin-left: ${props => props.sidebarState === 1 && '90px!important'};
+    margin-left: ${props => props.sidebarState === 1 && '80px!important'};
 
-    margin-right: 20px !important;
-    margin: 100px auto 0;
+    margin: 100px auto auto auto;
   }
   &::after {
     content: '';
