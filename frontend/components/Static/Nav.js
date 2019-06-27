@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Link from 'next/link';
 import { Mutation } from 'react-apollo';
 import React, { Component } from 'react';
@@ -32,6 +33,7 @@ class Nav extends Component {
   };
 
   render() {
+    const { sidebarState } = this.props;
     const { isAdminPage } = this.state;
     return (
       <User>
@@ -77,7 +79,7 @@ class Nav extends Component {
                             <a
                               onClick={() => {
                                 this.changePage('administrator');
-                                this.toggleSidebar(toggleSidebar, 1);
+                                this.toggleSidebar(toggleSidebar, sidebarState);
                               }}
                             >
                               Admin Area
@@ -93,6 +95,7 @@ class Nav extends Component {
                               Home
                             </a>
                           )}
+
                           <div id="extended">
                             <Signout />
                           </div>

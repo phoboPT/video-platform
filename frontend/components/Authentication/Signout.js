@@ -11,6 +11,7 @@ const SIGN_OUT_MUTATION = gql`
 `;
 
 const logout = async mutation => {
+  localStorage.setItem('isAdminPage', false);
   Router.push({
     pathname: '/index',
   });

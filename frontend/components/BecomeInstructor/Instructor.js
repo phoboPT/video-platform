@@ -124,7 +124,6 @@ class Instructor extends Component {
           return (
             <Query query={ALL_PEDIDOS_QUERY}>
               {({ data, error }) => {
-                console.log(data);
                 if (error) return <p>Something went Wrong</p>;
                 return (
                   <Container>

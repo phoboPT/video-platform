@@ -105,12 +105,30 @@ class Page extends Component {
   }
 
   testeBar = (sidebarState, isAdminPage, extended) => {
-    if (extended) {
-      return isAdminPage && sidebarState === 3 ? 2 : sidebarState;
+    if (isAdminPage) {
+      if (extended === true) {
+        if (sidebarState === 1) {
+          return 1;
+        }
+        return 2;
+      }
+      if (extended === false) {
+        if (sidebarState === 2) {
+          return 2;
+        }
+        return 1;
+      }
+      if (extended && sidebarState === 1) {
+        return 2;
+      }
+
+      return sidebarState;
     }
-    if (!extended) {
-      return isAdminPage && sidebarState === 3 ? 1 : sidebarState;
+
+    if (!isAdminPage) {
+      return 3;
     }
+    return 3;
   };
 
   render() {

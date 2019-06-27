@@ -21,6 +21,7 @@ const CREATE_ORDER_MUTATION = gql`
     $zipCode: String
     $country: ID
     $nif: Int
+    $billId: ID
   ) {
     createOrder(
       token: $token
@@ -68,9 +69,7 @@ class Checkout extends Component {
         content: (
           <Alert>
             <h3>Something went wrong</h3>
-            <div className="content">
-              <p>{err.message}</p>
-            </div>
+            <div className="content">{console.log(err.message)}</div>
           </Alert>
         ),
         icon: 'warning',
@@ -80,7 +79,8 @@ class Checkout extends Component {
     });
 
     Router.push({
-      pathname: '/courses?afterBuyed=true',
+      pathname: '/courses',
+      query: { afterBuyed: true },
     });
   };
 

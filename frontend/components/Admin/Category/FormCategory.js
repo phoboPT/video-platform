@@ -53,7 +53,6 @@ class FormCategory extends Component {
   render() {
     const { item, isEdit, refetch, changePage } = this.props;
     const { name } = this.state;
-    console.log(isEdit);
     return (
       <Mutation
         mutation={UPDATE_CATEGORY_MUTATION}

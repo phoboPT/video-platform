@@ -28,7 +28,7 @@ export class ShowInstrutor extends Component {
             ⬅ Go Back
           </ButtonStyle>
 
-          <p> Request ID: {item.id}</p>
+          <p>Request ID: {item.id}</p>
           <p>Name: {item.user.name}</p>
           <p>User ID: {item.user.id}</p>
           <p>State: {item.state || 'None'}</p>
