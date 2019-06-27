@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 // const path = require('path');
 // const paypal = require('paypal-rest-sdk');
+const slashes = require('connect-slashes');
+const compression = require('compression');
 const createServer = require('./createServer');
 const db = require('./db');
 
@@ -10,6 +12,7 @@ const server = createServer();
 
 // Use express middlware to handle cookies (JWT)
 server.express.use(cookieParser());
+server.express.use(compression());
 
 // decode the jwt para obter o id pretendido
 

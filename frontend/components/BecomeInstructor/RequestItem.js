@@ -15,7 +15,10 @@ const Style = styled.div`
       color: rgba(0, 0, 0, 0.9);
     }
     #state {
-      background: ${props => (props.state === 'PENDING' ? '#ff8a5b' : 'red')};
+      background: ${props => props.state === 'PENDING' && '#ff8a5b'};
+      background: ${props => props.state === 'REJECTED' && 'red'};
+      background: ${props => props.state === 'APPROVED' && 'green'};
+
       color: white;
       width: 30%;
       width: 150px;
@@ -41,9 +44,7 @@ class RequestItem extends Component {
           <p id="message">{item.message}</p>
           <p id="state">{item.state}</p>
         </div>
-        <p id="reason">
-          Reason: ..............................................
-        </p>
+        {item.response && <p id="reason">Reason: {item.response}</p>}
       </Style>
     );
   }

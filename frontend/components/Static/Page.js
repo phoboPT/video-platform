@@ -48,7 +48,6 @@ const Inner = styled.div`
 
     margin-right: 20px !important;
     margin: 100px auto 0;
-    min-height: calc(100vh - 260px);
   }
   &::after {
     content: '';

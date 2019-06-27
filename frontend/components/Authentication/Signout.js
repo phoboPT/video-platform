@@ -14,6 +14,7 @@ const logout = async mutation => {
   localStorage.setItem('isAdminPage', false);
   Router.push({
     pathname: '/index',
+    query: { logout: true },
   });
 
   setTimeout(() => {
