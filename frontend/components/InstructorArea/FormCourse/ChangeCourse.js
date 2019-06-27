@@ -301,7 +301,11 @@ class ChangeCourse extends Component {
               <CourseContainer>
                 {view === 1 &&
                   (createCourse ? (
-                    <FormCourse createCourse changeToEdit={this.changeToEdit} />
+                    <FormCourse
+                      createCourse
+                      changeToEdit={this.changeToEdit}
+                      refetch={refetch}
+                    />
                   ) : (
                     <FormCourse
                       id={id}

@@ -805,6 +805,7 @@ const Mutations = {
       return res;
     }
 
+    delete data.idsToDelete;
     return ctx.db.mutation.createCourse(
       {
         data: {

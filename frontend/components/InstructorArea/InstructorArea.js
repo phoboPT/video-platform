@@ -107,6 +107,7 @@ class InstrutorArea extends Component {
                         <button
                           type="button"
                           id="ButtonAdd"
+                          className="Add"
                           onClick={() => {
                             this.changeView(2);
                           }}
