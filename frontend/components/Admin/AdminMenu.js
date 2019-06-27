@@ -20,25 +20,33 @@ const Menu = styled.div`
   background: rgba(55, 53, 79, 0.7);
   width: 50px;
   position: fixed;
-  a {
-    padding: 1rem 0 0 1rem;
-    display: block;
-  }
-  button {
-    margin: auto;
-    height: 25px;
-    padding: 1rem;
-    background: none;
-    border: none;
-    font-size: 15px;
-    line-height: 10px;
-    cursor: pointer;
+  .extend {
+    button {
+      margin: auto;
+      cursor: pointer;
+      height: 25px;
+      padding: 1rem;
+      background: none;
+      border: none;
+      font-size: 15px;
+      line-height: 10px;
 
-    &focus {
-      outline: none;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  .links {
+    img {
+      cursor: pointer;
+      margin: auto;
+      margin-top: 1rem;
+      display: block;
+      height: 27px;
     }
   }
 `;
+
 const MenuOpened = styled.div`
   top: 0;
   bottom: 0;
@@ -47,24 +55,43 @@ const MenuOpened = styled.div`
   background: rgba(55, 53, 79, 0.7);
   width: 150px;
   position: fixed;
-
-  a {
-    padding: 1rem 0 0 1rem;
-    display: block;
-  }
+  .extend {
     button {
-      padding:1rem;
-    margin: auto;
-    height: 25px;
-    background: none;
-    border: none;
-    font-size: 15px;
-    line-height: 10px;
-    cursor: pointer;
+      margin: auto;
+      height: 25px;
+      padding: 1rem;
+      background: none;
+      border: none;
+      font-size: 15px;
+      line-height: 10px;
+      cursor: pointer;
 
-    &focus {
-      outline: none;
+      &:focus {
+        outline: none;
+      }
     }
+  }
+  .option {
+    display: flex;
+    margin: 0.7rem 0 0.7rem 0;
+    cursor: pointer;
+    .first {
+      order: 1;
+      flex: 1;
+      margin: auto;
+      img {
+        height: 27px;
+        padding: 0 0 0 1rem;
+      }
+    }
+    .second {
+      order: 2;
+      flex: 2;
+      margin: auto;
+      a {
+      }
+    }
+  }
 `;
 class AdminMenu extends Component {
   state = {};
@@ -76,7 +103,7 @@ class AdminMenu extends Component {
   toggleSidebar = async (mutation, size) => {
     const { extended } = this.state;
     this.setState({ extended: !extended });
-    mutation({ variables: { sidebarState: size } });
+    await mutation({ variables: { sidebarState: size } });
 
     localStorage.setItem('extended', !extended);
   };
@@ -100,93 +127,135 @@ class AdminMenu extends Component {
           <>
             {extended && (
               <MenuOpened>
-                <button
-                  type="button"
-                  onClick={() => this.toggleSidebar(toggleSidebar, 1)}
-                >
-                  <img
-                    src="../../static/list-close.png"
-                    alt="extend list button"
-                  />
-                </button>
-                <Link
-                  href={{
-                    pathname: '/category-list',
-                    query: { page: 1 },
-                  }}
-                >
-                  <a>Category</a>
-                </Link>
-                <Link
-                  href={{
-                    pathname: '/interest-list',
-                    query: { page: 1 },
-                  }}
-                >
-                  <a>Interest</a>
-                </Link>
-                <Link
-                  href={{
-                    pathname: '/country-list',
-                    query: { page: 1 },
-                  }}
-                >
-                  <a>Country</a>
-                </Link>
-                <Link
-                  href={{
-                    pathname: '/instrutor-list',
-                    query: { page: 1 },
-                  }}
-                >
-                  <a>Instrutor</a>
-                </Link>
+                <div className="extend">
+                  <button
+                    id="button"
+                    type="button"
+                    onClick={() => this.toggleSidebar(toggleSidebar, 1)}
+                  >
+                    <img
+                      src="../../static/list-close.png"
+                      alt="extend list button"
+                    />
+                  </button>
+                </div>
+                <div className="links">
+                  <Link
+                    href={{
+                      pathname: '/category-list',
+                      query: { page: 1 },
+                    }}
+                  >
+                    <div className="option">
+                      <div className="first">
+                        <img src="../../static/category.png" alt="category" />
+                      </div>
+
+                      <div className="second">
+                        <a>Category</a>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link
+                    href={{
+                      pathname: '/interest-list',
+                      query: { page: 1 },
+                    }}
+                  >
+                    <div className="option">
+                      <div className="first">
+                        <img src="../../static/interest.png" alt="interest" />
+                      </div>
+
+                      <div className="second">
+                        <a>Interest</a>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href={{
+                      pathname: '/country-list',
+                      query: { page: 1 },
+                    }}
+                  >
+                    <div className="option">
+                      <div className="first">
+                        <img src="../../static/flag.png" alt="flag" />
+                      </div>
+
+                      <div className="second">
+                        <a>Country</a>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link
+                    href={{
+                      pathname: '/instrutor-list',
+                      query: { page: 1 },
+                    }}
+                  >
+                    <div className="option">
+                      <div className="first">
+                        <img src="../../static/value.png" alt="instrutor" />
+                      </div>
+
+                      <div className="second">
+                        <a>Instrutor</a>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
               </MenuOpened>
             )}
             {!extended && (
               <Menu>
-                <button
-                  type="button"
-                  onClick={() => this.toggleSidebar(toggleSidebar, 2)}
-                >
-                  <img
-                    src="../../static/list-open.png"
-                    alt="extend list button"
-                  />
-                </button>
-                <Link
-                  href={{
-                    pathname: '/category-list',
-                    query: { page: 1 },
-                  }}
-                >
-                  <a>😄</a>
-                </Link>
+                <div className="extend">
+                  <button
+                    type="button"
+                    onClick={() => this.toggleSidebar(toggleSidebar, 2)}
+                  >
+                    <img
+                      src="../../static/list-open.png"
+                      alt="extend list button"
+                    />
+                  </button>
+                </div>
+                <div className="links">
+                  <Link
+                    href={{
+                      pathname: '/category-list',
+                      query: { page: 1 },
+                    }}
+                  >
+                    <img src="../../static/category.png" alt="category" />
+                  </Link>
 
-                <Link
-                  href={{
-                    pathname: '/interest-list',
-                    query: { page: 1 },
-                  }}
-                >
-                  <a> 😠</a>
-                </Link>
-                <Link
-                  href={{
-                    pathname: '/country-list',
-                    query: { page: 1 },
-                  }}
-                >
-                  <a>😺</a>
-                </Link>
-                <Link
-                  href={{
-                    pathname: '/instrutor-list',
-                    query: { page: 1 },
-                  }}
-                >
-                  <a>🤖</a>
-                </Link>
+                  <Link
+                    href={{
+                      pathname: '/interest-list',
+                      query: { page: 1 },
+                    }}
+                  >
+                    <img src="../../static/interest.png" alt="interest" />
+                  </Link>
+                  <Link
+                    href={{
+                      pathname: '/country-list',
+                      query: { page: 1 },
+                    }}
+                  >
+                    <img src="../../static/flag.png" alt="flag" />
+                  </Link>
+                  <Link
+                    href={{
+                      pathname: '/instrutor-list',
+                      query: { page: 1 },
+                    }}
+                  >
+                    <img src="../../static/value.png" alt="instrutor" />
+                  </Link>
+                </div>
               </Menu>
             )}
           </>

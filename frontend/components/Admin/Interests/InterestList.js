@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
+import swal from '@sweetalert/with-react';
 import { perPageInterest } from '../../../config';
 import { Container, Table } from '../../styles/AdminListStyle';
 import FormInterest from './FormInterests';
@@ -31,6 +32,14 @@ class InterestList extends Component {
   edit = async item => {
     const { showList } = this.state;
     await this.setState({ showList: !showList, isEdit: true, item });
+  };
+
+  showSwall = url => {
+    swal({
+      title: 'Image Viewer',
+      content: <img height="400" src={url} alt="interest description" />,
+      buttons: 'OK',
+    });
   };
 
   render() {
@@ -80,9 +89,12 @@ class InterestList extends Component {
                             <tr key={item.id}>
                               <td id="id">{formatString(item.id, 25)}</td>
                               <td>{formatString(item.name, 25)}</td>
-                              <td id="img">
+                              <td
+                                id="img"
+                                onClick={() => this.showSwall(item.thumbnail)}
+                              >
                                 <img
-                                  height="70"
+                                  height="32"
                                   src={item.thumbnail}
                                   alt="interest description"
                                 />

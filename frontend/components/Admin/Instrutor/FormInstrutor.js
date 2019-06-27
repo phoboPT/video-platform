@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
 import requestState from '../../../lib/requestStates';
 import { ButtonStyle } from '../../styles/GoBackAdminButton';
 import Error from '../../Static/ErrorMessage';
@@ -11,18 +12,25 @@ const UPDATE_INSTRUTOR_MUTATION = gql`
     $id: ID!
     $response: String
     $state: String
+    $userId: ID!
   ) {
-    updateInstructor(id: $id, response: $response, state: $state) {
+    updateInstructor(
+      id: $id
+      response: $response
+      state: $state
+      userId: $userId
+    ) {
       id
     }
   }
 `;
 
-export default class FormInstrutor extends Component {
+class FormInstrutor extends Component {
   state = {
     response: this.props.item ? this.props.item.response : '',
     state: this.props.item ? this.props.item.state : '',
     id: this.props.item ? this.props.item.id : '',
+    userId: this.props.item ? this.props.item.user.id : '',
   };
 
   handleChange = async e => {
@@ -42,7 +50,6 @@ export default class FormInstrutor extends Component {
       query: ALL_INSTRUTOR_QUERY_PAGINATION,
       variables: { skip },
     });
-    console.log(data);
     // remove item from cart
     const instrutorId = payload.data.updateInstructor.id;
     data.becomeInstructors = data.becomeInstructors.map(item => {
@@ -57,8 +64,8 @@ export default class FormInstrutor extends Component {
   };
 
   render() {
-    const { id } = this.state;
-    const { changePage } = this.props;
+    const { id, userId } = this.state;
+    const { changePage, refetch } = this.props;
     return (
       <Mutation
         mutation={UPDATE_INSTRUTOR_MUTATION}
@@ -80,6 +87,7 @@ export default class FormInstrutor extends Component {
               onSubmit={async e => {
                 e.preventDefault();
                 await updateInstructor();
+                refetch();
                 this.setState({ response: '', state: '' });
                 changePage();
               }}
@@ -92,11 +100,7 @@ export default class FormInstrutor extends Component {
                 </button>
               </div>
               <h2>Response</h2>
-              <select
-                id="category"
-                defaultValue="a"
-                onChange={this.handleChange}
-              >
+              <select id="state" defaultValue="a" onChange={this.handleChange}>
                 <option value="a" disabled hidden>
                   State
                 </option>
@@ -125,3 +129,9 @@ export default class FormInstrutor extends Component {
     );
   }
 }
+FormInstrutor.propTypes = {
+  refetch: PropTypes.func.isRequired,
+  changePage: PropTypes.func.isRequired,
+};
+
+export default FormInstrutor;

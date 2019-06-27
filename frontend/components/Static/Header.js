@@ -88,7 +88,7 @@ class Header extends Component {
               <img alt="logo-picus" src="/static/logo.webp" />
             </a>
           </Logo>
-          <Nav changeLink={this.changeLink} />
+          <Nav sidebarState={sidebarState} changeLink={this.changeLink} />
         </div>
         <div className="sub-bar" />
         <Cart />

@@ -70,7 +70,12 @@ type Course {
 
 type Mutation {
   createInstructor(message: String!): BecomeInstructor!
-  updateInstructor(id: ID!, response: String, state: String): BecomeInstructor!
+  updateInstructor(
+    id: ID!
+    response: String
+    state: String
+    userId: ID!
+  ): BecomeInstructor!
 
   createVideo(
     title: String!
@@ -197,28 +202,29 @@ type Query {
 
   # querys sellect all
   categories(
-    where: CategoryWhereInput
+    where: CategoryWhereUniqueInput
     orderBy: CategoryOrderByInput
     skip: Int
     first: Int
   ): [Category]!
 
   countries(
-    where: CategoryWhereInput
-    orderBy: CategoryOrderByInput
+    where: CountryWhereUniqueInput
+    orderBy: CountryOrderByInput
     skip: Int
     first: Int
   ): [Country]!
+
   interests(
-    where: CategoryWhereInput
-    orderBy: CategoryOrderByInput
+    where: InterestWhereUniqueInput
+    orderBy: InterestOrderByInput
     skip: Int
     first: Int
   ): [Interest!]!
 
   becomeInstructors(
-    where: CategoryWhereInput
-    orderBy: CategoryOrderByInput
+    where: BecomeInstructorWhereInput
+    orderBy: BecomeInstructorOrderByInput
     skip: Int
     first: Int
   ): [BecomeInstructor!]!

@@ -55,7 +55,6 @@ class CategoryList extends Component {
     const skip = page * perPageCategory - perPageCategory;
 
     const totalCharaters = width / 10 - 70;
-    console.log(width, totalCharaters);
     return (
       <Query
         query={ALL_CATEGORIES_QUERY_PAGINATION}

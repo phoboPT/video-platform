@@ -326,7 +326,7 @@ const Mutations = {
       info
     );
   },
-  updateInstructor(parent, args, ctx, info) {
+  async updateInstructor(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
@@ -334,11 +334,12 @@ const Mutations = {
     const updates = {
       ...args,
     };
-    console.log(args);
+
     // elimina o id dos updates para nao dar update no id(unico)
     delete updates.id;
+    delete updates.userId;
     // da run no update method
-    return ctx.db.mutation.updateBecomeInstructor(
+    const res = await ctx.db.mutation.updateBecomeInstructor(
       {
         data: updates,
         where: {
@@ -347,6 +348,21 @@ const Mutations = {
       },
       info
     );
+    if (args.state === 'APPROVED') {
+      if (res) {
+        ctx.db.mutation.updateUser({
+          data: {
+            permission: {
+              set: ['INSTRUTOR'],
+            },
+          },
+          where: { id: args.userId },
+        });
+        return res;
+      }
+    } else {
+      return res;
+    }
   },
   async deleteInterest(parent, args, ctx, info) {
     if (!ctx.request.userId) {
@@ -1122,6 +1138,8 @@ const Mutations = {
     const { userId } = ctx.request;
     if (!userId)
       throw new Error('You must be signed in to complete this order.');
+
+    console.log(args);
     const user = await ctx.db.query.user(
       { where: { id: userId } },
       `
@@ -1333,6 +1351,7 @@ const Mutations = {
     );
   },
   async paypalCheckout(parent, args, ctx, info) {
+    const { userId } = ctx.request;
     const user = await ctx.db.query.user(
       { where: { id: userId } },
       `
@@ -1459,7 +1478,7 @@ const Mutations = {
         {
           amount: {
             currency: 'EUR',
-            total: amount,
+            total: parseFloat(amount),
           },
         },
       ],
@@ -1509,7 +1528,7 @@ const Mutations = {
               // create the order
               order = await ctx.db.mutation.createOrder({
                 data: {
-                  total: amount,
+                  total: parseFloat(amount),
                   charge: args.paymentId,
                   items: { create: orderItems },
                   user: { connect: { id: userId } },
