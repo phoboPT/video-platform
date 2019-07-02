@@ -17,7 +17,7 @@ const Menu = styled.div`
   bottom: 0;
   left: 0;
   z-index: 10;
-  background: rgba(55, 53, 79, 0.7);
+  background: rgba(51, 93, 161, 0.5);
   width: 50px;
   position: fixed;
   .extend {
@@ -52,7 +52,7 @@ const MenuOpened = styled.div`
   bottom: 0;
   left: 0;
   z-index: 10;
-  background: rgba(55, 53, 79, 0.7);
+  background: rgba(51, 93, 161, 0.5);
   width: 150px;
   position: fixed;
   .extend {
@@ -89,6 +89,7 @@ const MenuOpened = styled.div`
       flex: 2;
       margin: auto;
       a {
+        color: #f0f0f0;
       }
     }
   }
