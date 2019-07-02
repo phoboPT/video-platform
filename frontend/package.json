@@ -157,7 +157,8 @@
     "test": "NODE_ENV=test jest --watch",
     "test-win": "SET NODE_ENV=test&& jest --watch",
     "esLint": "eslint . --fix ",
-    "lint": "eslint --fix . && stylelint \"./client/**/*.js\""
+    "lint": "eslint --fix . && stylelint \"./client/**/*.js\"",
+    "testes": "testcafe chrome:headless ./tests/*.js"
   },
   "version": "1.0.0"
 }

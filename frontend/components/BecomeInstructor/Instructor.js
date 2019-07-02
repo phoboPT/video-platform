@@ -151,11 +151,16 @@ class Instructor extends Component {
             return <p>You are already an instructor!</p>;
           }
           return (
+<<<<<<< HEAD
+            <Query query={ALL_PEDIDOS_QUERY}>
+              {({ data, error }) => {
+=======
             <Mutation
               mutation={CREATE_INSTRUCTOR_MUTATION}
               variables={this.state}
             >
               {(createInstructor, { error }) => {
+>>>>>>> 7d797fc0b5a85f2dd5c3d6e003dc09d969e751e5
                 if (error) return <p>Something went Wrong</p>;
                 return (
                   <Query query={ALL_PEDIDOS_QUERY}>
