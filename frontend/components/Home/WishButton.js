@@ -22,9 +22,9 @@ const ADD_TO_WISHLIST_MUTATION = gql`
 const Img = styled.div`
   margin: auto;
   position: relative;
-  background: none !important;
+  background:   none !important;
   top: 5px;
-  width: 50px;
+  width:     50px;
   fill: red;
   button {
     cursor: pointer;
@@ -76,7 +76,7 @@ export class WishButton extends Component {
     courseId: this.props.id,
   };
 
-  changeClass = async mutation => {
+  changeClass = async (mutation) => {
     this.setState({ className: 'animate' });
     await mutation();
     this.setState({ classButton: 'added' });
@@ -90,7 +90,7 @@ export class WishButton extends Component {
     // remove item from cart
     const courseId = payload.data.addToWish.id;
 
-    data.coursesList = data.coursesList.map(item => {
+    data.coursesList = data.coursesList.map((item) => {
       if (item.id === courseId) {
         item.wished = !item.wished;
       }
@@ -142,21 +142,19 @@ export class WishButton extends Component {
             __typename: 'Whislist',
             id: data.id,
           },
-        }}
-      >
+        }}>
         {(addToWish, { loading }) => (
           <Img>
             <button
-              type="button"
+              type='button'
               className={data.wished ? 'added' : ''}
               disabled={loading}
-              id="search-button"
-              onClick={() => this.changeClass(addToWish)}
-            >
-              <svg className={className} viewBox="0 0 32 32">
+              id='search-button'
+              onClick={() => this.changeClass(addToWish)}>
+              <svg className={className} viewBox='0 0 32 32'>
                 <path
-                  d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
-                        c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z"
+                  d='M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+                        c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z'
                 />
               </svg>
             </button>

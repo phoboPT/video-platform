@@ -82,6 +82,8 @@ class FormInterest extends Component {
 
       const file = await res.json();
       await this.setState({
+
+
         changeThumbnail: true,
         thumbnail: file.secure_url,
       });
@@ -127,83 +129,83 @@ class FormInterest extends Component {
               createInterest,
               { loading: createLoading, error: createError }
             ) => (
-              <div>
-                <form
-                  method="post"
-                  onSubmit={async e => {
-                    e.preventDefault();
-                    if (isEdit) {
-                      await updateInterest();
-                      await this.setState({ name: '', thumbnail: '' });
-                      changePage();
-                    } else {
-                      await createInterest();
-                      refetch();
-                      await this.setState({ name: '', thumbnail: '' });
-                      changePage();
-                    }
-                  }}
-                >
-                  {isEdit ? <h2>Edit</h2> : <h2>Add New</h2>}
+                <div>
+                  <form
+                    method="post"
+                    onSubmit={async e => {
+                      e.preventDefault();
+                      if (isEdit) {
+                        await updateInterest();
+                        await this.setState({ name: '', thumbnail: '' });
+                        changePage();
+                      } else {
+                        await createInterest();
+                        refetch();
+                        await this.setState({ name: '', thumbnail: '' });
+                        changePage();
+                      }
+                    }}
+                  >
+                    {isEdit ? <h2>Edit</h2> : <h2>Add New</h2>}
 
-                  <ButtonStyle type="button" onClick={changePage}>
-                    ⬅ Go Back
+                    <ButtonStyle type="button" onClick={changePage}>
+                      ⬅ Go Back
                   </ButtonStyle>
-                  <Error error={createError || updateError} />
-                  <div id="form">
-                    <button
-                      type="submit"
-                      disabled={createLoading || updateLoading}
-                      id="saveButton"
-                    >
-                      Sav{createLoading || updateLoading ? 'ing' : 'e'}
-                    </button>
-                  </div>
-                  <br />
-                  <br />
-                  <br />
-                  <label htmlFor="name">
-                    Name:
-                    <input
-                      id="name"
-                      type="name"
-                      name="name"
-                      placeholder="Name"
-                      defaultValue={name}
-                      onChange={this.saveToState}
-                    />
-                  </label>
-                  <br />
-                  <label htmlFor="thumbnail">
-                    Thumbnail Preview {/* Thumbnail para o Edit */}
+                    <Error error={createError || updateError} />
+                    <div id="form">
+                      <button
+                        type="submit"
+                        disabled={createLoading || updateLoading}
+                        id="saveButton"
+                      >
+                        Sav{createLoading || updateLoading ? 'ing' : 'e'}
+                      </button>
+                    </div>
                     <br />
-                    {isEdit &&
-                      (changeThumbnail ? (
-                        item.thumbnail && (
-                          <img alt="Placeholder" height="150" src={thumbnail} />
-                        )
-                      ) : (
-                        <img
-                          alt="Placeholder"
-                          height="150"
-                          src={item.thumbnail}
-                        />
-                      ))}
-                    {/* Thumbnail para o create */}
-                    {!isEdit && (
-                      <img alt="Placeholder" height="150" src={thumbnail} />
-                    )}
                     <br />
+                    <br />
+                    <label htmlFor="name">
+                      Name:
                     <input
-                      type="file"
-                      name="thumbnail"
-                      placeholder="thumbnail"
-                      onChange={this.uploadThumbnail}
-                    />
-                  </label>
-                </form>
-              </div>
-            )}
+                        id="name"
+                        type="name"
+                        name="name"
+                        placeholder="Name"
+                        defaultValue={name}
+                        onChange={this.saveToState}
+                      />
+                    </label>
+                    <br />
+                    <label htmlFor="thumbnail">
+                      Thumbnail Preview {/* Thumbnail para o Edit */}
+                      <br />
+                      {isEdit &&
+                        (changeThumbnail ? (
+                          item.thumbnail && (
+                            <img alt="Placeholder" height="150" src={thumbnail} />
+                          )
+                        ) : (
+                            <img
+                              alt="Placeholder"
+                              height="150"
+                              src={item.thumbnail}
+                            />
+                          ))}
+                      {/* Thumbnail para o create */}
+                      {!isEdit && (
+                        <img alt="Placeholder" height="150" src={thumbnail} />
+                      )}
+                      <br />
+                      <input
+                        type="file"
+                        name="thumbnail"
+                        placeholder="thumbnail"
+                        onChange={this.uploadThumbnail}
+                      />
+                    </label>
+                  </form>
+                </div>
+              )}
           </Mutation>
         )}
       </Mutation>
