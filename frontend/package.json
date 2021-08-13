@@ -80,7 +80,7 @@
     "html-to-draftjs": "^1.4.0",
     "immutable": "^4.0.0-rc.12",
     "lodash.debounce": "^4.0.8",
-    "next": "^7.0.3",
+    "next": "^11.1.0",
     "next-with-apollo": "^3.4.0",
     "nprogress": "^0.2.0",
     "paypal-rest-sdk": "^1.8.1",
